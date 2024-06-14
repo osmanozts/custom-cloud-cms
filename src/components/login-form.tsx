@@ -1,5 +1,17 @@
 import { FormEvent, useState } from "react";
 import { useAuth } from "../providers/auth-provider";
+import {
+  Button,
+  Card,
+  CardBody,
+  CardHeader,
+  Input,
+  InputGroup,
+  InputLeftElement,
+  StepTitle,
+  Text,
+} from "@chakra-ui/react";
+import { EmailIcon } from "@chakra-ui/icons";
 
 export function LoginForm() {
   const [email, setEmail] = useState("");
@@ -13,30 +25,31 @@ export function LoginForm() {
   };
 
   return (
-    <div className="row flex flex-center">
-      <div className="col-6 form-widget">
-        <h1 className="header">Supabase + React</h1>
-        <p className="description">
-          Sign in via magic link with your email below
-        </p>
-        <form className="form-widget" onSubmit={handleLogin}>
-          <div>
-            <input
-              className="inputField"
-              type="email"
-              placeholder="Your email"
-              value={email}
-              required={true}
-              onChange={(e) => setEmail(e.target.value)}
-            />
-          </div>
-          <div>
-            <button className={"button block"}>
-              <span>Send One Time Password</span>
-            </button>
-          </div>
-        </form>
-      </div>
-    </div>
+    <Card maxWidth={600} width="100%">
+      <CardBody display="flex" flexDirection={"column"}>
+        <Text marginBottom={6} fontSize={24} textAlign="center">
+          Login
+        </Text>
+        <InputGroup>
+          <InputLeftElement pointerEvents="none">
+            <EmailIcon color="gray.300" />
+          </InputLeftElement>
+          <Input
+            variant="filled"
+            placeholder="Email..."
+            value={email}
+            onChange={(event) => setEmail(event.target.value)}
+          />
+        </InputGroup>
+        <Button
+          marginTop={4}
+          colorScheme="teal"
+          size="md"
+          onClick={handleLogin}
+        >
+          Einmal Passwort erhalten
+        </Button>
+      </CardBody>
+    </Card>
   );
 }
