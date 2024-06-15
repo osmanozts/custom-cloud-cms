@@ -1,7 +1,7 @@
-import { LoginForm } from "../components";
 import { Box } from "@chakra-ui/react";
+import { VerifyOtpForm } from "../components";
 
-export const LoginPage = () => {
+export function OTPPage() {
   return (
     <Box
       display="flex"
@@ -9,7 +9,7 @@ export const LoginPage = () => {
       alignItems="center"
       height="100vh"
     >
-      <LoginForm />
+      <VerifyOtpForm />
     </Box>
   );
-};
+}

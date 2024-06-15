@@ -1,11 +1,7 @@
 import "./App.css";
-import { useState, useEffect } from "react";
-import supabase from "./utils/supabase";
-import { Session } from "@supabase/supabase-js";
-import { LoginPage } from "./pages/login-page";
-import { HomePage } from "./pages/home-page";
 import { Route, Routes } from "react-router-dom";
 import AuthRoute from "./auth/auth-route";
+import { HomePage, LoginPage, OTPPage } from "./pages";
 
 function App() {
   return (
@@ -15,6 +11,7 @@ function App() {
         <Route path="/home" element={<HomePage />} />
       </Route>
       <Route path="/login" element={<LoginPage />} />
+      <Route path="/login-otp" element={<OTPPage />} />
     </Routes>
   );
 }

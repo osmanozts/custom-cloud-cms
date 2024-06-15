@@ -11,8 +11,10 @@ import supabase from "../utils/supabase";
 // Definieren der Typen für den AuthContext
 interface AuthContextType {
   user: any;
-  login: (email: string) => Promise<any>;
+  login: (email: string, password: string) => Promise<any>;
+  sendOtp: (email: string) => Promise<any>;
   signOut: () => Promise<any>;
+  loading: boolean;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -30,7 +32,16 @@ interface AuthProviderProps {
   children: ReactNode;
 }
 
-const login = (email: string) =>
+const login = async (email: string, password: string) => {
+  const { data, error } = await supabase.auth.signInWithPassword({
+    email,
+    password,
+  });
+  if (error) throw error;
+  return data;
+};
+
+const sendOtp = (email: string) =>
   supabase.auth.signInWithOtp({ email, options: { shouldCreateUser: false } });
 
 const signOut = () => supabase.auth.signOut();
@@ -38,16 +49,20 @@ const signOut = () => supabase.auth.signOut();
 const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
   const [user, setUser] = useState<any>(null);
   const [auth, setAuth] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const { data } = supabase.auth.onAuthStateChange((event, session) => {
       if (event === "SIGNED_IN") {
+        console.log("HALLLOOO");
         setUser(session?.user || null);
         setAuth(true);
       } else if (event === "SIGNED_OUT") {
+        console.log("CIAAAOO");
         setUser(null);
         setAuth(false);
       }
+      setLoading(false);
     });
 
     return () => {
@@ -56,7 +71,7 @@ const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
   }, []);
 
   return (
-    <AuthContext.Provider value={{ user, login, signOut }}>
+    <AuthContext.Provider value={{ user, login, sendOtp, signOut, loading }}>
       {children}
     </AuthContext.Provider>
   );
