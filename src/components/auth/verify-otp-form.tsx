@@ -1,20 +1,13 @@
-import { FormEvent, useState } from "react";
-import { useAuth } from "../../providers/auth-provider";
+import { useState } from "react";
 import {
   Button,
   Card,
   CardBody,
-  CardHeader,
   HStack,
-  Input,
-  InputGroup,
-  InputLeftElement,
   PinInput,
   PinInputField,
-  StepTitle,
   Text,
 } from "@chakra-ui/react";
-import { EmailIcon } from "@chakra-ui/icons";
 import { useNavigate } from "react-router-dom";
 import supabase from "../../utils/supabase";
 

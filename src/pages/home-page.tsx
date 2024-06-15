@@ -1,5 +1,4 @@
 import { Box, Button } from "@chakra-ui/react";
-import { Session } from "@supabase/supabase-js";
 import { useAuth } from "../providers/auth-provider";
 
 interface HomePageProps {}

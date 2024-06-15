@@ -1,5 +1,4 @@
 import { AuthError } from "@supabase/supabase-js";
-import { FormEvent } from "react";
 
 export const handleErrorMessage = (error: unknown): string | null => {
   if (error instanceof AuthError) {

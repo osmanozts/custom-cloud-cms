@@ -4,7 +4,6 @@ import {
   Alert,
   AlertIcon,
   AlertTitle,
-  Box,
   Button,
   Card,
   CardBody,
@@ -15,7 +14,6 @@ import {
 } from "@chakra-ui/react";
 import { EmailIcon } from "@chakra-ui/icons";
 import { useNavigate } from "react-router-dom";
-import { AuthError } from "@supabase/supabase-js";
 import { handleErrorMessage } from "./helpers/handle-error-message";
 
 export function LoginForm() {

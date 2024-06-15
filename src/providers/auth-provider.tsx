@@ -48,7 +48,6 @@ const signOut = () => supabase.auth.signOut();
 
 const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
   const [user, setUser] = useState<any>(null);
-  const [auth, setAuth] = useState(false);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -56,11 +55,9 @@ const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
       if (event === "SIGNED_IN") {
         console.log("HALLLOOO");
         setUser(session?.user || null);
-        setAuth(true);
       } else if (event === "SIGNED_OUT") {
         console.log("CIAAAOO");
         setUser(null);
-        setAuth(false);
       }
       setLoading(false);
     });
