@@ -7,19 +7,19 @@ import {
   Button,
   Card,
   CardBody,
-  Input,
-  InputGroup,
-  InputLeftElement,
   Text,
+  VStack,
 } from "@chakra-ui/react";
-import { EmailIcon } from "@chakra-ui/icons";
+import { EmailIcon, LockIcon } from "@chakra-ui/icons";
 import { useNavigate } from "react-router-dom";
 import { handleErrorMessage } from "./helpers/handle-error-message";
+import { InputField } from "../input-field";
 
 export function LoginForm() {
   const navigate = useNavigate();
 
   const [email, setEmail] = useState("");
+
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -42,50 +42,44 @@ export function LoginForm() {
   };
 
   return (
-    <Card maxWidth={600} width="100%">
-      <CardBody display="flex" flexDirection={"column"}>
-        <Text marginBottom={6} fontSize={24} textAlign="center">
-          Anmelden
-        </Text>
-        <InputGroup marginBottom={4}>
-          <InputLeftElement pointerEvents="none">
-            <EmailIcon color="gray.300" />
-          </InputLeftElement>
-          <Input
-            variant="filled"
-            placeholder="Email..."
-            value={email}
-            onChange={(event) => setEmail(event.target.value)}
-          />
-        </InputGroup>
+    <Card width="100%" backgroundColor="gray.200">
+      <CardBody>
+        <VStack>
+          <Text marginBottom={6} fontSize={24} textAlign="center">
+            Anmelden
+          </Text>
 
-        <InputGroup>
-          <InputLeftElement pointerEvents="none">
-            <EmailIcon color="gray.300" />
-          </InputLeftElement>
-          <Input
-            variant="filled"
-            placeholder="Password"
-            type="password"
-            value={password}
-            onChange={(event) => setPassword(event.target.value)}
+          <InputField
+            value={email}
+            placeholder="Email..."
+            onChange={setEmail}
+            icon={<EmailIcon color="gray" />}
           />
-        </InputGroup>
-        <Button
-          marginTop={4}
-          colorScheme="teal"
-          size="md"
-          onClick={handleLogin}
-          isLoading={loading}
-        >
-          Anmelden
-        </Button>
-        {error && (
-          <Alert status="error" my={4}>
-            <AlertIcon />
-            <AlertTitle>{error}</AlertTitle>
-          </Alert>
-        )}
+
+          <InputField
+            value={password}
+            placeholder="Passwort"
+            isPasswordField
+            icon={<LockIcon color="gray" />}
+            onChange={setPassword}
+          />
+
+          <Button
+            marginTop={4}
+            colorScheme="teal"
+            size="md"
+            onClick={handleLogin}
+            isLoading={loading}
+          >
+            Anmelden
+          </Button>
+          {error && (
+            <Alert status="error" my={4}>
+              <AlertIcon />
+              <AlertTitle>{error}</AlertTitle>
+            </Alert>
+          )}
+        </VStack>
       </CardBody>
     </Card>
   );

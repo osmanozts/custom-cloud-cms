@@ -1,6 +1,7 @@
 import { Navigate, Outlet, useLocation } from "react-router-dom";
 import { useAuth } from "../providers/auth-provider";
 import { Box, Spinner } from "@chakra-ui/react";
+import { Navbar } from "../components";
 
 const AuthRoute = () => {
   const { user, loading } = useAuth();
@@ -27,7 +28,10 @@ const AuthRoute = () => {
   }
 
   return user ? (
-    <Outlet />
+    <>
+      <Navbar />
+      <Outlet />
+    </>
   ) : (
     <Navigate to={"/login"} replace state={{ path: location.pathname }} />
   );
