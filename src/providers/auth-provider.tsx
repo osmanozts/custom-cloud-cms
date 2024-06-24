@@ -53,10 +53,8 @@ const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
   useEffect(() => {
     const { data } = supabase.auth.onAuthStateChange((event, session) => {
       if (event === "SIGNED_IN") {
-        console.log("HALLLOOO");
         setUser(session?.user || null);
       } else if (event === "SIGNED_OUT") {
-        console.log("CIAAAOO");
         setUser(null);
       }
       setLoading(false);

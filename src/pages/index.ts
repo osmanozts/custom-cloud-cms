@@ -1,3 +1,3 @@
-export { HomePage } from "./home-page";
-export { LoginPage } from "./login-page";
+export { AllEmployees } from "./all-employees";
+export { Login } from "./login";
 export { OTPPage } from "./otp-page";
