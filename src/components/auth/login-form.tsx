@@ -33,7 +33,7 @@ export function LoginForm() {
 
     try {
       await login(email, password);
-      navigate("/home");
+      navigate("/all-employees");
     } catch (error: unknown) {
       setError(handleErrorMessage(error));
     } finally {
