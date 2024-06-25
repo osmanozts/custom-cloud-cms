@@ -30,7 +30,7 @@ export function EmployeesTable({ employees }: EmployeesTableProps) {
         <Tbody>
           {employees?.map((empl) => {
             return (
-              <Tr>
+              <Tr cursor="pointer" onClick={() => console.log(empl.profile_id)}>
                 <Td>{empl.first_name}</Td>
                 <Td>{empl.last_name}</Td>
                 <Td>
