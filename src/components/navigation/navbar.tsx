@@ -19,7 +19,7 @@ export function Navbar() {
       </Box>
       <Flex alignItems="center">
         <WrapItem marginRight={8}>
-          <Avatar name="Dan Abrahmov" src="https://bit.ly/dan-abramov" />
+          <Avatar src="https://bit.ly/broken-link" />
         </WrapItem>
         <Icon as={LuLogOut} boxSize={6} onClick={signOut} />
       </Flex>

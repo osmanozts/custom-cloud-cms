@@ -15,16 +15,7 @@ export const AllEmployees = ({}: AllEmployeesProps) => {
   const [searchString, setSearchString] = useState<string>("");
 
   useEffect(() => {
-    async function fetchEmployees() {
-      try {
-        const employeesData = await getAllEmployees();
-        setEmployees(employeesData);
-      } catch (error) {
-        console.error("Error fetching employees:", error);
-      }
-    }
-
-    fetchEmployees();
+    getAllEmployees();
   }, []);
 
   async function getAllEmployees() {
@@ -32,8 +23,9 @@ export const AllEmployees = ({}: AllEmployeesProps) => {
       .from("employees")
       .select("*");
 
+    setEmployees(employees);
+
     if (error) throw error;
-    return employees;
   }
 
   return (

@@ -19,6 +19,7 @@ export type Database = {
           last_name: string | null
           nationality: string | null
           postal_code: string | null
+          profile_id: string | null
           street: string | null
           tax_id: string | null
           tax_level: string | null
@@ -32,6 +33,7 @@ export type Database = {
           last_name?: string | null
           nationality?: string | null
           postal_code?: string | null
+          profile_id?: string | null
           street?: string | null
           tax_id?: string | null
           tax_level?: string | null
@@ -45,9 +47,39 @@ export type Database = {
           last_name?: string | null
           nationality?: string | null
           postal_code?: string | null
+          profile_id?: string | null
           street?: string | null
           tax_id?: string | null
           tax_level?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "employees_profile_id_fkey"
+            columns: ["profile_id"]
+            isOneToOne: false
+            referencedRelation: "profile"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      profile: {
+        Row: {
+          created_at: string
+          email: string | null
+          id: string
+          role: string | null
+        }
+        Insert: {
+          created_at?: string
+          email?: string | null
+          id?: string
+          role?: string | null
+        }
+        Update: {
+          created_at?: string
+          email?: string | null
+          id?: string
+          role?: string | null
         }
         Relationships: []
       }
