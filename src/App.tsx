@@ -1,19 +1,19 @@
 import "./App.css";
 import { Route, Routes } from "react-router-dom";
-import AuthRoute from "./auth/auth-route";
+
 import {
   AllEmployees,
   CreateNewUser,
   EmployeeMinimumDetail,
   Login,
 } from "./pages";
-import PermissionRoute from "./auth/permission-route";
+import { AdminRoute, AuthRoute } from "./auth/guards";
 
 function App() {
   return (
     <Routes>
       <Route element={<AuthRoute />}>
-        <Route element={<PermissionRoute />}>
+        <Route element={<AdminRoute />}>
           <Route path="/" element={<AllEmployees />} />
           <Route path="/all-employees" element={<AllEmployees />} />
           <Route path="/create-new-user" element={<CreateNewUser />} />

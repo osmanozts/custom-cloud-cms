@@ -1,11 +1,11 @@
 import { Navigate, Outlet, useLocation } from "react-router-dom";
-import { useAuth } from "../providers/auth-provider";
+import { useAuth } from "../../providers/auth-provider";
 import { useEffect, useState } from "react";
-import { Tables } from "../utils/database/types";
-import { fetchProfile } from "../backend-functions/fetch-profile";
+import { Tables } from "../../utils/database/types";
+import { fetchProfile } from "../../backend-functions/fetch-profile";
 import { Box, Spinner } from "@chakra-ui/react";
 
-const PermissionRoute = () => {
+export const AdminRoute = () => {
   const { user } = useAuth();
   const location = useLocation();
 
@@ -60,5 +60,3 @@ const PermissionRoute = () => {
       />
     );
 };
-
-export default PermissionRoute;

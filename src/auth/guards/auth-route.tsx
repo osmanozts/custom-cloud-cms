@@ -1,9 +1,9 @@
 import { Navigate, Outlet, useLocation } from "react-router-dom";
-import { useAuth } from "../providers/auth-provider";
+import { useAuth } from "../../providers/auth-provider";
 import { Box, Spinner } from "@chakra-ui/react";
-import { Navbar } from "../components";
+import { Navbar } from "../../components";
 
-const AuthRoute = () => {
+export const AuthRoute = () => {
   const { user, loading } = useAuth();
   const location = useLocation();
 
@@ -36,5 +36,3 @@ const AuthRoute = () => {
     <Navigate to={"/login"} replace state={{ path: location.pathname }} />
   );
 };
-
-export default AuthRoute;
