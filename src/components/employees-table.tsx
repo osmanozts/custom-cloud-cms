@@ -31,14 +31,15 @@ export function EmployeesTable({ employees }: EmployeesTableProps) {
           {employees?.map((empl) => {
             return (
               <Tr cursor="pointer" onClick={() => console.log(empl.profile_id)}>
-                <Td>{empl.first_name}</Td>
-                <Td>{empl.last_name}</Td>
+                <Td>{empl.first_name ?? "-"}</Td>
+                <Td>{empl.last_name ?? "-"}</Td>
                 <Td>
-                  {empl.street} {empl.city} {empl.postal_code}
+                  {empl.street ?? "-"} {empl.city ?? "-"}{" "}
+                  {empl.postal_code ?? "-"}
                 </Td>
-                <Td>{empl.health_insurance}</Td>
-                <Td>{empl.tax_id}</Td>
-                <Td>{empl.tax_level}</Td>
+                <Td>{empl.health_insurance ?? "-"}</Td>
+                <Td>{empl.tax_id ?? "-"}</Td>
+                <Td>{empl.tax_level ?? "-"}</Td>
               </Tr>
             );
           })}
