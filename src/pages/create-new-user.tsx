@@ -1,4 +1,4 @@
-import { Button, Container, Flex, Text, VStack } from "@chakra-ui/react";
+import { Button, Flex, Text, VStack } from "@chakra-ui/react";
 import { InputField } from "../components";
 import { useState } from "react";
 import supabase from "../utils/supabase";

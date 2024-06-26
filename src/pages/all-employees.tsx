@@ -1,4 +1,4 @@
-import { Box, Button, Flex, HStack, VStack } from "@chakra-ui/react";
+import { Box, Button, Flex, VStack } from "@chakra-ui/react";
 import supabase from "../utils/supabase";
 import { useEffect, useState } from "react";
 import { Tables } from "../utils/database/types";
