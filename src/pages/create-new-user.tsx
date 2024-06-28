@@ -25,10 +25,12 @@ export function CreateNewUser() {
           isLoading={isLoading}
           onClick={async () => {
             setIsLoading(true);
-            const { data, error } = await supabase.auth.signUp({
-              email,
-              password,
-            });
+            const { data, error } = await supabase.functions.invoke(
+              "create-user",
+              {
+                body: { email, password },
+              }
+            );
 
             if (error) {
               setIsLoading(false);
