@@ -1,8 +1,9 @@
-import { Button, Flex, Text, VStack } from "@chakra-ui/react";
+import { Button, Container, Flex, Text, VStack } from "@chakra-ui/react";
 import { InputField } from "../components";
 import { useState } from "react";
 import supabase from "../utils/supabase";
 import { useNavigate } from "react-router-dom";
+import { EmailIcon, LockIcon } from "@chakra-ui/icons";
 
 export function CreateNewUser() {
   const navigate = useNavigate();
@@ -12,21 +13,39 @@ export function CreateNewUser() {
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   return (
-    <Flex height="100svh" justifyContent="center">
-      <VStack borderWidth={1} width="50%" justifyContent="center" px={6}>
+    <Container
+      height="100svh"
+      display="flex"
+      flexDirection="column"
+      alignItems="center"
+      justifyContent="center"
+    >
+      <VStack
+        borderWidth={1}
+        px={6}
+        width="100%"
+        paddingTop={12}
+        paddingBottom={12}
+      >
         <Text mb={4}>Neuen Nutzer Anlegen</Text>
-        <InputField value={email} onChange={setEmail} placeholder="Email..." />
+        <InputField
+          value={email}
+          onChange={setEmail}
+          placeholder="Email..."
+          icon={<EmailIcon color="gray" />}
+        />
         <InputField
           value={password}
           onChange={setPassword}
           placeholder="Passwort..."
+          icon={<LockIcon color="gray" />}
         />
         <Button
           isLoading={isLoading}
           onClick={async () => {
             setIsLoading(true);
             const { data, error } = await supabase.functions.invoke(
-              "create-user",
+              "create-new-user",
               {
                 body: { email, password },
               }
@@ -46,6 +65,6 @@ export function CreateNewUser() {
           Anlegen
         </Button>
       </VStack>
-    </Flex>
+    </Container>
   );
 }
