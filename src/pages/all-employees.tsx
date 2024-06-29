@@ -22,19 +22,19 @@ export const AllEmployees = ({}: AllEmployeesProps) => {
   }, []);
 
   async function getAllEmployees() {
-    const { data: employees, error } = await supabase
-      .from("employees")
-      .select("*");
+    const { data: employees, error } = await supabase.from("employees").select(`
+      *,
+      profile(*)
+      `);
+    if (error) throw error;
 
     setEmployees(employees);
-
-    if (error) throw error;
   }
 
   return (
     <Flex justifyContent="center" alignItems="center">
       <VStack height="100vh" px={12}>
-        <Flex width="100%" mt={8} justifyContent="space-between">
+        <Flex width="80%" mt={8} justifyContent="space-between">
           <Box alignSelf="flex-start">
             <InputField
               value={searchString}

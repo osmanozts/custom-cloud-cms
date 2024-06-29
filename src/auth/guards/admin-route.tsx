@@ -2,8 +2,8 @@ import { Navigate, Outlet, useLocation } from "react-router-dom";
 import { useAuth } from "../../providers/auth-provider";
 import { useEffect, useState } from "react";
 import { Tables } from "../../utils/database/types";
-import { fetchProfile } from "../../backend-functions/fetch-profile";
 import { Box, Spinner } from "@chakra-ui/react";
+import { getProfile } from "../../backend-queries";
 
 export const AdminRoute = () => {
   const { user } = useAuth();
@@ -16,7 +16,7 @@ export const AdminRoute = () => {
     const fetchUserProfile = async () => {
       if (user) {
         try {
-          const userProfile = await fetchProfile(user.id); // Await the async fetchProfile function
+          const userProfile = await getProfile(user.id); // Await the async fetchProfile function
           setProfile(userProfile); // Set the profile state
           setLoading(false);
         } catch (error) {

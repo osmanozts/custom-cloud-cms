@@ -6,7 +6,8 @@ interface InputFieldProps {
   placeholder?: string;
   icon?: ReactNode;
   isPasswordField?: boolean;
-  onChange: (value: React.SetStateAction<string>) => void;
+  isDisabled?: boolean;
+  onChange: (value: React.SetStateAction<string> | string) => void;
 }
 
 export function InputField({
@@ -15,11 +16,13 @@ export function InputField({
   onChange,
   placeholder,
   isPasswordField,
+  isDisabled,
 }: InputFieldProps) {
   return (
     <InputGroup marginBottom={4}>
       {icon && <InputLeftElement pointerEvents="none">{icon}</InputLeftElement>}
       <Input
+        disabled={isDisabled}
         variant="outline"
         type={isPasswordField ? "password" : "email"}
         placeholder={placeholder}

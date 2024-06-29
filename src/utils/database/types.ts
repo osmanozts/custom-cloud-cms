@@ -9,15 +9,51 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
+      documents: {
+        Row: {
+          created_at: string
+          document_type: string | null
+          document_url: string | null
+          employee_id: number | null
+          id: number
+        }
+        Insert: {
+          created_at?: string
+          document_type?: string | null
+          document_url?: string | null
+          employee_id?: number | null
+          id?: number
+        }
+        Update: {
+          created_at?: string
+          document_type?: string | null
+          document_url?: string | null
+          employee_id?: number | null
+          id?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "documents_employee_id_fkey"
+            columns: ["employee_id"]
+            isOneToOne: false
+            referencedRelation: "employees"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       employees: {
         Row: {
           city: string | null
           created_at: string
+          date_of_birth: string | null
+          driver_license_end_date: string | null
           first_name: string | null
           health_insurance: string | null
           id: number
+          id_card_end_date: string | null
           last_name: string | null
           nationality: string | null
+          personnel_number: string | null
           postal_code: string | null
           profile_id: string | null
           street: string | null
@@ -27,11 +63,15 @@ export type Database = {
         Insert: {
           city?: string | null
           created_at?: string
+          date_of_birth?: string | null
+          driver_license_end_date?: string | null
           first_name?: string | null
           health_insurance?: string | null
           id?: number
+          id_card_end_date?: string | null
           last_name?: string | null
           nationality?: string | null
+          personnel_number?: string | null
           postal_code?: string | null
           profile_id?: string | null
           street?: string | null
@@ -41,11 +81,15 @@ export type Database = {
         Update: {
           city?: string | null
           created_at?: string
+          date_of_birth?: string | null
+          driver_license_end_date?: string | null
           first_name?: string | null
           health_insurance?: string | null
           id?: number
+          id_card_end_date?: string | null
           last_name?: string | null
           nationality?: string | null
+          personnel_number?: string | null
           postal_code?: string | null
           profile_id?: string | null
           street?: string | null
@@ -81,7 +125,15 @@ export type Database = {
           id?: string
           role?: string | null
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "profile_id_fkey"
+            columns: ["id"]
+            isOneToOne: true
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
       }
     }
     Views: {

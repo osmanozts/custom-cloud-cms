@@ -12,6 +12,27 @@ export function CreateNewUser() {
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
+  const createNewUser = async () => {
+    setIsLoading(true);
+    const { data, error } = await supabase.functions.invoke("create-new-user", {
+      body: { email, password },
+    });
+
+    if (error) {
+      setIsLoading(false);
+      throw error;
+    }
+
+    if (data.user) {
+      setIsLoading(false);
+
+      navigate({
+        pathname: "/edit-employee",
+        search: `?profile_id=${data.user.id}`,
+      });
+    }
+  };
+
   return (
     <Container
       height="100svh"
@@ -40,28 +61,7 @@ export function CreateNewUser() {
           placeholder="Passwort..."
           icon={<LockIcon color="gray" />}
         />
-        <Button
-          isLoading={isLoading}
-          onClick={async () => {
-            setIsLoading(true);
-            const { data, error } = await supabase.functions.invoke(
-              "create-new-user",
-              {
-                body: { email, password },
-              }
-            );
-
-            if (error) {
-              setIsLoading(false);
-              throw error;
-            }
-
-            if (data.user) {
-              setIsLoading(false);
-              navigate("/all-employees");
-            }
-          }}
-        >
+        <Button isLoading={isLoading} onClick={createNewUser}>
           Anlegen
         </Button>
       </VStack>

@@ -7,20 +7,29 @@ import {
   Thead,
   Tr,
 } from "@chakra-ui/react";
-import { Tables } from "../utils/database/types";
+import { EmployeesWithProfile } from "../backend-queries/joins/employees-with-profile-query";
+import { useNavigate } from "react-router-dom";
 
 interface EmployeesTableProps {
-  employees: Tables<"employees">[];
+  employees: EmployeesWithProfile;
 }
 
 export function EmployeesTable({ employees }: EmployeesTableProps) {
+  const navigate = useNavigate();
   return (
-    <TableContainer width="100%" mt={8} maxHeight="70svh" overflowY="scroll">
+    <TableContainer
+      width="80%"
+      mt={8}
+      maxHeight="80svh"
+      overflowY="scroll"
+      overflowX="scroll"
+    >
       <Table variant="striped" colorScheme="gray">
         <Thead>
           <Tr>
-            <Th>Vorname</Th>
-            <Th>Nachname</Th>
+            <Th>Personalnummer</Th>
+            <Th>Email</Th>
+            <Th>Name</Th>
             <Th>Adresse</Th>
             <Th>Krankenkasse</Th>
             <Th>SteuerID.</Th>
@@ -30,9 +39,19 @@ export function EmployeesTable({ employees }: EmployeesTableProps) {
         <Tbody>
           {employees?.map((empl) => {
             return (
-              <Tr cursor="pointer" onClick={() => console.log(empl.profile_id)}>
-                <Td>{empl.first_name ?? "-"}</Td>
-                <Td>{empl.last_name ?? "-"}</Td>
+              <Tr
+                key={empl.id}
+                cursor="pointer"
+                onClick={() =>
+                  navigate({
+                    pathname: "/edit-employee",
+                    search: `?profile_id=${empl.profile_id}`,
+                  })
+                }
+              >
+                <Td>{empl.personnel_number ?? "-"}</Td>
+                <Td>{empl.profile?.email ?? "-"}</Td>
+                <Td>{empl.first_name + " " + empl.last_name ?? "-"}</Td>
                 <Td>
                   {empl.street ?? "-"} {empl.city ?? "-"}{" "}
                   {empl.postal_code ?? "-"}
