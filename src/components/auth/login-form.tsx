@@ -24,7 +24,7 @@ export function LoginForm() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const { login } = useAuth();
+  const { login, user } = useAuth();
 
   const handleLogin = async (event: FormEvent) => {
     event.preventDefault();
@@ -33,6 +33,7 @@ export function LoginForm() {
 
     try {
       await login(email, password);
+
       navigate("/all-employees");
     } catch (error: unknown) {
       setError(handleErrorMessage(error));

@@ -54,7 +54,7 @@ export const AdminRoute = () => {
       </>
     ) : (
       <Navigate
-        to={"/employee-min-detail"}
+        to={`/employee-min-detail?profile_id=${user.id}`}
         replace
         state={{ path: location.pathname }}
       />
