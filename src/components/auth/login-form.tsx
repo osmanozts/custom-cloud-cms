@@ -34,7 +34,7 @@ export function LoginForm() {
     try {
       await login(email, password);
 
-      navigate("/all-employees");
+      navigate("/");
     } catch (error: unknown) {
       setError(handleErrorMessage(error));
     } finally {
