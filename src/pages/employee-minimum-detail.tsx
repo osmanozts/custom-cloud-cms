@@ -6,10 +6,13 @@ import { getEmployee, getProfile } from "../backend-queries";
 import { Tables } from "../utils/database/types";
 
 export function EmployeeMinimumDetail() {
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [searchParams] = useSearchParams();
 
   const [employee, setEmployee] = useState<Tables<"employees">>();
   const [profile, setProfile] = useState<Tables<"profile">>();
+
+  console.log("employee:", employee);
+  console.log("profile:", profile);
 
   const [email, setEmail] = useState<string>("");
   const [id, setId] = useState<string>("");

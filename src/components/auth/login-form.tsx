@@ -24,7 +24,7 @@ export function LoginForm() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const { login, user } = useAuth();
+  const { login } = useAuth();
 
   const handleLogin = async (event: FormEvent) => {
     event.preventDefault();

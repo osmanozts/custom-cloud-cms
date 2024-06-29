@@ -1,19 +1,17 @@
 import { Box, Button, Flex, VStack } from "@chakra-ui/react";
 import supabase from "../utils/supabase";
 import { useEffect, useState } from "react";
-import { Tables } from "../utils/database/types";
 import { SearchIcon } from "@chakra-ui/icons";
 import { EmployeesTable, InputField } from "../components";
 import { useNavigate } from "react-router-dom";
+import { EmployeesWithProfile } from "../backend-queries/joins/employees-with-profile-query";
 
 interface AllEmployeesProps {}
 
 export const AllEmployees = ({}: AllEmployeesProps) => {
   const navigate = useNavigate();
 
-  const [employees, setEmployees] = useState<Tables<"employees">[] | null>(
-    null
-  );
+  const [employees, setEmployees] = useState<EmployeesWithProfile | null>(null);
 
   const [searchString, setSearchString] = useState<string>("");
 
