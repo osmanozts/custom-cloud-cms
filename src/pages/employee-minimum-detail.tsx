@@ -61,7 +61,7 @@ export function EmployeeMinimumDetail() {
       pr={12}
       height="100svh"
       borderWidth={1}
-      maxWidth="50%"
+      maxWidth="800px"
     >
       <Flex mb={12} justifyContent="center">
         <Text fontSize={28}>Mitarbeiter Informationen Ansehen</Text>

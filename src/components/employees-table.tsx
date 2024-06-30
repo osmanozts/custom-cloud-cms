@@ -18,7 +18,8 @@ export function EmployeesTable({ employees }: EmployeesTableProps) {
   const navigate = useNavigate();
   return (
     <TableContainer
-      width="80%"
+      width="100%"
+      maxWidth="1000px"
       mt={8}
       maxHeight="80svh"
       overflowY="scroll"
