@@ -1,19 +1,9 @@
-import {
-  Box,
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  Container,
-  Divider,
-  Flex,
-  Icon,
-  Text,
-} from "@chakra-ui/react";
+// AllDocuments.tsx
+import { Box, Container, Divider, Flex, Icon, Text } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import supabase from "../utils/supabase";
 import { LuFile, LuFolder } from "react-icons/lu";
-
-type AllDocumentsProps = {};
+import { BreadcrumbNav, FileUpload } from "../components";
 
 interface File {
   name: string;
@@ -21,7 +11,7 @@ interface File {
   created_at: string;
 }
 
-export function AllDocuments({}: AllDocumentsProps) {
+export function AllDocuments() {
   const [files, setFiles] = useState<File[]>([]);
   const [path, setPath] = useState<string>("");
 
@@ -30,12 +20,14 @@ export function AllDocuments({}: AllDocumentsProps) {
   }, [path]);
 
   async function getFiles() {
-    const pathArray = path.split("/");
+    console.log("🚀 ~ path:", path);
+    const pathArray = path.split("/").filter(Boolean);
+    const index = pathArray[pathArray.length - 1] || "";
     const { data, error } = await supabase.storage
       .from("dateien_unternehmen")
-      .list(pathArray[pathArray.length - 1]);
+      .list(index);
     if (error) throw error;
-    console.log("🚀 ~ data:", data);
+
     setFiles(data);
   }
 
@@ -49,6 +41,18 @@ export function AllDocuments({}: AllDocumentsProps) {
       window.open(data.signedUrl, "_blank");
     }
   }
+
+  const handleBreadcrumbClick = (newPath: string) => {
+    setPath(newPath);
+  };
+
+  const handleFileClick = (file: File) => {
+    if (file.id) {
+      openFile(file.name);
+    } else {
+      setPath(`${path}/${file.name}`);
+    }
+  };
 
   return (
     <Container
@@ -65,42 +69,31 @@ export function AllDocuments({}: AllDocumentsProps) {
         <Text fontSize={28}>Unternehmensinterne Dateien</Text>
       </Flex>
 
-      <Breadcrumb mb={4}>
-        {path.split("/").map((p) => {
-          console.log("🚀 ~ p:", p);
-          return (
-            <BreadcrumbItem>
-              <BreadcrumbLink>{p ?? "root"}</BreadcrumbLink>
-            </BreadcrumbItem>
-          );
-        })}
-      </Breadcrumb>
+      <BreadcrumbNav path={path} onBreadcrumbClick={handleBreadcrumbClick} />
 
-      {files.map((f) => {
-        return (
-          <Box cursor="pointer" key={f.id}>
-            <Flex
-              onClick={() => {
-                if (f.id) openFile(f.name);
-                else setPath(`.${path}/${f.name}`);
-              }}
-            >
-              {f.id ? (
-                <Flex>
-                  <Icon as={LuFile} boxSize={6} mr={4} />
-                  <Text>{f.name ?? ""}</Text>
-                </Flex>
-              ) : (
-                <Flex>
-                  <Icon as={LuFolder} boxSize={6} mr={4} />
-                  <Text>{f.name ?? ""}</Text>
-                </Flex>
-              )}
-            </Flex>
-            <Divider orientation="horizontal" my={4} />
-          </Box>
-        );
-      })}
+      {files.map((f) => (
+        <Box cursor="pointer" key={f.id || f.name}>
+          <Flex onClick={() => handleFileClick(f)}>
+            {f.id ? (
+              <Flex>
+                <Icon as={LuFile} boxSize={6} mr={4} />
+                <Text>{f.name ?? ""}</Text>
+              </Flex>
+            ) : (
+              <Flex>
+                <Icon as={LuFolder} boxSize={6} mr={4} />
+                <Text>{f.name ?? ""}</Text>
+              </Flex>
+            )}
+          </Flex>
+          <Divider orientation="horizontal" my={4} />
+        </Box>
+      ))}
+
+      <FileUpload
+        path={path.length > 0 ? `${path.substring(1)}/` : path}
+        onUploadSuccess={getFiles}
+      />
     </Container>
   );
 }
