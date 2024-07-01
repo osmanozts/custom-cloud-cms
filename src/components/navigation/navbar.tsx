@@ -4,24 +4,36 @@ import {
   Flex,
   Image,
   WrapItem,
-  Icon,
   Text,
+  Icon,
+  useBreakpointValue,
 } from "@chakra-ui/react";
 import logo from "../../assets/logo/lp-logistics.png";
-import { LuLogOut } from "react-icons/lu";
-import { useAuth } from "../../providers/auth-provider";
 import { useLocation, useNavigate } from "react-router-dom";
+import { Hamburger } from "./hamburger";
+import { LuFileStack, LuLayoutDashboard, LuTable2 } from "react-icons/lu";
 
 export function Navbar() {
   const navigate = useNavigate();
   const location = useLocation();
-  const { signOut } = useAuth();
 
   const navItems = [
-    { id: 1, label: "Startseite", path: "/" },
-    { id: 2, label: "Mitarbeiter Tabelle", path: "/all-employees" },
-    { id: 3, label: "interne Dokumente", path: "/all-documents" },
+    { id: 1, label: "Startseite", path: "/", icon: LuLayoutDashboard },
+    {
+      id: 2,
+      label: "Mitarbeiter",
+      path: "/all-employees",
+      icon: LuTable2,
+    },
+    {
+      id: 3,
+      label: "interne Dokumente",
+      path: "/all-documents",
+      icon: LuFileStack,
+    },
   ];
+
+  const showNavItems = useBreakpointValue({ base: false, md: true });
 
   return (
     <Flex height={70} backgroundColor="gray.200" alignItems="center" px={6}>
@@ -29,31 +41,34 @@ export function Navbar() {
         <Image src={logo} alt="Logo" objectFit="contain" />
       </Box>
       <Flex flex={1} justifyContent="flex-end" alignItems="center">
-        <Flex>
-          {navItems.map((item) => (
-            <Box
-              key={item.id}
-              paddingRight={12}
-              cursor="pointer"
-              onClick={() => navigate(item.path)}
-            >
-              <Text
-                textDecoration={
-                  location.pathname === item.path ? "underline" : "none"
-                }
+        {showNavItems && (
+          <Flex>
+            {navItems.map((item) => (
+              <Flex
+                key={item.id}
+                paddingRight={12}
+                cursor="pointer"
+                onClick={() => navigate(item.path)}
               >
-                {item.label}
-              </Text>
-            </Box>
-          ))}
-        </Flex>
+                <Icon as={item.icon} boxSize={6} mr={2} />
+                <Text
+                  textDecoration={
+                    location.pathname === item.path ? "underline" : "none"
+                  }
+                >
+                  {item.label}
+                </Text>
+              </Flex>
+            ))}
+          </Flex>
+        )}
         <WrapItem cursor="pointer" marginRight={8}>
-          <Avatar src="https://bit.ly/broken-link" />
-        </WrapItem>
-        <WrapItem cursor="pointer">
-          <Icon as={LuLogOut} boxSize={6} onClick={signOut} />
+          <Avatar name="Osman Öztas" />
         </WrapItem>
       </Flex>
+      <WrapItem cursor="pointer">
+        <Hamburger />
+      </WrapItem>
     </Flex>
   );
 }
