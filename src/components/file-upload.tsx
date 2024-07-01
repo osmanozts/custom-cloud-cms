@@ -57,7 +57,7 @@ export function FileUpload({ path, onUploadSuccess }: FileUploadProps) {
             colorScheme="gray"
             cursor="pointer"
           >
-            wähle eine Datei
+            Datei wählen
           </Button>
         </Box>
         {selectedFile && (

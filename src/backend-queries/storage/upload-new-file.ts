@@ -11,6 +11,7 @@ export async function uploadNewFile(
   if (error) {
     console.error("Error uploading file:", error.message);
   } else {
+    console.log("Datei erfolgreich hochgeladen", data);
     successCallback();
   }
 }
