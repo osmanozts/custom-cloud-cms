@@ -1,10 +1,11 @@
-import { Button, Flex, Text } from "@chakra-ui/react";
+import { Button, Flex, Text, Box, Icon } from "@chakra-ui/react";
 import { useState } from "react";
-import supabase from "../utils/supabase"; // Stellen Sie sicher, dass Sie Ihren supabase Import entsprechend Ihrer Konfiguration aktualisieren
+import { FiUpload } from "react-icons/fi";
+import supabase from "../utils/supabase"; // Ensure you update your supabase import according to your configuration
 
 interface FileUploadProps {
   path: string;
-  onUploadSuccess: () => void; // Eine Funktion, die aufgerufen wird, wenn der Upload erfolgreich war
+  onUploadSuccess: () => void; // A function that is called when the upload is successful
 }
 
 export function FileUpload({ path, onUploadSuccess }: FileUploadProps) {
@@ -34,7 +35,7 @@ export function FileUpload({ path, onUploadSuccess }: FileUploadProps) {
       } else {
         console.log("File uploaded successfully:", data);
         setSelectedFile(null);
-        onUploadSuccess(); // Aufruf der Erfolgsfunktion nach erfolgreichem Upload
+        onUploadSuccess(); // Call the success function after a successful upload
       }
     } catch (error) {
       console.error("Error uploading file:", error);
@@ -46,25 +47,45 @@ export function FileUpload({ path, onUploadSuccess }: FileUploadProps) {
 
   return (
     <Flex flexDirection="column" alignItems="flex-start" mb={4}>
-      <input
-        type="file"
-        onChange={handleFileChange}
-        accept=".pdf,.doc,.docx,.xls,.xlsx,.jpg,.jpeg,.png"
-        style={{ marginBottom: "1rem" }}
-      />
-      {selectedFile && (
-        <Text mb={2}>
-          Selected file: {selectedFile.name} ({selectedFile.size} bytes)
-        </Text>
-      )}
+      <Flex flexDirection="row" alignItems="center" mb={4}>
+        <Box mb={4} display="flex" alignItems="center">
+          <input
+            id="file-input"
+            type="file"
+            onChange={handleFileChange}
+            accept=".pdf,.doc,.docx,.xls,.xlsx,.jpg,.jpeg,.png"
+            style={{ display: "none" }}
+          />
+          <Button
+            as="label"
+            htmlFor="file-input"
+            leftIcon={<Icon as={FiUpload} />}
+            colorScheme="gray"
+            cursor="pointer"
+          >
+            wähle eine Datei
+          </Button>
+        </Box>
+        {selectedFile && (
+          <Text ml={4} mb={2}>
+            {selectedFile.name}
+          </Text>
+        )}
+      </Flex>
       {uploading && (
         <Text mb={2}>
           Uploading... {uploadProgress !== null ? `${uploadProgress}%` : ""}
         </Text>
       )}
-      <Button onClick={uploadFile} disabled={!selectedFile || uploading}>
-        Upload File
-      </Button>
+      {selectedFile && (
+        <Button
+          onClick={uploadFile}
+          disabled={!selectedFile || uploading}
+          colorScheme="gray"
+        >
+          Hochladen
+        </Button>
+      )}
     </Flex>
   );
 }
