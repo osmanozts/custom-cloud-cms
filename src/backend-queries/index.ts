@@ -7,3 +7,4 @@ export { updateProfile } from "./update/update-profile";
 export { getFiles } from "./storage/get-files";
 export { openFile } from "./storage/open-file";
 export { uploadNewFile } from "./storage/upload-new-file";
+export { createFolder } from "./storage/create-folder";
