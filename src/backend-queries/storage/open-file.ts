@@ -7,6 +7,13 @@ export async function openFile(path: string, filename: string, bucket: string) {
   if (error) throw error;
 
   if (data?.signedUrl) {
-    window.open(data.signedUrl, "_blank");
+    const link = document.createElement("a");
+    link.href = data.signedUrl;
+    link.target = "_blank";
+    link.rel = "noopener noreferrer";
+    link.style.display = "none";
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
   }
 }
