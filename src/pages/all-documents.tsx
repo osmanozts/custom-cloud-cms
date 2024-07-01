@@ -20,12 +20,12 @@ export function AllDocuments() {
   }, [path]);
 
   async function getFiles() {
-    console.log("🚀 ~ path:", path);
     const pathArray = path.split("/").filter(Boolean);
-    const index = pathArray[pathArray.length - 1] || "";
+    const storagePath = pathArray.join("/") || "";
+
     const { data, error } = await supabase.storage
       .from("dateien_unternehmen")
-      .list(index);
+      .list(storagePath);
     if (error) throw error;
 
     setFiles(data);
@@ -65,30 +65,32 @@ export function AllDocuments() {
       borderWidth={1}
       maxWidth="800px"
     >
-      <Flex mb={12} justifyContent="center">
+      <Flex mb={6} justifyContent="center">
         <Text fontSize={28}>Unternehmensinterne Dateien</Text>
       </Flex>
 
       <BreadcrumbNav path={path} onBreadcrumbClick={handleBreadcrumbClick} />
 
-      {files.map((f) => (
-        <Box cursor="pointer" key={f.id || f.name}>
-          <Flex onClick={() => handleFileClick(f)}>
-            {f.id ? (
-              <Flex>
-                <Icon as={LuFile} boxSize={6} mr={4} />
-                <Text>{f.name ?? ""}</Text>
-              </Flex>
-            ) : (
-              <Flex>
-                <Icon as={LuFolder} boxSize={6} mr={4} />
-                <Text>{f.name ?? ""}</Text>
-              </Flex>
-            )}
-          </Flex>
-          <Divider orientation="horizontal" my={4} />
-        </Box>
-      ))}
+      <Box mb={4} mt={6} height="40svh" overflow="scroll">
+        {files.map((f) => (
+          <Box cursor="pointer" key={f.id || f.name}>
+            <Flex onClick={() => handleFileClick(f)}>
+              {f.id ? (
+                <Flex>
+                  <Icon as={LuFile} boxSize={6} mr={4} />
+                  <Text>{f.name ?? ""}</Text>
+                </Flex>
+              ) : (
+                <Flex>
+                  <Icon as={LuFolder} boxSize={6} mr={4} />
+                  <Text>{f.name ?? ""}</Text>
+                </Flex>
+              )}
+            </Flex>
+            <Divider orientation="horizontal" my={4} />
+          </Box>
+        ))}
+      </Box>
 
       <FileUpload
         path={path.length > 0 ? `${path.substring(1)}/` : path}
