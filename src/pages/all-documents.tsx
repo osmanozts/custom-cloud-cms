@@ -5,6 +5,7 @@ import supabase from "../utils/supabase";
 import { LuFile, LuFolder } from "react-icons/lu";
 import { BreadcrumbNav, FileUpload } from "../components";
 import { getFiles } from "../backend-queries/storage/get-files";
+import { openFile } from "../backend-queries/storage/open-file";
 
 export interface File {
   name: string;
@@ -20,25 +21,13 @@ export function AllDocuments() {
     getFiles(path, "dateien_unternehmen", (newFile) => setFiles(newFile ?? []));
   }, [path]);
 
-  async function openFile(filename: string) {
-    const { data, error } = await supabase.storage
-      .from("dateien_unternehmen")
-      .createSignedUrl(filename, 60);
-    if (error) throw error;
-
-    if (data?.signedUrl) {
-      window.open(data.signedUrl, "_blank");
-    }
-  }
-
   const handleBreadcrumbClick = (newPath: string) => {
     setPath(newPath);
   };
 
   const handleFileClick = (file: File) => {
     if (file.id) {
-      console.log("🚀 ~ `${path}/${file.name}`:", `${path}/${file.name}`);
-      openFile(`${path}/${file.name}`);
+      openFile(path, file.name, "dateien_unternehmen");
     } else {
       setPath(`${path}/${file.name}`);
     }
