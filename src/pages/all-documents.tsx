@@ -4,8 +4,9 @@ import { useEffect, useState } from "react";
 import supabase from "../utils/supabase";
 import { LuFile, LuFolder } from "react-icons/lu";
 import { BreadcrumbNav, FileUpload } from "../components";
+import { getFiles } from "../backend-queries/storage/get-files";
 
-interface File {
+export interface File {
   name: string;
   id: string;
   created_at: string;
@@ -16,20 +17,8 @@ export function AllDocuments() {
   const [path, setPath] = useState<string>("");
 
   useEffect(() => {
-    getFiles();
+    getFiles(path, "dateien_unternehmen", (newFile) => setFiles(newFile ?? []));
   }, [path]);
-
-  async function getFiles() {
-    const pathArray = path.split("/").filter(Boolean);
-    const storagePath = pathArray.join("/") || "";
-
-    const { data, error } = await supabase.storage
-      .from("dateien_unternehmen")
-      .list(storagePath);
-    if (error) throw error;
-
-    setFiles(data);
-  }
 
   async function openFile(filename: string) {
     const { data, error } = await supabase.storage
@@ -94,7 +83,11 @@ export function AllDocuments() {
 
       <FileUpload
         path={path.length > 0 ? `${path.substring(1)}/` : path}
-        onUploadSuccess={getFiles}
+        onUploadSuccess={() =>
+          getFiles(path, "dateien_unternehmen", (newFile) =>
+            setFiles(newFile ?? [])
+          )
+        }
       />
     </Container>
   );
