@@ -4,3 +4,6 @@ export { getProfile } from "./query/get-profile";
 export { getEmployee } from "./query/get-employee";
 export { updateEmployee } from "./update/update-employee";
 export { updateProfile } from "./update/update-profile";
+export { getFiles } from "./storage/get-files";
+export { openFile } from "./storage/open-file";
+export { uploadNewFile } from "./storage/upload-new-file";

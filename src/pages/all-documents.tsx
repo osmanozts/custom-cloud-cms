@@ -1,11 +1,9 @@
 // AllDocuments.tsx
 import { Box, Container, Divider, Flex, Icon, Text } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
-import supabase from "../utils/supabase";
 import { LuFile, LuFolder } from "react-icons/lu";
 import { BreadcrumbNav, FileUpload } from "../components";
-import { getFiles } from "../backend-queries/storage/get-files";
-import { openFile } from "../backend-queries/storage/open-file";
+import { getFiles, openFile } from "../backend-queries";
 
 export interface File {
   name: string;

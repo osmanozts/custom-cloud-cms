@@ -1,7 +1,7 @@
 import { Button, Flex, Text, Box, Icon } from "@chakra-ui/react";
 import { useState } from "react";
 import { FiUpload } from "react-icons/fi";
-import supabase from "../utils/supabase"; // Ensure you update your supabase import according to your configuration
+import { uploadNewFile } from "../backend-queries";
 
 interface FileUploadProps {
   path: string;
@@ -27,16 +27,10 @@ export function FileUpload({ path, onUploadSuccess }: FileUploadProps) {
     setUploadProgress(0);
 
     try {
-      const { data, error } = await supabase.storage
-        .from("dateien_unternehmen")
-        .upload(`${path}${selectedFile.name}`, selectedFile);
-      if (error) {
-        console.error("Error uploading file:", error.message);
-      } else {
-        console.log("File uploaded successfully:", data);
+      uploadNewFile(path, selectedFile, () => {
         setSelectedFile(null);
         onUploadSuccess(); // Call the success function after a successful upload
-      }
+      });
     } catch (error) {
       console.error("Error uploading file:", error);
     } finally {
