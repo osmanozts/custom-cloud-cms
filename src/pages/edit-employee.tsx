@@ -69,9 +69,11 @@ export function EditEmployee({}: EditEmployeeProps) {
       pt={12}
       pl={12}
       pr={12}
-      height="100svh"
-      borderWidth={1}
+      height="100%"
+      borderRightWidth={1}
+      borderLeftWidth={1}
       maxWidth="800px"
+      pb={12}
     >
       <Flex mb={12} justifyContent="center">
         <Text fontSize={28}>Mitarbeiter Ansehen / Bearbeiten</Text>

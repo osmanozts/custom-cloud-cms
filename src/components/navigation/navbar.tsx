@@ -11,7 +11,12 @@ import {
 import logo from "../../assets/logo/lp-logistics.png";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Hamburger } from "./hamburger";
-import { LuFileStack, LuLayoutDashboard, LuTable2 } from "react-icons/lu";
+import {
+  LuFileStack,
+  LuLayoutDashboard,
+  LuTable2,
+  LuUsers,
+} from "react-icons/lu";
 
 export function Navbar() {
   const navigate = useNavigate();
@@ -31,9 +36,19 @@ export function Navbar() {
       path: "/all-documents",
       icon: LuFileStack,
     },
+    {
+      id: 4,
+      label: "Mitarbeiter Dokumente",
+      path: "/",
+      icon: LuUsers,
+    },
   ];
 
-  const showNavItems = useBreakpointValue({ base: false, md: true });
+  const showNavItems = useBreakpointValue({
+    base: false,
+    md: false,
+    lg: true,
+  });
 
   return (
     <Flex height={70} backgroundColor="gray.200" alignItems="center" px={6}>

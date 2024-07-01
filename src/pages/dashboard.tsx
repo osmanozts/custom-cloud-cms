@@ -1,6 +1,14 @@
-import { Box, Container, Flex, Heading, Text, Icon } from "@chakra-ui/react";
+import {
+  Box,
+  Container,
+  Grid,
+  Heading,
+  Text,
+  Icon,
+  Flex,
+} from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
-import { LuTable2, LuFileStack } from "react-icons/lu";
+import { LuTable2, LuFileStack, LuUsers } from "react-icons/lu";
 
 type DashboardProps = {};
 
@@ -20,6 +28,12 @@ export function Dashboard({}: DashboardProps) {
       icon: LuFileStack,
       path: "/all-documents",
     },
+    {
+      title: "Mitarbeiter Dokumente",
+      description: "Zugriff auf alle Mitarbeiter Dokumente.",
+      icon: LuUsers,
+      path: "/",
+    },
   ];
 
   return (
@@ -37,12 +51,11 @@ export function Dashboard({}: DashboardProps) {
       <Heading as="h1" mb={12} textAlign="center">
         Admin Dashboard
       </Heading>
-      <Flex
+      <Grid
         width="100%"
         maxWidth="1200px"
-        flexDirection={{ base: "column", md: "row" }}
-        justifyContent="space-around"
-        alignItems="center"
+        templateColumns={{ base: "1fr", md: "repeat(2, 1fr)" }}
+        gap={6}
       >
         {items.map((item, index) => (
           <Box
@@ -50,7 +63,6 @@ export function Dashboard({}: DashboardProps) {
             as="button"
             onClick={() => navigate(item.path)}
             p={6}
-            m={4}
             borderWidth="1px"
             borderRadius="lg"
             overflow="hidden"
@@ -58,8 +70,6 @@ export function Dashboard({}: DashboardProps) {
             shadow="md"
             transition="transform 0.2s"
             _hover={{ transform: "scale(1.05)" }}
-            width={{ base: "100%", md: "45%" }}
-            height={150}
             textAlign="left"
           >
             <Flex alignItems="center" mb={4}>
@@ -71,7 +81,7 @@ export function Dashboard({}: DashboardProps) {
             <Text fontSize="lg">{item.description}</Text>
           </Box>
         ))}
-      </Flex>
+      </Grid>
     </Container>
   );
 }
