@@ -37,7 +37,8 @@ export function AllDocuments() {
 
   const handleFileClick = (file: File) => {
     if (file.id) {
-      openFile(file.name);
+      console.log("🚀 ~ `${path}/${file.name}`:", `${path}/${file.name}`);
+      openFile(`${path}/${file.name}`);
     } else {
       setPath(`${path}/${file.name}`);
     }
