@@ -37,7 +37,7 @@ export function FileUpload({ path, onUploadSuccess }: FileUploadProps) {
         onUploadSuccess(); // Aufruf der Erfolgsfunktion nach erfolgreichem Upload
       }
     } catch (error) {
-      console.error("Error uploading file:", error.message);
+      console.error("Error uploading file:", error);
     } finally {
       setUploading(false);
       setUploadProgress(null);
