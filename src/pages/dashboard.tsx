@@ -8,7 +8,7 @@ import {
   Flex,
 } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
-import { LuTable2, LuFileStack, LuUsers } from "react-icons/lu";
+import { LuTable2, LuFileStack, LuUsers, LuCar } from "react-icons/lu";
 
 type DashboardProps = {};
 
@@ -32,6 +32,12 @@ export function Dashboard({}: DashboardProps) {
       title: "Mitarbeiter Dokumente",
       description: "Zugriff auf alle Mitarbeiter Dokumente.",
       icon: LuUsers,
+      path: "/",
+    },
+    {
+      title: "Fahrzeug Management",
+      description: "Manage deine Fahrzeuge, Fahrer und Schadensmeldungen.",
+      icon: LuCar,
       path: "/",
     },
   ];
