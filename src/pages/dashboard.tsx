@@ -36,7 +36,7 @@ export function Dashboard({}: DashboardProps) {
     },
     {
       title: "Fahrzeug Management",
-      description: "Manage deine Fahrzeuge und Fahrer.",
+      description: "Fahrzeug, Fahrer und Schaden Management",
       icon: LuCar,
       path: "/",
     },

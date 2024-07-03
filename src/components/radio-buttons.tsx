@@ -1,17 +1,25 @@
-import { Radio, RadioGroup, Stack } from "@chakra-ui/react";
+import { Radio, RadioGroup, Stack, FormLabel } from "@chakra-ui/react";
 
 type RadioButtonsProps = {
+  id?: string;
   options: string[];
   value: string;
   onChange: (value: string) => void;
 };
 
-export function RadioButtons({ options, value, onChange }: RadioButtonsProps) {
+export function RadioButtons({
+  id,
+  options,
+  value,
+  onChange,
+}: RadioButtonsProps) {
   return (
-    <RadioGroup onChange={onChange} value={value}>
+    <RadioGroup id={id} onChange={onChange} value={value}>
       <Stack direction="row">
-        {options.map((opt) => (
-          <Radio value={opt}>{opt}</Radio>
+        {options.map((option) => (
+          <Radio key={option} value={option}>
+            {option}
+          </Radio>
         ))}
       </Stack>
     </RadioGroup>

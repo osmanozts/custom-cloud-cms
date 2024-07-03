@@ -1,51 +1,50 @@
 import { Box, Button, Flex, VStack } from "@chakra-ui/react";
-import supabase from "../utils/supabase";
 import { useEffect, useState } from "react";
 import { SearchIcon } from "@chakra-ui/icons";
 import { EmployeesTable, InputField } from "../components";
 import { useNavigate } from "react-router-dom";
-import { EmployeesWithProfile } from "../backend-queries/joins/employees-with-profile-query";
+import { getAllEmployees } from "../backend-queries/query/get-all-employees";
+import { EmployeeWithProfile } from "../backend-queries/joins/employee-with-profile-query";
 
 interface AllEmployeesProps {}
 
-export const AllEmployees = ({}: AllEmployeesProps) => {
+export const AllEmployees: React.FC<AllEmployeesProps> = () => {
   const navigate = useNavigate();
 
-  const [employees, setEmployees] = useState<EmployeesWithProfile | null>(null);
-
+  const [employees, setEmployees] = useState<EmployeeWithProfile[]>([]);
   const [searchString, setSearchString] = useState<string>("");
 
   useEffect(() => {
-    getAllEmployees();
+    getAllEmployees((allEmployees: EmployeeWithProfile[]) =>
+      setEmployees(allEmployees)
+    );
   }, []);
 
-  async function getAllEmployees() {
-    const { data: employees, error } = await supabase.from("employees").select(`
-      *,
-      profile(*)
-      `);
-    if (error) throw error;
-
-    setEmployees(employees);
-  }
-
   return (
-    <Flex justifyContent="center" alignItems="center">
-      <VStack height="100vh" px={12}>
-        <Flex width="80%" mt={8} justifyContent="space-between">
-          <Box alignSelf="flex-start">
+    <Flex justifyContent="center" alignItems="flex-start" minHeight="100vh">
+      <VStack width="100%" maxWidth="1200px" p={6}>
+        <Flex w="100%" justify="space-between" align="center">
+          <Box>
             <InputField
               value={searchString}
               placeholder="Suchen..."
-              onChange={setSearchString}
-              icon={<SearchIcon color="gray" />}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                setSearchString(e.target.value)
+              }
+              icon={<SearchIcon color="gray.500" />}
             />
           </Box>
-
-          <Button onClick={() => navigate("/create-new-user")}>+</Button>
+          <Button
+            onClick={() => navigate("/create-new-user")}
+            colorScheme="blue"
+          >
+            +
+          </Button>
         </Flex>
 
-        <EmployeesTable employees={employees ?? []} />
+        <Box w="100%" overflowX="auto">
+          <EmployeesTable employees={employees} />
+        </Box>
       </VStack>
     </Flex>
   );

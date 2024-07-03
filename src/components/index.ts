@@ -8,3 +8,5 @@ export { BreadcrumbNav } from "./breadcrumb-nav";
 export { FileUpload } from "./file-upload";
 export { DocumentRows } from "./documents/document-rows";
 export { CreateFolderDialog } from "./dialogs/create-folder-dialog";
+export { EmployeeDocumentUpload } from "./employees/employee-document-upload";
+export { EmployeeDetails } from "./employees/employee-details";

@@ -1,38 +1,41 @@
-import { Box, Button, Container, Flex, Text } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  Container,
+  Flex,
+  Heading,
+  SimpleGrid,
+  Spinner,
+  VStack,
+} from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
-
 import { getProfile, getEmployee, updateEmployee } from "../backend-queries";
-import { InputField, RadioButtons } from "../components";
 import { Tables } from "../utils/database/types";
 import { NewEmployee } from "../backend-queries/update/update-employee";
 import {
   NewProfile,
   updateProfile,
 } from "../backend-queries/update/update-profile";
+import { EmployeeDetails, EmployeeDocumentUpload } from "../components";
+import { mockDocuments } from "../components/employees/mock-data";
 
 type EditEmployeeProps = {};
 
-export function EditEmployee({}: EditEmployeeProps) {
+export const EditEmployee: React.FC<EditEmployeeProps> = ({}) => {
   const [searchParams] = useSearchParams();
-
   const [employee, setEmployee] = useState<Tables<"employees">>();
   const [profile, setProfile] = useState<Tables<"profile">>();
-
-  console.log("employee:", employee);
-  console.log("profile:", profile);
-
-  const [email, setEmail] = useState<string>("");
   const [id, setId] = useState<string>("");
+  const [profileID, setProfileID] = useState<string>("");
+  const [email, setEmail] = useState<string>("");
   const [personnelNumber, setPersonnelNumber] = useState<string>("");
   const [firstName, setFirstName] = useState<string>("");
   const [lastName, setLastName] = useState<string>("");
   const [city, setCity] = useState<string>("");
   const [postalCode, setPostalCode] = useState<string>("");
   const [street, setStreet] = useState<string>("");
-  const [profileID, setProfileID] = useState<string>("");
   const [role, setRole] = useState<string>("");
-
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   useEffect(() => {
@@ -62,135 +65,95 @@ export function EditEmployee({}: EditEmployeeProps) {
     }
   }, [searchParams]);
 
+  const handleSave = async () => {
+    setIsLoading(true);
+    const newEmployee: NewEmployee = {
+      id,
+      personnelNumber,
+      firstName,
+      lastName,
+      city,
+      postalCode,
+      street,
+      profileID,
+    };
+    await updateEmployee(newEmployee);
+
+    const newProfile: NewProfile = {
+      id: profileID,
+      role,
+    };
+    await updateProfile(newProfile);
+    setIsLoading(false);
+  };
+
+  if (!employee || !profile) {
+    return (
+      <Flex justifyContent="center" alignItems="center" height="100vh">
+        <Spinner size="xl" />
+      </Flex>
+    );
+  }
+
   return (
     <Container
-      display="flex"
-      flexDirection="column"
-      pt={12}
-      pl={12}
-      pr={12}
-      height="100%"
-      borderRightWidth={1}
-      borderLeftWidth={1}
-      maxWidth="800px"
-      pb={12}
+      maxW="container.xl"
+      p={8}
+      bg="white"
+      boxShadow="md"
+      borderRadius="lg"
     >
-      <Flex mb={12} justifyContent="center">
-        <Text fontSize={28}>Mitarbeiter Ansehen / Bearbeiten</Text>
+      <Flex mb={8} justifyContent="center">
+        <Heading fontSize="2xl" fontWeight="bold" color="blue.700">
+          Mitarbeiter Ansehen / Bearbeiten
+        </Heading>
       </Flex>
-
-      <Text fontSize={20} mb={4}>
-        Systeminterne Daten
-      </Text>
-      <Box>
-        <Text>Email</Text>
-        <InputField
-          isDisabled
-          placeholder="Email..."
-          value={email}
-          onChange={setEmail}
-        />
-      </Box>
-      <Box>
-        <Text>Profil ID</Text>
-        <InputField
-          isDisabled
-          placeholder="Profile ID..."
-          value={profileID}
-          onChange={setProfileID}
-        />
-      </Box>
-      <Box>
-        <Text>Mitarbeiter ID</Text>
-        <InputField
-          isDisabled
-          placeholder="Mitarbeiter ID..."
-          value={id}
-          onChange={setId}
-        />
-      </Box>
-      <Text fontSize={20} my={4}>
-        Mitarbeiter Daten
-      </Text>
-      <Box>
-        <Text>Personalnummer</Text>
-        <InputField
-          placeholder="Personalnummer..."
-          value={personnelNumber}
-          onChange={setPersonnelNumber}
-        />
-      </Box>
-      <Box>
-        <Text>Vorname</Text>
-        <InputField
-          placeholder="Vorname..."
-          value={firstName}
-          onChange={setFirstName}
-        />
-      </Box>
-      <Box>
-        <Text>Nachname</Text>
-        <InputField
-          placeholder="Nachname..."
-          value={lastName}
-          onChange={setLastName}
-        />
-      </Box>
-      <Box>
-        <Text>Stadt</Text>
-        <InputField placeholder="Stadt..." value={city} onChange={setCity} />
-      </Box>
-      <Box>
-        <Text>PLZ</Text>
-        <InputField
-          placeholder="PLZ..."
-          value={postalCode}
-          onChange={setPostalCode}
-        />
-      </Box>
-      <Box>
-        <Text>Straße</Text>
-        <InputField
-          placeholder="Straße + Hausnummer..."
-          value={street}
-          onChange={setStreet}
-        />
-      </Box>
-      <Box mb={12}>
-        <Text>Rolle</Text>
-        <RadioButtons
-          options={["superadmin", "admin", "employee"]}
-          value={role}
-          onChange={(newRole) => setRole(newRole)}
-        />
-      </Box>
-      <Button
-        isLoading={isLoading}
-        onClick={async () => {
-          setIsLoading(true);
-          const newEmployee: NewEmployee = {
-            id,
-            personnelNumber,
-            firstName,
-            lastName,
-            city,
-            postalCode,
-            street,
-            profileID,
-          };
-          await updateEmployee(newEmployee);
-
-          const newProfile: NewProfile = {
-            id: profileID,
-            role,
-          };
-          await updateProfile(newProfile);
-
-          setIsLoading(false);
-        }}
-      >
-        Speichern
-      </Button>
+      <SimpleGrid columns={[1, null, 2]} spacing={8}>
+        <Box>
+          <Heading fontSize="lg" fontWeight="semibold" mb={4} color="gray.600">
+            Mitarbeiter Daten
+          </Heading>
+          <VStack spacing={6}>
+            <EmployeeDetails
+              email={email}
+              personnelNumber={personnelNumber}
+              firstName={firstName}
+              lastName={lastName}
+              city={city}
+              postalCode={postalCode}
+              street={street}
+              role={role}
+              setEmail={setEmail}
+              setPersonnelNumber={setPersonnelNumber}
+              setFirstName={setFirstName}
+              setLastName={setLastName}
+              setCity={setCity}
+              setPostalCode={setPostalCode}
+              setStreet={setStreet}
+              setRole={setRole}
+            />
+          </VStack>
+        </Box>
+        <Box>
+          <Heading fontSize="lg" fontWeight="semibold" mb={4} color="gray.600">
+            Mitarbeiter Dateien
+          </Heading>
+          <EmployeeDocumentUpload
+            employeeId={id}
+            initialDocuments={mockDocuments}
+          />
+        </Box>
+      </SimpleGrid>
+      <Flex justifyContent="center" mt={8}>
+        <Button
+          colorScheme="blue"
+          isLoading={isLoading}
+          onClick={handleSave}
+          size="lg"
+        >
+          Speichern
+        </Button>
+      </Flex>
     </Container>
   );
-}
+};
