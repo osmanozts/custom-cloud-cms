@@ -1,17 +1,14 @@
 // AllDocuments.tsx
-import {
-  Box,
-  Button,
-  Container,
-  Divider,
-  Flex,
-  Icon,
-  Text,
-} from "@chakra-ui/react";
+import { Container, Flex, Text } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
-import { LuFile, LuFolder } from "react-icons/lu";
-import { BreadcrumbNav, FileUpload, InputField } from "../components";
-import { createFolder, getFiles, openFile } from "../backend-queries";
+
+import { getFiles } from "../backend-queries";
+import {
+  BreadcrumbNav,
+  CreateFolderDialog,
+  DocumentRows,
+  FileUpload,
+} from "../components";
 
 export interface File {
   name: string;
@@ -23,23 +20,9 @@ export function AllDocuments() {
   const [files, setFiles] = useState<File[]>([]);
   const [path, setPath] = useState<string>("");
 
-  const [newFolderName, setNewFolderName] = useState<string>("");
-
   useEffect(() => {
     getFiles(path, "dateien_unternehmen", (newFile) => setFiles(newFile ?? []));
   }, [path]);
-
-  const handleBreadcrumbClick = (newPath: string) => {
-    setPath(newPath);
-  };
-
-  const handleFileClick = (file: File) => {
-    if (file.id) {
-      openFile(path, file.name, "dateien_unternehmen");
-    } else {
-      setPath(`${path}/${file.name}`);
-    }
-  };
 
   return (
     <Container
@@ -56,38 +39,31 @@ export function AllDocuments() {
         <Text fontSize={28}>Unternehmensinterne Dateien</Text>
       </Flex>
 
-      <BreadcrumbNav path={path} onBreadcrumbClick={handleBreadcrumbClick} />
+      <BreadcrumbNav
+        path={path}
+        onBreadcrumbClick={(newPath) => setPath(newPath)}
+      />
 
-      <Box mb={4} mt={6} height="40svh" overflow="scroll">
-        {files.map((f) => (
-          <Box cursor="pointer" key={f.id || f.name}>
-            <Flex onClick={() => handleFileClick(f)}>
-              {f.id ? (
-                <Flex>
-                  <Icon as={LuFile} boxSize={6} mr={4} />
-                  <Text>{f.name ?? ""}</Text>
-                </Flex>
-              ) : (
-                <Flex>
-                  <Icon as={LuFolder} boxSize={6} mr={4} />
-                  <Text>{f.name ?? ""}</Text>
-                </Flex>
-              )}
-            </Flex>
-            <Divider orientation="horizontal" my={4} />
-          </Box>
-        ))}
-      </Box>
-      <Flex>
-        <InputField value={newFolderName} onChange={setNewFolderName} />
-        <Button
-          onClick={() =>
-            createFolder(path, newFolderName, "dateien_unternehmen")
-          }
-        >
-          Ordner erstellen
-        </Button>
-      </Flex>
+      <DocumentRows
+        path={path}
+        files={files}
+        onOpenFolder={setPath}
+        successCallback={() =>
+          getFiles(path, "dateien_unternehmen", (newFile) =>
+            setFiles(newFile ?? [])
+          )
+        }
+      />
+
+      <CreateFolderDialog
+        path={path}
+        successCallback={() =>
+          getFiles(path, "dateien_unternehmen", (newFile) =>
+            setFiles(newFile ?? [])
+          )
+        }
+      />
+
       <FileUpload
         path={path.length > 0 ? `${path.substring(1)}/` : path}
         onUploadSuccess={() =>

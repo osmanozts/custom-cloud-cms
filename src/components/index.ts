@@ -6,3 +6,5 @@ export { EmployeesTable } from "./employees-table";
 export { RadioButtons } from "./radio-buttons";
 export { BreadcrumbNav } from "./breadcrumb-nav";
 export { FileUpload } from "./file-upload";
+export { DocumentRows } from "./documents/document-rows";
+export { CreateFolderDialog } from "./dialogs/create-folder-dialog";

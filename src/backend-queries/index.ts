@@ -8,3 +8,5 @@ export { getFiles } from "./storage/get-files";
 export { openFile } from "./storage/open-file";
 export { uploadNewFile } from "./storage/upload-new-file";
 export { createFolder } from "./storage/create-folder";
+export { deleteFolder } from "./storage/delete-folder";
+export { deleteFile } from "./storage/delete-file";

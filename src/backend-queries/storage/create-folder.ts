@@ -3,7 +3,8 @@ import supabase from "../../utils/supabase";
 export async function createFolder(
   path: string,
   folderName: string,
-  bucket: string
+  bucket: string,
+  successCallback?: () => void
 ) {
   const arr = path.split("/");
   arr.push(folderName);
@@ -27,4 +28,5 @@ export async function createFolder(
   }
 
   console.log("Folder created successfully:", data);
+  if (successCallback) successCallback();
 }

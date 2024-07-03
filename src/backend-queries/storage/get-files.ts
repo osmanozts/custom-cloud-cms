@@ -9,10 +9,15 @@ export async function getFiles(
   const pathArray = path.split("/").filter(Boolean);
   const storagePath = pathArray.join("/") || "";
 
-  const { data: uploadedFile, error } = await supabase.storage
+  const { data: uploadedFiles, error } = await supabase.storage
     .from(bucket)
     .list(storagePath);
+
   if (error) throw error;
 
-  callback(uploadedFile);
+  const filteredFiles = uploadedFiles.filter(
+    (file) => file.name !== ".empty" && file.name !== ".emptyFolderPlaceholder"
+  );
+
+  callback(filteredFiles);
 }
