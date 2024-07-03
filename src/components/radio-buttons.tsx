@@ -1,4 +1,4 @@
-import { Radio, RadioGroup, Stack, FormLabel } from "@chakra-ui/react";
+import { Radio, RadioGroup, Stack } from "@chakra-ui/react";
 
 type RadioButtonsProps = {
   id?: string;

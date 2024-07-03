@@ -1,14 +1,14 @@
+import { EmailIcon } from "@chakra-ui/icons";
 import {
-  Grid,
-  GridItem,
-  Box,
-  Stack,
   FormControl,
   FormLabel,
+  Grid,
+  GridItem,
+  Stack,
 } from "@chakra-ui/react";
+
 import { InputField } from "../input-field";
 import { RadioButtons } from "../radio-buttons";
-import { EmailIcon } from "@chakra-ui/icons";
 
 type EmployeeDetailsProps = {
   email: string;

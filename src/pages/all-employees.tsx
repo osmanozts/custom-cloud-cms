@@ -28,9 +28,7 @@ export const AllEmployees: React.FC<AllEmployeesProps> = () => {
             <InputField
               value={searchString}
               placeholder="Suchen..."
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                setSearchString(e.target.value)
-              }
+              onChange={(newValue) => setSearchString(newValue)}
               icon={<SearchIcon color="gray.500" />}
             />
           </Box>
