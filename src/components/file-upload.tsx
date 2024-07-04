@@ -1,6 +1,6 @@
 // FileUpload.tsx
 import { Box, Button, Flex, Icon, Text, useToast } from "@chakra-ui/react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { FiUpload } from "react-icons/fi";
 
 import { uploadNewFile } from "../backend-queries";
