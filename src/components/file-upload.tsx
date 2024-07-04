@@ -1,13 +1,5 @@
 // FileUpload.tsx
-import {
-  Box,
-  Button,
-  Flex,
-  Icon,
-  Progress,
-  Text,
-  useColorModeValue,
-} from "@chakra-ui/react";
+import { Box, Button, Flex, Icon, Progress, Text } from "@chakra-ui/react";
 import { useState } from "react";
 import { FiUpload } from "react-icons/fi";
 

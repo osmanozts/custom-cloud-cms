@@ -1,6 +1,8 @@
 import "./App.css";
+
 import { Route, Routes } from "react-router-dom";
 
+import { AdminRoute, AuthRoute } from "./auth/guards";
 import {
   AllDocuments,
   AllEmployees,
@@ -10,8 +12,6 @@ import {
   EmployeeMinimumDetail,
   Login,
 } from "./pages";
-import { AdminRoute, AuthRoute } from "./auth/guards";
-import { ChakraProvider } from "@chakra-ui/react";
 
 function App() {
   return (

@@ -11,10 +11,10 @@ import {
   ModalOverlay,
   Text,
   useDisclosure,
-  useColorModeValue,
 } from "@chakra-ui/react";
 import { useState } from "react";
 import { LuFolder } from "react-icons/lu";
+
 import { createFolder } from "../../backend-queries";
 import { InputField } from "../input-field";
 
