@@ -1,4 +1,11 @@
-import { Box, Flex, Icon, Text, useColorModeValue } from "@chakra-ui/react";
+import {
+  Box,
+  Flex,
+  Icon,
+  Text,
+  useBreakpointValue,
+  useColorModeValue,
+} from "@chakra-ui/react";
 import React from "react";
 import { LuFile, LuFolder, LuTrash } from "react-icons/lu";
 import { deleteFile, deleteFolder, openFile } from "../../backend-queries";
@@ -24,6 +31,8 @@ export function DocumentRows({
       onOpenFolder(`${path}/${file.name}`);
     }
   };
+
+  const dynamicMaxWidth = useBreakpointValue({ base: "215px", md: "600px" });
 
   const iconColor = useColorModeValue("teal.500", "teal.200");
 
@@ -61,7 +70,7 @@ export function DocumentRows({
               <Text
                 fontSize={{ base: "sm", md: "md" }}
                 isTruncated
-                maxW="215px"
+                maxW={dynamicMaxWidth}
               >
                 {f.name ?? ""}
               </Text>

@@ -1,16 +1,16 @@
 // FileUpload.tsx
-
 import {
+  Box,
   Button,
   Flex,
-  Text,
-  Box,
   Icon,
   Progress,
+  Text,
   useColorModeValue,
 } from "@chakra-ui/react";
 import { useState } from "react";
 import { FiUpload } from "react-icons/fi";
+
 import { uploadNewFile } from "../backend-queries";
 import { CustomToast } from "./toasts/custom-toast";
 
@@ -41,9 +41,9 @@ export function FileUpload({ path, onUploadSuccess }: FileUploadProps) {
     try {
       await uploadNewFile(path, selectedFile, () => {
         setSelectedFile(null);
-        setUploadSuccess(true);
         onUploadSuccess();
       });
+      setUploadSuccess(true);
     } catch (error) {
       console.error("Error uploading file:", error);
       setUploadSuccess(false);
