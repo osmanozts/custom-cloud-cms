@@ -51,7 +51,7 @@ export function Navbar() {
   });
 
   return (
-    <Flex height={70} backgroundColor="gray.200" alignItems="center" px={6}>
+    <Flex height={70} backgroundColor="tileBgColor" alignItems="center" px={6}>
       <Box width="70px" justifyContent="center" alignItems="center">
         <Image src={logo} alt="Logo" objectFit="contain" />
       </Box>

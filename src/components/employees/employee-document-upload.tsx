@@ -53,9 +53,9 @@ export const EmployeeDocumentUpload: React.FC<EmployeeDocumentUploadProps> = ({
 
   return (
     <Stack spacing={6}>
-      <Box borderWidth="1px" borderRadius="lg" p={6} bg="gray.50">
+      <Box borderWidth="1px" borderRadius="lg" p={6} bg="tileBgColor">
         <Text mb={4} fontWeight="bold">
-          Upload employee documents (PDFs only)
+          Upload employee documents
         </Text>
         <Stack spacing={4}>
           <Box
@@ -91,7 +91,7 @@ export const EmployeeDocumentUpload: React.FC<EmployeeDocumentUploadProps> = ({
             key={document.id}
             display="flex"
             alignItems="center"
-            bg="white"
+            bg="tileBgColor"
             p={2}
             borderRadius="md"
             boxShadow="sm"

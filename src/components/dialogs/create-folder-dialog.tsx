@@ -30,8 +30,6 @@ export function CreateFolderDialog({
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [newFolderName, setNewFolderName] = useState<string>("");
 
-  const bgColor = useColorModeValue("white", "gray.800");
-
   return (
     <>
       <Box my={4} display="flex" alignItems="center">
@@ -46,7 +44,7 @@ export function CreateFolderDialog({
 
       <Modal isOpen={isOpen} onClose={onClose} isCentered>
         <ModalOverlay />
-        <ModalContent bg={bgColor}>
+        <ModalContent bg="tileBgColor">
           <ModalHeader>Neuer Ordner erstellen</ModalHeader>
           <ModalCloseButton />
           <ModalBody>

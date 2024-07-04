@@ -37,7 +37,7 @@ export function AllDocuments() {
       borderWidth={1}
       borderRadius="lg"
       boxShadow="xl"
-      bg="white"
+      bg="backgroundColor"
     >
       <Flex mb={6} justifyContent="center">
         <Heading fontSize={{ base: 24, md: 28 }}>

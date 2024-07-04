@@ -53,6 +53,7 @@ export function Dashboard({}: DashboardProps) {
       alignItems="center"
       px={4}
       mt={8}
+      bg="backgroundColor"
     >
       <Heading as="h1" mb={12} textAlign="center">
         Admin Dashboard
@@ -72,7 +73,7 @@ export function Dashboard({}: DashboardProps) {
             borderWidth="1px"
             borderRadius="lg"
             overflow="hidden"
-            bg="white"
+            bg="tileBgColor"
             shadow="md"
             transition="transform 0.2s"
             _hover={{ transform: "scale(1.05)" }}

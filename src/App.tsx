@@ -11,6 +11,7 @@ import {
   Login,
 } from "./pages";
 import { AdminRoute, AuthRoute } from "./auth/guards";
+import { ChakraProvider } from "@chakra-ui/react";
 
 function App() {
   return (

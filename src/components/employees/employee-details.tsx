@@ -52,7 +52,7 @@ export const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({
     gap={6}
     borderWidth="1px"
     borderRadius="lg"
-    bg="gray.50"
+    bg="tileBgColor"
     p={6}
   >
     <GridItem>

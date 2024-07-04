@@ -42,7 +42,7 @@ export function DocumentRows({
       mt={6}
       height="40svh"
       overflowY="auto"
-      bg="gray.50"
+      bg="tileBgColor"
       p={4}
       borderRadius="lg"
       boxShadow="md"

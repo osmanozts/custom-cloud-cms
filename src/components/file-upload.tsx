@@ -53,8 +53,6 @@ export function FileUpload({ path, onUploadSuccess }: FileUploadProps) {
     }
   };
 
-  const uploadBg = useColorModeValue("gray.50", "gray.800");
-
   return (
     <Flex flexDirection="column" alignItems="flex-start" width="100%">
       <Flex flexDirection="row" alignItems="center" width="100%">
@@ -82,7 +80,7 @@ export function FileUpload({ path, onUploadSuccess }: FileUploadProps) {
           isTruncated
           maxWidth="300px"
           mb={4}
-          bg={uploadBg}
+          bg="tileBgColor"
           p={2}
           borderRadius="md"
         >

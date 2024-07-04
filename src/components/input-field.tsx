@@ -36,17 +36,17 @@ export function InputField({
         placeholder={placeholder}
         type={isPasswordField ? "password" : "text"}
         focusBorderColor="blue.500"
-        bg="white"
+        bg="inputBgColor"
         _hover={{
-          bg: "white",
+          bg: "inputBgColor",
         }}
         _focus={{
-          bg: "white",
+          bg: "inputBgColor",
         }}
         disabled={isDisabled}
         borderRadius="md"
         borderWidth="1px"
-        borderColor="gray.300"
+        borderColor="accentBorderColor"
         py={2}
         px={3}
       />

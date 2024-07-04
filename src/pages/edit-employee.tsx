@@ -22,7 +22,7 @@ import { mockDocuments } from "../components/employees/mock-data";
 
 type EditEmployeeProps = {};
 
-export const EditEmployee: React.FC<EditEmployeeProps> = ({}) => {
+export const EditEmployee = ({}: EditEmployeeProps) => {
   const [searchParams] = useSearchParams();
   const [employee, setEmployee] = useState<Tables<"employees">>();
   const [profile, setProfile] = useState<Tables<"profile">>();
@@ -99,7 +99,7 @@ export const EditEmployee: React.FC<EditEmployeeProps> = ({}) => {
     <Container
       maxW="container.xl"
       p={8}
-      bg="white"
+      bg="backgroundColor"
       boxShadow="md"
       borderRadius="lg"
     >

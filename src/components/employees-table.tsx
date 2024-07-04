@@ -12,13 +12,13 @@ export const EmployeesTable: React.FC<EmployeesTableProps> = ({
   const navigate = useNavigate();
 
   return (
-    <Table variant="striped" colorScheme="gray">
+    <Table borderWidth={1} mt={4}>
       <Thead>
-        <Tr>
+        <Tr whiteSpace="nowrap">
           <Th>Personalnummer</Th>
           <Th>Email</Th>
-          <Th>Name</Th>
-          <Th>Adresse</Th>
+          <Th>Vorname, Nachname</Th>
+          <Th>Straße,Stadt,Plz</Th>
           <Th>Krankenkasse</Th>
           <Th>SteuerID.</Th>
           <Th>Steuerklasse</Th>
@@ -32,6 +32,7 @@ export const EmployeesTable: React.FC<EmployeesTableProps> = ({
           return (
             <Tr
               key={empl.id}
+              whiteSpace="nowrap"
               cursor="pointer"
               onClick={() =>
                 navigate({
@@ -39,6 +40,8 @@ export const EmployeesTable: React.FC<EmployeesTableProps> = ({
                   search: `?profile_id=${empl.profile_id}`,
                 })
               }
+              color="textColor"
+              bg={"tileBgColor"}
             >
               <Td>{empl.personnel_number ?? "-"}</Td>
               <Td>{empl.profile?.email ?? "-"}</Td>

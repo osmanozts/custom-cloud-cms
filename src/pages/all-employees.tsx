@@ -21,7 +21,12 @@ export const AllEmployees: React.FC<AllEmployeesProps> = () => {
   }, []);
 
   return (
-    <Flex justifyContent="center" alignItems="flex-start" minHeight="100vh">
+    <Flex
+      justifyContent="center"
+      alignItems="flex-start"
+      minHeight="100vh"
+      bg="backgroundColor"
+    >
       <VStack width="100%" maxWidth="1200px" p={6}>
         <Flex w="100%" justify="space-between" align="center">
           <Box>
