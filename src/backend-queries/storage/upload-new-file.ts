@@ -13,5 +13,9 @@ export async function uploadNewFile(
   } else {
     console.log("Datei erfolgreich hochgeladen", data);
     successCallback();
+    return {
+      data,
+      error,
+    };
   }
 }

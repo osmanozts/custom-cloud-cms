@@ -1,3 +1,5 @@
+// FileUpload.tsx
+
 import {
   Button,
   Flex,
@@ -10,6 +12,7 @@ import {
 import { useState } from "react";
 import { FiUpload } from "react-icons/fi";
 import { uploadNewFile } from "../backend-queries";
+import { CustomToast } from "./toasts/custom-toast";
 
 interface FileUploadProps {
   path: string;
@@ -20,6 +23,7 @@ export function FileUpload({ path, onUploadSuccess }: FileUploadProps) {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [uploading, setUploading] = useState(false);
   const [uploadProgress, setUploadProgress] = useState<number | null>(null);
+  const [uploadSuccess, setUploadSuccess] = useState<boolean | null>(null); // Track upload success
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const fileList = event.target.files;
@@ -37,10 +41,12 @@ export function FileUpload({ path, onUploadSuccess }: FileUploadProps) {
     try {
       await uploadNewFile(path, selectedFile, () => {
         setSelectedFile(null);
+        setUploadSuccess(true);
         onUploadSuccess();
       });
     } catch (error) {
       console.error("Error uploading file:", error);
+      setUploadSuccess(false);
     } finally {
       setUploading(false);
       setUploadProgress(null);
@@ -87,9 +93,25 @@ export function FileUpload({ path, onUploadSuccess }: FileUploadProps) {
         <Progress size="sm" value={uploadProgress} width="100%" mb={2} />
       )}
       {selectedFile && !uploading && (
-        <Button onClick={uploadFile} colorScheme="teal">
+        <Button
+          onClick={uploadFile}
+          colorScheme="teal"
+          isLoading={uploading} // isLoading prop wird gesetzt, um den Ladezustand zu steuern
+          loadingText="Hochladen..."
+        >
           Hochladen
         </Button>
+      )}
+      {uploadSuccess !== null && (
+        <CustomToast
+          type={uploadSuccess ? "success" : "error"}
+          message={
+            uploadSuccess
+              ? "Datei erfolgreich hochgeladen!"
+              : "Fehler beim Hochladen der Datei."
+          }
+          isShown={!!uploadSuccess}
+        />
       )}
     </Flex>
   );
