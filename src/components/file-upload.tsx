@@ -1,11 +1,13 @@
-import { Button, Flex, Text, Box, Icon } from "@chakra-ui/react";
+// FileUpload.tsx
+
+import { Button, Flex, Text, Box, Icon, Progress } from "@chakra-ui/react";
 import { useState } from "react";
 import { FiUpload } from "react-icons/fi";
 import { uploadNewFile } from "../backend-queries";
 
 interface FileUploadProps {
   path: string;
-  onUploadSuccess: () => void; // A function that is called when the upload is successful
+  onUploadSuccess: () => void;
 }
 
 export function FileUpload({ path, onUploadSuccess }: FileUploadProps) {
@@ -29,7 +31,7 @@ export function FileUpload({ path, onUploadSuccess }: FileUploadProps) {
     try {
       uploadNewFile(path, selectedFile, () => {
         setSelectedFile(null);
-        onUploadSuccess(); // Call the success function after a successful upload
+        onUploadSuccess();
       });
     } catch (error) {
       console.error("Error uploading file:", error);
@@ -40,8 +42,8 @@ export function FileUpload({ path, onUploadSuccess }: FileUploadProps) {
   };
 
   return (
-    <Flex flexDirection="column" alignItems="flex-start" mb={4}>
-      <Flex flexDirection="row" alignItems="center" mb={4}>
+    <Flex flexDirection="column" alignItems="flex-start" mb={4} width="100%">
+      <Flex flexDirection="row" alignItems="center" mb={4} width="100%">
         <Box mb={4} display="flex" alignItems="center">
           <input
             id="file-input"
@@ -54,7 +56,7 @@ export function FileUpload({ path, onUploadSuccess }: FileUploadProps) {
             as="label"
             htmlFor="file-input"
             leftIcon={<Icon as={FiUpload} />}
-            colorScheme="gray"
+            colorScheme="teal"
             cursor="pointer"
           >
             Datei wählen
@@ -62,21 +64,17 @@ export function FileUpload({ path, onUploadSuccess }: FileUploadProps) {
         </Box>
         {selectedFile && (
           <Text ml={4} mb={2}>
-            {selectedFile.name}
+            {selectedFile.name.length > 16
+              ? `${selectedFile.name.slice(0, 17)}...`
+              : selectedFile.name}
           </Text>
         )}
       </Flex>
-      {uploading && (
-        <Text mb={2}>
-          Uploading... {uploadProgress !== null ? `${uploadProgress}%` : ""}
-        </Text>
+      {uploading && uploadProgress !== null && (
+        <Progress size="sm" value={uploadProgress} width="100%" mb={2} />
       )}
-      {selectedFile && (
-        <Button
-          onClick={uploadFile}
-          disabled={!selectedFile || uploading}
-          colorScheme="gray"
-        >
+      {selectedFile && !uploading && (
+        <Button onClick={uploadFile} colorScheme="teal">
           Hochladen
         </Button>
       )}

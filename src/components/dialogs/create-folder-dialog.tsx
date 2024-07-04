@@ -1,3 +1,4 @@
+// CreateFolderDialog.tsx
 import {
   Box,
   Button,
@@ -28,13 +29,16 @@ export function CreateFolderDialog({
   successCallback,
 }: CreateFolderDialogProps) {
   const { isOpen, onOpen, onClose } = useDisclosure();
-
   const [newFolderName, setNewFolderName] = useState<string>("");
 
   return (
     <>
       <Box my={4} display="flex" alignItems="center">
-        <Button leftIcon={<Icon as={LuFolder} />} onClick={onOpen}>
+        <Button
+          leftIcon={<Icon as={LuFolder} />}
+          onClick={onOpen}
+          colorScheme="teal"
+        >
           Neuer Ordner
         </Button>
       </Box>
@@ -42,11 +46,13 @@ export function CreateFolderDialog({
       <Modal isOpen={isOpen} onClose={onClose} isCentered>
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>Modal Title</ModalHeader>
+          <ModalHeader>Neuen Ordner erstellen</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            <Text mb={1}>Wie soll der neue Ordner heißen ? </Text>
-            <Text mb={6}>** Bitte verwende keine Sonderzeichen </Text>
+            <Text mb={1}>Wie soll der neue Ordner heißen?</Text>
+            <Text mb={6} fontSize="sm" color="gray.500">
+              ** Bitte verwende keine Sonderzeichen
+            </Text>
 
             <InputField value={newFolderName} onChange={setNewFolderName} />
           </ModalBody>
@@ -60,9 +66,9 @@ export function CreateFolderDialog({
                   "dateien_unternehmen",
                   successCallback
                 );
-
                 onClose();
               }}
+              colorScheme="teal"
             >
               Ordner erstellen
             </Button>
