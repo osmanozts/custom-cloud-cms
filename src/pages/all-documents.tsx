@@ -1,5 +1,4 @@
-// AllDocuments.tsx
-import { Container, Flex, Text, useBreakpointValue } from "@chakra-ui/react";
+import { Container, Flex, Heading, useBreakpointValue } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 
 import { getFiles } from "../backend-queries";
@@ -24,23 +23,26 @@ export function AllDocuments() {
     getFiles(path, "dateien_unternehmen", (newFile) => setFiles(newFile ?? []));
   }, [path]);
 
-  const paddingX = useBreakpointValue({ base: 4, md: 12 });
+  const containerPadding = useBreakpointValue({ base: 4, md: 12 });
 
   return (
     <Container
       display="flex"
       flexDirection="column"
-      pt={12}
-      px={paddingX}
-      height="100vh"
+      pt={containerPadding}
+      pl={containerPadding}
+      pr={containerPadding}
+      height="100svh"
+      maxWidth="100%"
       borderWidth={1}
-      maxWidth="1000px"
-      mx="auto"
+      borderRadius="lg"
+      boxShadow="xl"
+      bg="white"
     >
       <Flex mb={6} justifyContent="center">
-        <Text fontSize={{ base: 24, md: 28 }} fontWeight="bold">
+        <Heading fontSize={{ base: 24, md: 28 }}>
           Unternehmensinterne Dateien
-        </Text>
+        </Heading>
       </Flex>
 
       <BreadcrumbNav

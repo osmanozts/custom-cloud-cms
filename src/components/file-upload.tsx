@@ -1,13 +1,19 @@
-// FileUpload.tsx
-
-import { Button, Flex, Text, Box, Icon, Progress } from "@chakra-ui/react";
+import {
+  Button,
+  Flex,
+  Text,
+  Box,
+  Icon,
+  Progress,
+  useColorModeValue,
+} from "@chakra-ui/react";
 import { useState } from "react";
 import { FiUpload } from "react-icons/fi";
 import { uploadNewFile } from "../backend-queries";
 
 interface FileUploadProps {
   path: string;
-  onUploadSuccess: () => void;
+  onUploadSuccess: () => void; // A function that is called when the upload is successful
 }
 
 export function FileUpload({ path, onUploadSuccess }: FileUploadProps) {
@@ -29,7 +35,7 @@ export function FileUpload({ path, onUploadSuccess }: FileUploadProps) {
     setUploadProgress(0);
 
     try {
-      uploadNewFile(path, selectedFile, () => {
+      await uploadNewFile(path, selectedFile, () => {
         setSelectedFile(null);
         onUploadSuccess();
       });
@@ -41,9 +47,11 @@ export function FileUpload({ path, onUploadSuccess }: FileUploadProps) {
     }
   };
 
+  const uploadBg = useColorModeValue("gray.50", "gray.800");
+
   return (
-    <Flex flexDirection="column" alignItems="flex-start" mb={4} width="100%">
-      <Flex flexDirection="row" alignItems="center" mb={4} width="100%">
+    <Flex flexDirection="column" alignItems="flex-start" width="100%">
+      <Flex flexDirection="row" alignItems="center" width="100%">
         <Box mb={4} display="flex" alignItems="center">
           <input
             id="file-input"
@@ -56,20 +64,25 @@ export function FileUpload({ path, onUploadSuccess }: FileUploadProps) {
             as="label"
             htmlFor="file-input"
             leftIcon={<Icon as={FiUpload} />}
-            colorScheme="teal"
+            colorScheme="gray"
             cursor="pointer"
           >
             Datei wählen
           </Button>
         </Box>
-        {selectedFile && (
-          <Text ml={4} mb={2}>
-            {selectedFile.name.length > 16
-              ? `${selectedFile.name.slice(0, 17)}...`
-              : selectedFile.name}
-          </Text>
-        )}
       </Flex>
+      {selectedFile && (
+        <Text
+          isTruncated
+          maxWidth="300px"
+          mb={4}
+          bg={uploadBg}
+          p={2}
+          borderRadius="md"
+        >
+          {selectedFile.name}
+        </Text>
+      )}
       {uploading && uploadProgress !== null && (
         <Progress size="sm" value={uploadProgress} width="100%" mb={2} />
       )}

@@ -1,11 +1,5 @@
-// BreadcrumbNav.tsx
 import { ChevronRightIcon } from "@chakra-ui/icons";
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  useColorModeValue,
-} from "@chakra-ui/react";
+import { Breadcrumb, BreadcrumbItem, BreadcrumbLink } from "@chakra-ui/react";
 
 interface BreadcrumbNavProps {
   path: string;
@@ -16,15 +10,19 @@ export const BreadcrumbNav: React.FC<BreadcrumbNavProps> = ({
   path,
   onBreadcrumbClick,
 }) => {
-  const linkColor = useColorModeValue("blue.500", "blue.200");
   return (
     <Breadcrumb
       mb={4}
       spacing="8px"
       separator={<ChevronRightIcon color="gray.500" />}
+      fontSize={{ base: "sm", md: "md" }}
     >
       <BreadcrumbItem onClick={() => onBreadcrumbClick("")}>
-        <BreadcrumbLink cursor="pointer" color={linkColor}>
+        <BreadcrumbLink
+          cursor="pointer"
+          color="teal.500"
+          _hover={{ textDecoration: "underline" }}
+        >
           Hauptverzeichnis
         </BreadcrumbLink>
       </BreadcrumbItem>
@@ -42,7 +40,11 @@ export const BreadcrumbNav: React.FC<BreadcrumbNavProps> = ({
               key={index}
               onClick={() => onBreadcrumbClick(newPath)}
             >
-              <BreadcrumbLink cursor="pointer" color={linkColor}>
+              <BreadcrumbLink
+                cursor="pointer"
+                color="teal.500"
+                _hover={{ textDecoration: "underline" }}
+              >
                 {pathName}
               </BreadcrumbLink>
             </BreadcrumbItem>
