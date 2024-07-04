@@ -21,6 +21,33 @@ export const AllEmployees: React.FC<AllEmployeesProps> = () => {
     );
   }, []);
 
+  useEffect(() => {
+    console.log("HALLO");
+    if (searchString.trim() === "") {
+      // If search string is empty, fetch all employees
+      getAllEmployees((allEmployees: EmployeeWithProfile[]) =>
+        setEmployees(allEmployees)
+      );
+    } else {
+      // Otherwise, filter employees based on searchString
+
+      const filteredEmployees: EmployeeWithProfile[] = employees.filter(
+        (employee) =>
+          (employee.first_name &&
+            employee.first_name
+              .toLowerCase()
+              .includes(searchString.toLowerCase())) ||
+          (employee.last_name &&
+            employee.last_name
+              .toLowerCase()
+              .includes(searchString.toLowerCase())) ||
+          (employee.personnel_number &&
+            employee.personnel_number.includes(searchString))
+      );
+      setEmployees(filteredEmployees);
+    }
+  }, [searchString, employees]);
+
   return (
     <Flex
       justifyContent="center"
