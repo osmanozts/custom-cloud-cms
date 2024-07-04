@@ -40,13 +40,25 @@ export function FileUpload({ path, bucket, onUploadSuccess }: FileUploadProps) {
         isClosable: true,
       });
     } catch (error) {
-      toast({
-        title: "Fehler beim hochladen!",
-        status: "error",
-        duration: 3000,
-        isClosable: true,
-      });
-      console.error("Error uploading file:", error);
+      if (error instanceof Error) {
+        toast({
+          title: "Fehler beim hochladen!",
+          description: error.message,
+          status: "error",
+          duration: 3000,
+          isClosable: true,
+        });
+        console.error("Error uploading file:", error);
+      } else {
+        toast({
+          title: "Unbekannter Fehler!",
+          description: "Ein unbekannter Fehler ist aufgetreten.",
+          status: "error",
+          duration: 3000,
+          isClosable: true,
+        });
+        console.error("Unknown error uploading file:", error);
+      }
     } finally {
       setUploading(false);
     }
