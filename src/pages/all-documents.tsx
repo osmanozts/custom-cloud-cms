@@ -72,6 +72,7 @@ export function AllDocuments() {
 
       <FileUpload
         path={path.length > 0 ? `${path.substring(1)}/` : path}
+        bucket="dateien_unternehmen"
         onUploadSuccess={() =>
           getFiles(path, "dateien_unternehmen", (newFile) =>
             setFiles(newFile ?? [])

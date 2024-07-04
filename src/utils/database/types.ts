@@ -14,30 +14,30 @@ export type Database = {
           created_at: string
           document_type: string | null
           document_url: string | null
-          employee_id: number | null
           id: number
+          profile_id: string | null
         }
         Insert: {
           created_at?: string
           document_type?: string | null
           document_url?: string | null
-          employee_id?: number | null
           id?: number
+          profile_id?: string | null
         }
         Update: {
           created_at?: string
           document_type?: string | null
           document_url?: string | null
-          employee_id?: number | null
           id?: number
+          profile_id?: string | null
         }
         Relationships: [
           {
-            foreignKeyName: "documents_employee_id_fkey"
-            columns: ["employee_id"]
+            foreignKeyName: "documents_profile_id_fkey"
+            columns: ["profile_id"]
             isOneToOne: false
             referencedRelation: "employees"
-            referencedColumns: ["id"]
+            referencedColumns: ["profile_id"]
           },
         ]
       }
@@ -56,6 +56,7 @@ export type Database = {
           personnel_number: string | null
           postal_code: string | null
           profile_id: string | null
+          state: string | null
           street: string | null
           tax_id: string | null
           tax_level: string | null
@@ -74,6 +75,7 @@ export type Database = {
           personnel_number?: string | null
           postal_code?: string | null
           profile_id?: string | null
+          state?: string | null
           street?: string | null
           tax_id?: string | null
           tax_level?: string | null
@@ -92,6 +94,7 @@ export type Database = {
           personnel_number?: string | null
           postal_code?: string | null
           profile_id?: string | null
+          state?: string | null
           street?: string | null
           tax_id?: string | null
           tax_level?: string | null
@@ -100,8 +103,37 @@ export type Database = {
           {
             foreignKeyName: "employees_profile_id_fkey"
             columns: ["profile_id"]
-            isOneToOne: false
+            isOneToOne: true
             referencedRelation: "profile"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      folders: {
+        Row: {
+          created_at: string
+          id: number
+          name: string | null
+          parent_id: number | null
+        }
+        Insert: {
+          created_at?: string
+          id?: number
+          name?: string | null
+          parent_id?: number | null
+        }
+        Update: {
+          created_at?: string
+          id?: number
+          name?: string | null
+          parent_id?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "folders_parent_id_fkey"
+            columns: ["parent_id"]
+            isOneToOne: false
+            referencedRelation: "folders"
             referencedColumns: ["id"]
           },
         ]
@@ -143,7 +175,7 @@ export type Database = {
       [_ in never]: never
     }
     Enums: {
-      [_ in never]: never
+      Role: "superadmin" | "admin" | "employee"
     }
     CompositeTypes: {
       [_ in never]: never

@@ -1,39 +1,12 @@
+import { Tables } from "../../utils/database/types";
 import supabase from "../../utils/supabase";
 
-export interface NewEmployee {
-  id: string;
-  personnelNumber: string;
-  firstName: string;
-  lastName: string;
-  city: string;
-  postalCode: string;
-  street: string;
-  profileID: string;
-}
-
-export async function updateEmployee(newEmployee: NewEmployee) {
-  const {
-    personnelNumber,
-    firstName,
-    lastName,
-    city,
-    postalCode,
-    street,
-    profileID,
-  } = newEmployee;
-
+export async function updateEmployee(newEmployee: Tables<"employees">) {
   try {
     const { data, error } = await supabase
       .from("employees")
-      .update({
-        personnel_number: personnelNumber,
-        first_name: firstName,
-        last_name: lastName,
-        city,
-        postal_code: postalCode,
-        street,
-      })
-      .eq("profile_id", profileID)
+      .update(newEmployee)
+      .eq("profile_id", newEmployee.profile_id ?? "")
       .select("*");
 
     if (error) {

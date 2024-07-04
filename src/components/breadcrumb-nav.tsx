@@ -20,7 +20,7 @@ export const BreadcrumbNav: React.FC<BreadcrumbNavProps> = ({
       <BreadcrumbItem onClick={() => onBreadcrumbClick("")}>
         <BreadcrumbLink
           cursor="pointer"
-          color="teal.500"
+          color="accentColor"
           _hover={{ textDecoration: "underline" }}
         >
           Hauptverzeichnis
@@ -42,7 +42,7 @@ export const BreadcrumbNav: React.FC<BreadcrumbNavProps> = ({
             >
               <BreadcrumbLink
                 cursor="pointer"
-                color="teal.500"
+                color="accentColor"
                 _hover={{ textDecoration: "underline" }}
               >
                 {pathName}

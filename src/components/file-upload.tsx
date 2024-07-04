@@ -1,21 +1,20 @@
 // FileUpload.tsx
-import { Box, Button, Flex, Icon, Progress, Text } from "@chakra-ui/react";
-import { useState } from "react";
+import { Box, Button, Flex, Icon, Text, useToast } from "@chakra-ui/react";
+import { useEffect, useState } from "react";
 import { FiUpload } from "react-icons/fi";
 
 import { uploadNewFile } from "../backend-queries";
-import { CustomToast } from "./toasts/custom-toast";
 
 interface FileUploadProps {
   path: string;
+  bucket: string;
   onUploadSuccess: () => void; // A function that is called when the upload is successful
 }
 
-export function FileUpload({ path, onUploadSuccess }: FileUploadProps) {
+export function FileUpload({ path, bucket, onUploadSuccess }: FileUploadProps) {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [uploading, setUploading] = useState(false);
-  const [uploadProgress, setUploadProgress] = useState<number | null>(null);
-  const [uploadSuccess, setUploadSuccess] = useState<boolean | null>(null); // Track upload success
+  const toast = useToast();
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const fileList = event.target.files;
@@ -28,20 +27,28 @@ export function FileUpload({ path, onUploadSuccess }: FileUploadProps) {
     if (!selectedFile) return;
 
     setUploading(true);
-    setUploadProgress(0);
 
     try {
-      await uploadNewFile(path, selectedFile, () => {
+      await uploadNewFile(path, bucket, selectedFile, () => {
         setSelectedFile(null);
         onUploadSuccess();
       });
-      setUploadSuccess(true);
+      toast({
+        title: "Datei erfolgreich hochgeladen.",
+        status: "success",
+        duration: 3000,
+        isClosable: true,
+      });
     } catch (error) {
+      toast({
+        title: "Fehler beim hochladen!",
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+      });
       console.error("Error uploading file:", error);
-      setUploadSuccess(false);
     } finally {
       setUploading(false);
-      setUploadProgress(null);
     }
   };
 
@@ -79,29 +86,16 @@ export function FileUpload({ path, onUploadSuccess }: FileUploadProps) {
           {selectedFile.name}
         </Text>
       )}
-      {uploading && uploadProgress !== null && (
-        <Progress size="sm" value={uploadProgress} width="100%" mb={2} />
-      )}
-      {selectedFile && !uploading && (
+
+      {(selectedFile || uploading) && (
         <Button
           onClick={uploadFile}
           colorScheme="teal"
-          isLoading={uploading} // isLoading prop wird gesetzt, um den Ladezustand zu steuern
+          isLoading={uploading}
           loadingText="Hochladen..."
         >
           Hochladen
         </Button>
-      )}
-      {uploadSuccess !== null && (
-        <CustomToast
-          type={uploadSuccess ? "success" : "error"}
-          message={
-            uploadSuccess
-              ? "Datei erfolgreich hochgeladen!"
-              : "Fehler beim Hochladen der Datei."
-          }
-          isShown={!!uploadSuccess}
-        />
       )}
     </Flex>
   );

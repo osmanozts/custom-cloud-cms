@@ -5,6 +5,7 @@ export async function deleteFile(
   bucket: string,
   successCallback?: () => void
 ) {
+  console.log("🚀 ~ filePath:", filePath);
   try {
     // Delete the specified file
     const { data: deletedFile, error } = await supabase.storage

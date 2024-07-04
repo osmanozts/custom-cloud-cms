@@ -1,10 +1,11 @@
-import { Box, Button, Flex, VStack } from "@chakra-ui/react";
+import { Box, Button, Flex, Icon, VStack } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { SearchIcon } from "@chakra-ui/icons";
 import { EmployeesTable, InputField } from "../components";
 import { useNavigate } from "react-router-dom";
 import { getAllEmployees } from "../backend-queries/query/get-all-employees";
 import { EmployeeWithProfile } from "../backend-queries/joins/employee-with-profile-query";
+import { LuPlus } from "react-icons/lu";
 
 interface AllEmployeesProps {}
 
@@ -39,9 +40,9 @@ export const AllEmployees: React.FC<AllEmployeesProps> = () => {
           </Box>
           <Button
             onClick={() => navigate("/create-new-user")}
-            colorScheme="blue"
+            bg="successColor"
           >
-            +
+            <Icon as={LuPlus} />
           </Button>
         </Flex>
 

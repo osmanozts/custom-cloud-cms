@@ -1,13 +1,7 @@
-import {
-  Box,
-  Flex,
-  Icon,
-  Text,
-  useBreakpointValue,
-  useColorModeValue,
-} from "@chakra-ui/react";
+import { Box, Flex, Icon, Text, useBreakpointValue } from "@chakra-ui/react";
 import React from "react";
 import { LuFile, LuFolder, LuTrash } from "react-icons/lu";
+
 import { deleteFile, deleteFolder, openFile } from "../../backend-queries";
 import { File } from "../../pages/all-documents";
 
@@ -34,8 +28,6 @@ export function DocumentRows({
 
   const dynamicMaxWidth = useBreakpointValue({ base: "215px", md: "600px" });
 
-  const iconColor = useColorModeValue("teal.500", "teal.200");
-
   return (
     <Box
       mb={4}
@@ -51,7 +43,7 @@ export function DocumentRows({
         <Box
           cursor="pointer"
           key={f.id || f.name}
-          _hover={{ bg: "teal.50" }}
+          _hover={{ bg: "hoverColor" }}
           p={2}
           borderRadius="md"
         >
@@ -65,7 +57,7 @@ export function DocumentRows({
                 as={f.id ? LuFile : LuFolder}
                 boxSize={6}
                 mr={4}
-                color={iconColor}
+                color="accentColor"
               />
               <Text
                 fontSize={{ base: "sm", md: "md" }}

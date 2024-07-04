@@ -4,38 +4,34 @@ import {
   Container,
   Flex,
   Heading,
+  Icon,
   SimpleGrid,
   Spinner,
+  Text,
   VStack,
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
-import { useSearchParams } from "react-router-dom";
-import { getProfile, getEmployee, updateEmployee } from "../backend-queries";
-import { Tables } from "../utils/database/types";
-import { NewEmployee } from "../backend-queries/update/update-employee";
+import { LuCheck, LuX } from "react-icons/lu";
+import { useNavigate, useSearchParams } from "react-router-dom";
+
+import { getEmployee, getProfile, updateEmployee } from "../backend-queries";
 import {
   NewProfile,
   updateProfile,
 } from "../backend-queries/update/update-profile";
 import { EmployeeDetails, EmployeeDocumentUpload } from "../components";
-import { mockDocuments } from "../components/employees/mock-data";
+import { Tables } from "../utils/database/types";
 
 type EditEmployeeProps = {};
 
 export const EditEmployee = ({}: EditEmployeeProps) => {
+  const navigate = useNavigate();
+
   const [searchParams] = useSearchParams();
-  const [employee, setEmployee] = useState<Tables<"employees">>();
-  const [profile, setProfile] = useState<Tables<"profile">>();
-  const [id, setId] = useState<string>("");
-  const [profileID, setProfileID] = useState<string>("");
-  const [email, setEmail] = useState<string>("");
-  const [personnelNumber, setPersonnelNumber] = useState<string>("");
-  const [firstName, setFirstName] = useState<string>("");
-  const [lastName, setLastName] = useState<string>("");
-  const [city, setCity] = useState<string>("");
-  const [postalCode, setPostalCode] = useState<string>("");
-  const [street, setStreet] = useState<string>("");
-  const [role, setRole] = useState<string>("");
+
+  const [employee, setEmployee] = useState<Tables<"employees"> | null>(null);
+  const [profile, setProfile] = useState<Tables<"profile"> | null>(null);
+
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   useEffect(() => {
@@ -43,48 +39,28 @@ export const EditEmployee = ({}: EditEmployeeProps) => {
     if (profileId) {
       getEmployee(profileId, (newEmployee) => {
         setEmployee(newEmployee);
-        if (newEmployee) {
-          setId(newEmployee.id.toString() ?? "");
-          setPersonnelNumber(newEmployee.personnel_number ?? "");
-          setFirstName(newEmployee.first_name ?? "");
-          setLastName(newEmployee.last_name ?? "");
-          setCity(newEmployee.city ?? "");
-          setPostalCode(newEmployee.postal_code ?? "");
-          setStreet(newEmployee.street ?? "");
-          setProfileID(newEmployee.profile_id ?? "");
-        }
       });
 
       getProfile(profileId, (userProfile) => {
         setProfile(userProfile);
-        if (userProfile) {
-          setEmail(userProfile.email ?? "");
-          setRole(userProfile.role ?? "");
-        }
       });
     }
   }, [searchParams]);
 
   const handleSave = async () => {
+    if (!employee || !profile) return;
+
     setIsLoading(true);
-    const newEmployee: NewEmployee = {
-      id,
-      personnelNumber,
-      firstName,
-      lastName,
-      city,
-      postalCode,
-      street,
-      profileID,
-    };
-    await updateEmployee(newEmployee);
+
+    await updateEmployee(employee);
 
     const newProfile: NewProfile = {
-      id: profileID,
-      role,
+      id: profile.id,
+      role: profile.role ?? "employee",
     };
     await updateProfile(newProfile);
     setIsLoading(false);
+    navigate("/all-employees");
   };
 
   if (!employee || !profile) {
@@ -103,10 +79,33 @@ export const EditEmployee = ({}: EditEmployeeProps) => {
       boxShadow="md"
       borderRadius="lg"
     >
-      <Flex mb={8} justifyContent="center">
+      <Flex flexDirection="column" mb={8} alignItems="center">
         <Heading fontSize="2xl" fontWeight="bold" color="blue.700">
           Mitarbeiter Ansehen / Bearbeiten
         </Heading>
+        <Flex mt={4} width="250px" justifyContent="space-between">
+          <Button
+            bg="successColor"
+            color="textColor"
+            isLoading={isLoading}
+            onClick={handleSave}
+            size="sm"
+            alignSelf="center"
+          >
+            <Icon mr={2} as={LuCheck} />
+            <Text>Speichern</Text>
+          </Button>
+          <Button
+            bg="dangerColor"
+            color="textColor"
+            onClick={() => navigate("/all-employees")}
+            size="sm"
+            alignSelf="center"
+          >
+            <Icon mr={2} as={LuX} />
+            Verwerfen
+          </Button>
+        </Flex>
       </Flex>
       <SimpleGrid columns={[1, null, 2]} spacing={8}>
         <Box>
@@ -115,22 +114,10 @@ export const EditEmployee = ({}: EditEmployeeProps) => {
           </Heading>
           <VStack spacing={6}>
             <EmployeeDetails
-              email={email}
-              personnelNumber={personnelNumber}
-              firstName={firstName}
-              lastName={lastName}
-              city={city}
-              postalCode={postalCode}
-              street={street}
-              role={role}
-              setEmail={setEmail}
-              setPersonnelNumber={setPersonnelNumber}
-              setFirstName={setFirstName}
-              setLastName={setLastName}
-              setCity={setCity}
-              setPostalCode={setPostalCode}
-              setStreet={setStreet}
-              setRole={setRole}
+              employee={employee}
+              profile={profile}
+              setEmployee={setEmployee}
+              setProfile={setProfile}
             />
           </VStack>
         </Box>
@@ -138,22 +125,9 @@ export const EditEmployee = ({}: EditEmployeeProps) => {
           <Heading fontSize="lg" fontWeight="semibold" mb={4} color="gray.600">
             Mitarbeiter Dateien
           </Heading>
-          <EmployeeDocumentUpload
-            employeeId={id}
-            initialDocuments={mockDocuments}
-          />
+          <EmployeeDocumentUpload employee={employee} />
         </Box>
       </SimpleGrid>
-      <Flex justifyContent="center" mt={8}>
-        <Button
-          colorScheme="blue"
-          isLoading={isLoading}
-          onClick={handleSave}
-          size="lg"
-        >
-          Speichern
-        </Button>
-      </Flex>
     </Container>
   );
 };

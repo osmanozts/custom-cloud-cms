@@ -2,21 +2,22 @@ import {
   Avatar,
   Box,
   Flex,
-  Image,
-  WrapItem,
-  Text,
   Icon,
+  Image,
+  Text,
   useBreakpointValue,
+  WrapItem,
 } from "@chakra-ui/react";
-import logo from "../../assets/logo/lp-logistics.png";
-import { useLocation, useNavigate } from "react-router-dom";
-import { Hamburger } from "./hamburger";
 import {
   LuFileStack,
   LuLayoutDashboard,
   LuTable2,
   LuUsers,
 } from "react-icons/lu";
+import { useLocation, useNavigate } from "react-router-dom";
+
+import logo from "../../assets/logo/lp-logistics.png";
+import { Hamburger } from "./hamburger";
 
 export function Navbar() {
   const navigate = useNavigate();
@@ -78,7 +79,7 @@ export function Navbar() {
           </Flex>
         )}
         <WrapItem cursor="pointer" marginRight={8}>
-          <Avatar name="Osman Öztas" />
+          <Avatar name="Osman Öztas" bg="backgroundColor" />
         </WrapItem>
       </Flex>
       <WrapItem cursor="pointer">

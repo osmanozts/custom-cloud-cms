@@ -1,3 +1,4 @@
+import { replaceSpecialChars } from "../../helper";
 import { File } from "../../pages/all-documents";
 import supabase from "../../utils/supabase";
 
@@ -6,7 +7,8 @@ export async function getFiles(
   bucket: string,
   callback: (file: File[] | null) => void
 ) {
-  const pathArray = path.split("/").filter(Boolean);
+  const newPath = replaceSpecialChars(path);
+  const pathArray = newPath.split("/").filter(Boolean);
   const storagePath = pathArray.join("/") || "";
 
   const { data: uploadedFiles, error } = await supabase.storage

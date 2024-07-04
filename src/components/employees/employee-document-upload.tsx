@@ -1,88 +1,51 @@
-import {
-  Box,
-  Button,
-  Text,
-  Stack,
-  Icon,
-  Link,
-  useToast,
-} from "@chakra-ui/react";
-import { useState } from "react";
-import { FaFilePdf } from "react-icons/fa";
+import { Box, Flex, Icon, Link, Stack, Text } from "@chakra-ui/react";
+import { useEffect, useState } from "react";
+import { LuFile, LuTrash } from "react-icons/lu";
 
-type Document = {
-  id: string;
-  name: string;
-  url: string;
-};
+import { deleteFile, getFiles, openFile } from "../../backend-queries";
+import { replaceSpecialChars } from "../../helper";
+import { File } from "../../pages/all-documents";
+import { Tables } from "../../utils/database/types";
+import { FileUpload } from "../file-upload";
 
 type EmployeeDocumentUploadProps = {
-  employeeId: string;
-  initialDocuments?: Document[];
+  employee: Tables<"employees">;
 };
 
 export const EmployeeDocumentUpload: React.FC<EmployeeDocumentUploadProps> = ({
-  employeeId,
-  initialDocuments = [],
+  employee,
 }) => {
-  const [documents, setDocuments] = useState<Document[]>(initialDocuments);
-  const toast = useToast();
+  const [documents, setDocuments] = useState<File[]>([]);
+  const [filePath, setFilePath] = useState<string>(
+    `${employee.profile_id}/${employee.first_name}_${employee.last_name}/`
+  );
 
-  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (event.target.files) {
-      const newDocuments: Document[] = Array.from(event.target.files).map(
-        (file, index) => ({
-          id: (documents.length + index + 1).toString(),
-          name: file.name,
-          url: URL.createObjectURL(file),
-        })
-      );
-      setDocuments([...documents, ...newDocuments]);
-    }
-  };
+  useEffect(() => {
+    setFilePath(replaceSpecialChars(filePath));
+  }, [employee]);
 
-  const handleUploadClick = () => {
-    toast({
-      title: "Documents uploaded.",
-      description: `Documents have been uploaded for employee: ${employeeId}`,
-      status: "success",
-      duration: 3000,
-      isClosable: true,
-    });
-  };
+  useEffect(() => {
+    getFiles(filePath, "dateien_mitarbeiter", (files) =>
+      setDocuments(files ?? [])
+    );
+  }, [filePath]);
 
   return (
     <Stack spacing={6}>
       <Box borderWidth="1px" borderRadius="lg" p={6} bg="tileBgColor">
         <Text mb={4} fontWeight="bold">
-          Upload employee documents
+          Lade Dateien zu diesem Mitarbeiter hoch
         </Text>
         <Stack spacing={4}>
-          <Box
-            as="label"
-            htmlFor="file-upload"
-            p={2}
-            borderWidth="2px"
-            borderRadius="md"
-            borderColor="blue.500"
-            cursor="pointer"
-            _hover={{ borderColor: "blue.700" }}
-          >
-            <input
-              id="file-upload"
-              type="file"
-              accept="application/pdf"
-              multiple
-              onChange={handleFileChange}
-              style={{ display: "none" }}
-            />
-            <Text color="blue.500" fontWeight="bold">
-              Choose files
-            </Text>
-          </Box>
-          <Button colorScheme="blue" onClick={handleUploadClick}>
-            Upload
-          </Button>
+          <FileUpload
+            path={filePath}
+            bucket="dateien_mitarbeiter"
+            onUploadSuccess={() =>
+              getFiles(filePath, "dateien_mitarbeiter", (files) =>
+                setDocuments(files ?? [])
+              )
+            }
+          />
         </Stack>
       </Box>
       <Stack spacing={2}>
@@ -96,15 +59,43 @@ export const EmployeeDocumentUpload: React.FC<EmployeeDocumentUploadProps> = ({
             borderRadius="md"
             boxShadow="sm"
           >
-            <Icon as={FaFilePdf} w={6} h={6} mr={2} color="red.500" />
+            <Icon as={LuFile} w={6} h={6} mr={2} color="accentColor" />
             <Link
-              href={document.url}
+              isTruncated
               isExternal
               fontWeight="bold"
-              color="blue.600"
+              color="accentColor"
+              onClick={() =>
+                openFile(
+                  filePath.substring(0, filePath.length - 1),
+                  document.name,
+                  "dateien_mitarbeiter"
+                )
+              }
             >
               {document.name}
             </Link>
+
+            <Flex
+              ml={4}
+              onClick={() =>
+                deleteFile(
+                  `${filePath}${document.name}`,
+                  "dateien_mitarbeiter",
+                  () =>
+                    getFiles(filePath, "dateien_mitarbeiter", (files) =>
+                      setDocuments(files ?? [])
+                    )
+                )
+              }
+            >
+              <Icon
+                as={LuTrash}
+                boxSize={6}
+                color="red.500"
+                _hover={{ color: "red.700" }}
+              />
+            </Flex>
           </Box>
         ))}
       </Stack>
