@@ -189,7 +189,9 @@ export const VehicleDetails = ({
                 ? new Date(vehicle.last_service_date)
                 : null
             }
-            onChange={handleDateChange("last_service_date")}
+            onChange={(date) => {
+              handleDateChange("last_service_date")(date);
+            }}
           />
         </FormControl>
       </GridItem>
@@ -204,7 +206,9 @@ export const VehicleDetails = ({
                 ? new Date(vehicle.next_service_date)
                 : null
             }
-            onChange={handleDateChange("next_service_date")}
+            onChange={(date) => {
+              handleDateChange("next_service_date")(date);
+            }}
           />
         </FormControl>
       </GridItem>
