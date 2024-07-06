@@ -137,26 +137,31 @@ export const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({
             <FormLabel htmlFor="driverLicenseEndDate">
               Führerschein Ablaufdatum
             </FormLabel>
-            <InputField
-              id="driverLicenseEndDate"
-              value={employee.driver_license_end_date ?? ""}
-              onChange={(value) =>
-                setEmployee({ ...employee, driver_license_end_date: value })
+            <CustomCalendar
+              value={
+                employee.driver_license_end_date
+                  ? new Date(employee.driver_license_end_date)
+                  : null
               }
-              placeholder="Führerscheindatum"
+              onChange={(date) => {
+                handleDateChange("driver_license_end_date")(date);
+              }}
             />
           </FormControl>
           <FormControl>
             <FormLabel htmlFor="idCardEndDate">
               Personalausweis Ablaufdatum
             </FormLabel>
-            <InputField
-              id="idCardEndDate"
-              value={employee.id_card_end_date ?? ""}
-              onChange={(value) =>
-                setEmployee({ ...employee, id_card_end_date: value })
+
+            <CustomCalendar
+              value={
+                employee.id_card_end_date
+                  ? new Date(employee.id_card_end_date)
+                  : null
               }
-              placeholder="Personalausweisdaten"
+              onChange={(date) => {
+                handleDateChange("id_card_end_date")(date);
+              }}
             />
           </FormControl>
           <FormControl>
