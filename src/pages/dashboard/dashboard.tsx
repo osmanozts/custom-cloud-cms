@@ -8,7 +8,7 @@ import {
   Flex,
 } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
-import { LuTable2, LuFileStack, LuUsers, LuCar } from "react-icons/lu";
+import { LuTable2, LuFileStack, LuCar } from "react-icons/lu";
 
 type DashboardProps = {};
 
