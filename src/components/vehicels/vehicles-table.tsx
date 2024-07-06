@@ -2,6 +2,9 @@ import { Table, Tbody, Td, Th, Thead, Tr } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 import { Vehicles } from "../../backend-queries/query/get-all-vehicles";
 import dayjs from "dayjs";
+import { getMinDetailEmployees } from "../../backend-queries";
+import { useEffect, useState } from "react";
+import { EmployeesMinimumDetail } from "../../backend-queries/query/get-min-detail-employees";
 
 interface VehiclesTableProps {
   vehicles: Vehicles;
@@ -9,6 +12,17 @@ interface VehiclesTableProps {
 
 export const VehiclesTable = ({ vehicles }: VehiclesTableProps) => {
   const navigate = useNavigate();
+
+  const [minEmployees, setMinEmployees] = useState<EmployeesMinimumDetail>([]);
+
+  useEffect(() => {
+    getMinDetailEmployees((employees) => setMinEmployees(employees));
+  }, [vehicles]);
+
+  // find min employee by profile_id
+  const findMinEmployee = (profile_id: string) => {
+    return minEmployees.find((employee) => employee.profile_id === profile_id);
+  };
 
   return (
     <Table borderWidth={1} mt={4}>
@@ -50,18 +64,29 @@ export const VehiclesTable = ({ vehicles }: VehiclesTableProps) => {
               <Td>{vehicle.color ?? "-"}</Td>
               <Td>{vehicle.km_age ?? 0 + "km" ?? "-"}</Td>
               <Td>
-                {dayjs(vehicle.last_service_date).format("DD/MM/YYYY") ?? "-"}
+                {vehicle.last_service_date
+                  ? dayjs(vehicle.last_service_date).format("DD/MM/YYYY")
+                  : "Kein Datum ausgewählt"}
               </Td>
               <Td>
-                {dayjs(vehicle.next_service_date).format("DD/MM/YYYY") ?? "-"}
+                {vehicle.next_service_date
+                  ? dayjs(vehicle.next_service_date).format("DD/MM/YYYY")
+                  : "Kein Datum ausgewählt"}
               </Td>
               <Td>{vehicle.make ?? "-"}</Td>
               <Td>{vehicle.model ?? "-"}</Td>
-              <Td>{vehicle.profile_id ?? "-"}</Td>
+              <Td>
+                {findMinEmployee(vehicle.profile_id ?? "")?.first_name}{" "}
+                {findMinEmployee(vehicle.profile_id ?? "")?.last_name}
+              </Td>
               <Td>{vehicle.profile_picture_url ?? "-"}</Td>
               <Td>{vehicle.state ?? "-"}</Td>
               <Td>{vehicle.year ?? "-"}</Td>
-              <Td>{dayjs(vehicle.created_at).format("DD/MM/YYYY") ?? "-"}</Td>
+              <Td>
+                {vehicle.created_at
+                  ? dayjs(vehicle.created_at).format("DD/MM/YYYY")
+                  : "Kein Datum ausgewählt"}
+              </Td>
             </Tr>
           );
         })}

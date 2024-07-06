@@ -13,4 +13,5 @@ export { EmployeeDetails } from "./employees/employee-details";
 export { CustomToast } from "./toasts/custom-toast";
 export { VehiclesTable } from "./vehicels/vehicles-table";
 export { VehicleDetails } from "./vehicels/vehicle-details";
+export { VehicleProfilePic } from "./vehicels/vehicle-profile-pic";
 export { CustomCalendar } from "./calendars/custom-calendar";

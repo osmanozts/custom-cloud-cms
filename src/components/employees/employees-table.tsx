@@ -1,6 +1,7 @@
 import { Table, Tbody, Td, Th, Thead, Tr } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 import { EmployeeWithProfile } from "../../backend-queries/joins/employee-with-profile-query";
+import dayjs from "dayjs";
 
 interface EmployeesTableProps {
   employees: EmployeeWithProfile[];
@@ -54,9 +55,21 @@ export const EmployeesTable: React.FC<EmployeesTableProps> = ({
               <Td>{empl.health_insurance ?? "-"}</Td>
               <Td>{empl.tax_id ?? "-"}</Td>
               <Td>{empl.tax_level ?? "-"}</Td>
-              <Td>{empl.date_of_birth ?? "-"}</Td>
-              <Td>{empl.driver_license_end_date ?? "-"}</Td>
-              <Td>{empl.id_card_end_date ?? "-"}</Td>
+              <Td>
+                {empl.date_of_birth
+                  ? dayjs(empl.date_of_birth).format("DD/MM/YYYY")
+                  : "Kein Datum ausgewählt"}
+              </Td>
+              <Td>
+                {empl.driver_license_end_date
+                  ? dayjs(empl.driver_license_end_date).format("DD/MM/YYYY")
+                  : "Kein Datum ausgewählt"}
+              </Td>
+              <Td>
+                {empl.id_card_end_date
+                  ? dayjs(empl.id_card_end_date).format("DD/MM/YYYY")
+                  : "Kein Datum ausgewählt"}
+              </Td>
             </Tr>
           );
         })}

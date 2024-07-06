@@ -32,7 +32,7 @@ export function CustomCalendar({ value, onChange }: CalendarProps) {
 
   return (
     <Box bg="backgroundColor">
-      <Button width="100%" onClick={onOpen}>
+      <Button width="100%" onClick={isOpen ? onClose : onOpen}>
         {formatDate(selectedDate)}
       </Button>
       {isOpen && (

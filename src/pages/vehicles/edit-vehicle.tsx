@@ -101,7 +101,13 @@ export const EditVehicle = ({}: EditVehicleProps) => {
       </Flex>
 
       <Box>
-        <Heading fontSize="lg" fontWeight="semibold" mb={4} color="gray.600">
+        <Heading
+          fontSize="lg"
+          fontWeight="semibold"
+          mb={4}
+          color="gray.600"
+          ml={6}
+        >
           Fahrzeug Daten
         </Heading>
         <VStack spacing={6}>
