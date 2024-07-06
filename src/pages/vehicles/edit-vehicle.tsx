@@ -40,7 +40,6 @@ export const EditVehicle = ({}: EditVehicleProps) => {
   useEffect(() => {
     const vehicleId = searchParams.get("vehicle_id") ?? "";
     if (vehicleId) {
-      console.log("🚀 ~ vehicleId:", vehicleId);
       getVehicle(vehicleId, (newVehicle) => {
         setVehicle(newVehicle);
       });

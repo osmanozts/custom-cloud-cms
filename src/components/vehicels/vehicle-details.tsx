@@ -1,12 +1,12 @@
 import { FormControl, FormLabel, Grid, GridItem } from "@chakra-ui/react";
-
+import { useEffect, useState } from "react";
 import { Tables } from "../../utils/database/types";
 import { InputField } from "../input-field";
 import { colors } from "../menu/color";
 import { DefaultMenu, MenuOption } from "../menu/default-menu";
 import { RadioButtons } from "../radio-buttons";
 import { EmployeesMinimumDetail } from "../../backend-queries/query/get-min-detail-employees";
-import { useEffect, useState } from "react";
+import { CustomCalendar } from "../calendars/custom-calendar";
 
 type VehicleDetailsProps = {
   vehicle: Tables<"vehicles">;
@@ -33,7 +33,6 @@ export const VehicleDetails = ({
   }, [drivers]);
 
   useEffect(() => {
-    // find the default driver option where vehicle.profile_id === driverOptions.profile_id and set it to defaultDriverOption
     const temp = driverOptions.find(
       (option) => option.value === vehicle.profile_id
     );
@@ -41,6 +40,14 @@ export const VehicleDetails = ({
       setDefaultDriverOption(temp);
     }
   }, [driverOptions]);
+
+  const handleDateChange =
+    (dateKey: keyof Tables<"vehicles">) => (value: Date | null) => {
+      setVehicle({
+        ...vehicle,
+        [dateKey]: value ? value : "",
+      });
+    };
 
   return (
     <Grid
@@ -100,21 +107,6 @@ export const VehicleDetails = ({
             value={vehicle.km_age ?? ""}
             onChange={(value) => setVehicle({ ...vehicle, km_age: value })}
             placeholder="Kilometerstand"
-          />
-        </FormControl>
-      </GridItem>
-
-      {/* Letzte Wartung */}
-      <GridItem>
-        <FormControl>
-          <FormLabel htmlFor="lastServiceDate">Letzte Wartung</FormLabel>
-          <InputField
-            id="lastServiceDate"
-            value={vehicle.last_service_date ?? ""}
-            onChange={(value) =>
-              setVehicle({ ...vehicle, last_service_date: value })
-            }
-            placeholder="Letzte Wartung"
           />
         </FormControl>
       </GridItem>
@@ -183,6 +175,36 @@ export const VehicleDetails = ({
             ]}
             value={vehicle.state ?? ""}
             onChange={(value) => setVehicle({ ...vehicle, state: value })}
+          />
+        </FormControl>
+      </GridItem>
+
+      {/* Letzte Wartung */}
+      <GridItem>
+        <FormControl>
+          <FormLabel htmlFor="lastServiceDate">Letzte Wartung</FormLabel>
+          <CustomCalendar
+            value={
+              vehicle.last_service_date
+                ? new Date(vehicle.last_service_date)
+                : null
+            }
+            onChange={handleDateChange("last_service_date")}
+          />
+        </FormControl>
+      </GridItem>
+
+      {/* Nächste Wartung */}
+      <GridItem>
+        <FormControl>
+          <FormLabel htmlFor="nextServiceDate">Nächste Wartung</FormLabel>
+          <CustomCalendar
+            value={
+              vehicle.next_service_date
+                ? new Date(vehicle.next_service_date)
+                : null
+            }
+            onChange={handleDateChange("next_service_date")}
           />
         </FormControl>
       </GridItem>

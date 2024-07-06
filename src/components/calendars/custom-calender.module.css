@@ -1,0 +1,31 @@
+/* CustomCalendar.module.css */
+
+.calendar-container {
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 16px;
+}
+
+.react-calendar {
+  width: 100%;
+  border: none;
+}
+
+.react-calendar__tile {
+  max-width: initial !important;
+  padding: 10px 6.25px;
+}
+
+.react-calendar__tile--active {
+  background: #3182ce !important;
+  color: white !important;
+}
+
+.react-calendar__navigation__label {
+  font-weight: bold;
+}
+
+.react-calendar__navigation__arrow {
+  flex-grow: 0.5;
+}

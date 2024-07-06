@@ -19,6 +19,7 @@ export const VehiclesTable = ({ vehicles }: VehiclesTableProps) => {
           <Th>Farbe</Th>
           <Th>Kilometerstand</Th>
           <Th>Letzte Wartung</Th>
+          <Th>Nächste Wartung</Th>
           <Th>Marke</Th>
           <Th>Modell</Th>
           <Th>Haupt-Fahrer</Th>
@@ -48,7 +49,12 @@ export const VehiclesTable = ({ vehicles }: VehiclesTableProps) => {
               <Td>{vehicle.license_plate ?? "-"}</Td>
               <Td>{vehicle.color ?? "-"}</Td>
               <Td>{vehicle.km_age ?? 0 + "km" ?? "-"}</Td>
-              <Td>{vehicle.last_service_date ?? "-"}</Td>
+              <Td>
+                {dayjs(vehicle.last_service_date).format("DD/MM/YYYY") ?? "-"}
+              </Td>
+              <Td>
+                {dayjs(vehicle.next_service_date).format("DD/MM/YYYY") ?? "-"}
+              </Td>
               <Td>{vehicle.make ?? "-"}</Td>
               <Td>{vehicle.model ?? "-"}</Td>
               <Td>{vehicle.profile_id ?? "-"}</Td>

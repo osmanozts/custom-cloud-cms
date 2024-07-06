@@ -202,6 +202,7 @@ export type Database = {
           license_plate: string | null
           make: string | null
           model: string | null
+          next_service_date: string | null
           profile_id: string | null
           profile_picture_url: string | null
           state: string | null
@@ -217,6 +218,7 @@ export type Database = {
           license_plate?: string | null
           make?: string | null
           model?: string | null
+          next_service_date?: string | null
           profile_id?: string | null
           profile_picture_url?: string | null
           state?: string | null
@@ -232,6 +234,7 @@ export type Database = {
           license_plate?: string | null
           make?: string | null
           model?: string | null
+          next_service_date?: string | null
           profile_id?: string | null
           profile_picture_url?: string | null
           state?: string | null
