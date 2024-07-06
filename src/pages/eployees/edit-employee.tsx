@@ -14,13 +14,13 @@ import { useEffect, useState } from "react";
 import { LuCheck, LuX } from "react-icons/lu";
 import { useNavigate, useSearchParams } from "react-router-dom";
 
-import { getEmployee, getProfile, updateEmployee } from "../backend-queries";
+import { getEmployee, getProfile, updateEmployee } from "../../backend-queries";
 import {
   NewProfile,
   updateProfile,
-} from "../backend-queries/update/update-profile";
-import { EmployeeDetails, EmployeeDocumentUpload } from "../components";
-import { Tables } from "../utils/database/types";
+} from "../../backend-queries/update/update-profile";
+import { EmployeeDetails, EmployeeDocumentUpload } from "../../components";
+import { Tables } from "../../utils/database/types";
 
 type EditEmployeeProps = {};
 
@@ -60,7 +60,7 @@ export const EditEmployee = ({}: EditEmployeeProps) => {
     };
     await updateProfile(newProfile);
     setIsLoading(false);
-    navigate("/all-employees");
+    navigate("/employee-management");
   };
 
   if (!employee || !profile) {
@@ -98,7 +98,7 @@ export const EditEmployee = ({}: EditEmployeeProps) => {
           <Button
             bg="dangerColor"
             color="textColor"
-            onClick={() => navigate("/all-employees")}
+            onClick={() => navigate("/employee-management")}
             size="sm"
             alignSelf="center"
           >

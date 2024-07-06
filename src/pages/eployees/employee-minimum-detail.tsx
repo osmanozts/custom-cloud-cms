@@ -2,8 +2,8 @@ import { Container, Flex, Text } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 
-import { getEmployee, getProfile } from "../backend-queries";
-import { Tables } from "../utils/database/types";
+import { getEmployee, getProfile } from "../../backend-queries";
+import { Tables } from "../../utils/database/types";
 
 export function EmployeeMinimumDetail() {
   const [searchParams] = useSearchParams();

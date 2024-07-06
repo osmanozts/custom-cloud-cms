@@ -18,27 +18,21 @@ export function Dashboard({}: DashboardProps) {
   const items = [
     {
       title: "Mitarbeiter Tabelle",
-      description: "Verwalten Sie alle Mitarbeiter und ihre Daten.",
+      description: "Verwalten Sie alle Mitarbeiter ihre Daten und Dokumente.",
       icon: LuTable2,
-      path: "/all-employees",
+      path: "/employee-management",
     },
     {
       title: "Interne Dokumente",
       description: "Zugriff auf alle internen Dokumente des Unternehmens.",
       icon: LuFileStack,
-      path: "/all-documents",
-    },
-    {
-      title: "Mitarbeiter Dokumente",
-      description: "Zugriff auf alle Mitarbeiter Dokumente.",
-      icon: LuUsers,
-      path: "/",
+      path: "/document-management",
     },
     {
       title: "Fahrzeug Management",
       description: "Fahrzeug, Fahrer und Schaden Management",
       icon: LuCar,
-      path: "/",
+      path: "/vehicle-management",
     },
   ];
 
@@ -56,7 +50,7 @@ export function Dashboard({}: DashboardProps) {
       bg="backgroundColor"
     >
       <Heading as="h1" mb={12} textAlign="center">
-        Admin Dashboard
+        Unternehmens-Anwendungen
       </Heading>
       <Grid
         width="100%"
@@ -78,6 +72,11 @@ export function Dashboard({}: DashboardProps) {
             transition="transform 0.2s"
             _hover={{ transform: "scale(1.05)" }}
             textAlign="left"
+            gridColumn={
+              items.length % 2 !== 0 && index === items.length - 1
+                ? { base: "span 1", md: "span 2" }
+                : "span 1"
+            }
           >
             <Flex alignItems="center" mb={4}>
               <Icon as={item.icon} boxSize={8} mr={4} color="teal.500" />

@@ -1,5 +1,5 @@
 import { Box } from "@chakra-ui/react";
-import { VerifyOtpForm } from "../components";
+import { VerifyOtpForm } from "../../components";
 
 export function OTPPage() {
   return (

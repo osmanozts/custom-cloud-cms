@@ -28,19 +28,19 @@ export function Navbar() {
     {
       id: 2,
       label: "Mitarbeiter",
-      path: "/all-employees",
+      path: "/employee-management",
       icon: LuTable2,
     },
     {
       id: 3,
       label: "interne Dokumente",
-      path: "/all-documents",
+      path: "/document-management",
       icon: LuFileStack,
     },
     {
       id: 4,
-      label: "Mitarbeiter Dokumente",
-      path: "/",
+      label: "Fehrzeug Management",
+      path: "/vehicle-management",
       icon: LuUsers,
     },
   ];

@@ -6,9 +6,11 @@ import { AdminRoute, AuthRoute } from "./auth/guards";
 import {
   AllDocuments,
   AllEmployees,
+  AllVehicles,
   CreateNewUser,
   Dashboard,
   EditEmployee,
+  EditVehicle,
   EmployeeMinimumDetail,
   Login,
 } from "./pages";
@@ -19,10 +21,12 @@ function App() {
       <Route element={<AuthRoute />}>
         <Route element={<AdminRoute />}>
           <Route path="/" element={<Dashboard />} />
-          <Route path="/all-employees" element={<AllEmployees />} />
-          <Route path="/all-documents" element={<AllDocuments />} />
+          <Route path="/employee-management" element={<AllEmployees />} />
+          <Route path="/document-management" element={<AllDocuments />} />
+          <Route path="/vehicle-management" element={<AllVehicles />} />
           <Route path="/create-new-user" element={<CreateNewUser />} />
           <Route path="/edit-employee" element={<EditEmployee />} />
+          <Route path="/edit-vehicle" element={<EditVehicle />} />
         </Route>
         <Route
           path="/employee-min-detail"

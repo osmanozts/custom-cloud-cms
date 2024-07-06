@@ -3,7 +3,7 @@ import React from "react";
 import { LuFile, LuFolder, LuTrash } from "react-icons/lu";
 
 import { deleteFile, deleteFolder, openFile } from "../../backend-queries";
-import { File } from "../../pages/all-documents";
+import { File } from "../../pages/documents/all-documents";
 
 type DocumentRowsProps = {
   files: File[];

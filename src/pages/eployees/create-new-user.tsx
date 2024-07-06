@@ -1,7 +1,7 @@
 import { Button, Container, Text, VStack } from "@chakra-ui/react";
-import { InputField } from "../components";
+import { InputField } from "../../components";
 import { useState } from "react";
-import supabase from "../utils/supabase";
+import supabase from "../../utils/supabase";
 import { useNavigate } from "react-router-dom";
 import { EmailIcon, LockIcon } from "@chakra-ui/icons";
 

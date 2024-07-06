@@ -1,13 +1,13 @@
 import { Container, Flex, Heading, useBreakpointValue } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 
-import { getFiles } from "../backend-queries";
+import { getFiles } from "../../backend-queries";
 import {
   BreadcrumbNav,
   CreateFolderDialog,
   DocumentRows,
   FileUpload,
-} from "../components";
+} from "../../components";
 
 export interface File {
   name: string;

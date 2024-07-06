@@ -4,7 +4,7 @@ import { LuFile, LuTrash } from "react-icons/lu";
 
 import { deleteFile, getFiles, openFile } from "../../backend-queries";
 import { replaceSpecialChars } from "../../helper";
-import { File } from "../../pages/all-documents";
+import { File } from "../../pages/documents/all-documents";
 import { Tables } from "../../utils/database/types";
 import { FileUpload } from "../file-upload";
 

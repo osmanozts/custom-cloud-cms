@@ -1,6 +1,6 @@
 import { Table, Tbody, Td, Th, Thead, Tr } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
-import { EmployeeWithProfile } from "../backend-queries/joins/employee-with-profile-query";
+import { EmployeeWithProfile } from "../../backend-queries/joins/employee-with-profile-query";
 
 interface EmployeesTableProps {
   employees: EmployeeWithProfile[];

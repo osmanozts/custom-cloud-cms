@@ -109,31 +109,56 @@ export type Database = {
           },
         ]
       }
-      folders: {
+      incidents: {
         Row: {
-          created_at: string
+          damage_severity: string
+          description: string
           id: number
-          name: string | null
-          parent_id: number | null
+          incident_date: string
+          photos_url: string | null
+          repair_completed: boolean | null
+          repair_cost_estimate: string | null
+          repair_date: string | null
+          reporting_user_id: string
+          vehicle_id: number
         }
         Insert: {
-          created_at?: string
-          id?: number
-          name?: string | null
-          parent_id?: number | null
+          damage_severity: string
+          description: string
+          id?: never
+          incident_date: string
+          photos_url?: string | null
+          repair_completed?: boolean | null
+          repair_cost_estimate?: string | null
+          repair_date?: string | null
+          reporting_user_id: string
+          vehicle_id: number
         }
         Update: {
-          created_at?: string
-          id?: number
-          name?: string | null
-          parent_id?: number | null
+          damage_severity?: string
+          description?: string
+          id?: never
+          incident_date?: string
+          photos_url?: string | null
+          repair_completed?: boolean | null
+          repair_cost_estimate?: string | null
+          repair_date?: string | null
+          reporting_user_id?: string
+          vehicle_id?: number
         }
         Relationships: [
           {
-            foreignKeyName: "folders_parent_id_fkey"
-            columns: ["parent_id"]
+            foreignKeyName: "incidents_reporting_user_id_fkey"
+            columns: ["reporting_user_id"]
             isOneToOne: false
-            referencedRelation: "folders"
+            referencedRelation: "employees"
+            referencedColumns: ["profile_id"]
+          },
+          {
+            foreignKeyName: "incidents_vehicle_id_fkey"
+            columns: ["vehicle_id"]
+            isOneToOne: false
+            referencedRelation: "vehicles"
             referencedColumns: ["id"]
           },
         ]
@@ -164,6 +189,62 @@ export type Database = {
             isOneToOne: true
             referencedRelation: "users"
             referencedColumns: ["id"]
+          },
+        ]
+      }
+      vehicles: {
+        Row: {
+          color: string | null
+          created_at: string
+          id: number
+          km_age: string | null
+          last_service_date: string | null
+          license_plate: string | null
+          make: string | null
+          model: string | null
+          profile_id: string | null
+          profile_picture_url: string | null
+          state: string | null
+          vin: string | null
+          year: string | null
+        }
+        Insert: {
+          color?: string | null
+          created_at?: string
+          id?: number
+          km_age?: string | null
+          last_service_date?: string | null
+          license_plate?: string | null
+          make?: string | null
+          model?: string | null
+          profile_id?: string | null
+          profile_picture_url?: string | null
+          state?: string | null
+          vin?: string | null
+          year?: string | null
+        }
+        Update: {
+          color?: string | null
+          created_at?: string
+          id?: number
+          km_age?: string | null
+          last_service_date?: string | null
+          license_plate?: string | null
+          make?: string | null
+          model?: string | null
+          profile_id?: string | null
+          profile_picture_url?: string | null
+          state?: string | null
+          vin?: string | null
+          year?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "vehicles_profile_id_fkey"
+            columns: ["profile_id"]
+            isOneToOne: false
+            referencedRelation: "employees"
+            referencedColumns: ["profile_id"]
           },
         ]
       }

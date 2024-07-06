@@ -1,4 +1,4 @@
-import { LoginForm } from "../components";
+import { LoginForm } from "../../components";
 import { Container, Flex } from "@chakra-ui/react";
 
 export const Login = () => {

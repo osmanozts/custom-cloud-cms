@@ -1,5 +1,5 @@
 import { replaceSpecialChars } from "../../helper";
-import { File } from "../../pages/all-documents";
+import { File } from "../../pages/documents/all-documents";
 import supabase from "../../utils/supabase";
 
 export async function getFiles(

@@ -36,13 +36,13 @@ export function Hamburger({}: Props) {
         </MenuItem>
         <MenuItem
           icon={<LuTable2 />}
-          onClick={() => navigate("/all-employees")}
+          onClick={() => navigate("/employee-management")}
         >
           <Text>Mitarbeiter</Text>
         </MenuItem>
         <MenuItem
           icon={<LuFileStack />}
-          onClick={() => navigate("/all-documents")}
+          onClick={() => navigate("/document-management")}
         >
           <Text>interne Dokumente</Text>
         </MenuItem>
