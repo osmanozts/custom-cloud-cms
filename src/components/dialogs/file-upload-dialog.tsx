@@ -46,17 +46,15 @@ export const FileUploadDialog = ({
     setIsLoading(true);
 
     try {
-      const uploadPromises = files.map(async (file, index) => {
-        if (index === files.length - 1) {
-          await uploadNewFile(path, bucket, file, () => {
-            if (successCallback) successCallback();
-          });
-        }
+      const uploadPromises = files.map(async (file) => {
+        await uploadNewFile(path, bucket, file);
 
         await uploadNewFile(path, bucket, file);
       });
 
       await Promise.all(uploadPromises);
+
+      if (successCallback) successCallback();
 
       toast({
         title: "Uploads successful.",

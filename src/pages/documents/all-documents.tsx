@@ -6,7 +6,7 @@ import {
   BreadcrumbNav,
   CreateFolderDialog,
   DocumentRows,
-  FileUpload,
+  FileUploadDialog,
 } from "../../components";
 
 export interface File {
@@ -68,10 +68,11 @@ export function AllDocuments() {
         }
       />
 
-      <FileUpload
-        path={path.length > 0 ? `${path.substring(1)}/` : path}
+      <FileUploadDialog
+        path={`${path}/`}
         bucket="dateien_unternehmen"
-        onUploadSuccess={() =>
+        title="Lade Dateien hoch"
+        successCallback={() =>
           getFiles(path, "dateien_unternehmen", (newFile) =>
             setFiles(newFile ?? [])
           )
