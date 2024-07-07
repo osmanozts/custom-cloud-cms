@@ -72,28 +72,27 @@ export const UploadedFilesGrid = ({
         return (
           <Box
             key={index}
-            borderWidth="1px"
-            borderRadius="lg"
-            overflow="hidden"
             p={2}
             textAlign="center"
             onClick={() => openFile(path, file.name, bucket)}
             cursor="pointer"
-            width="60px"
-            height="60px"
           >
             {isImage(file.name) ? (
-              <Image
-                src={file.url}
-                alt={`Uploaded file ${index + 1}`}
-                width="100%"
-                height="100%"
-                objectFit="cover"
-              />
+              <Box width="70px" height="70px">
+                <Image
+                  src={file.url}
+                  alt={`Uploaded file ${index + 1}`}
+                  width="100%"
+                  height="100%"
+                  objectFit="cover"
+                />
+              </Box>
             ) : (
               <Box>
                 <Icon as={FiFile} boxSize={12} />
-                <Text mt={2}>{file.name}</Text>
+                <Text isTruncated fontSize={12} mt={2}>
+                  {file.name}
+                </Text>
               </Box>
             )}
           </Box>

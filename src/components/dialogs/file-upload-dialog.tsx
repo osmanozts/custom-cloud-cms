@@ -83,7 +83,7 @@ export const FileUploadDialog = ({
     <>
       <Button onClick={() => setIsOpen(true)}>Dateien hochladen</Button>
 
-      <Modal isOpen={isOpen} onClose={() => setIsOpen(false)}>
+      <Modal isOpen={isOpen} onClose={() => setIsOpen(false)} isCentered>
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>{title}</ModalHeader>
@@ -99,29 +99,35 @@ export const FileUploadDialog = ({
               />
               <Button
                 onClick={() => inputRef.current?.click()}
-                colorScheme="teal"
+                bg="tileBgColor"
                 mb={4}
               >
                 Dateien auswählen
               </Button>
             </Box>
-            <Stack mt={4}>
+            <Stack mt={files.length > 0 ? 4 : 0}>
               {files.map((file, index) => (
                 <Text key={index}>{file.name}</Text>
               ))}
             </Stack>
           </ModalBody>
-          <ModalFooter>
+          <ModalFooter borderWidth={1} justifyContent="flex-start">
             <Button
               colorScheme="blue"
               mr={3}
               onClick={handleUpload}
               isLoading={isLoading}
               loadingText="Lädt hoch..."
+              bg="successColor"
+              color="textColor"
             >
               Hochladen
             </Button>
-            <Button variant="ghost" onClick={() => setIsOpen(false)}>
+            <Button
+              bg="dangerColor"
+              variant="ghost"
+              onClick={() => setIsOpen(false)}
+            >
               Abbrechen
             </Button>
           </ModalFooter>
