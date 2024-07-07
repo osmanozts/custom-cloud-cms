@@ -70,6 +70,7 @@ export const EditIncident = ({}: EditIncidentProps) => {
             bg="successColor"
             color="textColor"
             isLoading={isLoading}
+            loadingText="Speichern..."
             onClick={handleSave}
             size="sm"
             alignSelf="center"
@@ -94,7 +95,11 @@ export const EditIncident = ({}: EditIncidentProps) => {
         <Heading fontSize="lg" fontWeight="semibold" mb={4} color="gray.600">
           Schadensmeldung Daten
         </Heading>
-        <IncidentDetails incident={incident} setIncident={setIncident} />
+        <IncidentDetails
+          incident={incident}
+          setIncident={setIncident}
+          vehicle_id={vehicleID}
+        />
       </Box>
     </Container>
   );

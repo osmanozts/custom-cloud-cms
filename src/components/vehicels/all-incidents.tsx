@@ -42,7 +42,9 @@ export const AllIncidents = ({ vehicle }: AllIncidentsProps) => {
         duration: 5000,
         isClosable: true,
       });
-      navigate(`/edit-incident?incident_id=${newIncident.id}`);
+      navigate(
+        `/edit-incident?incident_id=${newIncident.id}&vehicle_id=${vehicle.id}`
+      );
     } catch (error) {
       toast({
         title: "Fehler.",
@@ -154,7 +156,7 @@ export const AllIncidents = ({ vehicle }: AllIncidentsProps) => {
         <Button
           onClick={handleCreateIncident}
           isLoading={isLoading}
-          loadingText="Creating"
+          loadingText="Erstellt..."
           bg="dangerColor"
         >
           Neuen Schaden / Panne melden

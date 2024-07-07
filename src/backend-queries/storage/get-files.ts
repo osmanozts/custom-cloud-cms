@@ -5,7 +5,7 @@ import supabase from "../../utils/supabase";
 export async function getFiles(
   path: string,
   bucket: string,
-  callback: (file: File[] | null) => void
+  callback?: (file: File[] | null) => void
 ) {
   const newPath = replaceSpecialChars(path);
   const pathArray = newPath.split("/").filter(Boolean);
@@ -21,5 +21,10 @@ export async function getFiles(
     (file) => file.name !== ".empty" && file.name !== ".emptyFolderPlaceholder"
   );
 
-  callback(filteredFiles);
+  if (callback) callback(filteredFiles);
+
+  return {
+    data: filteredFiles,
+    error,
+  };
 }

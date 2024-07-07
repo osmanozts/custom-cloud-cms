@@ -6,20 +6,28 @@ import {
   Stack,
   Textarea,
 } from "@chakra-ui/react";
+import { useState } from "react";
+
 import { Tables } from "../../utils/database/types";
+import { CustomCalendar } from "../calendars/custom-calendar";
+import { FileUploadDialog } from "../dialogs/file-upload-dialog";
+import { UploadedFilesGrid } from "../files/uploaded-filed-grid";
 import { InputField } from "../input-field";
 import { RadioButtons } from "../radio-buttons";
-import { CustomCalendar } from "../calendars/custom-calendar";
 
 type IncidentDetailsProps = {
   incident: Tables<"incidents">;
   setIncident: (incident: Tables<"incidents">) => void;
+  vehicle_id: string;
 };
 
 export const IncidentDetails = ({
   incident,
   setIncident,
+  vehicle_id,
 }: IncidentDetailsProps) => {
+  const [reloadFiles, setReloadFiles] = useState(false);
+
   const handleDateChange =
     (dateKey: keyof Tables<"incidents">) => (value: Date | null) => {
       setIncident({
@@ -27,6 +35,10 @@ export const IncidentDetails = ({
         [dateKey]: value ? value.toISOString() : null,
       });
     };
+
+  const handleFilesUploaded = () => {
+    setReloadFiles((prev) => !prev);
+  };
 
   return (
     <Stack
@@ -152,14 +164,19 @@ export const IncidentDetails = ({
         {/* Photos URL */}
         <GridItem colSpan={{ base: 1, md: 2 }}>
           <FormControl maxW="100%">
-            <FormLabel htmlFor="photosUrl">Fotos URL</FormLabel>
-            <InputField
-              id="photosUrl"
-              value={incident.photos_url ?? ""}
-              onChange={(value) =>
-                setIncident({ ...incident, photos_url: value })
-              }
-              placeholder="Fotos URL"
+            <FormLabel htmlFor="photosUrl">
+              Dateien / Bilder zum Vorfall
+            </FormLabel>
+            <UploadedFilesGrid
+              path={`${vehicle_id}/Schaden-Management/${incident.id}`}
+              bucket="dateien_fahrzeuge"
+              reload={reloadFiles}
+            />
+            <FileUploadDialog
+              path={`${vehicle_id}/Schaden-Management/${incident.id}/`}
+              bucket="dateien_fahrzeuge"
+              title="Füge Dateien zum Vorfall hinzu"
+              successCallback={handleFilesUploaded}
             />
           </FormControl>
         </GridItem>

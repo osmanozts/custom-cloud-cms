@@ -38,7 +38,7 @@ export function AllVehicles({}: AllVehiclesProps) {
                 const { data: vehicle, error } = await supabase
                   .from("vehicles")
                   .insert({
-                    id: Math.floor(Math.random() * 100000000),
+                    id: Math.floor(Math.random() * 1000000),
                   })
                   .select()
                   .single();
