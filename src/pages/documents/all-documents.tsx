@@ -33,9 +33,7 @@ export function AllDocuments() {
       pl={containerPadding}
       pr={containerPadding}
       height="100svh"
-      maxWidth="100%"
-      borderWidth={1}
-      borderRadius="lg"
+      maxW="container.xl"
       boxShadow="xl"
       bg="backgroundColor"
     >
