@@ -5,6 +5,7 @@ import dayjs from "dayjs";
 import { getMinDetailEmployees } from "../../backend-queries";
 import { useEffect, useState } from "react";
 import { EmployeesMinimumDetail } from "../../backend-queries/query/get-min-detail-employees";
+import { VehicleProfilePic } from "./vehicle-profile-pic";
 
 interface VehiclesTableProps {
   vehicles: Vehicles;
@@ -28,6 +29,7 @@ export const VehiclesTable = ({ vehicles }: VehiclesTableProps) => {
     <Table borderWidth={1} mt={4}>
       <Thead>
         <Tr whiteSpace="nowrap">
+          <Th>Bild</Th>
           <Th>VIN</Th>
           <Th>Kennzeichen</Th>
           <Th>Farbe</Th>
@@ -37,7 +39,6 @@ export const VehiclesTable = ({ vehicles }: VehiclesTableProps) => {
           <Th>Marke</Th>
           <Th>Modell</Th>
           <Th>Haupt-Fahrer</Th>
-          <Th>Profilbild URL</Th>
           <Th>Status</Th>
           <Th>Baujahr</Th>
           <Th>Erstellt am</Th>
@@ -59,6 +60,9 @@ export const VehiclesTable = ({ vehicles }: VehiclesTableProps) => {
               color="textColor"
               bg={"tileBgColor"}
             >
+              <Td>
+                <VehicleProfilePic isSmall vehicle_id={vehicle.id.toString()} />
+              </Td>
               <Td>{vehicle.vin ?? "-"}</Td>
               <Td>{vehicle.license_plate ?? "-"}</Td>
               <Td>{vehicle.color ?? "-"}</Td>
@@ -79,7 +83,6 @@ export const VehiclesTable = ({ vehicles }: VehiclesTableProps) => {
                 {findMinEmployee(vehicle.profile_id ?? "")?.first_name}{" "}
                 {findMinEmployee(vehicle.profile_id ?? "")?.last_name}
               </Td>
-              <Td>{vehicle.profile_picture_url ?? "-"}</Td>
               <Td>{vehicle.state ?? "-"}</Td>
               <Td>{vehicle.year ?? "-"}</Td>
               <Td>

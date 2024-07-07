@@ -15,3 +15,7 @@ export { getAllEmployees } from "./query/get-all-employees";
 export { getMinDetailEmployees } from "./query/get-min-detail-employees";
 export { getAllVehicles } from "./query/get-all-vehicles";
 export { getVehicle } from "./query/get-vehicle";
+export { getAllVehicleIncidents } from "./query/get-all-vehicle-incidents";
+export { createIncident } from "./create/create-incident";
+export { getIncident } from "./query/get-incident";
+export { updateIncident } from "./update/update-incident";

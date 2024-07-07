@@ -57,9 +57,19 @@ export const VehicleDetails = ({
     };
 
   return (
-    <Stack borderWidth="1px" borderRadius="lg" bg="tileBgColor" p={6}>
+    <Stack
+      width="100%"
+      borderWidth="1px"
+      borderRadius="lg"
+      bg="tileBgColor"
+      p={6}
+    >
       <VehicleProfilePic vehicle_id={vehicle.id.toString()} />
-      <Grid templateColumns={{ base: "1fr", md: "repeat(4, 1fr)" }} gap={6}>
+      <Grid
+        templateColumns={{ base: "1fr", md: "repeat(4, 1fr)" }}
+        gap={6}
+        mt={4}
+      >
         {/* VIN */}
         <GridItem>
           <FormControl>

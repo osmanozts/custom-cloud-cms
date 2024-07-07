@@ -8,3 +8,4 @@ export { AllDocuments } from "./documents/all-documents";
 export { EditEmployee } from "./eployees/edit-employee";
 export { AllVehicles } from "./vehicles/all-vehicles";
 export { EditVehicle } from "./vehicles/edit-vehicle";
+export { EditIncident } from "./vehicles/edit-incident";

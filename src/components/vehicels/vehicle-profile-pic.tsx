@@ -13,9 +13,13 @@ import supabase from "../../utils/supabase";
 
 interface VehicleProfilePicProps {
   vehicle_id: string;
+  isSmall?: boolean;
 }
 
-export const VehicleProfilePic = ({ vehicle_id }: VehicleProfilePicProps) => {
+export const VehicleProfilePic = ({
+  vehicle_id,
+  isSmall,
+}: VehicleProfilePicProps) => {
   const [profilePicUrl, setProfilePicUrl] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -82,8 +86,8 @@ export const VehicleProfilePic = ({ vehicle_id }: VehicleProfilePicProps) => {
       borderRadius="md"
       overflow="hidden"
       boxShadow="md"
-      width="150px"
-      height="150px"
+      width={isSmall ? "60px" : "150px"}
+      height={isSmall ? "60px" : "150px"}
       transition="all 0.2s"
       _hover={{ boxShadow: "lg" }}
     >

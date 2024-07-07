@@ -7,55 +7,46 @@ import {
   Icon,
   Spinner,
   Text,
-  VStack,
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
-import { LuCar, LuCheck, LuWrench, LuX } from "react-icons/lu";
+import { LuCheck, LuX } from "react-icons/lu";
 import { useNavigate, useSearchParams } from "react-router-dom";
 
-import {
-  getMinDetailEmployees,
-  getVehicle,
-  updateVehicle,
-} from "../../backend-queries";
-import { EmployeesMinimumDetail } from "../../backend-queries/query/get-min-detail-employees";
-import { AllIncidents, VehicleDetails } from "../../components";
+import { getIncident, updateIncident } from "../../backend-queries";
+import { IncidentDetails } from "../../components";
 import { Tables } from "../../utils/database/types";
 
-type EditVehicleProps = {};
+type EditIncidentProps = {};
 
-export const EditVehicle = ({}: EditVehicleProps) => {
+export const EditIncident = ({}: EditIncidentProps) => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
 
-  const [vehicle, setVehicle] = useState<Tables<"vehicles"> | null>(null);
-  const [drivers, setDrivers] = useState<EmployeesMinimumDetail>([]);
+  const vehicleID = searchParams.get("vehicle_id") ?? "";
+
+  const [incident, setIncident] = useState<Tables<"incidents"> | null>(null);
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   useEffect(() => {
-    getMinDetailEmployees((employees) => setDrivers(employees));
-  }, [searchParams]);
-
-  useEffect(() => {
-    const vehicleId = searchParams.get("vehicle_id") ?? "";
-    if (vehicleId) {
-      getVehicle(vehicleId, (newVehicle) => {
-        setVehicle(newVehicle);
+    const incidentId = searchParams.get("incident_id") ?? "";
+    if (incidentId) {
+      getIncident(Number(incidentId), (newIncident) => {
+        setIncident(newIncident);
       });
     }
   }, [searchParams]);
 
   const handleSave = async () => {
-    if (!vehicle) return;
+    if (!incident) return;
 
     setIsLoading(true);
-    await updateVehicle(vehicle);
+    await updateIncident(incident);
     setIsLoading(false);
-    navigate("/vehicle-management");
+    navigate("/edit-vehicle?vehicle_id=" + vehicleID);
   };
 
-  if (!vehicle) {
+  if (!incident) {
     return (
       <Flex justifyContent="center" alignItems="center" height="100vh">
         <Spinner size="xl" />
@@ -66,14 +57,13 @@ export const EditVehicle = ({}: EditVehicleProps) => {
   return (
     <Container
       maxW="container.xl"
-      p={8}
       bg="backgroundColor"
       boxShadow="md"
       borderRadius="lg"
     >
       <Flex flexDirection="column" mb={8} alignItems="center">
         <Heading fontSize="2xl" fontWeight="bold" color="blue.700">
-          Fahrzeug Ansehen / Bearbeiten
+          Schadensmeldung Ansehen / Bearbeiten
         </Heading>
         <Flex mt={4} width="250px" justifyContent="space-between">
           <Button
@@ -90,7 +80,7 @@ export const EditVehicle = ({}: EditVehicleProps) => {
           <Button
             bg="dangerColor"
             color="textColor"
-            onClick={() => navigate("/vehicle-management")}
+            onClick={() => navigate("/edit-vehicle?vehicle_id=" + vehicleID)}
             size="sm"
             alignSelf="center"
           >
@@ -100,29 +90,11 @@ export const EditVehicle = ({}: EditVehicleProps) => {
         </Flex>
       </Flex>
 
-      <Box>
+      <Box pb={6}>
         <Heading fontSize="lg" fontWeight="semibold" mb={4} color="gray.600">
-          <Icon mr={2} as={LuCar} /> Fahrzeug Daten
+          Schadensmeldung Daten
         </Heading>
-        <VStack spacing={6}>
-          <VehicleDetails
-            vehicle={vehicle}
-            drivers={drivers}
-            setVehicle={setVehicle}
-          />
-        </VStack>
-        <Heading
-          fontSize="lg"
-          fontWeight="semibold"
-          mt={8}
-          mb={4}
-          color="gray.600"
-        >
-          <Icon mr={2} as={LuWrench} /> Schadensmeldungen
-        </Heading>
-        <VStack spacing={6}>
-          <AllIncidents vehicle={vehicle} />
-        </VStack>
+        <IncidentDetails incident={incident} setIncident={setIncident} />
       </Box>
     </Container>
   );

@@ -10,6 +10,7 @@ import {
   CreateNewUser,
   Dashboard,
   EditEmployee,
+  EditIncident,
   EditVehicle,
   EmployeeMinimumDetail,
   Login,
@@ -27,6 +28,8 @@ function App() {
           <Route path="/create-new-user" element={<CreateNewUser />} />
           <Route path="/edit-employee" element={<EditEmployee />} />
           <Route path="/edit-vehicle" element={<EditVehicle />} />
+          <Route path="/edit-vehicle" element={<EditVehicle />} />
+          <Route path="/edit-incident" element={<EditIncident />} />
         </Route>
         <Route
           path="/employee-min-detail"

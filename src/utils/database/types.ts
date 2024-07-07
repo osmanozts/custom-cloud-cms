@@ -111,40 +111,43 @@ export type Database = {
       }
       incidents: {
         Row: {
-          damage_severity: string
-          description: string
+          created_at: string | null
+          damage_severity: string | null
+          description: string | null
           id: number
-          incident_date: string
+          incident_date: string | null
           photos_url: string | null
           repair_completed: boolean | null
           repair_cost_estimate: string | null
           repair_date: string | null
-          reporting_user_id: string
-          vehicle_id: number
+          reporting_user_id: string | null
+          vehicle_id: number | null
         }
         Insert: {
-          damage_severity: string
-          description: string
-          id?: never
-          incident_date: string
+          created_at?: string | null
+          damage_severity?: string | null
+          description?: string | null
+          id?: number
+          incident_date?: string | null
           photos_url?: string | null
           repair_completed?: boolean | null
           repair_cost_estimate?: string | null
           repair_date?: string | null
-          reporting_user_id: string
-          vehicle_id: number
+          reporting_user_id?: string | null
+          vehicle_id?: number | null
         }
         Update: {
-          damage_severity?: string
-          description?: string
-          id?: never
-          incident_date?: string
+          created_at?: string | null
+          damage_severity?: string | null
+          description?: string | null
+          id?: number
+          incident_date?: string | null
           photos_url?: string | null
           repair_completed?: boolean | null
           repair_cost_estimate?: string | null
           repair_date?: string | null
-          reporting_user_id?: string
-          vehicle_id?: number
+          reporting_user_id?: string | null
+          vehicle_id?: number | null
         }
         Relationships: [
           {
