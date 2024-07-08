@@ -1,24 +1,9 @@
-import {
-  Avatar,
-  Box,
-  Flex,
-  Icon,
-  Image,
-  Text,
-  useBreakpointValue,
-  WrapItem,
-} from "@chakra-ui/react";
-import {
-  LuCar,
-  LuFileStack,
-  LuLayoutDashboard,
-  LuTable2,
-  LuUsers,
-} from "react-icons/lu";
-import { useLocation, useNavigate } from "react-router-dom";
+import { Avatar, Box, Flex, Icon, Image, Text, useBreakpointValue, WrapItem } from '@chakra-ui/react';
+import { LuCar, LuFileStack, LuLayoutDashboard, LuTable2 } from 'react-icons/lu';
+import { useLocation, useNavigate } from 'react-router-dom';
 
-import logo from "../../assets/logo/lp-logistics.png";
-import { Hamburger } from "./hamburger";
+import logo from '../../assets/logo/lp-logistics.png';
+import { Hamburger } from './hamburger';
 
 export function Navbar() {
   const navigate = useNavigate();
