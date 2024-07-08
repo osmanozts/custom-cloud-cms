@@ -5,6 +5,7 @@ import {
   GridItem,
   Stack,
   Textarea,
+  useBreakpointValue,
 } from "@chakra-ui/react";
 import { useState } from "react";
 
@@ -40,21 +41,22 @@ export const IncidentDetails = ({
     setReloadFiles((prev) => !prev);
   };
 
+  const gridTemplateColumns = useBreakpointValue({
+    base: "1fr",
+    md: "1fr 1fr",
+  });
+
   return (
     <Stack
       width="100%"
       borderWidth="1px"
       borderRadius="lg"
       bg="tileBgColor"
-      p={6}
+      p={4}
       maxW="100%"
       overflowX="hidden"
     >
-      <Grid
-        templateColumns={{ base: "1fr", md: "1fr 1fr" }}
-        gap={6}
-        maxW="100%"
-      >
+      <Grid templateColumns={gridTemplateColumns} gap={4} maxW="100%">
         {/* Description */}
         <GridItem colSpan={{ base: 1, md: 2 }}>
           <FormControl>
@@ -67,14 +69,14 @@ export const IncidentDetails = ({
               }
               placeholder="Beschreibung"
               resize="vertical"
-              maxW="100%"
+              width="100%"
             />
           </FormControl>
         </GridItem>
 
         {/* Damage Severity */}
         <GridItem>
-          <FormControl>
+          <FormControl width="100%">
             <FormLabel htmlFor="damageSeverity">Schadensschwere</FormLabel>
             <RadioButtons
               id="damageSeverity"
@@ -93,7 +95,7 @@ export const IncidentDetails = ({
 
         {/* Repair Cost Estimate */}
         <GridItem>
-          <FormControl maxW="100%">
+          <FormControl width="100%">
             <FormLabel htmlFor="repairCostEstimate">
               Reparaturkosten (in €)
             </FormLabel>
@@ -110,7 +112,7 @@ export const IncidentDetails = ({
 
         {/* Incident Date */}
         <GridItem>
-          <FormControl maxW="100%">
+          <FormControl width="100%">
             <FormLabel htmlFor="incidentDate">Unfalldatum</FormLabel>
             <CustomCalendar
               value={
@@ -125,7 +127,7 @@ export const IncidentDetails = ({
 
         {/* Repair Date */}
         <GridItem>
-          <FormControl maxW="100%">
+          <FormControl width="100%">
             <FormLabel htmlFor="repairDate">Reparaturdatum</FormLabel>
             <CustomCalendar
               value={
@@ -140,7 +142,7 @@ export const IncidentDetails = ({
 
         {/* Repair Completed */}
         <GridItem>
-          <FormControl maxW="100%">
+          <FormControl width="100%">
             <FormLabel htmlFor="repairCompleted">
               Reparatur abgeschlossen
             </FormLabel>
@@ -163,7 +165,7 @@ export const IncidentDetails = ({
 
         {/* Photos URL */}
         <GridItem colSpan={{ base: 1, md: 2 }}>
-          <FormControl maxW="100%">
+          <FormControl width="100%">
             <FormLabel htmlFor="photosUrl">
               Dateien / Bilder zum Vorfall
             </FormLabel>

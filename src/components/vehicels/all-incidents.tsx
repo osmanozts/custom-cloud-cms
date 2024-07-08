@@ -4,14 +4,12 @@ import {
   Flex,
   Grid,
   GridItem,
-  Icon,
   Stack,
   Text,
   useToast,
 } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import { useEffect, useState } from "react";
-import { LuPen } from "react-icons/lu";
 import { Link, useNavigate } from "react-router-dom";
 
 import { createIncident, getAllVehicleIncidents } from "../../backend-queries";
@@ -90,41 +88,41 @@ export const AllIncidents = ({ vehicle }: AllIncidentsProps) => {
                     >
                       <Grid
                         templateColumns={{ base: "1fr", md: "repeat(4, 1fr)" }}
+                        gap={4}
                       >
                         <GridItem
-                          borderRightWidth={1}
                           display="flex"
-                          flexDirection="row"
-                          alignItems="center"
+                          flexDirection="column"
+                          alignItems="flex-start"
                           gap={2}
+                          p={4}
                         >
-                          <Icon as={LuPen} size="24px" color="gray.600" />
-                          <Text whiteSpace="normal" wordBreak="break-word">
-                            Schaden ID: {incident.id}
-                          </Text>
+                          <Text fontWeight="bold">Schaden ID:</Text>
+                          <Text fontWeight="bold">{incident.id}</Text>
                         </GridItem>
-
                         <GridItem
-                          borderRightWidth={1}
                           display="flex"
-                          flexDirection="row"
-                          justifyContent="center"
+                          flexDirection="column"
+                          alignItems="flex-start"
+                          gap={2}
+                          p={4}
                         >
-                          <Text whiteSpace="normal" wordBreak="break-word">
-                            Erstellt am:{" "}
+                          <Text fontWeight="bold">Erstellt am:</Text>
+                          <Text>
                             {dayjs(incident.created_at).format(
                               "DD.MM.YYYY HH:mm"
                             )}
                           </Text>
                         </GridItem>
                         <GridItem
-                          borderRightWidth={1}
                           display="flex"
-                          flexDirection="row"
-                          justifyContent="center"
+                          flexDirection="column"
+                          alignItems="flex-start"
+                          gap={2}
+                          p={4}
                         >
-                          <Text whiteSpace="normal" wordBreak="break-word">
-                            Vorfall Datum:{" "}
+                          <Text fontWeight="bold">Vorfall Datum:</Text>
+                          <Text>
                             {incident.incident_date
                               ? dayjs(incident.incident_date).format(
                                   "DD.MM.YYYY HH:mm"
@@ -133,13 +131,16 @@ export const AllIncidents = ({ vehicle }: AllIncidentsProps) => {
                           </Text>
                         </GridItem>
                         <GridItem
-                          borderRightWidth={1}
                           display="flex"
-                          flexDirection="row"
-                          justifyContent="center"
+                          flexDirection="column"
+                          alignItems="flex-start"
+                          gap={2}
+                          p={4}
                         >
-                          <Text whiteSpace="normal" wordBreak="break-word">
-                            Reperatur abgeschlossen:{" "}
+                          <Text fontWeight="bold">
+                            Reperatur abgeschlossen:
+                          </Text>
+                          <Text>
                             {incident.repair_completed ? "Ja" : "Nein"}
                           </Text>
                         </GridItem>
