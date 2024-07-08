@@ -11,6 +11,7 @@ import supabase from "../utils/supabase";
 // Definieren der Typen für den AuthContext
 interface AuthContextType {
   user: any;
+  role: string | null;
   login: (email: string, password: string) => Promise<any>;
   sendOtp: (email: string) => Promise<any>;
   signOut: () => Promise<any>;
@@ -48,14 +49,31 @@ const signOut = () => supabase.auth.signOut();
 
 const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
   const [user, setUser] = useState<any>(null);
+  const [role, setRole] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
 
+  const fetchUserRole = async (userId: string) => {
+    const { data, error } = await supabase
+      .from("profile")
+      .select("role")
+      .eq("id", userId)
+      .single();
+    if (error) {
+      console.error("Error fetching user role:", error);
+      return null;
+    }
+    return data?.role || null;
+  };
+
   useEffect(() => {
-    const { data } = supabase.auth.onAuthStateChange((event, session) => {
-      if (event === "SIGNED_IN") {
-        setUser(session?.user || null);
+    const { data } = supabase.auth.onAuthStateChange(async (event, session) => {
+      if (event === "SIGNED_IN" && session?.user) {
+        const userRole = await fetchUserRole(session.user.id);
+        setUser(session.user);
+        setRole(userRole);
       } else if (event === "SIGNED_OUT") {
         setUser(null);
+        setRole(null);
       }
       setLoading(false);
     });
@@ -66,7 +84,9 @@ const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
   }, []);
 
   return (
-    <AuthContext.Provider value={{ user, login, sendOtp, signOut, loading }}>
+    <AuthContext.Provider
+      value={{ user, role, login, sendOtp, signOut, loading }}
+    >
       {children}
     </AuthContext.Provider>
   );
