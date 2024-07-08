@@ -55,13 +55,8 @@ export const EditIncident = ({}: EditIncidentProps) => {
   }
 
   return (
-    <Container
-      maxW="container.xl"
-      bg="backgroundColor"
-      boxShadow="md"
-      borderRadius="lg"
-    >
-      <Flex flexDirection="column" mb={8} alignItems="center">
+    <Container maxW="container.xl" bg="backgroundColor" borderRadius="lg">
+      <Flex flexDirection="column" my={8} alignItems="center">
         <Heading fontSize="2xl" fontWeight="bold" color="blue.700">
           Schadensmeldung Ansehen / Bearbeiten
         </Heading>

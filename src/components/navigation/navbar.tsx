@@ -9,6 +9,7 @@ import {
   WrapItem,
 } from "@chakra-ui/react";
 import {
+  LuCar,
   LuFileStack,
   LuLayoutDashboard,
   LuTable2,
@@ -41,7 +42,7 @@ export function Navbar() {
       id: 4,
       label: "Fehrzeug Management",
       path: "/vehicle-management",
-      icon: LuUsers,
+      icon: LuCar,
     },
   ];
 

@@ -5,6 +5,7 @@ export { getEmployee } from "./query/get-employee";
 export { getAllEmployees } from "./query/get-all-employees";
 export { getMinDetailEmployees } from "./query/get-min-detail-employees";
 export { getAllVehicles } from "./query/get-all-vehicles";
+export { getVehiclesByProfile } from "./query/get-vehicles-by-profile";
 export { getAllVehicleIncidents } from "./query/get-all-vehicle-incidents";
 export { getIncident } from "./query/get-incident";
 export { getVehicle } from "./query/get-vehicle";

@@ -1,138 +1,130 @@
-import { Container, Flex, Text } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  Container,
+  Divider,
+  Grid,
+  GridItem,
+  Heading,
+  Text,
+} from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 
-import { getEmployee, getProfile } from "../../backend-queries";
+import {
+  getEmployee,
+  getProfile,
+  getVehiclesByProfile,
+} from "../../backend-queries";
+import { VehiclesMinData } from "../../backend-queries/query/get-vehicles-by-profile";
 import { Tables } from "../../utils/database/types";
 
 export function EmployeeMinimumDetail() {
   const [searchParams] = useSearchParams();
 
-  const [employee, setEmployee] = useState<Tables<"employees">>();
-  const [profile, setProfile] = useState<Tables<"profile">>();
-
-  console.log("employee:", employee);
-  console.log("profile:", profile);
-
-  const [email, setEmail] = useState<string>("");
-  const [id, setId] = useState<string>("");
-  const [personnelNumber, setPersonnelNumber] = useState<string>("");
-  const [firstName, setFirstName] = useState<string>("");
-  const [lastName, setLastName] = useState<string>("");
-  const [city, setCity] = useState<string>("");
-  const [postalCode, setPostalCode] = useState<string>("");
-  const [street, setStreet] = useState<string>("");
-  const [profileID, setProfileID] = useState<string>("");
-  const [role, setRole] = useState<string>("");
+  const [employee, setEmployee] = useState<Tables<"employees"> | null>(null);
+  const [profile, setProfile] = useState<Tables<"profile"> | null>(null);
+  const [vehicles, setVehicles] = useState<VehiclesMinData | null>(null);
 
   useEffect(() => {
     const profileId = searchParams.get("profile_id") ?? "";
     if (profileId) {
-      getEmployee(profileId, (newEmployee) => {
-        setEmployee(newEmployee);
-        if (newEmployee) {
-          setId(newEmployee.id.toString() ?? "");
-          setPersonnelNumber(newEmployee.personnel_number ?? "");
-          setFirstName(newEmployee.first_name ?? "");
-          setLastName(newEmployee.last_name ?? "");
-          setCity(newEmployee.city ?? "");
-          setPostalCode(newEmployee.postal_code ?? "");
-          setStreet(newEmployee.street ?? "");
-          setProfileID(newEmployee.profile_id ?? "");
-        }
-      });
-
-      getProfile(profileId, (userProfile) => {
-        setProfile(userProfile);
-        if (userProfile) {
-          setEmail(userProfile.email ?? "");
-          setRole(userProfile.role ?? "");
-        }
-      });
+      getEmployee(profileId, setEmployee);
+      getProfile(profileId, setProfile);
+      getVehiclesByProfile(profileId, setVehicles);
     }
   }, [searchParams]);
 
   return (
-    <Container
-      display="flex"
-      flexDirection="column"
-      pt={12}
-      pl={12}
-      pr={12}
-      height="100svh"
-      borderWidth={1}
-      maxWidth="800px"
-    >
-      <Flex mb={12} justifyContent="center">
-        <Text fontSize={28}>Mitarbeiter Informationen Ansehen</Text>
-      </Flex>
+    <Container maxW="container.xl" py={8}>
+      <Box mb={8} textAlign="center">
+        <Heading as="h1" size="lg" mb={4}>
+          Mitarbeiterinformationen
+        </Heading>
+      </Box>
 
-      <Text fontSize={20} mb={4}>
-        Systeminterne Daten
-      </Text>
-      <Flex>
-        <Text fontWeight="bold" mr={4}>
-          Email:
-        </Text>
-        <Text>{email}</Text>
-      </Flex>
-      <Flex>
-        <Text fontWeight="bold" mr={4}>
-          Profil ID:
-        </Text>
-        <Text>{profileID}</Text>
-      </Flex>
-      <Flex>
-        <Text fontWeight="bold" mr={4}>
-          Mitarbeiter ID:
-        </Text>
-        <Text>{id}</Text>
-      </Flex>
-      <Text fontSize={20} my={4}>
-        Mitarbeiter Daten
-      </Text>
-      <Flex>
-        <Text fontWeight="bold" mr={4}>
-          Personalnummer:
-        </Text>
-        <Text>{personnelNumber}</Text>
-      </Flex>
-      <Flex>
-        <Text fontWeight="bold" mr={4}>
-          Vorname:
-        </Text>
-        <Text>{firstName}</Text>
-      </Flex>
-      <Flex>
-        <Text fontWeight="bold" mr={4}>
-          Nachname:
-        </Text>
-        <Text>{lastName}</Text>
-      </Flex>
-      <Flex>
-        <Text fontWeight="bold" mr={4}>
-          Stadt:
-        </Text>
-        <Text>{city}</Text>
-      </Flex>
-      <Flex>
-        <Text fontWeight="bold" mr={4}>
-          PLZ:
-        </Text>
-        <Text>{postalCode}</Text>
-      </Flex>
-      <Flex>
-        <Text fontWeight="bold" mr={4}>
-          Straße:
-        </Text>
-        <Text>{street}</Text>
-      </Flex>
-      <Flex mb={12}>
-        <Text fontWeight="bold" mr={4}>
-          Rolle:
-        </Text>
-        <Text>{role}</Text>
-      </Flex>
+      <Grid
+        templateColumns={{ base: "1fr", md: "repeat(4, 1fr)" }}
+        gap={6}
+        borderWidth="1px"
+        borderRadius="lg"
+        bg="tileBgColor"
+        p={6}
+      >
+        <GridItem>
+          <Box>
+            <Text fontWeight="bold">Email:</Text>
+            <Text>{profile?.email ?? "N/A"}</Text>
+          </Box>
+        </GridItem>
+        <GridItem>
+          <Box>
+            <Text fontWeight="bold">Personalnummer:</Text>
+            <Text>{employee?.personnel_number ?? "N/A"}</Text>
+          </Box>
+        </GridItem>
+        <GridItem>
+          <Box>
+            <Text fontWeight="bold">Vorname:</Text>
+            <Text>{employee?.first_name ?? "N/A"}</Text>
+          </Box>
+        </GridItem>
+        <GridItem>
+          <Box>
+            <Text fontWeight="bold">Nachname:</Text>
+            <Text>{employee?.last_name ?? "N/A"}</Text>
+          </Box>
+        </GridItem>
+        <GridItem>
+          <Box>
+            <Text fontWeight="bold">Stadt:</Text>
+            <Text>{employee?.city ?? "N/A"}</Text>
+          </Box>
+        </GridItem>
+        <GridItem>
+          <Box>
+            <Text fontWeight="bold">PLZ:</Text>
+            <Text>{employee?.postal_code ?? "N/A"}</Text>
+          </Box>
+        </GridItem>
+        <GridItem>
+          <Box>
+            <Text fontWeight="bold">Straße:</Text>
+            <Text>{employee?.street ?? "N/A"}</Text>
+          </Box>
+        </GridItem>
+        <GridItem>
+          <Box>
+            <Text fontWeight="bold">Rolle:</Text>
+            <Text>{profile?.role ?? "N/A"}</Text>
+          </Box>
+        </GridItem>
+      </Grid>
+      {vehicles && vehicles?.length > 0 && (
+        <Box borderWidth="1px" borderRadius="lg" bg="tileBgColor" p={6} my={4}>
+          <Text mb={4} fontWeight="bold">
+            Deine Fahrzeuge:
+          </Text>
+          {vehicles?.map((vehicle) => {
+            return (
+              <Grid
+                templateColumns={{ base: "1fr", md: "repeat(2, 1fr)" }}
+                gap={2}
+              >
+                <GridItem>
+                  <Text key={vehicle.id}>
+                    Kennzeichen: {vehicle.license_plate}
+                  </Text>
+                </GridItem>
+                <GridItem>
+                  <Button>Schaden melden</Button>
+                </GridItem>
+                <Divider m={4} />
+              </Grid>
+            );
+          })}
+        </Box>
+      )}
     </Container>
   );
 }

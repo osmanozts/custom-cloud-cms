@@ -8,6 +8,7 @@ import {
   Text,
 } from "@chakra-ui/react";
 import {
+  LuCar,
   LuFileStack,
   LuLayoutDashboard,
   LuLogOut,
@@ -45,6 +46,12 @@ export function Hamburger({}: Props) {
           onClick={() => navigate("/document-management")}
         >
           <Text>interne Dokumente</Text>
+        </MenuItem>
+        <MenuItem
+          icon={<LuCar />}
+          onClick={() => navigate("/vehicle-management")}
+        >
+          <Text>Fahrzeuge</Text>
         </MenuItem>
         <MenuItem icon={<LuLogOut />} onClick={signOut}>
           <Text>Ausloggen</Text>
