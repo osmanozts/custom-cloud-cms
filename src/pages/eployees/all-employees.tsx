@@ -45,7 +45,7 @@ export const AllEmployees: React.FC<AllEmployeesProps> = () => {
       );
       setEmployees(filteredEmployees);
     }
-  }, [searchString, employees]);
+  }, [searchString]);
 
   return (
     <Flex
