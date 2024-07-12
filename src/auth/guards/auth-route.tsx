@@ -8,7 +8,6 @@ export const AuthRoute = () => {
   const location = useLocation();
 
   if (loading) {
-    // You can render a loading spinner here or return null
     return (
       <Box
         display="flex"
@@ -27,12 +26,14 @@ export const AuthRoute = () => {
     );
   }
 
-  return user ? (
-    <>
-      {role === "employee" ? <Navbar /> : <AdminNavbar />}
-      <Outlet />
-    </>
-  ) : (
-    <Navigate to={"/login"} replace state={{ path: location.pathname }} />
-  );
+  if (!loading && user) {
+    return (
+      <>
+        {role === "employee" ? <Navbar /> : <AdminNavbar />}
+        <Outlet />
+      </>
+    );
+  } else if (!loading && !user) {
+    return <Navigate to={"/login"} state={{ path: location.pathname }} />;
+  }
 };
