@@ -1,6 +1,6 @@
 import { Navigate, Outlet, useLocation } from "react-router-dom";
 import { useAuth } from "../../providers/auth-provider";
-import { Box, Spinner } from "@chakra-ui/react";
+import { Box, Spinner, Text } from "@chakra-ui/react";
 import { AdminNavbar, Navbar } from "../../components";
 
 export const AuthRoute = () => {
@@ -22,6 +22,7 @@ export const AuthRoute = () => {
           color="blue.500"
           size="xl"
         />
+        <Text>Authentifizierung...</Text>
       </Box>
     );
   }
