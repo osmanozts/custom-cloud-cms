@@ -34,12 +34,16 @@ interface AuthProviderProps {
 }
 
 const login = async (email: string, password: string) => {
-  const { data, error } = await supabase.auth.signInWithPassword({
-    email,
-    password,
-  });
-  if (error) throw error;
-  return data;
+  try {
+    const { data, error } = await supabase.auth.signInWithPassword({
+      email,
+      password,
+    });
+    if (error) throw error;
+    return data;
+  } catch (error) {
+    console.log("🚀 ~ error:", error);
+  }
 };
 
 const sendOtp = (email: string) =>
@@ -58,6 +62,8 @@ const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
       .select("role")
       .eq("id", userId)
       .single();
+
+    setRole(data?.role ?? "employee");
     if (error) {
       console.error("Error fetching user role:", error);
       return null;
@@ -66,40 +72,16 @@ const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
   };
 
   useEffect(() => {
-    const checkSession = async () => {
-      setLoading(true); // Ensure loading is true while checking session
-      const {
-        data: { session },
-      } = await supabase.auth.getSession();
-      if (session?.user) {
-        const userRole = await fetchUserRole(session.user.id);
-        setUser(session.user);
-        setRole(userRole);
-        setLoading(false); // Set loading to false after session check
-      } else {
-        setLoading(false); // Set loading to false after session check
-      }
-    };
-
-    checkSession();
-
-    const { data } = supabase.auth.onAuthStateChange(async (event, session) => {
-      setLoading(true); // Ensure loading is true while handling auth state change
-      if (event === "SIGNED_IN" && session?.user) {
-        const userRole = await fetchUserRole(session.user.id);
-        setUser(session.user);
-        setRole(userRole);
-        setLoading(false); // Set loading to false after handling auth state change
-      } else if (event === "SIGNED_OUT") {
-        setUser(null);
-        setRole(null);
-        setLoading(false); // Set loading to false after handling auth state change
-      }
-    });
-
-    return () => {
-      data.subscription.unsubscribe();
-    };
+    try {
+      console.log("��� ~ Authenticating...");
+      supabase.auth.getUser().then(async (user) => {
+        setUser(user.data.user);
+        await fetchUserRole(user.data.user?.id ?? "");
+        setLoading(false);
+      });
+    } catch (error) {
+      console.log("🚀 ~ error:", error);
+    }
   }, []);
 
   return (

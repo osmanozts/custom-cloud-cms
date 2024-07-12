@@ -1,4 +1,4 @@
-import { FormEvent, useState } from "react";
+import { useState } from "react";
 import { useAuth } from "../../providers/auth-provider";
 import {
   Alert,
@@ -26,16 +26,17 @@ export function LoginForm() {
 
   const { login } = useAuth();
 
-  const handleLogin = async (event: FormEvent) => {
-    event.preventDefault();
+  const handleLogin = async () => {
     setLoading(true);
     setError(null);
 
     try {
+      console.log("Logging in...");
       await login(email, password);
 
       navigate("/");
     } catch (error: unknown) {
+      console.log("🚀 ~ error:", error);
       setError(handleErrorMessage(error));
     } finally {
       setLoading(false);
