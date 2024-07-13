@@ -49,12 +49,14 @@ const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
           email,
           password,
         })
-        .then((response) => {
+        .then(async (response) => {
           if (response.error) console.log("Error login:", response.error);
           else {
             setUser(response.data.user);
-            navigate("/", { replace: true });
-            setLoading(false);
+            await fetchUserRole(response.data.user?.id ?? "").then((role) => {
+              if (role) navigate("/", { replace: true });
+              setLoading(false);
+            });
           }
         });
     } catch (error) {
