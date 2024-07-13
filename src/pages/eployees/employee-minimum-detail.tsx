@@ -108,6 +108,7 @@ export function EmployeeMinimumDetail() {
           {vehicles?.map((vehicle) => {
             return (
               <Grid
+                key={vehicle.id}
                 templateColumns={{ base: "1fr", md: "repeat(2, 1fr)" }}
                 gap={2}
               >
