@@ -3,9 +3,8 @@ import {
   Button,
   Container,
   Divider,
-  Grid,
-  GridItem,
   Heading,
+  SimpleGrid,
   Text,
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
@@ -43,63 +42,54 @@ export function EmployeeMinimumDetail() {
         </Heading>
       </Box>
 
-      <Grid
-        templateColumns={{ base: "1fr", md: "repeat(4, 1fr)" }}
+      <SimpleGrid
+        columns={{ base: 1, md: 4 }}
         gap={6}
         borderWidth="1px"
         borderRadius="lg"
         bg="tileBgColor"
         p={6}
       >
-        <GridItem>
-          <Box>
-            <Text fontWeight="bold">Email:</Text>
-            <Text>{profile?.email ?? "N/A"}</Text>
-          </Box>
-        </GridItem>
-        <GridItem>
-          <Box>
-            <Text fontWeight="bold">Personalnummer:</Text>
-            <Text>{employee?.personnel_number ?? "N/A"}</Text>
-          </Box>
-        </GridItem>
-        <GridItem>
-          <Box>
-            <Text fontWeight="bold">Vorname:</Text>
-            <Text>{employee?.first_name ?? "N/A"}</Text>
-          </Box>
-        </GridItem>
-        <GridItem>
-          <Box>
-            <Text fontWeight="bold">Nachname:</Text>
-            <Text>{employee?.last_name ?? "N/A"}</Text>
-          </Box>
-        </GridItem>
-        <GridItem>
-          <Box>
-            <Text fontWeight="bold">Stadt:</Text>
-            <Text>{employee?.city ?? "N/A"}</Text>
-          </Box>
-        </GridItem>
-        <GridItem>
-          <Box>
-            <Text fontWeight="bold">PLZ:</Text>
-            <Text>{employee?.postal_code ?? "N/A"}</Text>
-          </Box>
-        </GridItem>
-        <GridItem>
-          <Box>
-            <Text fontWeight="bold">Straße:</Text>
-            <Text>{employee?.street ?? "N/A"}</Text>
-          </Box>
-        </GridItem>
-        <GridItem>
-          <Box>
-            <Text fontWeight="bold">Rolle:</Text>
-            <Text>{profile?.role ?? "N/A"}</Text>
-          </Box>
-        </GridItem>
-      </Grid>
+        <Box>
+          <Text fontWeight="bold">Email:</Text>
+          <Text>{profile?.email ?? "N/A"}</Text>
+        </Box>
+
+        <Box>
+          <Text fontWeight="bold">Personalnummer:</Text>
+          <Text>{employee?.personnel_number ?? "N/A"}</Text>
+        </Box>
+
+        <Box>
+          <Text fontWeight="bold">Vorname:</Text>
+          <Text>{employee?.first_name ?? "N/A"}</Text>
+        </Box>
+
+        <Box>
+          <Text fontWeight="bold">Nachname:</Text>
+          <Text>{employee?.last_name ?? "N/A"}</Text>
+        </Box>
+
+        <Box>
+          <Text fontWeight="bold">Stadt:</Text>
+          <Text>{employee?.city ?? "N/A"}</Text>
+        </Box>
+
+        <Box>
+          <Text fontWeight="bold">PLZ:</Text>
+          <Text>{employee?.postal_code ?? "N/A"}</Text>
+        </Box>
+
+        <Box>
+          <Text fontWeight="bold">Straße:</Text>
+          <Text>{employee?.street ?? "N/A"}</Text>
+        </Box>
+
+        <Box>
+          <Text fontWeight="bold">Rolle:</Text>
+          <Text>{profile?.role ?? "N/A"}</Text>
+        </Box>
+      </SimpleGrid>
       {vehicles && vehicles?.length > 0 && (
         <Box borderWidth="1px" borderRadius="lg" bg="tileBgColor" p={6} my={4}>
           <Text mb={4} fontWeight="bold">
@@ -107,21 +97,15 @@ export function EmployeeMinimumDetail() {
           </Text>
           {vehicles?.map((vehicle) => {
             return (
-              <Grid
-                key={vehicle.id}
-                templateColumns={{ base: "1fr", md: "repeat(2, 1fr)" }}
-                gap={2}
-              >
-                <GridItem>
-                  <Text key={vehicle.id}>
-                    Kennzeichen: {vehicle.license_plate}
-                  </Text>
-                </GridItem>
-                <GridItem>
-                  <Button>Schaden melden</Button>
-                </GridItem>
+              <SimpleGrid key={vehicle.id} columns={{ base: 1, md: 2 }} gap={2}>
+                <Text key={vehicle.id}>
+                  Kennzeichen: {vehicle.license_plate}
+                </Text>
+
+                <Button>Schaden melden</Button>
+
                 <Divider m={4} />
-              </Grid>
+              </SimpleGrid>
             );
           })}
         </Box>
