@@ -36,6 +36,7 @@ export const AuthRoute = () => {
       </>
     );
   } else if (!loading && !user) {
+    console.log("Redirect to Login");
     return <Navigate to={"/login"} state={{ path: location.pathname }} />;
   }
 };

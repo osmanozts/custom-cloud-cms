@@ -11,13 +11,10 @@ import {
   VStack,
 } from "@chakra-ui/react";
 import { EmailIcon, LockIcon } from "@chakra-ui/icons";
-import { useNavigate } from "react-router-dom";
 import { handleErrorMessage } from "./helpers/handle-error-message";
 import { InputField } from "../input-field";
 
 export function LoginForm() {
-  const navigate = useNavigate();
-
   const [email, setEmail] = useState("");
 
   const [password, setPassword] = useState("");
@@ -31,10 +28,7 @@ export function LoginForm() {
     setError(null);
 
     try {
-      console.log("Logging in...");
       await login(email, password);
-
-      navigate("/");
     } catch (error: unknown) {
       console.log("🚀 ~ error:", error);
       setError(handleErrorMessage(error));

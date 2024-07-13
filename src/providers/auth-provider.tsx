@@ -7,6 +7,7 @@ import {
   FC,
 } from "react";
 import supabase from "../utils/supabase";
+import { useNavigate } from "react-router-dom";
 
 // Definieren der Typen für den AuthContext
 interface AuthContextType {
@@ -33,28 +34,46 @@ interface AuthProviderProps {
   children: ReactNode;
 }
 
-const login = async (email: string, password: string) => {
-  try {
-    const { data, error } = await supabase.auth.signInWithPassword({
-      email,
-      password,
-    });
-    if (error) throw error;
-    return data;
-  } catch (error) {
-    console.log("🚀 ~ error:", error);
-  }
-};
-
-const sendOtp = (email: string) =>
-  supabase.auth.signInWithOtp({ email, options: { shouldCreateUser: false } });
-
-const signOut = () => supabase.auth.signOut();
-
 const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
   const [user, setUser] = useState<any>(null);
   const [role, setRole] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
+
+  const navigate = useNavigate();
+
+  const login = async (email: string, password: string) => {
+    setLoading(true);
+    try {
+      await supabase.auth
+        .signInWithPassword({
+          email,
+          password,
+        })
+        .then((response) => {
+          if (response.error) console.log("Error login:", response.error);
+          else {
+            setUser(response.data.user);
+            navigate("/", { replace: true });
+            setLoading(false);
+          }
+        });
+    } catch (error) {
+      console.log("Error login:", error);
+    }
+  };
+
+  const signOut = async () => {
+    await supabase.auth.signOut().then((response) => {
+      if (response.error) console.log("Error signing out:", response.error);
+      else navigate("/login");
+    });
+  };
+
+  const sendOtp = (email: string) =>
+    supabase.auth.signInWithOtp({
+      email,
+      options: { shouldCreateUser: false },
+    });
 
   const fetchUserRole = async (userId: string) => {
     const { data, error } = await supabase
@@ -73,10 +92,12 @@ const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
 
   useEffect(() => {
     try {
-      console.log("��� ~ Authenticating...");
+      console.log("Authenticating...");
       supabase.auth.getUser().then(async (user) => {
-        setUser(user.data.user);
-        await fetchUserRole(user.data.user?.id ?? "");
+        if (user.data.user) {
+          setUser(user.data.user);
+          await fetchUserRole(user.data.user?.id ?? "");
+        }
         setLoading(false);
       });
     } catch (error) {
