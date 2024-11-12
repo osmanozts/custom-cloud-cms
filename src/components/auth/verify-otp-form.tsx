@@ -32,10 +32,15 @@ export function VerifyOtpForm() {
     <Card maxWidth={600} width="100%">
       <CardBody>
         <VStack>
-          <Text marginBottom={6} fontSize={24} textAlign="center">
+          <Text
+            marginBottom={6}
+            fontSize={24}
+            textAlign="center"
+            color="textColor"
+          >
             Einmal Passwort
           </Text>
-          <Text textAlign="center" marginBottom={6}>
+          <Text textAlign="center" marginBottom={6} color="textColor">
             {
               " Du hast einen sechs stelligen Code in deinem E-Mail Postfach erhalten.\nBitte gib diesen innerhalb 15 Minuten ein!"
             }

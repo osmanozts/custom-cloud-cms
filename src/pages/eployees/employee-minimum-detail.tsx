@@ -51,54 +51,70 @@ export function EmployeeMinimumDetail() {
         p={6}
       >
         <Box>
-          <Text fontWeight="bold">Email:</Text>
-          <Text>{profile?.email ?? "N/A"}</Text>
+          <Text fontWeight="bold" color="textColor">
+            Email:
+          </Text>
+          <Text color="textColor">{profile?.email ?? "N/A"}</Text>
         </Box>
 
         <Box>
-          <Text fontWeight="bold">Personalnummer:</Text>
-          <Text>{employee?.personnel_number ?? "N/A"}</Text>
+          <Text fontWeight="bold" color="textColor">
+            Personalnummer:
+          </Text>
+          <Text color="textColor">{employee?.personnel_number ?? "N/A"}</Text>
         </Box>
 
         <Box>
-          <Text fontWeight="bold">Vorname:</Text>
-          <Text>{employee?.first_name ?? "N/A"}</Text>
+          <Text fontWeight="bold" color="textColor">
+            Vorname:
+          </Text>
+          <Text color="textColor">{employee?.first_name ?? "N/A"}</Text>
         </Box>
 
         <Box>
-          <Text fontWeight="bold">Nachname:</Text>
-          <Text>{employee?.last_name ?? "N/A"}</Text>
+          <Text fontWeight="bold" color="textColor">
+            Nachname:
+          </Text>
+          <Text color="textColor">{employee?.last_name ?? "N/A"}</Text>
         </Box>
 
         <Box>
-          <Text fontWeight="bold">Stadt:</Text>
-          <Text>{employee?.city ?? "N/A"}</Text>
+          <Text fontWeight="bold" color="textColor">
+            Stadt:
+          </Text>
+          <Text color="textColor">{employee?.city ?? "N/A"}</Text>
         </Box>
 
         <Box>
-          <Text fontWeight="bold">PLZ:</Text>
-          <Text>{employee?.postal_code ?? "N/A"}</Text>
+          <Text fontWeight="bold" color="textColor">
+            PLZ:
+          </Text>
+          <Text color="textColor">{employee?.postal_code ?? "N/A"}</Text>
         </Box>
 
         <Box>
-          <Text fontWeight="bold">Straße:</Text>
-          <Text>{employee?.street ?? "N/A"}</Text>
+          <Text fontWeight="bold" color="textColor">
+            Straße:
+          </Text>
+          <Text color="textColor">{employee?.street ?? "N/A"}</Text>
         </Box>
 
         <Box>
-          <Text fontWeight="bold">Rolle:</Text>
-          <Text>{profile?.role ?? "N/A"}</Text>
+          <Text fontWeight="bold" color="textColor">
+            Rolle:
+          </Text>
+          <Text color="textColor">{profile?.role ?? "N/A"}</Text>
         </Box>
       </SimpleGrid>
       {vehicles && vehicles?.length > 0 && (
         <Box borderWidth="1px" borderRadius="lg" bg="tileBgColor" p={6} my={4}>
-          <Text mb={4} fontWeight="bold">
+          <Text mb={4} fontWeight="bold" color="textColor">
             Deine Fahrzeuge:
           </Text>
           {vehicles?.map((vehicle) => {
             return (
               <SimpleGrid key={vehicle.id} columns={{ base: 1, md: 2 }} gap={2}>
-                <Text key={vehicle.id}>
+                <Text key={vehicle.id} color="textColor">
                   Kennzeichen: {vehicle.license_plate}
                 </Text>
 

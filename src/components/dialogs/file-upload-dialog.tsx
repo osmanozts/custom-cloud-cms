@@ -105,7 +105,9 @@ export const FileUploadDialog = ({
             </Box>
             <Stack mt={files.length > 0 ? 4 : 0}>
               {files.map((file, index) => (
-                <Text key={index}>{file.name}</Text>
+                <Text key={index} color="textColor">
+                  {file.name}
+                </Text>
               ))}
             </Stack>
           </ModalBody>

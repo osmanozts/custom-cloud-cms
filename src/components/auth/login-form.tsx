@@ -38,10 +38,15 @@ export function LoginForm() {
   };
 
   return (
-    <Card width="100%" backgroundColor="gray.200">
+    <Card width="100%" backgroundColor="tileBgColor">
       <CardBody>
         <VStack>
-          <Text marginBottom={6} fontSize={24} textAlign="center">
+          <Text
+            marginBottom={6}
+            fontSize={24}
+            textAlign="center"
+            color="textColor"
+          >
             Anmelden
           </Text>
 

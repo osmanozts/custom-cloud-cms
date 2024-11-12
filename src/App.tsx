@@ -5,6 +5,7 @@ import { Route, Routes } from "react-router-dom";
 import { AdminRoute, AuthRoute } from "./auth/guards";
 import {
   AllDocuments,
+  AllDriverHistory,
   AllEmployees,
   AllVehicles,
   CreateNewUser,
@@ -30,6 +31,7 @@ function App() {
           <Route path="/edit-vehicle" element={<EditVehicle />} />
           <Route path="/edit-vehicle" element={<EditVehicle />} />
           <Route path="/edit-incident" element={<EditIncident />} />
+          <Route path="/driver-history" element={<AllDriverHistory />} />
         </Route>
         <Route
           path="/employee-min-detail"

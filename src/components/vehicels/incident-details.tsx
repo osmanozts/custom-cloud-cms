@@ -73,6 +73,7 @@ export const IncidentDetails = ({
             placeholder="Beschreibung"
             resize="vertical"
             width="100%"
+            color="textColor"
           />
         </FormControl>
       </GridItem>

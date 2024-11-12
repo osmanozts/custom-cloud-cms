@@ -9,10 +9,16 @@ import {
 } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 import { LuTable2, LuFileStack, LuCar } from "react-icons/lu";
+import { IconType } from "react-icons";
 
-type DashboardProps = {};
+type NavigationItems = {
+  title: string;
+  description: string;
+  icon: IconType;
+  path: string;
+};
 
-export function Dashboard({}: DashboardProps) {
+export function Dashboard() {
   const navigate = useNavigate();
 
   const items = [
@@ -36,6 +42,12 @@ export function Dashboard({}: DashboardProps) {
     },
   ];
 
+  const handleOnClick = (item: NavigationItems) => {
+    if (item.path === "/document-management")
+      alert("Dieses Feature steht noch nicht zur Verfügung!");
+    else navigate(item.path);
+  };
+
   return (
     <Container
       height="100vh"
@@ -49,7 +61,7 @@ export function Dashboard({}: DashboardProps) {
       mt={8}
       bg="backgroundColor"
     >
-      <Heading as="h1" mb={12} textAlign="center">
+      <Heading as="h1" mb={12} textAlign="center" textColor="textColor">
         Unternehmens-Anwendungen
       </Heading>
       <Grid
@@ -62,7 +74,7 @@ export function Dashboard({}: DashboardProps) {
           <Box
             key={index}
             as="button"
-            onClick={() => navigate(item.path)}
+            onClick={() => handleOnClick(item)}
             p={6}
             borderWidth="1px"
             borderRadius="lg"
@@ -79,12 +91,14 @@ export function Dashboard({}: DashboardProps) {
             }
           >
             <Flex alignItems="center" mb={4}>
-              <Icon as={item.icon} boxSize={8} mr={4} color="teal.500" />
-              <Heading as="h2" size="md">
+              <Icon as={item.icon} boxSize={8} mr={4} color="accentColor" />
+              <Heading as="h2" size="md" color="textColor">
                 {item.title}
               </Heading>
             </Flex>
-            <Text fontSize="lg">{item.description}</Text>
+            <Text fontSize="lg" color="textColor">
+              {item.description}
+            </Text>
           </Box>
         ))}
       </Grid>

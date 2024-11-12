@@ -67,7 +67,7 @@ export const AllIncidents = ({ vehicle }: AllIncidentsProps) => {
         <Grid templateColumns={{ base: "1fr", md: "repeat(1, 1fr)" }}>
           {incidents.length > 0 ? (
             incidents.map((incident) => (
-              <GridItem key={incident.id}>
+              <GridItem key={incident.id} mb={2}>
                 <Link
                   to={`/edit-incident?incident_id=${incident.id}&vehicle_id=${vehicle.id}`}
                   style={{ textDecoration: "none", maxWidth: "100%" }}
@@ -97,8 +97,10 @@ export const AllIncidents = ({ vehicle }: AllIncidentsProps) => {
                           gap={2}
                           p={4}
                         >
-                          <Text fontWeight="bold">Schaden ID:</Text>
-                          <Text fontWeight="bold">{incident.id}</Text>
+                          <Text fontWeight="bold" color="textColor">
+                            Schaden ID:
+                          </Text>
+                          <Text color="textColor">{incident.id}</Text>
                         </GridItem>
                         <GridItem
                           display="flex"
@@ -107,8 +109,10 @@ export const AllIncidents = ({ vehicle }: AllIncidentsProps) => {
                           gap={2}
                           p={4}
                         >
-                          <Text fontWeight="bold">Erstellt am:</Text>
-                          <Text>
+                          <Text fontWeight="bold" color="textColor">
+                            Erstellt am:
+                          </Text>
+                          <Text color="textColor">
                             {dayjs(incident.created_at).format(
                               "DD.MM.YYYY HH:mm"
                             )}
@@ -121,8 +125,10 @@ export const AllIncidents = ({ vehicle }: AllIncidentsProps) => {
                           gap={2}
                           p={4}
                         >
-                          <Text fontWeight="bold">Vorfall Datum:</Text>
-                          <Text>
+                          <Text fontWeight="bold" color="textColor">
+                            Vorfall Datum:
+                          </Text>
+                          <Text color="textColor">
                             {incident.incident_date
                               ? dayjs(incident.incident_date).format(
                                   "DD.MM.YYYY HH:mm"
@@ -137,10 +143,10 @@ export const AllIncidents = ({ vehicle }: AllIncidentsProps) => {
                           gap={2}
                           p={4}
                         >
-                          <Text fontWeight="bold">
+                          <Text fontWeight="bold" color="textColor">
                             Reperatur abgeschlossen:
                           </Text>
-                          <Text>
+                          <Text color="textColor">
                             {incident.repair_completed ? "Ja" : "Nein"}
                           </Text>
                         </GridItem>
@@ -151,7 +157,7 @@ export const AllIncidents = ({ vehicle }: AllIncidentsProps) => {
               </GridItem>
             ))
           ) : (
-            <Text>Keine Schadensmeldungen vorhanden</Text>
+            <Text color="textColor">Keine Schadensmeldungen vorhanden</Text>
           )}
         </Grid>
         <Button

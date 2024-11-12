@@ -93,7 +93,7 @@ export const EditEmployee = ({}: EditEmployeeProps) => {
             alignSelf="center"
           >
             <Icon mr={2} as={LuCheck} />
-            <Text>Speichern</Text>
+            <Text color="textColor">Speichern</Text>
           </Button>
           <Button
             bg="dangerColor"

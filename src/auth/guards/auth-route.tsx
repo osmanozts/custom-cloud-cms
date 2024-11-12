@@ -23,7 +23,7 @@ export const AuthRoute = () => {
           color="blue.500"
           size="xl"
         />
-        <Text>Authentifizierung...</Text>
+        <Text color="textColor">Authentifizierung...</Text>
       </Box>
     );
   }

@@ -23,13 +23,10 @@ export const AllEmployees: React.FC<AllEmployeesProps> = () => {
 
   useEffect(() => {
     if (searchString.trim() === "") {
-      // If search string is empty, fetch all employees
       getAllEmployees((allEmployees: EmployeeWithProfile[]) =>
         setEmployees(allEmployees)
       );
     } else {
-      // Otherwise, filter employees based on searchString
-
       const filteredEmployees: EmployeeWithProfile[] = employees.filter(
         (employee) =>
           (employee.first_name &&
@@ -56,7 +53,7 @@ export const AllEmployees: React.FC<AllEmployeesProps> = () => {
     >
       <VStack width="100%" maxWidth="1200px" p={6}>
         <Flex w="100%" justify="space-between" align="center">
-          <Box>
+          <Box maxW={300}>
             <InputField
               value={searchString}
               placeholder="Suchen..."
@@ -64,11 +61,13 @@ export const AllEmployees: React.FC<AllEmployeesProps> = () => {
               icon={<SearchIcon color="gray.500" />}
             />
           </Box>
+
           <Button
             onClick={() => navigate("/create-new-user")}
             bg="successColor"
+            leftIcon={<Icon as={LuPlus} />}
           >
-            <Icon as={LuPlus} />
+            Neuer Mitarbeiter
           </Button>
         </Flex>
 

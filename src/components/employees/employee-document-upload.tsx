@@ -33,7 +33,7 @@ export const EmployeeDocumentUpload: React.FC<EmployeeDocumentUploadProps> = ({
   return (
     <Stack spacing={6}>
       <Box borderWidth="1px" borderRadius="lg" p={6} bg="tileBgColor">
-        <Text mb={4} fontWeight="bold">
+        <Text mb={4} fontWeight="bold" color="textColor">
           Lade Dateien zu diesem Mitarbeiter hoch
         </Text>
         <Stack spacing={4}>

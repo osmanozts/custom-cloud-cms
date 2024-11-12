@@ -18,6 +18,14 @@ import { useLocation, useNavigate } from "react-router-dom";
 
 import logo from "../../assets/logo/lp-logistics.png";
 import { AdminHamburger } from "./admin-hamburger";
+import { IconType } from "react-icons";
+
+type NavigationItems = {
+  id: number;
+  label: string;
+  icon: IconType;
+  path: string;
+};
 
 export function AdminNavbar() {
   const navigate = useNavigate();
@@ -45,15 +53,28 @@ export function AdminNavbar() {
     },
   ];
 
+  const isActive = (path: string) => location.pathname === path;
+
   const showNavItems = useBreakpointValue({
     base: false,
     md: false,
     lg: true,
   });
 
+  const handleOnClick = (item: NavigationItems) => {
+    if (item.path === "/document-management")
+      alert("Dieses Feature steht noch nicht zur Verfügung!");
+    else navigate(item.path);
+  };
+
   return (
-    <Flex height={70} backgroundColor="tileBgColor" alignItems="center" px={6}>
-      <Box width="70px" justifyContent="center" alignItems="center">
+    <Flex
+      height="80px"
+      backgroundColor="tileBgColor"
+      alignItems="center"
+      px={6}
+    >
+      <Box width="100px" justifyContent="center" alignItems="center">
         <Image src={logo} alt="Logo" objectFit="contain" />
       </Box>
       <Flex flex={1} justifyContent="flex-end" alignItems="center">
@@ -64,13 +85,17 @@ export function AdminNavbar() {
                 key={item.id}
                 paddingRight={12}
                 cursor="pointer"
-                onClick={() => navigate(item.path)}
+                onClick={() => handleOnClick(item)}
               >
-                <Icon as={item.icon} boxSize={6} mr={2} />
+                <Icon
+                  as={item.icon}
+                  boxSize={6}
+                  mr={2}
+                  color={isActive(item.path) ? "accentColor" : "textColor"}
+                />
                 <Text
-                  textDecoration={
-                    location.pathname === item.path ? "underline" : "none"
-                  }
+                  color={isActive(item.path) ? "accentColor" : "textColor"}
+                  textDecoration={isActive(item.path) ? "underline" : "none"}
                 >
                   {item.label}
                 </Text>

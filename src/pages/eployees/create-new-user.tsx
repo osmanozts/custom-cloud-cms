@@ -48,7 +48,9 @@ export function CreateNewUser() {
         paddingTop={12}
         paddingBottom={12}
       >
-        <Text mb={4}>Neuen Nutzer Anlegen</Text>
+        <Text mb={4} color="textColor">
+          Neuen Nutzer Anlegen
+        </Text>
         <InputField
           value={email}
           onChange={setEmail}

@@ -4,9 +4,10 @@ import { LuPlus } from "react-icons/lu";
 
 import { getAllVehicles } from "../../backend-queries";
 import { Vehicles } from "../../backend-queries/query/get-all-vehicles";
-import { VehiclesTable } from "../../components";
+import { InputField, VehiclesTable } from "../../components";
 import supabase from "../../utils/supabase";
 import { useNavigate } from "react-router-dom";
+import { SearchIcon } from "@chakra-ui/icons";
 
 type AllVehiclesProps = {};
 
@@ -16,9 +17,22 @@ export function AllVehicles({}: AllVehiclesProps) {
   const [vehicles, setEmployees] = useState<Vehicles>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
+  const [searchString, setSearchString] = useState<string>("");
+
   useEffect(() => {
-    getAllVehicles((allVehicles: Vehicles) => setEmployees(allVehicles));
-  }, []);
+    if (searchString.trim() === "") {
+      getAllVehicles((allVehicles: Vehicles) => setEmployees(allVehicles));
+    } else {
+      const filteredVehicles = vehicles.filter(
+        (vehicle) =>
+          vehicle.license_plate?.toString().includes(searchString) ||
+          vehicle.vin?.toLowerCase().includes(searchString.toLowerCase()) ||
+          vehicle.model?.toLowerCase().includes(searchString.toLowerCase()) ||
+          vehicle.make?.toLowerCase().includes(searchString.toLowerCase())
+      );
+      setEmployees(filteredVehicles);
+    }
+  }, [searchString]);
 
   return (
     <Flex
@@ -29,7 +43,14 @@ export function AllVehicles({}: AllVehiclesProps) {
     >
       <VStack width="100%" maxWidth="1200px" p={6}>
         <Flex w="100%" justify="space-between" align="center">
-          <Box></Box>
+          <Box maxW={300}>
+            <InputField
+              value={searchString}
+              placeholder="Suchen..."
+              onChange={(newValue) => setSearchString(newValue)}
+              icon={<SearchIcon color="gray.500" />}
+            />
+          </Box>
           <Button
             isLoading={isLoading}
             onClick={async () => {
@@ -38,7 +59,7 @@ export function AllVehicles({}: AllVehiclesProps) {
                 const { data: vehicle, error } = await supabase
                   .from("vehicles")
                   .insert({
-                    id: Math.floor(Math.random() * 1000000),
+                    id: Math.floor(Math.random() * 100000001),
                   })
                   .select()
                   .single();
@@ -59,7 +80,7 @@ export function AllVehicles({}: AllVehiclesProps) {
             bg="successColor"
           >
             <Icon as={LuPlus} mr={4} />
-            <Text>Neues Fahrzeug</Text>
+            <Text color="textColor">Neues Fahrzeug</Text>
           </Button>
         </Flex>
 

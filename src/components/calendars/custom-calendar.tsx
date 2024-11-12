@@ -31,8 +31,12 @@ export function CustomCalendar({ value, onChange }: CalendarProps) {
   };
 
   return (
-    <Box bg="backgroundColor">
-      <Button width="100%" onClick={isOpen ? onClose : onOpen}>
+    <Box bg="backgroundColor" borderRadius={6}>
+      <Button
+        width="100%"
+        onClick={isOpen ? onClose : onOpen}
+        bg="backgroundColor"
+      >
         {formatDate(selectedDate)}
       </Button>
       {isOpen && (

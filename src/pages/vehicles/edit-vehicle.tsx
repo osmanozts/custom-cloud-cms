@@ -6,7 +6,6 @@ import {
   Heading,
   Icon,
   Spinner,
-  Text,
   VStack,
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
@@ -21,6 +20,7 @@ import {
 import { EmployeesMinimumDetail } from "../../backend-queries/query/get-min-detail-employees";
 import { AllIncidents, VehicleDetails } from "../../components";
 import { Tables } from "../../utils/database/types";
+import { createDriverHistory } from "../../backend-queries/create/create-driver-history";
 
 type EditVehicleProps = {};
 
@@ -32,6 +32,8 @@ export const EditVehicle = ({}: EditVehicleProps) => {
   const [drivers, setDrivers] = useState<EmployeesMinimumDetail>([]);
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
+
+  const [isSaveDisabled, setIsSaveDisabled] = useState<boolean>(true);
 
   useEffect(() => {
     getMinDetailEmployees((employees) => setDrivers(employees));
@@ -51,6 +53,9 @@ export const EditVehicle = ({}: EditVehicleProps) => {
 
     setIsLoading(true);
     await updateVehicle(vehicle);
+    if (vehicle.profile_id) {
+      await createDriverHistory(vehicle.profile_id, vehicle.id);
+    }
     setIsLoading(false);
     navigate("/vehicle-management");
   };
@@ -72,7 +77,12 @@ export const EditVehicle = ({}: EditVehicleProps) => {
       borderRadius="lg"
     >
       <Flex flexDirection="column" mb={8} alignItems="center">
-        <Heading fontSize="2xl" fontWeight="bold" color="blue.700">
+        <Heading
+          fontSize="2xl"
+          fontWeight="bold"
+          color="blue.700"
+          textColor="textColor"
+        >
           Fahrzeug Ansehen / Bearbeiten
         </Heading>
         <Flex mt={4} width="250px" justifyContent="space-between">
@@ -83,9 +93,11 @@ export const EditVehicle = ({}: EditVehicleProps) => {
             onClick={handleSave}
             size="sm"
             alignSelf="center"
+            isDisabled={isSaveDisabled}
+            leftIcon={<Icon as={LuCheck} />}
+            textColor="textColor"
           >
-            <Icon mr={2} as={LuCheck} />
-            <Text>Speichern</Text>
+            Speichern
           </Button>
           <Button
             bg="dangerColor"
@@ -93,8 +105,9 @@ export const EditVehicle = ({}: EditVehicleProps) => {
             onClick={() => navigate("/vehicle-management")}
             size="sm"
             alignSelf="center"
+            leftIcon={<Icon as={LuX} />}
+            textColor="textColor"
           >
-            <Icon mr={2} as={LuX} />
             Verwerfen
           </Button>
         </Flex>
@@ -108,7 +121,10 @@ export const EditVehicle = ({}: EditVehicleProps) => {
           <VehicleDetails
             vehicle={vehicle}
             drivers={drivers}
-            setVehicle={setVehicle}
+            setVehicle={(vehicle) => {
+              setVehicle(vehicle);
+              setIsSaveDisabled(false);
+            }}
           />
         </VStack>
         <Heading

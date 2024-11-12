@@ -71,7 +71,7 @@ export const EditIncident = ({}: EditIncidentProps) => {
             alignSelf="center"
           >
             <Icon mr={2} as={LuCheck} />
-            <Text>Speichern</Text>
+            <Text color="textColor">Speichern</Text>
           </Button>
           <Button
             bg="dangerColor"

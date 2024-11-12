@@ -63,7 +63,11 @@ export const UploadedFilesGrid = ({
   }
 
   if (files.length === 0) {
-    return <Text my={4}>Noch keine Dateien hochgeladen</Text>;
+    return (
+      <Text my={4} color="textColor">
+        Noch keine Dateien hochgeladen
+      </Text>
+    );
   }
 
   return (
@@ -90,7 +94,7 @@ export const UploadedFilesGrid = ({
             ) : (
               <Box>
                 <Icon as={FiFile} boxSize={12} />
-                <Text isTruncated fontSize={12} mt={2}>
+                <Text isTruncated fontSize={12} mt={2} color="textColor">
                   {file.name}
                 </Text>
               </Box>

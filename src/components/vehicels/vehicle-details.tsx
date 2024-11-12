@@ -1,9 +1,11 @@
 import {
+  Button,
   FormControl,
   FormLabel,
   Grid,
   GridItem,
   Stack,
+  Text,
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { Tables } from "../../utils/database/types";
@@ -14,6 +16,8 @@ import { RadioButtons } from "../radio-buttons";
 import { EmployeesMinimumDetail } from "../../backend-queries/query/get-min-detail-employees";
 import { CustomCalendar } from "../calendars/custom-calendar";
 import { VehicleProfilePic } from "./vehicle-profile-pic";
+import { RepeatClockIcon } from "@chakra-ui/icons";
+import { useNavigate } from "react-router-dom";
 
 type VehicleDetailsProps = {
   vehicle: Tables<"vehicles">;
@@ -26,6 +30,7 @@ export const VehicleDetails = ({
   drivers,
   setVehicle,
 }: VehicleDetailsProps) => {
+  const navigate = useNavigate();
   const [driverOptions, setDriverOptions] = useState<MenuOption[]>([]);
   const [defaultDriverOption, setDefaultDriverOption] = useState<MenuOption>();
 
@@ -64,12 +69,14 @@ export const VehicleDetails = ({
       bg="tileBgColor"
       p={6}
     >
-      <VehicleProfilePic vehicle_id={vehicle.id.toString()} />
       <Grid
         templateColumns={{ base: "1fr", md: "repeat(4, 1fr)" }}
         gap={6}
         mt={4}
       >
+        <GridItem>
+          <VehicleProfilePic vehicle_id={vehicle.id.toString()} />
+        </GridItem>
         {/* VIN */}
         <GridItem>
           <FormControl>
@@ -98,14 +105,16 @@ export const VehicleDetails = ({
           </FormControl>
         </GridItem>
 
-        {/* Farbe */}
+        {/* Hauptfahrer */}
         <GridItem>
           <FormControl>
-            <FormLabel htmlFor="color">Farbe</FormLabel>
+            <FormLabel htmlFor="profileId">Haupt-Fahrer</FormLabel>
             <DefaultMenu
-              options={colors}
-              defaultValue={vehicle.color ?? ""}
-              onSelect={(value) => setVehicle({ ...vehicle, color: value })}
+              options={driverOptions}
+              defaultValue={defaultDriverOption?.label ?? "Wähle einen Fahrer"}
+              onSelect={(value) =>
+                setVehicle({ ...vehicle, profile_id: value })
+              }
             />
           </FormControl>
         </GridItem>
@@ -162,20 +171,6 @@ export const VehicleDetails = ({
           </FormControl>
         </GridItem>
 
-        {/* Profil ID */}
-        <GridItem>
-          <FormControl>
-            <FormLabel htmlFor="profileId">Haupt-Fahrer</FormLabel>
-            <DefaultMenu
-              options={driverOptions}
-              defaultValue={defaultDriverOption?.label ?? "Wähle einen Fahrer"}
-              onSelect={(value) =>
-                setVehicle({ ...vehicle, profile_id: value })
-              }
-            />
-          </FormControl>
-        </GridItem>
-
         {/* Status */}
         <GridItem>
           <FormControl>
@@ -225,6 +220,31 @@ export const VehicleDetails = ({
               }}
             />
           </FormControl>
+        </GridItem>
+
+        {/* Farbe */}
+        <GridItem>
+          <FormControl>
+            <FormLabel htmlFor="color">Farbe</FormLabel>
+            <DefaultMenu
+              options={colors}
+              defaultValue={vehicle.color ?? ""}
+              onSelect={(value) => setVehicle({ ...vehicle, color: value })}
+            />
+          </FormControl>
+        </GridItem>
+
+        {/* Fahrer Historie */}
+        <GridItem height="100%" display="flex" alignItems="flex-end">
+          <Button
+            borderWidth={1}
+            width="100%"
+            bg="backgroundColor"
+            leftIcon={<RepeatClockIcon />}
+            onClick={() => navigate("/driver-history")}
+          >
+            <Text color="textColor">Fahrer Historie</Text>
+          </Button>
         </GridItem>
       </Grid>
     </Stack>

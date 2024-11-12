@@ -49,6 +49,7 @@ export const DefaultMenu: React.FC<DefaultMenuProps> = ({
         variant="outline"
         value={defaultValue}
         width="100%"
+        bg="backgroundColor"
       >
         {selectedOption ? (
           <Box display="flex" alignItems="center">
