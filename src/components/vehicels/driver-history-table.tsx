@@ -1,5 +1,4 @@
 import { Box, Table, Tbody, Td, Th, Thead, Tr } from "@chakra-ui/react";
-import dayjs from "dayjs";
 import { useNavigate } from "react-router-dom";
 
 type HistoryEntry = {
@@ -15,8 +14,6 @@ type DriverHistoryTableProps = {
 };
 
 export function DriverHistoryTable({ historyData }: DriverHistoryTableProps) {
-  const navigate = useNavigate();
-
   return (
     <Box>
       <Table borderWidth={1} mt={4}>
