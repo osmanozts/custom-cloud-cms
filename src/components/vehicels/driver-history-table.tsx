@@ -1,5 +1,4 @@
 import { Box, Table, Tbody, Td, Th, Thead, Tr } from "@chakra-ui/react";
-import { useNavigate } from "react-router-dom";
 
 type HistoryEntry = {
   vehicle_id: number;
