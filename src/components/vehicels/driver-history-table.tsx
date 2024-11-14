@@ -1,24 +1,17 @@
 import { Box, Table, Tbody, Td, Th, Thead, Tr } from "@chakra-ui/react";
-
-type HistoryEntry = {
-  vehicle_id: number;
-  vin: string;
-  license_plate: string;
-  driver_id: string;
-  start_date: Date;
-};
+import { JoinedDriverHistory } from "../../backend-queries/joins/joined-driver-history";
+import dayjs from "dayjs";
 
 type DriverHistoryTableProps = {
-  historyData: HistoryEntry[];
+  historyData: JoinedDriverHistory;
 };
 
 export function DriverHistoryTable({ historyData }: DriverHistoryTableProps) {
   return (
     <Box>
-      <Table borderWidth={1} mt={4}>
+      <Table borderWidth={1} mt={4} w="100%">
         <Thead>
           <Tr whiteSpace="nowrap">
-            <Th>Fahrzeug ID</Th>
             <Th>VIN</Th>
             <Th>Kennzeichen</Th>
             <Th>Fahrer</Th>
@@ -34,12 +27,20 @@ export function DriverHistoryTable({ historyData }: DriverHistoryTableProps) {
                 cursor="pointer"
                 color="textColor"
                 bg={"tileBgColor"}
+                _hover={{ bg: "backgroundColor" }}
               >
-                <Td>{data.vehicle_id ?? "-"}</Td>
-                <Td>{data.vin ?? "-"}</Td>
-                <Td>{data.license_plate ?? "-"}</Td>
-                <Td>{data.driver_id ?? "-"}</Td>
-                <Td>{data.start_date.toString() ?? "-"}</Td>
+                <Td>{data.vehicles?.vin ?? "-"}</Td>
+                <Td>{data.vehicles?.license_plate ?? "-"}</Td>
+                <Td>
+                  {data.employees?.first_name +
+                    " " +
+                    data.employees?.last_name ?? "-"}
+                </Td>
+                <Td>
+                  {dayjs(data.drive_start)
+                    .format("DD.MM.YYYY HH:mm")
+                    .toString()}
+                </Td>
               </Tr>
             );
           })}
