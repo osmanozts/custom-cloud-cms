@@ -71,8 +71,8 @@ export type Database = {
             foreignKeyName: "driver_history_driver_id_fkey"
             columns: ["driver_id"]
             isOneToOne: false
-            referencedRelation: "profile"
-            referencedColumns: ["id"]
+            referencedRelation: "employees"
+            referencedColumns: ["profile_id"]
           },
           {
             foreignKeyName: "driver_history_vehicle_id_fkey"

@@ -241,7 +241,7 @@ export const VehicleDetails = ({
             width="100%"
             bg="backgroundColor"
             leftIcon={<RepeatClockIcon />}
-            onClick={() => navigate("/driver-history")}
+            onClick={() => navigate("/driver-history?vehicle_id=" + vehicle.id)}
           >
             <Text color="textColor">Fahrer Historie</Text>
           </Button>
