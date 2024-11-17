@@ -1,7 +1,7 @@
 import { Box, Flex, VStack } from "@chakra-ui/react";
 import { DriverHistoryTable, InputField } from "../../components";
 import { useEffect, useState } from "react";
-import { getVehicleDriverHistory } from "../../backend-queries/query/get-vehicle-history";
+import { getVehicleDriverHistories } from "../../backend-queries/query/get-vehicle-histories";
 import { useSearchParams } from "react-router-dom";
 import { SearchIcon } from "@chakra-ui/icons";
 import { JoinedDriverHistory } from "../../backend-queries/joins/joined-driver-history";
@@ -14,7 +14,7 @@ export function AllDriverHistory() {
 
   useEffect(() => {
     if (searchString.trim() === "") {
-      getVehicleDriverHistory(
+      getVehicleDriverHistories(
         Number(searchParams.get("vehicle_id")),
         (fetchedData: JoinedDriverHistory) => setHistoryData(fetchedData)
       );

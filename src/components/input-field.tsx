@@ -8,7 +8,7 @@ interface InputFieldProps {
   icon?: ReactNode;
   isPasswordField?: boolean;
   isDisabled?: boolean;
-  onChange: (value: string) => void;
+  onChange?: (value: string) => void;
 }
 
 export function InputField({
@@ -32,7 +32,9 @@ export function InputField({
       <Input
         id={id}
         value={value}
-        onChange={(event) => onChange(event.target.value)}
+        onChange={(event) =>
+          onChange ? onChange(event.target.value) : undefined
+        }
         placeholder={placeholder}
         type={isPasswordField ? "password" : "text"}
         focusBorderColor="blue.500"

@@ -9,4 +9,5 @@ export { EditEmployee } from "./eployees/edit-employee";
 export { AllVehicles } from "./vehicles/all-vehicles";
 export { EditVehicle } from "./vehicles/edit-vehicle";
 export { EditIncident } from "./vehicles/edit-incident";
+export { EditDriverHistory } from "./vehicles/edit-driver-history";
 export { AllDriverHistory } from "./vehicles/all-driver-history";

@@ -34,6 +34,8 @@ export const EditEmployee = ({}: EditEmployeeProps) => {
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
+  const [isSaveDisabled, setIsSaveDisabled] = useState<boolean>(true);
+
   useEffect(() => {
     const profileId = searchParams.get("profile_id") ?? "";
     if (profileId) {
@@ -91,6 +93,7 @@ export const EditEmployee = ({}: EditEmployeeProps) => {
             onClick={handleSave}
             size="sm"
             alignSelf="center"
+            isDisabled={isSaveDisabled}
           >
             <Icon mr={2} as={LuCheck} />
             <Text color="textColor">Speichern</Text>
@@ -116,8 +119,14 @@ export const EditEmployee = ({}: EditEmployeeProps) => {
             <EmployeeDetails
               employee={employee}
               profile={profile}
-              setEmployee={setEmployee}
-              setProfile={setProfile}
+              setEmployee={(newEmployee) => {
+                setEmployee(newEmployee);
+                setIsSaveDisabled(false);
+              }}
+              setProfile={(newProfile) => {
+                setProfile(newProfile);
+                setIsSaveDisabled(false);
+              }}
             />
           </VStack>
         </Box>

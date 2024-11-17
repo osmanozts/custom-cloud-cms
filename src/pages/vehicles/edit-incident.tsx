@@ -27,6 +27,7 @@ export const EditIncident = ({}: EditIncidentProps) => {
   const [incident, setIncident] = useState<Tables<"incidents"> | null>(null);
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isSaveDisabled, setIsSaveDisabled] = useState<boolean>(true);
 
   useEffect(() => {
     const incidentId = searchParams.get("incident_id") ?? "";
@@ -69,6 +70,7 @@ export const EditIncident = ({}: EditIncidentProps) => {
             onClick={handleSave}
             size="sm"
             alignSelf="center"
+            isDisabled={isSaveDisabled}
           >
             <Icon mr={2} as={LuCheck} />
             <Text color="textColor">Speichern</Text>
@@ -92,7 +94,10 @@ export const EditIncident = ({}: EditIncidentProps) => {
         </Heading>
         <IncidentDetails
           incident={incident}
-          setIncident={setIncident}
+          setIncident={(newIncident) => {
+            setIncident(newIncident);
+            setIsSaveDisabled(false);
+          }}
           vehicle_id={vehicleID}
         />
       </Box>

@@ -5,11 +5,11 @@ export const driverHistoryQuery = supabase.from("driver_history").select(`
     *
     `);
 
-export async function getVehicleDriverHistory(
+export async function getVehicleDriverHistories(
   vehicleId: number,
   successCallback: (history: JoinedDriverHistory) => void
 ) {
-  const { data: vehicels, error } = await supabase
+  const { data: histories, error } = await supabase
     .from("driver_history")
     .select(
       `*,
@@ -21,5 +21,5 @@ export async function getVehicleDriverHistory(
 
   if (error) throw error;
 
-  successCallback(vehicels);
+  successCallback(histories);
 }
