@@ -79,7 +79,7 @@ export const IncidentDetails = ({
       </GridItem>
 
       {/* Damage Severity */}
-      <GridItem>
+      <GridItem colSpan={{ base: 1, md: 2 }}>
         <FormControl width="100%">
           <FormLabel htmlFor="damageSeverity">Schadensschwere</FormLabel>
           <RadioButtons
@@ -98,7 +98,7 @@ export const IncidentDetails = ({
       </GridItem>
 
       {/* Repair Cost Estimate */}
-      <GridItem>
+      <GridItem colSpan={{ base: 1, md: 2 }}>
         <FormControl width="100%">
           <FormLabel htmlFor="repairCostEstimate">
             Reparaturkosten (in €)
@@ -115,7 +115,7 @@ export const IncidentDetails = ({
       </GridItem>
 
       {/* Incident Date */}
-      <GridItem>
+      <GridItem colSpan={{ base: 1, md: 2 }}>
         <FormControl width="100%">
           <FormLabel htmlFor="incidentDate">Unfalldatum</FormLabel>
           <CustomCalendar
@@ -130,7 +130,7 @@ export const IncidentDetails = ({
       </GridItem>
 
       {/* Repair Date */}
-      <GridItem>
+      <GridItem colSpan={{ base: 1, md: 2 }}>
         <FormControl width="100%">
           <FormLabel htmlFor="repairDate">Reparaturdatum</FormLabel>
           <CustomCalendar
@@ -143,7 +143,7 @@ export const IncidentDetails = ({
       </GridItem>
 
       {/* Repair Completed */}
-      <GridItem>
+      <GridItem colSpan={{ base: 1, md: 2 }}>
         <FormControl width="100%">
           <FormLabel htmlFor="repairCompleted">
             Reparatur abgeschlossen

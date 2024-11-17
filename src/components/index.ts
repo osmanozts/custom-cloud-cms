@@ -21,3 +21,4 @@ export { VehicleProfilePic } from "./vehicels/vehicle-profile-pic";
 export { CustomCalendar } from "./calendars/custom-calendar";
 export { UploadedFilesGrid } from "./files/uploaded-filed-grid";
 export { DriverHistoryTable } from "./vehicels/driver-history-table";
+export { DriverHistoryDetails } from "./vehicels/driver-history-details";

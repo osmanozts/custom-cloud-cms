@@ -44,6 +44,7 @@ export type Database = {
       driver_history: {
         Row: {
           created_at: string
+          description: string | null
           drive_end: string | null
           drive_start: string | null
           driver_id: string | null
@@ -52,6 +53,7 @@ export type Database = {
         }
         Insert: {
           created_at?: string
+          description?: string | null
           drive_end?: string | null
           drive_start?: string | null
           driver_id?: string | null
@@ -60,6 +62,7 @@ export type Database = {
         }
         Update: {
           created_at?: string
+          description?: string | null
           drive_end?: string | null
           drive_start?: string | null
           driver_id?: string | null

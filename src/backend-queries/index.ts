@@ -1,6 +1,8 @@
 export { employeesWithProfileQuery } from "./joins/employees-with-profile-query";
 export { singleEmployeeWithProfile } from "./joins/employee-with-profile-query";
+export { getVehicleDriverHistories } from "./query/get-vehicle-histories";
 export { getProfile } from "./query/get-profile";
+export { getDriverHistory } from "./query/get-driver-history";
 export { getEmployee } from "./query/get-employee";
 export { getAllEmployees } from "./query/get-all-employees";
 export { getMinDetailEmployees } from "./query/get-min-detail-employees";
