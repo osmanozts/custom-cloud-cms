@@ -9,7 +9,7 @@ import {
 } from "@chakra-ui/react";
 
 export type MenuOption = {
-  value: string;
+  value: string | null;
   label: string;
   color?: string; // Neue Eigenschaft für die Farbe
 };
@@ -17,7 +17,7 @@ export type MenuOption = {
 type DefaultMenuProps = {
   options: MenuOption[];
   defaultValue?: string;
-  onSelect: (value: string) => void;
+  onSelect: (value: string | null) => void;
 };
 
 export const DefaultMenu: React.FC<DefaultMenuProps> = ({

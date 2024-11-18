@@ -97,6 +97,7 @@ export type Database = {
           id: number
           id_card_end_date: string | null
           last_name: string | null
+          location: string | null
           nationality: string | null
           personnel_number: string | null
           postal_code: string | null
@@ -116,6 +117,7 @@ export type Database = {
           id?: number
           id_card_end_date?: string | null
           last_name?: string | null
+          location?: string | null
           nationality?: string | null
           personnel_number?: string | null
           postal_code?: string | null
@@ -135,6 +137,7 @@ export type Database = {
           id?: number
           id_card_end_date?: string | null
           last_name?: string | null
+          location?: string | null
           nationality?: string | null
           personnel_number?: string | null
           postal_code?: string | null
@@ -240,6 +243,7 @@ export type Database = {
           km_age: string | null
           last_service_date: string | null
           license_plate: string | null
+          location: string | null
           make: string | null
           model: string | null
           next_service_date: string | null
@@ -256,6 +260,7 @@ export type Database = {
           km_age?: string | null
           last_service_date?: string | null
           license_plate?: string | null
+          location?: string | null
           make?: string | null
           model?: string | null
           next_service_date?: string | null
@@ -272,6 +277,7 @@ export type Database = {
           km_age?: string | null
           last_service_date?: string | null
           license_plate?: string | null
+          location?: string | null
           make?: string | null
           model?: string | null
           next_service_date?: string | null
