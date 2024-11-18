@@ -23,35 +23,35 @@ export function AllVehicles({}: AllVehiclesProps) {
   const [locationFilter, setLocationFilter] = useState<string | null>(null);
 
   useEffect(() => {
-    if (
-      searchString.trim() === "" &&
-      stateFilter === null &&
-      locationFilter === null
-    ) {
-      getAllVehicles((allVehicles: Vehicles) => setVehicles(allVehicles));
-    } else {
-      getAllVehicles((allVehicles: Vehicles) => {
-        if (!!searchString) {
-          setVehicles(
-            allVehicles.filter(
-              (vehicle) =>
-                vehicle.license_plate?.includes(searchString) ||
-                vehicle.vin?.includes(searchString) ||
-                vehicle.model?.includes(searchString) ||
-                vehicle.make?.includes(searchString)
-            )
-          );
-        } else if (!!stateFilter || !!locationFilter) {
-          setVehicles(
-            allVehicles.filter(
-              (vehicle) =>
-                vehicle.state === stateFilter &&
-                vehicle.location === locationFilter
-            )
-          );
-        }
-      });
-    }
+    getAllVehicles((allVehicles: Vehicles) => {
+      let filteredVehicles = allVehicles;
+
+      if (searchString.trim() !== "") {
+        filteredVehicles = filteredVehicles.filter(
+          (vehicle) =>
+            vehicle.license_plate
+              ?.toLowerCase()
+              .includes(searchString.toLowerCase()) ||
+            vehicle.vin?.toLowerCase().includes(searchString.toLowerCase()) ||
+            vehicle.model?.toLowerCase().includes(searchString.toLowerCase()) ||
+            vehicle.make?.toLowerCase().includes(searchString.toLowerCase())
+        );
+      }
+
+      if (stateFilter !== null) {
+        filteredVehicles = filteredVehicles.filter(
+          (vehicle) => vehicle.state === stateFilter
+        );
+      }
+
+      if (locationFilter !== null) {
+        filteredVehicles = filteredVehicles.filter(
+          (vehicle) => vehicle.location === locationFilter
+        );
+      }
+
+      setVehicles(filteredVehicles);
+    });
   }, [searchString, stateFilter, locationFilter]);
 
   const createNewVehicle = async () => {
@@ -102,17 +102,17 @@ export function AllVehicles({}: AllVehiclesProps) {
             <Text color="textColor">Neues Fahrzeug</Text>
           </Button>
         </Flex>
-        <Flex w="100%" gap={4} mt={4}>
+        <Flex w="100%" gap={8} mt={4}>
           <Box>
-            <Text fontWeight="bold" color="textColor" mb={2}>
-              Status
+            <Text fontWeight="bold" color="textColor">
+              Status:
             </Text>
             <DefaultMenu
               options={[
-                { value: null, label: "Alle", color: "green" },
+                { value: null, label: "Alle", color: "grey" },
                 { value: "active", label: "Aktiv", color: "green" },
-                { value: "decommissioned", label: "Inaktiv", color: "red" },
-                { value: "in_service", label: "In Wartung", color: "grey" },
+                { value: "decommissioned", label: "Stillgelegt", color: "red" },
+                { value: "in_service", label: "In Wartung", color: "yellow" },
               ]}
               defaultValue="Alle"
               onSelect={(value) => {
@@ -121,13 +121,14 @@ export function AllVehicles({}: AllVehiclesProps) {
             />
           </Box>
           <Box>
-            <Text fontWeight="bold" color="textColor" mb={2}>
-              Standort
+            <Text fontWeight="bold" color="textColor">
+              Standort:
             </Text>
             <DefaultMenu
               options={[
-                { value: null, label: "Alle", color: "green" },
+                { value: null, label: "Alle", color: "grey" },
                 { value: "dusseldorf", label: "Düsseldorf", color: "green" },
+                { value: "moers", label: "Moers", color: "yellow" },
               ]}
               defaultValue="Alle"
               onSelect={(value) => setLocationFilter(value)}

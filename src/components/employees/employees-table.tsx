@@ -17,6 +17,8 @@ export const EmployeesTable: React.FC<EmployeesTableProps> = ({
       <Thead>
         <Tr whiteSpace="nowrap">
           <Th>Personalnummer</Th>
+          <Th>Standort</Th>
+          <Th>Abteilung</Th>
           <Th>Email</Th>
           <Th>Vorname, Nachname</Th>
           <Th>Straße,Stadt,Plz</Th>
@@ -45,6 +47,8 @@ export const EmployeesTable: React.FC<EmployeesTableProps> = ({
               bg={"tileBgColor"}
             >
               <Td>{empl.personnel_number ?? "-"}</Td>
+              <Td>{empl.location ?? "-"}</Td>
+              <Td>{empl.department ?? "-"}</Td>
               <Td>{empl.profile?.email ?? "-"}</Td>
               <Td>
                 {`${empl.first_name ?? ""} ${empl.last_name ?? ""}` ?? "-"}

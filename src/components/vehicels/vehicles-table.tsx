@@ -32,16 +32,12 @@ export const VehiclesTable = ({ vehicles }: VehiclesTableProps) => {
           <Th>Bild</Th>
           <Th>VIN</Th>
           <Th>Kennzeichen</Th>
-          <Th>Farbe</Th>
+          <Th>Status</Th>
+          <Th>Standort</Th>
+          <Th>Haupt-Fahrer</Th>
           <Th>Kilometerstand</Th>
           <Th>Letzte Wartung</Th>
           <Th>Nächste Wartung</Th>
-          <Th>Marke</Th>
-          <Th>Modell</Th>
-          <Th>Haupt-Fahrer</Th>
-          <Th>Status</Th>
-          <Th>Baujahr</Th>
-          <Th>Erstellt am</Th>
         </Tr>
       </Thead>
       <Tbody>
@@ -65,7 +61,12 @@ export const VehiclesTable = ({ vehicles }: VehiclesTableProps) => {
               </Td>
               <Td>{vehicle.vin ?? "-"}</Td>
               <Td>{vehicle.license_plate ?? "-"}</Td>
-              <Td>{vehicle.color ?? "-"}</Td>
+              <Td>{vehicle.state ?? "-"}</Td>
+              <Td>{vehicle.location ?? "-"}</Td>
+              <Td>
+                {findMinEmployee(vehicle.profile_id ?? "")?.first_name}{" "}
+                {findMinEmployee(vehicle.profile_id ?? "")?.last_name}
+              </Td>
               <Td>{vehicle.km_age ?? 0 + "km" ?? "-"}</Td>
               <Td>
                 {vehicle.last_service_date
@@ -75,19 +76,6 @@ export const VehiclesTable = ({ vehicles }: VehiclesTableProps) => {
               <Td>
                 {vehicle.next_service_date
                   ? dayjs(vehicle.next_service_date).format("DD/MM/YYYY")
-                  : "Kein Datum ausgewählt"}
-              </Td>
-              <Td>{vehicle.make ?? "-"}</Td>
-              <Td>{vehicle.model ?? "-"}</Td>
-              <Td>
-                {findMinEmployee(vehicle.profile_id ?? "")?.first_name}{" "}
-                {findMinEmployee(vehicle.profile_id ?? "")?.last_name}
-              </Td>
-              <Td>{vehicle.state ?? "-"}</Td>
-              <Td>{vehicle.year ?? "-"}</Td>
-              <Td>
-                {vehicle.created_at
-                  ? dayjs(vehicle.created_at).format("DD/MM/YYYY")
                   : "Kein Datum ausgewählt"}
               </Td>
             </Tr>

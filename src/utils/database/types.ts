@@ -91,6 +91,7 @@ export type Database = {
           city: string | null
           created_at: string
           date_of_birth: string | null
+          department: string | null
           driver_license_end_date: string | null
           first_name: string | null
           health_insurance: string | null
@@ -111,6 +112,7 @@ export type Database = {
           city?: string | null
           created_at?: string
           date_of_birth?: string | null
+          department?: string | null
           driver_license_end_date?: string | null
           first_name?: string | null
           health_insurance?: string | null
@@ -131,6 +133,7 @@ export type Database = {
           city?: string | null
           created_at?: string
           date_of_birth?: string | null
+          department?: string | null
           driver_license_end_date?: string | null
           first_name?: string | null
           health_insurance?: string | null
