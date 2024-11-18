@@ -30,6 +30,7 @@ export const VehiclesTable = ({ vehicles }: VehiclesTableProps) => {
       <Thead>
         <Tr whiteSpace="nowrap">
           <Th>Bild</Th>
+          <Th>ID</Th>
           <Th>VIN</Th>
           <Th>Kennzeichen</Th>
           <Th>Status</Th>
@@ -60,6 +61,7 @@ export const VehiclesTable = ({ vehicles }: VehiclesTableProps) => {
               <Td>
                 <VehicleProfilePic isSmall vehicle_id={vehicle.id.toString()} />
               </Td>
+              <Td>{vehicle.id ?? "-"}</Td>
               <Td>{vehicle.vin ?? "-"}</Td>
               <Td>{vehicle.license_plate ?? "-"}</Td>
               <Td>{vehicle.state ?? "-"}</Td>

@@ -9,6 +9,7 @@ import {
   WrapItem,
 } from "@chakra-ui/react";
 import {
+  LuBell,
   LuCar,
   LuFileStack,
   LuLayoutDashboard,
@@ -103,13 +104,19 @@ export function AdminNavbar() {
             ))}
           </Flex>
         )}
-        <WrapItem cursor="pointer" marginRight={8}>
+        <WrapItem cursor="pointer" marginRight={4}>
           <Avatar name="Osman Öztas" bg="backgroundColor" />
         </WrapItem>
+
+        <WrapItem cursor="pointer">
+          <Icon as={LuBell} boxSize={6} color="textColor" />
+        </WrapItem>
       </Flex>
-      <WrapItem cursor="pointer">
-        <AdminHamburger />
-      </WrapItem>
+      {!showNavItems && (
+        <WrapItem cursor="pointer">
+          <AdminHamburger />
+        </WrapItem>
+      )}
     </Flex>
   );
 }

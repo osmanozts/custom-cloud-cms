@@ -217,6 +217,30 @@ export type Database = {
           },
         ]
       }
+      notifications: {
+        Row: {
+          created_at: string
+          description: string | null
+          id: string
+          is_read: boolean | null
+          title: string | null
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          is_read?: boolean | null
+          title?: string | null
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          is_read?: boolean | null
+          title?: string | null
+        }
+        Relationships: []
+      }
       profile: {
         Row: {
           created_at: string
@@ -235,6 +259,24 @@ export type Database = {
           email?: string | null
           id?: string
           role?: string | null
+        }
+        Relationships: []
+      }
+      test_cron_log: {
+        Row: {
+          created_at: string | null
+          id: number
+          log_message: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          id?: number
+          log_message?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          id?: number
+          log_message?: string | null
         }
         Relationships: []
       }
@@ -305,7 +347,14 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      check_expiring_documents: {
+        Args: Record<PropertyKey, never>
+        Returns: undefined
+      }
+      test_cron_function: {
+        Args: Record<PropertyKey, never>
+        Returns: undefined
+      }
     }
     Enums: {
       Role: "superadmin" | "admin" | "employee"
