@@ -188,6 +188,22 @@ export const VehicleDetails = ({
           </FormControl>
         </GridItem>
 
+        {/* Standort */}
+        <GridItem>
+          <FormControl>
+            <FormLabel htmlFor="state">Standort</FormLabel>
+            <RadioButtons
+              id="location"
+              options={[
+                { value: "dusseldorf", label: "Düsseldorf" },
+                { value: "moers", label: "Moers" },
+              ]}
+              value={vehicle.location ?? ""}
+              onChange={(value) => setVehicle({ ...vehicle, location: value })}
+            />
+          </FormControl>
+        </GridItem>
+
         {/* Letzte Wartung */}
         <GridItem>
           <FormControl>

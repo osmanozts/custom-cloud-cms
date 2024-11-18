@@ -207,6 +207,35 @@ export const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({
             />
           </FormControl>
           <FormControl>
+            <FormLabel htmlFor="role">Standort</FormLabel>
+            <RadioButtons
+              id="role"
+              options={[
+                { value: "dusseldorf", label: "Düsseldorf" },
+                { value: "moers", label: "Moers" },
+              ]}
+              value={employee.location ?? ""}
+              onChange={(value) =>
+                setEmployee({ ...employee, location: value })
+              }
+            />
+          </FormControl>
+          <FormControl>
+            <FormLabel htmlFor="role">Abteilung</FormLabel>
+            <RadioButtons
+              id="role"
+              options={[
+                { value: "warehouse", label: "Lager" },
+                { value: "logistics", label: "Logistik" },
+                { value: "administration", label: "Verwaltung" },
+              ]}
+              value={employee.department ?? ""}
+              onChange={(value) =>
+                setEmployee({ ...employee, department: value })
+              }
+            />
+          </FormControl>
+          <FormControl>
             <FormLabel htmlFor="role">Status</FormLabel>
             <RadioButtons
               id="role"
