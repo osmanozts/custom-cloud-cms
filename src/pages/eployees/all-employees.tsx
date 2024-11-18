@@ -98,50 +98,53 @@ export const AllEmployees: React.FC<AllEmployeesProps> = () => {
           </Button>
         </Flex>
 
-        <Flex w="100%" gap={8} mt={4}>
-          <Box>
-            <Text fontWeight="bold" color="textColor">
-              Abteilung:
-            </Text>
-            <DefaultMenu
-              options={[
-                { value: null, label: "Alle", color: "grey" },
-                { value: "warehouse", label: "Lager" },
-                { value: "logistics", label: "Logistik" },
-                { value: "administration", label: "Verwaltung" },
-              ]}
-              defaultValue="Alle"
-              onSelect={(value) => setDepartmentFilter(value)}
-            />
-          </Box>
-          <Box>
-            <Text fontWeight="bold" color="textColor">
-              Status:
-            </Text>
-            <DefaultMenu
-              options={[
-                { value: null, label: "Alle", color: "grey" },
-                { value: "active", label: "Aktiv", color: "green" },
-                { value: "inactive", label: "Ausgetreten", color: "red" },
-              ]}
-              defaultValue="Alle"
-              onSelect={(value) => setStatusFilter(value)}
-            />
-          </Box>
-          <Box>
-            <Text fontWeight="bold" color="textColor">
-              Standort:
-            </Text>
-            <DefaultMenu
-              options={[
-                { value: null, label: "Alle", color: "grey" },
-                { value: "dusseldorf", label: "Düsseldorf", color: "blue" },
-                { value: "moers", label: "Moers", color: "green" },
-              ]}
-              defaultValue="Alle"
-              onSelect={(value) => setLocationFilter(value)}
-            />
-          </Box>
+        <Flex
+          w="100%"
+          maxW={800}
+          alignItems="center"
+          alignSelf="flex-start"
+          gap={8}
+          mt={4}
+        >
+          <Text fontWeight="bold" color="textColor">
+            Abteilung:
+          </Text>
+          <DefaultMenu
+            options={[
+              { value: null, label: "Alle", color: "grey" },
+              { value: "warehouse", label: "Lager" },
+              { value: "logistics", label: "Logistik" },
+              { value: "administration", label: "Verwaltung" },
+            ]}
+            defaultValue="Alle"
+            onSelect={(value) => setDepartmentFilter(value)}
+          />
+
+          <Text fontWeight="bold" color="textColor">
+            Status:
+          </Text>
+          <DefaultMenu
+            options={[
+              { value: null, label: "Alle", color: "grey" },
+              { value: "active", label: "Aktiv", color: "green" },
+              { value: "inactive", label: "Ausgetreten", color: "red" },
+            ]}
+            defaultValue="Alle"
+            onSelect={(value) => setStatusFilter(value)}
+          />
+
+          <Text fontWeight="bold" color="textColor">
+            Standort:
+          </Text>
+          <DefaultMenu
+            options={[
+              { value: null, label: "Alle", color: "grey" },
+              { value: "dusseldorf", label: "Düsseldorf", color: "blue" },
+              { value: "moers", label: "Moers", color: "green" },
+            ]}
+            defaultValue="Alle"
+            onSelect={(value) => setLocationFilter(value)}
+          />
         </Flex>
 
         <Box w="100%" overflowX="auto">

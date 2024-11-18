@@ -10,5 +10,12 @@ export async function getAllEmployees(
       `);
   if (error) throw error;
 
-  successCallback(employees);
+  // Alphabetisch nach Nachnamen sortieren
+  const sortedEmployees = employees.sort((a, b) => {
+    const lastNameA = a.last_name?.toLowerCase() || ""; // Fallback zu leerem String
+    const lastNameB = b.last_name?.toLowerCase() || "";
+    return lastNameA.localeCompare(lastNameB);
+  });
+
+  successCallback(sortedEmployees);
 }

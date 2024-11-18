@@ -102,38 +102,42 @@ export function AllVehicles({}: AllVehiclesProps) {
             <Text color="textColor">Neues Fahrzeug</Text>
           </Button>
         </Flex>
-        <Flex w="100%" gap={8} mt={4}>
-          <Box>
-            <Text fontWeight="bold" color="textColor">
-              Status:
-            </Text>
-            <DefaultMenu
-              options={[
-                { value: null, label: "Alle", color: "grey" },
-                { value: "active", label: "Aktiv", color: "green" },
-                { value: "decommissioned", label: "Stillgelegt", color: "red" },
-                { value: "in_service", label: "In Wartung", color: "yellow" },
-              ]}
-              defaultValue="Alle"
-              onSelect={(value) => {
-                setStateFilter(value);
-              }}
-            />
-          </Box>
-          <Box>
-            <Text fontWeight="bold" color="textColor">
-              Standort:
-            </Text>
-            <DefaultMenu
-              options={[
-                { value: null, label: "Alle", color: "grey" },
-                { value: "dusseldorf", label: "Düsseldorf", color: "green" },
-                { value: "moers", label: "Moers", color: "yellow" },
-              ]}
-              defaultValue="Alle"
-              onSelect={(value) => setLocationFilter(value)}
-            />
-          </Box>
+        <Flex
+          w="100%"
+          maxW={600}
+          alignItems="center"
+          alignSelf="flex-start"
+          gap={8}
+          mt={4}
+        >
+          <Text fontWeight="bold" color="textColor">
+            Status:
+          </Text>
+          <DefaultMenu
+            options={[
+              { value: null, label: "Alle", color: "grey" },
+              { value: "active", label: "Aktiv", color: "green" },
+              { value: "decommissioned", label: "Stillgelegt", color: "red" },
+              { value: "in_service", label: "In Wartung", color: "yellow" },
+            ]}
+            defaultValue="Alle"
+            onSelect={(value) => {
+              setStateFilter(value);
+            }}
+          />
+
+          <Text fontWeight="bold" color="textColor">
+            Standort:
+          </Text>
+          <DefaultMenu
+            options={[
+              { value: null, label: "Alle", color: "grey" },
+              { value: "dusseldorf", label: "Düsseldorf", color: "green" },
+              { value: "moers", label: "Moers", color: "yellow" },
+            ]}
+            defaultValue="Alle"
+            onSelect={(value) => setLocationFilter(value)}
+          />
         </Flex>
 
         <Box w="100%" overflowX="auto">
