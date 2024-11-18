@@ -116,7 +116,6 @@ export function AllVehicles({}: AllVehiclesProps) {
               ]}
               defaultValue="Alle"
               onSelect={(value) => {
-                console.log(value);
                 setStateFilter(value);
               }}
             />
