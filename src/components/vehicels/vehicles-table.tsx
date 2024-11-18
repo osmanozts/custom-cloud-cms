@@ -55,6 +55,7 @@ export const VehiclesTable = ({ vehicles }: VehiclesTableProps) => {
               }
               color="textColor"
               bg={"tileBgColor"}
+              _hover={{ bg: "backgroundColor" }}
             >
               <Td>
                 <VehicleProfilePic isSmall vehicle_id={vehicle.id.toString()} />

@@ -45,6 +45,7 @@ export const EmployeesTable: React.FC<EmployeesTableProps> = ({
               }
               color="textColor"
               bg={"tileBgColor"}
+              _hover={{ bg: "backgroundColor" }}
             >
               <Td>{empl.personnel_number ?? "-"}</Td>
               <Td>{empl.location ?? "-"}</Td>
