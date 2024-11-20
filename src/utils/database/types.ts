@@ -49,6 +49,7 @@ export type Database = {
           drive_start: string | null
           driver_id: string | null
           id: number
+          is_edited: boolean | null
           vehicle_id: number | null
         }
         Insert: {
@@ -58,6 +59,7 @@ export type Database = {
           drive_start?: string | null
           driver_id?: string | null
           id?: number
+          is_edited?: boolean | null
           vehicle_id?: number | null
         }
         Update: {
@@ -67,6 +69,7 @@ export type Database = {
           drive_start?: string | null
           driver_id?: string | null
           id?: number
+          is_edited?: boolean | null
           vehicle_id?: number | null
         }
         Relationships: [

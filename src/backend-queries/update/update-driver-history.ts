@@ -4,7 +4,7 @@ import supabase from "../../utils/supabase";
 export async function updateDriverHistory(newValue: Tables<"driver_history">) {
   const { data, error } = await supabase
     .from("driver_history")
-    .update(newValue)
+    .update({ ...newValue, is_edited: true })
     .eq("id", newValue.id ?? "");
 
   if (error) {

@@ -17,6 +17,7 @@ export async function getVehicleDriverHistories(
        vehicles(*)
       `
     )
+    .order("drive_start", { ascending: false })
     .eq("vehicle_id", vehicleId);
 
   if (error) throw error;

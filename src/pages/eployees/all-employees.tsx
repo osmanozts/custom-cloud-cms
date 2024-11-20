@@ -128,6 +128,7 @@ export const AllEmployees: React.FC<AllEmployeesProps> = () => {
               { value: null, label: "Alle", color: "grey" },
               { value: "active", label: "Aktiv", color: "green" },
               { value: "inactive", label: "Ausgetreten", color: "red" },
+              { value: "pipeline", label: "Pipeline", color: "yellow" },
             ]}
             defaultValue="Alle"
             onSelect={(value) => setStatusFilter(value)}

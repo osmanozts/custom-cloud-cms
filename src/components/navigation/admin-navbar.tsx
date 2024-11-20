@@ -112,11 +112,11 @@ export function AdminNavbar() {
           <Icon as={LuBell} boxSize={6} color="textColor" />
         </WrapItem>
       </Flex>
-      {!showNavItems && (
-        <WrapItem cursor="pointer">
-          <AdminHamburger />
-        </WrapItem>
-      )}
+      {/* {!showNavItems && ( */}
+      <WrapItem cursor="pointer">
+        <AdminHamburger />
+      </WrapItem>
+      {/* )} */}
     </Flex>
   );
 }

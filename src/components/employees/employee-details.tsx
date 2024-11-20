@@ -11,6 +11,7 @@ import { Tables } from "../../utils/database/types";
 import { InputField } from "../input-field";
 import { RadioButtons } from "../radio-buttons";
 import { CustomCalendar } from "../calendars/custom-calendar";
+import { useAuth } from "../../providers/auth-provider";
 
 type EmployeeDetailsProps = {
   employee: Tables<"employees">;
@@ -25,6 +26,8 @@ export const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({
   setEmployee,
   setProfile,
 }) => {
+  const { role } = useAuth();
+
   const handleDateChange =
     (dateKey: keyof Tables<"employees">) => (value: Date | null) => {
       setEmployee({
@@ -207,7 +210,7 @@ export const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({
             />
           </FormControl>
           <FormControl>
-            <FormLabel htmlFor="role">Standort</FormLabel>
+            <FormLabel htmlFor="location">Standort</FormLabel>
             <RadioButtons
               id="role"
               options={[
@@ -221,7 +224,7 @@ export const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({
             />
           </FormControl>
           <FormControl>
-            <FormLabel htmlFor="role">Abteilung</FormLabel>
+            <FormLabel htmlFor="department">Abteilung</FormLabel>
             <RadioButtons
               id="role"
               options={[
@@ -242,12 +245,13 @@ export const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({
               options={[
                 { value: "active", label: "Aktiv" },
                 { value: "inactive", label: "Ausgetreten" },
+                { value: "pipeline", label: "Pipeline" },
               ]}
               value={employee.state ?? ""}
               onChange={(value) => setEmployee({ ...employee, state: value })}
             />
           </FormControl>
-          <FormControl>
+          <FormControl isDisabled={role !== "superadmin"}>
             <FormLabel htmlFor="role">Rolle</FormLabel>
             <RadioButtons
               id="role"

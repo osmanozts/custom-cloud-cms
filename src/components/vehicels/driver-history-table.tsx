@@ -1,7 +1,21 @@
-import { Box, Table, Tbody, Td, Th, Thead, Tr } from "@chakra-ui/react";
+import {
+  Box,
+  Table,
+  Tbody,
+  Td,
+  Text,
+  Th,
+  Thead,
+  Tr,
+  Badge,
+  Tooltip,
+  Flex,
+  Icon,
+} from "@chakra-ui/react";
 import { JoinedDriverHistory } from "../../backend-queries/joins/joined-driver-history";
 import dayjs from "dayjs";
 import { useNavigate } from "react-router-dom";
+import { LuPencil } from "react-icons/lu";
 
 type DriverHistoryTableProps = {
   historyData: JoinedDriverHistory;
@@ -26,9 +40,10 @@ export function DriverHistoryTable({ historyData }: DriverHistoryTableProps) {
         </Thead>
         <Tbody>
           {historyData.map((data) => {
+            const isEdited = data.is_edited; // Check if the entry is edited
             return (
               <Tr
-                key={data.vehicle_id}
+                key={data.id}
                 whiteSpace="nowrap"
                 cursor="pointer"
                 color="textColor"
@@ -36,23 +51,51 @@ export function DriverHistoryTable({ historyData }: DriverHistoryTableProps) {
                 _hover={{ bg: "backgroundColor" }}
                 onClick={() => navigate("/edit-driver-history?id=" + data.id)}
               >
-                <Td>{data.id ?? "-"}</Td>
                 <Td>
-                  {data.employees?.first_name +
-                    " " +
-                    data.employees?.last_name ?? "-"}
+                  <Text color="textColor">{data.id ?? "-"}</Text>
                 </Td>
                 <Td>
-                  {dayjs(data.drive_start).format("DD.MM.YYYY").toString()}
+                  <Text color="textColor">
+                    {data.employees?.first_name +
+                      " " +
+                      data.employees?.last_name ?? "-"}
+                  </Text>
                 </Td>
                 <Td>
-                  {data.drive_end
-                    ? dayjs(data.drive_end).format("DD.MM.YYYY").toString()
-                    : "N/V"}
+                  <Text color="textColor">
+                    {dayjs(data.drive_start).format("DD.MM.YYYY").toString()}
+                  </Text>
                 </Td>
-                <Td>{data.vehicles?.vin ?? "-"}</Td>
-                <Td>{data.vehicles?.license_plate ?? "-"}</Td>
-                <Td>{data.employees?.personnel_number ?? "-"}</Td>
+                <Td>
+                  <Text color="textColor">
+                    {data.drive_end
+                      ? dayjs(data.drive_end).format("DD.MM.YYYY").toString()
+                      : "N/V"}
+                  </Text>
+                </Td>
+                <Td>
+                  <Text color="textColor">{data.vehicles?.vin ?? "-"}</Text>
+                </Td>
+                <Td>
+                  <Text color="textColor">
+                    {data.vehicles?.license_plate ?? "-"}
+                  </Text>
+                </Td>
+                <Td>
+                  <Flex alignItems="center" justifyContent="space-between">
+                    <Text color="textColor">
+                      {data.employees?.personnel_number ?? "-"}
+                    </Text>
+                    {isEdited && (
+                      <Tooltip label="Dieser Eintrag wurde bearbeitet" hasArrow>
+                        <Badge bg="transparent">
+                          {/* Bearbeitet */}
+                          <Icon as={LuPencil} w={4} h={4} color="accentColor" />
+                        </Badge>
+                      </Tooltip>
+                    )}
+                  </Flex>
+                </Td>
               </Tr>
             );
           })}
