@@ -9,7 +9,6 @@ import {
   WrapItem,
 } from "@chakra-ui/react";
 import {
-  LuBell,
   LuCar,
   LuFileStack,
   LuLayoutDashboard,
@@ -20,6 +19,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import logo from "../../assets/logo/lp-logistics.png";
 import { AdminHamburger } from "./admin-hamburger";
 import { IconType } from "react-icons";
+import { NotificationDialog } from "../dialogs/notificatoin-dialog";
 
 type NavigationItems = {
   id: number;
@@ -104,19 +104,15 @@ export function AdminNavbar() {
             ))}
           </Flex>
         )}
-        <WrapItem cursor="pointer" marginRight={4}>
+        <WrapItem cursor="pointer">
           <Avatar name="Osman Öztas" bg="backgroundColor" />
         </WrapItem>
 
-        <WrapItem cursor="pointer">
-          <Icon as={LuBell} boxSize={6} color="textColor" />
-        </WrapItem>
+        <NotificationDialog />
       </Flex>
-      {/* {!showNavItems && ( */}
       <WrapItem cursor="pointer">
         <AdminHamburger />
       </WrapItem>
-      {/* )} */}
     </Flex>
   );
 }
