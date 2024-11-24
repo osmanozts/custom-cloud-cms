@@ -1,5 +1,6 @@
 import {
   Button,
+  Flex,
   FormControl,
   FormLabel,
   Grid,
@@ -239,16 +240,20 @@ export const VehicleDetails = ({
           </FormControl>
         </GridItem>
 
-        <GridItem height="100%" display="flex" alignItems="flex-end">
-          <Button
-            borderWidth={1}
-            width="100%"
-            bg="backgroundColor"
-            leftIcon={<RepeatClockIcon />}
-            onClick={() => navigate("/driver-history?vehicle_id=" + vehicle.id)}
-          >
-            <Text color="textColor">Fahrer Historie</Text>
-          </Button>
+        <GridItem>
+          <Flex alignItems="flex-end" height="100%">
+            <Button
+              borderWidth={1}
+              width="100%"
+              bg="backgroundColor"
+              leftIcon={<RepeatClockIcon />}
+              onClick={() =>
+                navigate("/driver-history?vehicle_id=" + vehicle.id)
+              }
+            >
+              <Text color="textColor">Fahrer Historie</Text>
+            </Button>
+          </Flex>
         </GridItem>
       </Grid>
     </Stack>

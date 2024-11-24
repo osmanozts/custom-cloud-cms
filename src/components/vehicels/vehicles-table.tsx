@@ -31,7 +31,7 @@ export const VehiclesTable = ({ vehicles }: VehiclesTableProps) => {
         <Tr whiteSpace="nowrap">
           <Th>Bild</Th>
           <Th>ID</Th>
-          <Th>VIN</Th>
+          <Th>FIN</Th>
           <Th>Kennzeichen</Th>
           <Th>Status</Th>
           <Th>Standort</Th>
