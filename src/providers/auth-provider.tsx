@@ -50,7 +50,7 @@ const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
           password,
         })
         .then(async (response) => {
-          if (response.error) console.log("Error login:", response.error);
+          if (response.error) throw "Error login:" + response.error;
           else {
             setUser(response.data.user);
             await fetchUserRole(response.data.user?.id ?? "").then((role) => {
@@ -60,7 +60,7 @@ const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
           }
         });
     } catch (error) {
-      console.log("Error login:", error);
+      throw "Error login:" + error;
     }
   };
 

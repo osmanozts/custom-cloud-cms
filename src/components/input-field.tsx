@@ -9,6 +9,7 @@ interface InputFieldProps {
   isPasswordField?: boolean;
   isDisabled?: boolean;
   onChange?: (value: string) => void;
+  onKeyDown?: (event: React.KeyboardEvent<HTMLInputElement>) => void; // Neues Event
 }
 
 export function InputField({
@@ -19,6 +20,7 @@ export function InputField({
   icon,
   isPasswordField,
   isDisabled,
+  onKeyDown,
 }: InputFieldProps) {
   return (
     <InputGroup>
@@ -35,20 +37,15 @@ export function InputField({
         onChange={(event) =>
           onChange ? onChange(event.target.value) : undefined
         }
+        onKeyDown={onKeyDown} // Event weiterleiten
         placeholder={placeholder}
         type={isPasswordField ? "password" : "text"}
-        focusBorderColor="blue.500"
+        focusBorderColor="parcelColor2"
         bg="inputBgColor"
-        _hover={{
-          bg: "inputBgColor",
-        }}
-        _focus={{
-          bg: "inputBgColor",
-        }}
         disabled={isDisabled}
         borderRadius="md"
         borderWidth="1px"
-        borderColor="accentBorderColor"
+        borderColor="darkColor"
         py={2}
         px={3}
       />

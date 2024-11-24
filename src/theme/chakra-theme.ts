@@ -10,6 +10,10 @@ export const customTheme = extendTheme({
 
     inputBgColor: "#fff",
 
+    parcelColor: "#D2B7A5",
+    parcelColor2: "#95887B",
+    darkColor: "#383735",
+
     accentColor: "#E30614",
     accentBorderColor: "#2B6CB0",
     accentHoverColor: "#2C5282",

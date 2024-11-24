@@ -1,27 +1,33 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useAuth } from "../../providers/auth-provider";
 import {
   Alert,
   AlertIcon,
   AlertTitle,
+  Box,
   Button,
   Card,
   CardBody,
-  Text,
+  Image,
   VStack,
+  Fade,
+  Text,
 } from "@chakra-ui/react";
 import { EmailIcon, LockIcon } from "@chakra-ui/icons";
-import { handleErrorMessage } from "./helpers/handle-error-message";
 import { InputField } from "../input-field";
+import logo from "../../assets/logo/lp-logistics.png";
 
 export function LoginForm() {
   const [email, setEmail] = useState("");
-
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   const { login } = useAuth();
+
+  useEffect(() => {
+    console.log(error);
+  }, [error]);
 
   const handleLogin = async () => {
     setLoading(true);
@@ -29,26 +35,33 @@ export function LoginForm() {
 
     try {
       await login(email, password);
-    } catch (error: unknown) {
-      console.log("🚀 ~ error:", error);
-      setError(handleErrorMessage(error));
+    } catch (error: any) {
+      const errorMessage = error;
+
+      if (errorMessage.includes("Invalid login credentials")) {
+        setError("Falsche Anmeldedaten. Bitte versuchen Sie es erneut.");
+      } else {
+        setError("Ein Fehler ist aufgetreten. Bitte versuchen Sie es erneut.");
+      }
     } finally {
       setLoading(false);
     }
   };
 
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
+    if (event.key === "Enter" && email && password && !loading) {
+      handleLogin();
+    }
+  };
+
   return (
-    <Card width="100%" backgroundColor="tileBgColor">
+    <Card width="100%" backgroundColor="tileBgColor" onKeyDown={handleKeyDown}>
       <CardBody>
-        <VStack>
-          <Text
-            marginBottom={6}
-            fontSize={24}
-            textAlign="center"
-            color="textColor"
-          >
-            Anmelden
-          </Text>
+        <VStack spacing={6}>
+          {/* Logo */}
+          <Box justifyContent="center" alignItems="center" width="50%">
+            <Image src={logo} alt="Logo" objectFit="contain" />
+          </Box>
 
           <InputField
             value={email}
@@ -65,21 +78,31 @@ export function LoginForm() {
             onChange={setPassword}
           />
 
+          {error && (
+            <Fade in={!!error}>
+              <Alert status="error" borderRadius="md" my={2}>
+                <AlertIcon />
+                <AlertTitle fontSize="sm">{error}</AlertTitle>
+              </Alert>
+            </Fade>
+          )}
+
           <Button
             marginTop={4}
-            colorScheme="teal"
+            bg="accentColor"
+            color="#fff"
             size="md"
             onClick={handleLogin}
             isLoading={loading}
+            isDisabled={!email || !password}
+            _hover={{ bg: "accentColorHover" }}
           >
             Anmelden
           </Button>
-          {error && (
-            <Alert status="error" my={4}>
-              <AlertIcon />
-              <AlertTitle>{error}</AlertTitle>
-            </Alert>
-          )}
+
+          <Text fontSize="sm" color="gray.500" mt={2}>
+            Bitte geben Sie Ihre Anmeldedaten ein.
+          </Text>
         </VStack>
       </CardBody>
     </Card>

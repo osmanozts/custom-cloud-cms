@@ -1,18 +1,9 @@
 import { LoginForm } from "../../components";
-import { Box, Container, Flex, Image } from "@chakra-ui/react";
-import logo from "../../assets/logo/lp-logistics.png";
+import { Container, Flex } from "@chakra-ui/react";
 
 export const Login = () => {
   return (
-    <Container border="solid">
-      <Box
-        position="absolute"
-        top={150}
-        justifyContent="center"
-        alignItems="center"
-      >
-        <Image src={logo} alt="Logo" objectFit="contain" />
-      </Box>
+    <Container>
       <Flex alignItems="center" height="100vh">
         <LoginForm />
       </Flex>
