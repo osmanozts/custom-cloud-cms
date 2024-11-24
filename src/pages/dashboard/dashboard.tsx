@@ -23,22 +23,22 @@ export function Dashboard() {
 
   const items = [
     {
-      title: "Mitarbeiter Tabelle",
-      description: "Verwalten Sie alle Mitarbeiter ihre Daten und Dokumente.",
+      title: "Mitarbeiter Management",
+      description: "Verwalten Sie alle Mitarbeiter.",
       icon: LuTable2,
       path: "/employee-management",
-    },
-    {
-      title: "Interne Dokumente",
-      description: "Zugriff auf alle internen Dokumente des Unternehmens.",
-      icon: LuFileStack,
-      path: "/document-management",
     },
     {
       title: "Fahrzeug Management",
       description: "Fahrzeug, Fahrer und Schaden Management",
       icon: LuCar,
       path: "/vehicle-management",
+    },
+    {
+      title: "Interne Dokumente",
+      description: "Zugriff auf alle internen Dokumente des Unternehmens.",
+      icon: LuFileStack,
+      path: "/document-management",
     },
   ];
 
