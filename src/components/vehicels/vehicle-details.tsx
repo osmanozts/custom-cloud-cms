@@ -77,7 +77,7 @@ export const VehicleDetails = ({
         <GridItem>
           <VehicleProfilePic vehicle_id={vehicle.id.toString()} />
         </GridItem>
-        {/* VIN */}
+
         <GridItem>
           <FormControl>
             <FormLabel htmlFor="vin">VIN</FormLabel>
@@ -90,7 +90,6 @@ export const VehicleDetails = ({
           </FormControl>
         </GridItem>
 
-        {/* Kennzeichen */}
         <GridItem>
           <FormControl>
             <FormLabel htmlFor="licensePlate">Kennzeichen</FormLabel>
@@ -105,7 +104,6 @@ export const VehicleDetails = ({
           </FormControl>
         </GridItem>
 
-        {/* Hauptfahrer */}
         <GridItem>
           <FormControl>
             <FormLabel htmlFor="profileId">Haupt-Fahrer</FormLabel>
@@ -119,7 +117,6 @@ export const VehicleDetails = ({
           </FormControl>
         </GridItem>
 
-        {/* Kilometerstand */}
         <GridItem>
           <FormControl>
             <FormLabel htmlFor="kmAge">Kilometerstand</FormLabel>
@@ -132,7 +129,6 @@ export const VehicleDetails = ({
           </FormControl>
         </GridItem>
 
-        {/* Marke */}
         <GridItem>
           <FormControl>
             <FormLabel htmlFor="make">Marke</FormLabel>
@@ -145,7 +141,6 @@ export const VehicleDetails = ({
           </FormControl>
         </GridItem>
 
-        {/* Modell */}
         <GridItem>
           <FormControl>
             <FormLabel htmlFor="model">Modell</FormLabel>
@@ -158,7 +153,6 @@ export const VehicleDetails = ({
           </FormControl>
         </GridItem>
 
-        {/* Baujahr */}
         <GridItem>
           <FormControl>
             <FormLabel htmlFor="year">Baujahr</FormLabel>
@@ -171,7 +165,6 @@ export const VehicleDetails = ({
           </FormControl>
         </GridItem>
 
-        {/* Status */}
         <GridItem>
           <FormControl>
             <FormLabel htmlFor="state">Status</FormLabel>
@@ -188,7 +181,6 @@ export const VehicleDetails = ({
           </FormControl>
         </GridItem>
 
-        {/* Standort */}
         <GridItem>
           <FormControl>
             <FormLabel htmlFor="state">Standort</FormLabel>
@@ -204,7 +196,6 @@ export const VehicleDetails = ({
           </FormControl>
         </GridItem>
 
-        {/* Letzte Wartung */}
         <GridItem>
           <FormControl>
             <FormLabel htmlFor="lastServiceDate">Letzte Wartung</FormLabel>
@@ -221,7 +212,6 @@ export const VehicleDetails = ({
           </FormControl>
         </GridItem>
 
-        {/* Nächste Wartung */}
         <GridItem>
           <FormControl>
             <FormLabel htmlFor="nextServiceDate">Nächste Wartung</FormLabel>
@@ -238,7 +228,6 @@ export const VehicleDetails = ({
           </FormControl>
         </GridItem>
 
-        {/* Farbe */}
         <GridItem>
           <FormControl>
             <FormLabel htmlFor="color">Farbe</FormLabel>
@@ -250,7 +239,6 @@ export const VehicleDetails = ({
           </FormControl>
         </GridItem>
 
-        {/* Fahrer Historie */}
         <GridItem height="100%" display="flex" alignItems="flex-end">
           <Button
             borderWidth={1}
