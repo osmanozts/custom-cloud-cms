@@ -132,8 +132,7 @@ export function AllVehicles({}: AllVehiclesProps) {
           <DefaultMenu
             options={[
               { value: null, label: "Alle", color: "grey" },
-              { value: "dusseldorf", label: "Düsseldorf", color: "green" },
-              { value: "moers", label: "Moers", color: "yellow" },
+              { value: "DNX4", label: "DNX4 - Düsseldorf" },
             ]}
             defaultValue="Alle"
             onSelect={(value) => setLocationFilter(value)}

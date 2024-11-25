@@ -87,26 +87,26 @@ export const EditVehicle = ({}: EditVehicleProps) => {
         </Heading>
         <Flex mt={4} width="250px" justifyContent="space-between">
           <Button
-            bg="successColor"
-            color="textColor"
+            bg="parcelColor"
+            color="#fff"
             isLoading={isLoading}
             onClick={handleSave}
             size="sm"
             alignSelf="center"
             isDisabled={isSaveDisabled}
             leftIcon={<Icon as={LuCheck} />}
-            textColor="textColor"
+            _hover={{ bg: "parcelColor", transform: "scale(1.025)" }}
           >
             Speichern
           </Button>
           <Button
-            bg="dangerColor"
-            color="textColor"
+            bg="accentColor"
+            color="#fff"
             onClick={() => navigate("/vehicle-management")}
             size="sm"
             alignSelf="center"
             leftIcon={<Icon as={LuX} />}
-            textColor="textColor"
+            _hover={{ bg: "accentColor", transform: "scale(1.025)" }}
           >
             Verwerfen
           </Button>
@@ -114,8 +114,8 @@ export const EditVehicle = ({}: EditVehicleProps) => {
       </Flex>
 
       <Box>
-        <Heading fontSize="lg" fontWeight="semibold" mb={4} color="gray.600">
-          <Icon mr={2} as={LuCar} /> Fahrzeug Daten
+        <Heading fontSize="lg" fontWeight="semibold" mb={4} color="textColor">
+          <Icon mr={2} as={LuCar} color="textColor" /> Fahrzeug Daten
         </Heading>
         <VStack spacing={6}>
           <VehicleDetails
@@ -132,9 +132,9 @@ export const EditVehicle = ({}: EditVehicleProps) => {
           fontWeight="semibold"
           mt={8}
           mb={4}
-          color="gray.600"
+          color="textColor"
         >
-          <Icon mr={2} as={LuWrench} /> Schadensmeldungen
+          <Icon mr={2} as={LuWrench} color="textColor" /> Schadensmeldungen
         </Heading>
         <VStack spacing={6}>
           <AllIncidents vehicle={vehicle} />

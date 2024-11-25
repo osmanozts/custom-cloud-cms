@@ -9,19 +9,17 @@ import {
 
 import { Tables } from "../../utils/database/types";
 import { CustomCalendar } from "../calendars/custom-calendar";
-import { DefaultMenu } from "../menu/default-menu";
 import { InputField } from "../input-field";
+import { DriverSelectDialog } from "../dialogs/driver-select-dialog";
 
 type DriverHistoryDetailsProps = {
   driverHistory: Tables<"driver_history">;
-  employee?: Tables<"employees">;
   employees?: Tables<"employees">[];
   setDriverHistory: (driverHistory: Tables<"driver_history">) => void;
 };
 
 export const DriverHistoryDetails = ({
   driverHistory,
-  employee,
   employees,
   setDriverHistory,
 }: DriverHistoryDetailsProps) => {
@@ -29,6 +27,12 @@ export const DriverHistoryDetails = ({
     base: 2,
     md: 4,
   });
+
+  const driverOptions =
+    employees?.map((employee) => ({
+      label: `${employee.first_name ?? ""} ${employee.last_name ?? ""}`,
+      value: employee.profile_id ?? "",
+    })) || [];
 
   return (
     <Box height="100dvh" bg="tileBgColor" borderWidth="1px" borderRadius="lg">
@@ -58,7 +62,7 @@ export const DriverHistoryDetails = ({
             onChange={(date) => {
               setDriverHistory({
                 ...driverHistory,
-                drive_start: date?.toISOString() ?? new Date().toString(),
+                drive_start: date?.toISOString() ?? new Date().toISOString(),
               });
             }}
           />
@@ -76,7 +80,7 @@ export const DriverHistoryDetails = ({
             onChange={(date) => {
               setDriverHistory({
                 ...driverHistory,
-                drive_end: date?.toISOString() ?? new Date().toString(),
+                drive_end: date?.toISOString() ?? new Date().toISOString(),
               });
             }}
           />
@@ -86,22 +90,9 @@ export const DriverHistoryDetails = ({
           <Text fontWeight="bold" color="textColor" mb={2}>
             Fahrer
           </Text>
-          <DefaultMenu
-            options={
-              employees
-                ? employees.map((employee) => ({
-                    label: `${employee.first_name ?? ""} ${
-                      employee.last_name ?? ""
-                    }`,
-                    value: employee.profile_id ?? "",
-                  }))
-                : []
-            }
-            defaultValue={
-              employee
-                ? `${employee.first_name ?? ""} ${employee.last_name ?? ""}`
-                : ""
-            }
+          <DriverSelectDialog
+            drivers={driverOptions}
+            selectedDriver={driverHistory.driver_id ?? ""}
             onSelect={(value) =>
               setDriverHistory({ ...driverHistory, driver_id: value })
             }

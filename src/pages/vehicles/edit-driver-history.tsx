@@ -116,7 +116,6 @@ export const EditDriverHistory = ({}: EditDriverHistoryProps) => {
       <Box pb={6}>
         <DriverHistoryDetails
           driverHistory={driverHistory}
-          employee={employee ?? undefined}
           employees={employees ?? undefined}
           setDriverHistory={(newValue) => {
             setDriverHistory(newValue);

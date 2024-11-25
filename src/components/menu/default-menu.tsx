@@ -50,6 +50,7 @@ export const DefaultMenu: React.FC<DefaultMenuProps> = ({
         value={defaultValue}
         width="100%"
         bg="backgroundColor"
+        _hover={{ bg: "darkColor", color: "#fff" }}
       >
         {selectedOption ? (
           <Box display="flex" alignItems="center">

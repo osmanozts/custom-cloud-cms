@@ -17,7 +17,20 @@ export function RadioButtons({
     <RadioGroup id={id} onChange={onChange} value={value}>
       <Stack direction="row">
         {options.map((option) => (
-          <Radio key={option.value} value={option.value}>
+          <Radio
+            key={option.value}
+            value={option.value}
+            colorScheme="dark"
+            _checked={{
+              bg: "darkColor",
+              color: "white",
+              borderColor: "darkColor",
+            }}
+            _hover={{
+              bg: "darkColor",
+              color: "white",
+            }}
+          >
             {option.label ?? option.value}
           </Radio>
         ))}

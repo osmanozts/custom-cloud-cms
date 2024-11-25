@@ -50,14 +50,18 @@ export function AllDriverHistory() {
           </Box>
           <Box>
             <Button
-              leftIcon={<Icon as={LuStepBack} w={6} h={6} color="textColor" />}
               onClick={() =>
                 navigate(
                   `/edit-vehicle?vehicle_id=${searchParams.get("vehicle_id")}`
                 )
               }
+              bg="tileBgColor"
+              color="textColor"
+              _hover={{ bg: "darkColor", color: "#fff" }}
+              display="flex"
             >
-              <Text color="textColor">Zurück zum Fahrzeug</Text>
+              <Icon as={LuStepBack} w={6} h={6} mr={2} />
+              <Text>Zurück zum Fahrzeug</Text>
             </Button>
           </Box>
         </Flex>

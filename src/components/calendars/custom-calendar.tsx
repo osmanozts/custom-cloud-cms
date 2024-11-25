@@ -36,6 +36,7 @@ export function CustomCalendar({ value, onChange }: CalendarProps) {
         width="100%"
         onClick={isOpen ? onClose : onOpen}
         bg="backgroundColor"
+        _hover={{ bg: "darkColor", color: "#fff" }}
       >
         {formatDate(selectedDate)}
       </Button>

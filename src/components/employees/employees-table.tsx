@@ -103,6 +103,7 @@ export const EmployeesTable: React.FC<EmployeesTableProps> = ({
             >
               <Td>
                 <Flex alignItems="center" gap={2}>
+                  <Text color="textColor">{empl.personnel_number ?? "-"}</Text>
                   {(isDriverLicenseExpired || isDriverLicenseExpiring) && (
                     <Tooltip
                       label={
@@ -125,7 +126,6 @@ export const EmployeesTable: React.FC<EmployeesTableProps> = ({
                       <Icon as={InfoIcon} color="red.500" />
                     </Tooltip>
                   )}
-                  <Text color="textColor">{empl.personnel_number ?? "-"}</Text>
                 </Flex>
               </Td>
               <Td>{empl.location ?? "-"}</Td>

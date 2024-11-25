@@ -33,4 +33,20 @@ export const customTheme = extendTheme({
       disabled: "#718096",
     },
   },
+  fonts: {
+    body: `'Open', sans-serif`,
+    heading: `'Roboto', sans-serif`,
+  },
+  styles: {
+    global: {
+      body: {
+        color: "textColor",
+        bg: "backgroundColor",
+        fontFamily: "body",
+      },
+      "*::placeholder": {
+        color: "textColor",
+      },
+    },
+  },
 });

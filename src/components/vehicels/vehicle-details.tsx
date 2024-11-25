@@ -13,12 +13,12 @@ import { Tables } from "../../utils/database/types";
 import { InputField } from "../input-field";
 import { colors } from "../menu/color";
 import { DefaultMenu, MenuOption } from "../menu/default-menu";
-import { RadioButtons } from "../radio-buttons";
 import { EmployeesMinimumDetail } from "../../backend-queries/query/get-min-detail-employees";
 import { CustomCalendar } from "../calendars/custom-calendar";
 import { VehicleProfilePic } from "./vehicle-profile-pic";
 import { RepeatClockIcon } from "@chakra-ui/icons";
 import { useNavigate } from "react-router-dom";
+import { DriverSelectDialog } from "../dialogs/driver-select-dialog";
 
 type VehicleDetailsProps = {
   vehicle: Tables<"vehicles">;
@@ -33,26 +33,14 @@ export const VehicleDetails = ({
 }: VehicleDetailsProps) => {
   const navigate = useNavigate();
   const [driverOptions, setDriverOptions] = useState<MenuOption[]>([]);
-  const [defaultDriverOption, setDefaultDriverOption] = useState<MenuOption>();
 
   useEffect(() => {
-    const optionalDrivers: MenuOption[] = drivers.map((driver) => {
-      return {
-        label: `${driver.first_name} ${driver.last_name}`,
-        value: driver.profile_id ?? "",
-      };
-    });
+    const optionalDrivers: MenuOption[] = drivers.map((driver) => ({
+      label: `${driver.first_name} ${driver.last_name}`,
+      value: driver.profile_id ?? "",
+    }));
     setDriverOptions(optionalDrivers);
   }, [drivers]);
-
-  useEffect(() => {
-    const temp = driverOptions.find(
-      (option) => option.value === vehicle.profile_id
-    );
-    if (temp) {
-      setDefaultDriverOption(temp);
-    }
-  }, [driverOptions]);
 
   const handleDateChange =
     (dateKey: keyof Tables<"vehicles">) => (value: Date | null) => {
@@ -108,12 +96,12 @@ export const VehicleDetails = ({
         <GridItem>
           <FormControl>
             <FormLabel htmlFor="profileId">Haupt-Fahrer</FormLabel>
-            <DefaultMenu
-              options={driverOptions}
-              defaultValue={defaultDriverOption?.label ?? "Wähle einen Fahrer"}
+            <DriverSelectDialog
+              drivers={driverOptions}
               onSelect={(value) =>
                 setVehicle({ ...vehicle, profile_id: value })
               }
+              selectedDriver={vehicle.profile_id ?? ""}
             />
           </FormControl>
         </GridItem>
@@ -169,30 +157,25 @@ export const VehicleDetails = ({
         <GridItem>
           <FormControl>
             <FormLabel htmlFor="state">Status</FormLabel>
-            <RadioButtons
-              id="state"
+            <DefaultMenu
               options={[
                 { value: "active", label: "Aktiv" },
                 { value: "in_service", label: "Wartung" },
                 { value: "decommissioned", label: "Stillgelegt" },
               ]}
-              value={vehicle.state ?? ""}
-              onChange={(value) => setVehicle({ ...vehicle, state: value })}
+              defaultValue={vehicle.state ?? ""}
+              onSelect={(value) => setVehicle({ ...vehicle, state: value })}
             />
           </FormControl>
         </GridItem>
 
         <GridItem>
           <FormControl>
-            <FormLabel htmlFor="state">Standort</FormLabel>
-            <RadioButtons
-              id="location"
-              options={[
-                { value: "dusseldorf", label: "Düsseldorf" },
-                { value: "moers", label: "Moers" },
-              ]}
-              value={vehicle.location ?? ""}
-              onChange={(value) => setVehicle({ ...vehicle, location: value })}
+            <FormLabel htmlFor="location">Standort</FormLabel>
+            <DefaultMenu
+              options={[{ value: "DNX4", label: "DNX4 - Düsseldorf" }]}
+              defaultValue={vehicle.location ?? ""}
+              onSelect={(value) => setVehicle({ ...vehicle, location: value })}
             />
           </FormControl>
         </GridItem>

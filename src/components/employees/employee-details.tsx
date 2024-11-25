@@ -9,8 +9,8 @@ import {
 
 import { Tables } from "../../utils/database/types";
 import { InputField } from "../input-field";
-import { RadioButtons } from "../radio-buttons";
 import { CustomCalendar } from "../calendars/custom-calendar";
+import { DefaultMenu } from "../menu/default-menu";
 import { useAuth } from "../../providers/auth-provider";
 
 type EmployeeDetailsProps = {
@@ -122,7 +122,6 @@ export const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({
           </FormControl>
           <FormControl>
             <FormLabel htmlFor="dateOfBirth">Geburtsdatum</FormLabel>
-
             <CustomCalendar
               value={
                 employee.date_of_birth ? new Date(employee.date_of_birth) : null
@@ -155,7 +154,6 @@ export const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({
             <FormLabel htmlFor="idCardEndDate">
               Personalausweis Ablaufdatum
             </FormLabel>
-
             <CustomCalendar
               value={
                 employee.id_card_end_date
@@ -211,57 +209,50 @@ export const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({
           </FormControl>
           <FormControl>
             <FormLabel htmlFor="location">Standort</FormLabel>
-            <RadioButtons
-              id="role"
-              options={[
-                { value: "dusseldorf", label: "Düsseldorf" },
-                { value: "moers", label: "Moers" },
-              ]}
-              value={employee.location ?? ""}
-              onChange={(value) =>
+            <DefaultMenu
+              options={[{ value: "DNX4", label: "DNX4 - Düsseldorf" }]}
+              defaultValue={employee.location ?? ""}
+              onSelect={(value) =>
                 setEmployee({ ...employee, location: value })
               }
             />
           </FormControl>
           <FormControl>
             <FormLabel htmlFor="department">Abteilung</FormLabel>
-            <RadioButtons
-              id="role"
+            <DefaultMenu
               options={[
                 { value: "warehouse", label: "Lager" },
                 { value: "logistics", label: "Logistik" },
                 { value: "administration", label: "Verwaltung" },
               ]}
-              value={employee.department ?? ""}
-              onChange={(value) =>
+              defaultValue={employee.department ?? ""}
+              onSelect={(value) =>
                 setEmployee({ ...employee, department: value })
               }
             />
           </FormControl>
           <FormControl>
             <FormLabel htmlFor="role">Status</FormLabel>
-            <RadioButtons
-              id="role"
+            <DefaultMenu
               options={[
                 { value: "active", label: "Aktiv" },
                 { value: "inactive", label: "Ausgetreten" },
                 { value: "pipeline", label: "Pipeline" },
               ]}
-              value={employee.state ?? ""}
-              onChange={(value) => setEmployee({ ...employee, state: value })}
+              defaultValue={employee.state ?? ""}
+              onSelect={(value) => setEmployee({ ...employee, state: value })}
             />
           </FormControl>
           <FormControl isDisabled={role !== "superadmin"}>
             <FormLabel htmlFor="role">Rolle</FormLabel>
-            <RadioButtons
-              id="role"
+            <DefaultMenu
               options={[
                 { value: "superadmin", label: "Superadmin" },
                 { value: "admin", label: "Admin" },
                 { value: "employee", label: "Mitarbeiter" },
               ]}
-              value={profile.role ?? ""}
-              onChange={(value) => setProfile({ ...profile, role: value })}
+              defaultValue={profile.role ?? ""}
+              onSelect={(value) => setProfile({ ...profile, role: value })}
             />
           </FormControl>
         </Stack>
