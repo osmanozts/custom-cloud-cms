@@ -92,7 +92,7 @@ export const VehiclesTable = ({ vehicles }: VehiclesTableProps) => {
           const isKmThresholdExceededFlag = isKmThresholdExceeded(
             vehicle.km_age,
             vehicle.next_service_km,
-            30000
+            60000
           );
 
           let rowBg = "tileBgColor"; // Standardfarbe
