@@ -89,8 +89,6 @@ export const VehiclesTable = ({ vehicles }: VehiclesTableProps) => {
           const isNextServiceDateExpired = isDateExpired(
             vehicle.next_service_date
           );
-          console.log("expiring: ", isNextServiceDateExpiring);
-          console.log("expired: ", isNextServiceDateExpired);
           const isKmThresholdExceededFlag = isKmThresholdExceeded(
             vehicle.km_age,
             vehicle.next_service_km,
