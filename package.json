@@ -8,7 +8,8 @@
     "build": "tsc && vite build --mode production",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
-    "update-types": "npx supabase gen types typescript --project-id \"tbqmadkgieooxekluvtc\" --schema public > src/utils/database/types.ts"
+    "update-types": "npx supabase gen types typescript --project-id \"tbqmadkgieooxekluvtc\" --schema public > src/utils/database/types.ts",
+    "update-types-dev": "npx supabase gen types typescript --local > src/utils/database/types.ts"
   },
   "dependencies": {
     "@chakra-ui/icons": "^2.1.1",

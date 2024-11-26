@@ -56,9 +56,9 @@ export function DriverHistoryTable({ historyData }: DriverHistoryTableProps) {
                 </Td>
                 <Td>
                   <Text color="textColor">
-                    {data.employees?.first_name +
+                    {(data.employees?.first_name ?? "-") +
                       " " +
-                      data.employees?.last_name ?? "-"}
+                      (data.employees?.last_name ?? "-")}
                   </Text>
                 </Td>
                 <Td>

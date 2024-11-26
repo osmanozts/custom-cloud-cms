@@ -114,6 +114,68 @@ export const VehicleDetails = ({
               value={vehicle.km_age ?? ""}
               onChange={(value) => setVehicle({ ...vehicle, km_age: value })}
               placeholder="Kilometerstand"
+              regex={/^\d*$/} // Regex für nur Zahlen
+              regexErrorText="Bitte nur Zahlen eingeben"
+            />
+          </FormControl>
+        </GridItem>
+
+        <GridItem>
+          <FormControl>
+            <FormLabel htmlFor="state">Status</FormLabel>
+            <DefaultMenu
+              options={[
+                { value: "active", label: "Aktiv" },
+                { value: "in_service", label: "Wartung" },
+                { value: "decommissioned", label: "Stillgelegt" },
+              ]}
+              defaultValue={vehicle.state ?? ""}
+              onSelect={(value) => setVehicle({ ...vehicle, state: value })}
+            />
+          </FormControl>
+        </GridItem>
+
+        <GridItem>
+          <FormControl>
+            <FormLabel htmlFor="location">Standort</FormLabel>
+            <DefaultMenu
+              options={[{ value: "DNX4", label: "DNX4 - Düsseldorf" }]}
+              defaultValue={vehicle.location ?? ""}
+              onSelect={(value) => setVehicle({ ...vehicle, location: value })}
+            />
+          </FormControl>
+        </GridItem>
+
+        <GridItem>
+          <FormControl>
+            <FormLabel htmlFor="nextServiceDate">Nächste Wartung am</FormLabel>
+            <CustomCalendar
+              value={
+                vehicle.next_service_date
+                  ? new Date(vehicle.next_service_date)
+                  : null
+              }
+              onChange={(date) => {
+                handleDateChange("next_service_date")(date);
+              }}
+            />
+          </FormControl>
+        </GridItem>
+
+        <GridItem>
+          <FormControl>
+            <FormLabel htmlFor="service_year">
+              Nächste Wartung ab ... km
+            </FormLabel>
+            <InputField
+              id="service_year"
+              value={vehicle.next_service_km ?? ""}
+              placeholder="km..."
+              regex={/^\d*$/} // Regex für nur Zahlen
+              regexErrorText="Bitte nur Zahlen eingeben"
+              onChange={(value) =>
+                setVehicle({ ...vehicle, next_service_km: value })
+              }
             />
           </FormControl>
         </GridItem>
@@ -150,64 +212,8 @@ export const VehicleDetails = ({
               value={vehicle.year ?? ""}
               onChange={(value) => setVehicle({ ...vehicle, year: value })}
               placeholder="Baujahr"
-            />
-          </FormControl>
-        </GridItem>
-
-        <GridItem>
-          <FormControl>
-            <FormLabel htmlFor="state">Status</FormLabel>
-            <DefaultMenu
-              options={[
-                { value: "active", label: "Aktiv" },
-                { value: "in_service", label: "Wartung" },
-                { value: "decommissioned", label: "Stillgelegt" },
-              ]}
-              defaultValue={vehicle.state ?? ""}
-              onSelect={(value) => setVehicle({ ...vehicle, state: value })}
-            />
-          </FormControl>
-        </GridItem>
-
-        <GridItem>
-          <FormControl>
-            <FormLabel htmlFor="location">Standort</FormLabel>
-            <DefaultMenu
-              options={[{ value: "DNX4", label: "DNX4 - Düsseldorf" }]}
-              defaultValue={vehicle.location ?? ""}
-              onSelect={(value) => setVehicle({ ...vehicle, location: value })}
-            />
-          </FormControl>
-        </GridItem>
-
-        <GridItem>
-          <FormControl>
-            <FormLabel htmlFor="lastServiceDate">Letzte Wartung</FormLabel>
-            <CustomCalendar
-              value={
-                vehicle.last_service_date
-                  ? new Date(vehicle.last_service_date)
-                  : null
-              }
-              onChange={(date) => {
-                handleDateChange("last_service_date")(date);
-              }}
-            />
-          </FormControl>
-        </GridItem>
-
-        <GridItem>
-          <FormControl>
-            <FormLabel htmlFor="nextServiceDate">Nächste Wartung</FormLabel>
-            <CustomCalendar
-              value={
-                vehicle.next_service_date
-                  ? new Date(vehicle.next_service_date)
-                  : null
-              }
-              onChange={(date) => {
-                handleDateChange("next_service_date")(date);
-              }}
+              regex={/^\d*$/} // Regex für nur Zahlen
+              regexErrorText="Bitte nur Zahlen eingeben"
             />
           </FormControl>
         </GridItem>
