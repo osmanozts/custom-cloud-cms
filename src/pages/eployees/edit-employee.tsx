@@ -87,8 +87,8 @@ export const EditEmployee = ({}: EditEmployeeProps) => {
         </Heading>
         <Flex mt={4} width="250px" justifyContent="space-between">
           <Button
-            bg="successColor"
-            color="textColor"
+            bg="parcelColor"
+            color="#fff"
             isLoading={isLoading}
             onClick={handleSave}
             size="sm"
@@ -96,7 +96,7 @@ export const EditEmployee = ({}: EditEmployeeProps) => {
             isDisabled={isSaveDisabled}
           >
             <Icon mr={2} as={LuCheck} />
-            <Text color="textColor">Speichern</Text>
+            <Text>Speichern</Text>
           </Button>
           <Button
             bg="dangerColor"

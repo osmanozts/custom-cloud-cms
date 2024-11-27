@@ -86,8 +86,8 @@ export const EditDriverHistory = ({}: EditDriverHistoryProps) => {
         </Heading>
         <Flex mt={4} width="250px" justifyContent="space-between">
           <Button
-            bg="successColor"
-            color="textColor"
+            bg="parcelColor"
+            color="#fff"
             isLoading={isLoading}
             loadingText="Speichern..."
             onClick={handleSave}
@@ -96,7 +96,7 @@ export const EditDriverHistory = ({}: EditDriverHistoryProps) => {
             isDisabled={isSaveDisabled}
           >
             <Icon mr={2} as={LuCheck} />
-            <Text color="textColor">Speichern</Text>
+            <Text>Speichern</Text>
           </Button>
           <Button
             bg="dangerColor"
