@@ -35,7 +35,7 @@ export const DriverHistoryDetails = ({
     })) || [];
 
   return (
-    <Box height="100dvh" bg="tileBgColor" borderWidth="1px" borderRadius="lg">
+    <Box height="100d%" bg="tileBgColor" borderWidth="1px" borderRadius="lg">
       <Grid
         templateColumns={{ base: "1fr", md: "repeat(4, 1fr)" }}
         gap={4}
@@ -112,7 +112,7 @@ export const DriverHistoryDetails = ({
                 description: e.target.value,
               })
             }
-            placeholder="Beschreibung"
+            placeholder="Beschreibung..."
             resize="vertical"
             width="100%"
             color="textColor"

@@ -15,6 +15,7 @@ import {
 } from "@chakra-ui/react";
 import { useState } from "react";
 import { MenuOption } from "../menu/default-menu";
+import { InputField } from "../input-field";
 
 type DriverSelectDialogProps = {
   drivers: MenuOption[];
@@ -56,13 +57,13 @@ export const DriverSelectDialog: React.FC<DriverSelectDialogProps> = ({
           <ModalHeader>Fahrer auswählen</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            <Input
+            <InputField
               placeholder="Fahrer suchen..."
-              mb={4}
-              onChange={(e) => setSearchTerm(e.target.value)}
+              onChange={(e) => setSearchTerm(e)}
               value={searchTerm}
             />
             <VStack
+              my={6}
               spacing={4}
               align="stretch"
               overflowY="auto"
@@ -75,13 +76,21 @@ export const DriverSelectDialog: React.FC<DriverSelectDialogProps> = ({
                     p={3}
                     borderWidth="1px"
                     borderRadius="md"
-                    _hover={{ bg: "tileBgColor", cursor: "pointer" }}
                     onClick={() => {
                       setDriverTemp(driver.value ?? "");
                     }}
-                    bg={driverTemp === driver.value ? "tileBgColor" : "#fff"}
+                    bg={
+                      driverTemp !== driver.value
+                        ? "tileBgColor"
+                        : "parcelColor"
+                    }
+                    _hover={{ cursor: "pointer" }}
                   >
-                    <Text>{driver.label}</Text>
+                    <Text
+                      color={driverTemp !== driver.value ? "textColor" : "#fff"}
+                    >
+                      {driver.label}
+                    </Text>
                   </Box>
                 ))
               ) : (
