@@ -8,12 +8,8 @@ import {
   Divider,
   useBreakpointValue,
 } from "@chakra-ui/react";
-import { useState } from "react";
 
 import { Tables } from "../../utils/database/types";
-import { CustomCalendar } from "../calendars/custom-calendar";
-import { FileUploadDialog } from "../dialogs/file-upload-dialog";
-import { UploadedFilesGrid } from "../files/uploaded-filed-grid";
 import { InputField } from "../input-field";
 import { RadioButtons } from "../radio-buttons";
 
@@ -26,21 +22,21 @@ type IncidentDetailsProps = {
 export const IncidentDetails = ({
   incident,
   setIncident,
-  vehicle_id,
-}: IncidentDetailsProps) => {
-  const [reloadFiles, setReloadFiles] = useState(false);
+}: // vehicle_id,
+IncidentDetailsProps) => {
+  // const [reloadFiles, setReloadFiles] = useState(false);
 
-  const handleDateChange =
-    (dateKey: keyof Tables<"incidents">) => (value: Date | null) => {
-      setIncident({
-        ...incident,
-        [dateKey]: value ? value.toISOString() : null,
-      });
-    };
+  // const handleDateChange =
+  //   (dateKey: keyof Tables<"incidents">) => (value: Date | null) => {
+  //     setIncident({
+  //       ...incident,
+  //       [dateKey]: value ? value.toISOString() : null,
+  //     });
+  //   };
 
-  const handleFilesUploaded = () => {
-    setReloadFiles((prev) => !prev);
-  };
+  // const handleFilesUploaded = () => {
+  //   setReloadFiles((prev) => !prev);
+  // };
 
   const gridTemplateColumns = useBreakpointValue({
     base: "1fr",
