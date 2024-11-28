@@ -190,43 +190,178 @@ export type Database = {
       }
       incidents: {
         Row: {
+          address: string | null
+          alcohol_last_12h: boolean | null
+          bike_number: string | null
+          blood_test: boolean | null
+          city: string | null
+          company_name: string | null
+          country: string | null
           created_at: string | null
+          damage_description: string | null
+          damage_location: string | null
           damage_severity: string | null
           description: string | null
+          driver_birth_date: string | null
+          driver_license_class: string | null
+          driver_name: string | null
+          email: string | null
+          first_registration: string | null
           id: number
           incident_date: string | null
+          injured_address: string | null
+          injured_first_name: string | null
+          injured_last_name: string | null
+          km: string | null
+          license_issue_place: string | null
+          license_plate: string | null
+          mobile: string | null
+          opponent_address: string | null
+          opponent_bike_number: string | null
+          opponent_company_name: string | null
+          opponent_driver_birth_date: string | null
+          opponent_driver_name: string | null
+          opponent_email: string | null
+          opponent_first_registration: string | null
+          opponent_insurance_name: string | null
+          opponent_insurance_number: string | null
+          opponent_km: string | null
+          opponent_license_plate: string | null
+          opponent_mobile: string | null
+          opponent_owner_address: string | null
+          opponent_phone: string | null
+          opponent_vehicle_owner: string | null
+          penalty: boolean | null
+          phone: string | null
           photos_url: string | null
+          police_station_name: string | null
           repair_completed: boolean | null
           repair_cost_estimate: string | null
           repair_date: string | null
+          repair_workshop: string | null
           reporting_user_id: string | null
+          street: string | null
           vehicle_id: number | null
+          vehicle_repaired: boolean | null
+          witness_address: string | null
+          witness_first_name: string | null
+          witness_last_name: string | null
         }
         Insert: {
+          address?: string | null
+          alcohol_last_12h?: boolean | null
+          bike_number?: string | null
+          blood_test?: boolean | null
+          city?: string | null
+          company_name?: string | null
+          country?: string | null
           created_at?: string | null
+          damage_description?: string | null
+          damage_location?: string | null
           damage_severity?: string | null
           description?: string | null
+          driver_birth_date?: string | null
+          driver_license_class?: string | null
+          driver_name?: string | null
+          email?: string | null
+          first_registration?: string | null
           id?: number
           incident_date?: string | null
+          injured_address?: string | null
+          injured_first_name?: string | null
+          injured_last_name?: string | null
+          km?: string | null
+          license_issue_place?: string | null
+          license_plate?: string | null
+          mobile?: string | null
+          opponent_address?: string | null
+          opponent_bike_number?: string | null
+          opponent_company_name?: string | null
+          opponent_driver_birth_date?: string | null
+          opponent_driver_name?: string | null
+          opponent_email?: string | null
+          opponent_first_registration?: string | null
+          opponent_insurance_name?: string | null
+          opponent_insurance_number?: string | null
+          opponent_km?: string | null
+          opponent_license_plate?: string | null
+          opponent_mobile?: string | null
+          opponent_owner_address?: string | null
+          opponent_phone?: string | null
+          opponent_vehicle_owner?: string | null
+          penalty?: boolean | null
+          phone?: string | null
           photos_url?: string | null
+          police_station_name?: string | null
           repair_completed?: boolean | null
           repair_cost_estimate?: string | null
           repair_date?: string | null
+          repair_workshop?: string | null
           reporting_user_id?: string | null
+          street?: string | null
           vehicle_id?: number | null
+          vehicle_repaired?: boolean | null
+          witness_address?: string | null
+          witness_first_name?: string | null
+          witness_last_name?: string | null
         }
         Update: {
+          address?: string | null
+          alcohol_last_12h?: boolean | null
+          bike_number?: string | null
+          blood_test?: boolean | null
+          city?: string | null
+          company_name?: string | null
+          country?: string | null
           created_at?: string | null
+          damage_description?: string | null
+          damage_location?: string | null
           damage_severity?: string | null
           description?: string | null
+          driver_birth_date?: string | null
+          driver_license_class?: string | null
+          driver_name?: string | null
+          email?: string | null
+          first_registration?: string | null
           id?: number
           incident_date?: string | null
+          injured_address?: string | null
+          injured_first_name?: string | null
+          injured_last_name?: string | null
+          km?: string | null
+          license_issue_place?: string | null
+          license_plate?: string | null
+          mobile?: string | null
+          opponent_address?: string | null
+          opponent_bike_number?: string | null
+          opponent_company_name?: string | null
+          opponent_driver_birth_date?: string | null
+          opponent_driver_name?: string | null
+          opponent_email?: string | null
+          opponent_first_registration?: string | null
+          opponent_insurance_name?: string | null
+          opponent_insurance_number?: string | null
+          opponent_km?: string | null
+          opponent_license_plate?: string | null
+          opponent_mobile?: string | null
+          opponent_owner_address?: string | null
+          opponent_phone?: string | null
+          opponent_vehicle_owner?: string | null
+          penalty?: boolean | null
+          phone?: string | null
           photos_url?: string | null
+          police_station_name?: string | null
           repair_completed?: boolean | null
           repair_cost_estimate?: string | null
           repair_date?: string | null
+          repair_workshop?: string | null
           reporting_user_id?: string | null
+          street?: string | null
           vehicle_id?: number | null
+          vehicle_repaired?: boolean | null
+          witness_address?: string | null
+          witness_first_name?: string | null
+          witness_last_name?: string | null
         }
         Relationships: [
           {

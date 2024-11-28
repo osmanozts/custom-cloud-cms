@@ -1,9 +1,11 @@
 import {
   FormControl,
   FormLabel,
+  Text,
   Grid,
   GridItem,
   Textarea,
+  Divider,
   useBreakpointValue,
 } from "@chakra-ui/react";
 import { useState } from "react";
@@ -60,10 +62,15 @@ export const IncidentDetails = ({
       p={paddingValue}
       overflowX="hidden"
     >
-      {/* Description */}
+      {/* Beschreibung */}
       <GridItem colSpan={{ base: 1, md: 2 }}>
         <FormControl>
-          <FormLabel htmlFor="description">Beschreibung</FormLabel>
+          <FormLabel htmlFor="description" fontSize="lg" fontWeight="bold">
+            Beschreibung
+          </FormLabel>
+          <Text mb={2} fontSize="md">
+            Geben Sie eine kurze Beschreibung des Vorfalls an.
+          </Text>
           <Textarea
             id="description"
             value={incident.description ?? ""}
@@ -78,110 +85,179 @@ export const IncidentDetails = ({
         </FormControl>
       </GridItem>
 
-      {/* Damage Severity */}
-      <GridItem colSpan={{ base: 1, md: 2 }}>
-        <FormControl width="100%">
-          <FormLabel htmlFor="damageSeverity">Schadensschwere</FormLabel>
-          <RadioButtons
-            id="damageSeverity"
-            options={[
-              { value: "minor", label: "Geringfügig" },
-              { value: "moderate", label: "Mäßig" },
-              { value: "severe", label: "Schwerwiegend" },
-            ]}
-            value={incident.damage_severity ?? ""}
-            onChange={(value) =>
-              setIncident({ ...incident, damage_severity: value })
-            }
-          />
-        </FormControl>
-      </GridItem>
-
-      {/* Repair Cost Estimate */}
-      <GridItem colSpan={{ base: 1, md: 2 }}>
-        <FormControl width="100%">
-          <FormLabel htmlFor="repairCostEstimate">
-            Reparaturkosten (in €)
+      {/* Neue Felder */}
+      <GridItem>
+        <FormControl>
+          <FormLabel htmlFor="address" fontSize="lg" fontWeight="bold">
+            Adresse
           </FormLabel>
+          <Text mb={2} fontSize="md">
+            Geben Sie die Adresse des Vorfalls ein.
+          </Text>
           <InputField
-            id="repairCostEstimate"
-            value={incident.repair_cost_estimate ?? ""}
-            onChange={(value) =>
-              setIncident({ ...incident, repair_cost_estimate: value })
-            }
-            placeholder="Reparaturkosten"
+            id="address"
+            value={incident.address ?? ""}
+            onChange={(e) => setIncident({ ...incident, address: e })}
+            placeholder="Adresse"
           />
         </FormControl>
       </GridItem>
 
-      {/* Incident Date */}
-      <GridItem colSpan={{ base: 1, md: 2 }}>
-        <FormControl width="100%">
-          <FormLabel htmlFor="incidentDate">Unfalldatum</FormLabel>
-          <CustomCalendar
-            value={
-              incident.incident_date ? new Date(incident.incident_date) : null
-            }
-            onChange={(date) => {
-              handleDateChange("incident_date")(date);
-            }}
-          />
-        </FormControl>
-      </GridItem>
-
-      {/* Repair Date */}
-      <GridItem colSpan={{ base: 1, md: 2 }}>
-        <FormControl width="100%">
-          <FormLabel htmlFor="repairDate">Reparaturdatum</FormLabel>
-          <CustomCalendar
-            value={incident.repair_date ? new Date(incident.repair_date) : null}
-            onChange={(date) => {
-              handleDateChange("repair_date")(date);
-            }}
-          />
-        </FormControl>
-      </GridItem>
-
-      {/* Repair Completed */}
-      <GridItem colSpan={{ base: 1, md: 2 }}>
-        <FormControl width="100%">
-          <FormLabel htmlFor="repairCompleted">
-            Reparatur abgeschlossen
+      <GridItem>
+        <FormControl>
+          <FormLabel htmlFor="city" fontSize="lg" fontWeight="bold">
+            Stadt
           </FormLabel>
+          <Text mb={2} fontSize="md">
+            Geben Sie die Stadt an, in der der Vorfall stattgefunden hat.
+          </Text>
+          <InputField
+            id="city"
+            value={incident.city ?? ""}
+            onChange={(e) => setIncident({ ...incident, city: e })}
+            placeholder="Stadt"
+          />
+        </FormControl>
+      </GridItem>
+
+      <GridItem>
+        <FormControl>
+          <FormLabel htmlFor="country" fontSize="lg" fontWeight="bold">
+            Land
+          </FormLabel>
+          <Text mb={2} fontSize="md">
+            Geben Sie das Land an, in dem der Vorfall stattgefunden hat.
+          </Text>
+          <InputField
+            id="country"
+            value={incident.country ?? ""}
+            onChange={(e) => setIncident({ ...incident, country: e })}
+            placeholder="Land"
+          />
+        </FormControl>
+      </GridItem>
+
+      <Divider my={4} />
+
+      {/* Alkoholkonsum und Bluttest */}
+      <GridItem>
+        <FormControl>
+          <FormLabel htmlFor="alcohol_last_12h" fontSize="lg" fontWeight="bold">
+            Alkoholkonsum in den letzten 12 Stunden
+          </FormLabel>
+          <Text mb={2} fontSize="md">
+            Hat die betroffene Person Alkohol in den letzten 12 Stunden
+            konsumiert?
+          </Text>
           <RadioButtons
-            id="repairCompleted"
+            id="alcohol_last_12h"
             options={[
               { value: "true", label: "Ja" },
               { value: "false", label: "Nein" },
             ]}
-            value={incident.repair_completed ? "true" : "false"}
+            value={incident.alcohol_last_12h?.toString() ?? "true"}
             onChange={(value) =>
               setIncident({
                 ...incident,
-                repair_completed: value === "true",
+                alcohol_last_12h: value === "true" ? true : false,
               })
             }
           />
         </FormControl>
       </GridItem>
 
-      {/* Photos URL */}
-      <GridItem colSpan={{ base: 1, md: 2 }}>
-        <FormControl width="100%">
-          <FormLabel htmlFor="photosUrl">
-            Dateien / Bilder zum Vorfall
+      <GridItem>
+        <FormControl>
+          <FormLabel htmlFor="blood_test" fontSize="lg" fontWeight="bold">
+            Bluttest durchgeführt
           </FormLabel>
-          <UploadedFilesGrid
-            path={`${vehicle_id}/Schaden-Management/${incident.id}`}
-            bucket="dateien_fahrzeuge"
-            reload={reloadFiles}
+          <Text mb={2} fontSize="md">
+            Wurde ein Bluttest durchgeführt?
+          </Text>
+          <RadioButtons
+            id="blood_test"
+            options={[
+              { value: "true", label: "Ja" },
+              { value: "false", label: "Nein" },
+            ]}
+            value={incident.blood_test?.toString() ?? "true"}
+            onChange={(value) =>
+              setIncident({
+                ...incident,
+                blood_test: value === "true" ? true : false,
+              })
+            }
           />
-          <FileUploadDialog
-            path={`${vehicle_id}/Schaden-Management/${incident.id}/`}
-            bucket="dateien_fahrzeuge"
-            title="Füge Dateien zum Vorfall hinzu"
-            successCallback={handleFilesUploaded}
-          />
+        </FormControl>
+      </GridItem>
+
+      <Divider my={4} />
+
+      {/* Zeugeninformationen */}
+      <GridItem colSpan={{ base: 1, md: 2 }}>
+        <FormControl>
+          <FormLabel fontSize="lg" fontWeight="bold">
+            Zeugen
+          </FormLabel>
+          <Text mb={2} fontSize="md">
+            Geben Sie die Details der Zeugen an.
+          </Text>
+          <Grid templateColumns="1fr 1fr" gap={4}>
+            <InputField
+              id="witness_first_name"
+              placeholder="Vorname des Zeugen"
+              value={incident.witness_first_name ?? ""}
+              onChange={(e) =>
+                setIncident({ ...incident, witness_first_name: e })
+              }
+            />
+            <InputField
+              id="witness_last_name"
+              placeholder="Nachname des Zeugen"
+              value={incident.witness_last_name ?? ""}
+              onChange={(e) =>
+                setIncident({ ...incident, witness_last_name: e })
+              }
+            />
+            <InputField
+              id="witness_address"
+              placeholder="Adresse des Zeugen"
+              value={incident.witness_address ?? ""}
+              onChange={(e) => setIncident({ ...incident, witness_address: e })}
+            />
+          </Grid>
+        </FormControl>
+      </GridItem>
+
+      <Divider my={4} />
+
+      {/* Versicherungsinformationen der gegnerischen Partei */}
+      <GridItem colSpan={{ base: 1, md: 2 }}>
+        <FormControl>
+          <FormLabel fontSize="lg" fontWeight="bold">
+            Versicherung der gegnerischen Partei
+          </FormLabel>
+          <Text mb={2} fontSize="md">
+            Geben Sie die Versicherungsdetails der gegnerischen Partei an.
+          </Text>
+          <Grid templateColumns="1fr 1fr" gap={4}>
+            <InputField
+              id="opponent_insurance_name"
+              placeholder="Versicherungsname"
+              value={incident.opponent_insurance_name ?? ""}
+              onChange={(e) =>
+                setIncident({ ...incident, opponent_insurance_name: e })
+              }
+            />
+            <InputField
+              id="opponent_insurance_number"
+              placeholder="Versicherungsnummer"
+              value={incident.opponent_insurance_number ?? ""}
+              onChange={(e) =>
+                setIncident({ ...incident, opponent_insurance_number: e })
+              }
+            />
+          </Grid>
         </FormControl>
       </GridItem>
     </Grid>
