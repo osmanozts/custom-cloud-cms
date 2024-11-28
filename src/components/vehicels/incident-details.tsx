@@ -7,6 +7,7 @@ import {
   Textarea,
   Divider,
   useBreakpointValue,
+  Box,
 } from "@chakra-ui/react";
 
 import { Tables } from "../../utils/database/types";
@@ -77,6 +78,7 @@ IncidentDetailsProps) => {
             resize="vertical"
             width="100%"
             color="textColor"
+            bg="#fff"
           />
         </FormControl>
       </GridItem>
@@ -90,46 +92,31 @@ IncidentDetailsProps) => {
           <Text mb={2} fontSize="md">
             Geben Sie die Adresse des Vorfalls ein.
           </Text>
-          <InputField
-            id="address"
-            value={incident.address ?? ""}
-            onChange={(e) => setIncident({ ...incident, address: e })}
-            placeholder="Adresse"
-          />
-        </FormControl>
-      </GridItem>
 
-      <GridItem>
-        <FormControl>
-          <FormLabel htmlFor="city" fontSize="lg" fontWeight="bold">
-            Stadt
-          </FormLabel>
-          <Text mb={2} fontSize="md">
-            Geben Sie die Stadt an, in der der Vorfall stattgefunden hat.
-          </Text>
-          <InputField
-            id="city"
-            value={incident.city ?? ""}
-            onChange={(e) => setIncident({ ...incident, city: e })}
-            placeholder="Stadt"
-          />
-        </FormControl>
-      </GridItem>
-
-      <GridItem>
-        <FormControl>
-          <FormLabel htmlFor="country" fontSize="lg" fontWeight="bold">
-            Land
-          </FormLabel>
-          <Text mb={2} fontSize="md">
-            Geben Sie das Land an, in dem der Vorfall stattgefunden hat.
-          </Text>
-          <InputField
-            id="country"
-            value={incident.country ?? ""}
-            onChange={(e) => setIncident({ ...incident, country: e })}
-            placeholder="Land"
-          />
+          <Box my={2}>
+            <InputField
+              id="address"
+              value={incident.address ?? ""}
+              onChange={(e) => setIncident({ ...incident, address: e })}
+              placeholder="Straße, Hausnummer"
+            />
+          </Box>
+          <Box my={2}>
+            <InputField
+              id="city"
+              value={incident.city ?? ""}
+              onChange={(e) => setIncident({ ...incident, city: e })}
+              placeholder="Stadt, Plz"
+            />
+          </Box>
+          <Box my={2}>
+            <InputField
+              id="country"
+              value={incident.country ?? ""}
+              onChange={(e) => setIncident({ ...incident, country: e })}
+              placeholder="Land"
+            />
+          </Box>
         </FormControl>
       </GridItem>
 
