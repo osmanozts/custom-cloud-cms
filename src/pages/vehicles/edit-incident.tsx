@@ -9,7 +9,7 @@ import {
   Text,
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
-import { LuCheck, LuWrench, LuX } from "react-icons/lu";
+import { LuCheck, LuX } from "react-icons/lu";
 import { useNavigate, useSearchParams } from "react-router-dom";
 
 import { getIncident, updateIncident } from "../../backend-queries";
@@ -63,8 +63,8 @@ export const EditIncident = ({}: EditIncidentProps) => {
         </Heading>
         <Flex mt={4} width="250px" justifyContent="space-between">
           <Button
-            bg="successColor"
-            color="textColor"
+            bg="parcelColor"
+            color="#fff"
             isLoading={isLoading}
             loadingText="Speichern..."
             onClick={handleSave}
@@ -73,25 +73,22 @@ export const EditIncident = ({}: EditIncidentProps) => {
             isDisabled={isSaveDisabled}
           >
             <Icon mr={2} as={LuCheck} />
-            <Text color="textColor">Speichern</Text>
+            <Text>Speichern</Text>
           </Button>
           <Button
-            bg="dangerColor"
-            color="textColor"
+            bg="accentColor"
+            color="#fff"
             onClick={() => navigate("/edit-vehicle?vehicle_id=" + vehicleID)}
             size="sm"
             alignSelf="center"
           >
             <Icon mr={2} as={LuX} />
-            Verwerfen
+            <Text>Verwerfen</Text>
           </Button>
         </Flex>
       </Flex>
 
       <Box pb={6}>
-        <Heading fontSize="lg" fontWeight="semibold" mb={4} color="gray.600">
-          <Icon mr={2} as={LuWrench} /> Schadensmeldung Daten
-        </Heading>
         <IncidentDetails
           incident={incident}
           setIncident={(newIncident) => {

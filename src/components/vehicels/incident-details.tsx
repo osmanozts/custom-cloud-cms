@@ -5,7 +5,6 @@ import {
   Grid,
   GridItem,
   Textarea,
-  Divider,
   useBreakpointValue,
   Box,
 } from "@chakra-ui/react";
@@ -52,12 +51,14 @@ IncidentDetailsProps) => {
   return (
     <Grid
       templateColumns={gridTemplateColumns}
-      gap={4}
+      gap={12}
       borderWidth="1px"
       borderRadius="lg"
       bg="tileBgColor"
       p={paddingValue}
       overflowX="hidden"
+      px={8}
+      py={8}
     >
       {/* Beschreibung */}
       <GridItem colSpan={{ base: 1, md: 2 }}>
@@ -83,8 +84,7 @@ IncidentDetailsProps) => {
         </FormControl>
       </GridItem>
 
-      {/* Neue Felder */}
-      <GridItem>
+      <GridItem colSpan={{ base: 1 }}>
         <FormControl>
           <FormLabel htmlFor="address" fontSize="lg" fontWeight="bold">
             Adresse
@@ -120,9 +120,6 @@ IncidentDetailsProps) => {
         </FormControl>
       </GridItem>
 
-      <Divider my={4} />
-
-      {/* Alkoholkonsum und Bluttest */}
       <GridItem>
         <FormControl>
           <FormLabel htmlFor="alcohol_last_12h" fontSize="lg" fontWeight="bold">
@@ -174,7 +171,123 @@ IncidentDetailsProps) => {
         </FormControl>
       </GridItem>
 
-      <Divider my={4} />
+      <GridItem colSpan={{ base: 1, md: 2 }}>
+        <FormControl>
+          <FormLabel fontSize="lg" fontWeight="bold">
+            Fahrerinformationen
+          </FormLabel>
+          <Text mb={2} fontSize="md">
+            Geben Sie die Details des Fahrers ein.
+          </Text>
+          <Grid templateColumns="1fr 1fr" gap={4}>
+            <InputField
+              id="driver_name"
+              placeholder="Name des Fahrers"
+              value={incident.driver_name ?? ""}
+              onChange={(e) => setIncident({ ...incident, driver_name: e })}
+            />
+            <InputField
+              id="driver_birth_date"
+              placeholder="Geburtsdatum"
+              value={incident.driver_birth_date ?? ""}
+              onChange={(e) =>
+                setIncident({ ...incident, driver_birth_date: e })
+              }
+            />
+            <InputField
+              id="driver_license_class"
+              placeholder="Führerscheinklasse"
+              value={incident.driver_license_class ?? ""}
+              onChange={(e) =>
+                setIncident({ ...incident, driver_license_class: e })
+              }
+            />
+            <InputField
+              id="mobile"
+              placeholder="Telefonnummer"
+              value={incident.mobile ?? ""}
+              onChange={(e) => setIncident({ ...incident, mobile: e })}
+            />
+          </Grid>
+        </FormControl>
+      </GridItem>
+
+      <GridItem colSpan={{ base: 1, md: 2 }}>
+        <FormControl>
+          <FormLabel fontSize="lg" fontWeight="bold">
+            Gegenerische Partei Fahrer
+          </FormLabel>
+          <Text mb={2} fontSize="md">
+            Geben Sie die Details des Fahrers der gegnerischen Partei ein.
+          </Text>
+          <Grid templateColumns="1fr 1fr" gap={4}>
+            <InputField
+              id="opponent_driver_name"
+              placeholder="Name des Gegners"
+              value={incident.opponent_driver_name ?? ""}
+              onChange={(e) =>
+                setIncident({ ...incident, opponent_driver_name: e })
+              }
+            />
+            <InputField
+              id="opponent_driver_birth_date"
+              placeholder="Geburtsdatum"
+              value={incident.opponent_driver_birth_date ?? ""}
+              onChange={(e) =>
+                setIncident({ ...incident, opponent_driver_birth_date: e })
+              }
+            />
+            <InputField
+              id="opponent_license_plate"
+              placeholder="Kennzeichen"
+              value={incident.opponent_license_plate ?? ""}
+              onChange={(e) =>
+                setIncident({ ...incident, opponent_license_plate: e })
+              }
+            />
+            <InputField
+              id="opponent_mobile"
+              placeholder="Telefonnummer"
+              value={incident.opponent_mobile ?? ""}
+              onChange={(e) => setIncident({ ...incident, opponent_mobile: e })}
+            />
+          </Grid>
+        </FormControl>
+      </GridItem>
+
+      <GridItem colSpan={{ base: 1, md: 2 }}>
+        <FormControl>
+          <FormLabel fontSize="lg" fontWeight="bold">
+            Schadensbeschreibung
+          </FormLabel>
+          <Text mb={2} fontSize="md">
+            Geben Sie eine Beschreibung des Schadens an und wählen Sie die
+            Schadensstelle aus.
+          </Text>
+          <InputField
+            id="damage_description"
+            placeholder="Schadenbeschreibung"
+            value={incident.damage_description ?? ""}
+            onChange={(e) =>
+              setIncident({ ...incident, damage_description: e })
+            }
+          />
+          <FormLabel fontSize="md" fontWeight="normal" mt={4}>
+            Schadenort
+          </FormLabel>
+          <Text mb={2} fontSize="md">
+            Wählen Sie die Schadensstelle aus (z. B. Front, Heck).
+          </Text>
+          <Box mt={2}>
+            <InputField
+              id="damage_location"
+              placeholder="Schadenstelle (z. B. Front, Heck)"
+              value={incident.damage_location ?? ""}
+              onChange={(e) => setIncident({ ...incident, damage_location: e })}
+            />
+          </Box>
+        </FormControl>
+      </GridItem>
 
       {/* Zeugeninformationen */}
       <GridItem colSpan={{ base: 1, md: 2 }}>
@@ -211,8 +324,6 @@ IncidentDetailsProps) => {
           </Grid>
         </FormControl>
       </GridItem>
-
-      <Divider my={4} />
 
       {/* Versicherungsinformationen der gegnerischen Partei */}
       <GridItem colSpan={{ base: 1, md: 2 }}>
