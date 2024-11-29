@@ -5,7 +5,6 @@ import {
   Flex,
   Heading,
   Icon,
-  SimpleGrid,
   Spinner,
   Text,
   VStack,
@@ -110,7 +109,7 @@ export const EditEmployee = ({}: EditEmployeeProps) => {
           </Button>
         </Flex>
       </Flex>
-      <SimpleGrid columns={[1, null, 2]} spacing={8}>
+      <Box>
         <Box>
           <Heading fontSize="lg" fontWeight="semibold" mb={4} color="gray.600">
             Mitarbeiter Daten
@@ -136,7 +135,7 @@ export const EditEmployee = ({}: EditEmployeeProps) => {
           </Heading>
           <EmployeeDocumentUpload employee={employee} />
         </Box>
-      </SimpleGrid>
+      </Box>
     </Container>
   );
 };

@@ -121,12 +121,14 @@ export type Database = {
           date_of_birth: string | null
           department: string | null
           driver_license_end_date: string | null
+          driver_license_level: string | null
           first_name: string | null
           health_insurance: string | null
           id: number
           id_card_end_date: string | null
           last_name: string | null
           location: string | null
+          mobile: string | null
           nationality: string | null
           personnel_number: string | null
           postal_code: string | null
@@ -142,12 +144,14 @@ export type Database = {
           date_of_birth?: string | null
           department?: string | null
           driver_license_end_date?: string | null
+          driver_license_level?: string | null
           first_name?: string | null
           health_insurance?: string | null
           id?: number
           id_card_end_date?: string | null
           last_name?: string | null
           location?: string | null
+          mobile?: string | null
           nationality?: string | null
           personnel_number?: string | null
           postal_code?: string | null
@@ -163,12 +167,14 @@ export type Database = {
           date_of_birth?: string | null
           department?: string | null
           driver_license_end_date?: string | null
+          driver_license_level?: string | null
           first_name?: string | null
           health_insurance?: string | null
           id?: number
           id_card_end_date?: string | null
           last_name?: string | null
           location?: string | null
+          mobile?: string | null
           nationality?: string | null
           personnel_number?: string | null
           postal_code?: string | null
@@ -203,8 +209,11 @@ export type Database = {
           damage_severity: string | null
           description: string | null
           driver_birth_date: string | null
+          driver_firstname: string | null
+          driver_id: string | null
+          driver_lastname: string | null
+          driver_licence_plate: string | null
           driver_license_class: string | null
-          driver_name: string | null
           email: string | null
           first_registration: string | null
           id: number
@@ -220,7 +229,8 @@ export type Database = {
           opponent_bike_number: string | null
           opponent_company_name: string | null
           opponent_driver_birth_date: string | null
-          opponent_driver_name: string | null
+          opponent_driver_firstname: string | null
+          opponent_driver_lastname: string | null
           opponent_email: string | null
           opponent_first_registration: string | null
           opponent_insurance_name: string | null
@@ -261,8 +271,11 @@ export type Database = {
           damage_severity?: string | null
           description?: string | null
           driver_birth_date?: string | null
+          driver_firstname?: string | null
+          driver_id?: string | null
+          driver_lastname?: string | null
+          driver_licence_plate?: string | null
           driver_license_class?: string | null
-          driver_name?: string | null
           email?: string | null
           first_registration?: string | null
           id?: number
@@ -278,7 +291,8 @@ export type Database = {
           opponent_bike_number?: string | null
           opponent_company_name?: string | null
           opponent_driver_birth_date?: string | null
-          opponent_driver_name?: string | null
+          opponent_driver_firstname?: string | null
+          opponent_driver_lastname?: string | null
           opponent_email?: string | null
           opponent_first_registration?: string | null
           opponent_insurance_name?: string | null
@@ -319,8 +333,11 @@ export type Database = {
           damage_severity?: string | null
           description?: string | null
           driver_birth_date?: string | null
+          driver_firstname?: string | null
+          driver_id?: string | null
+          driver_lastname?: string | null
+          driver_licence_plate?: string | null
           driver_license_class?: string | null
-          driver_name?: string | null
           email?: string | null
           first_registration?: string | null
           id?: number
@@ -336,7 +353,8 @@ export type Database = {
           opponent_bike_number?: string | null
           opponent_company_name?: string | null
           opponent_driver_birth_date?: string | null
-          opponent_driver_name?: string | null
+          opponent_driver_firstname?: string | null
+          opponent_driver_lastname?: string | null
           opponent_email?: string | null
           opponent_first_registration?: string | null
           opponent_insurance_name?: string | null
@@ -377,6 +395,13 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "vehicles"
             referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "public_incidents_driver_id_fkey"
+            columns: ["driver_id"]
+            isOneToOne: false
+            referencedRelation: "employees"
+            referencedColumns: ["profile_id"]
           },
         ]
       }

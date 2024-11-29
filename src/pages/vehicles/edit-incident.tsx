@@ -95,7 +95,7 @@ export const EditIncident = ({}: EditIncidentProps) => {
             setIncident(newIncident);
             setIsSaveDisabled(false);
           }}
-          vehicle_id={vehicleID}
+          // vehicle_id={vehicleID}
         />
       </Box>
     </Container>
