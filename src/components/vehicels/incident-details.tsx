@@ -37,32 +37,15 @@ export const IncidentDetails = ({
   }, []);
   useEffect(() => {
     if (incident.driver_id) {
-      getEmployee(incident.driver_id, setDriver);
+      getEmployee(incident.driver_id, (newEmp) => {
+        const mappedEmployee: Tables<"employees"> = {
+          ...newEmp,
+          date_of_birth: dayjs(newEmp.date_of_birth).format("DD.MM.YYYY"),
+        };
+        setDriver(mappedEmployee);
+      });
     }
   }, [drivers]);
-
-  useEffect(() => {
-    if (driver && incident) {
-      const mappedDriver: Tables<"employees"> = {
-        ...driver,
-        date_of_birth: driver?.date_of_birth
-          ? dayjs(driver?.date_of_birth).format("DD.MM.YYYY")
-          : "",
-      };
-      setDriver(mappedDriver);
-
-      const mappedIncident: Tables<"incidents"> = {
-        ...incident,
-        incident_date: incident?.incident_date
-          ? dayjs(incident?.incident_date).format("DD.MM.YYYY HH:mm")
-          : "",
-        opponent_driver_birth_date: incident?.opponent_driver_birth_date
-          ? dayjs(incident?.opponent_driver_birth_date).format("DD.MM.YYYY")
-          : "",
-      };
-      setIncident(mappedIncident);
-    }
-  }, []);
 
   const gridTemplateColumns = useBreakpointValue({
     base: "1fr",
@@ -111,17 +94,30 @@ export const IncidentDetails = ({
       <GridItem>
         <FormControl>
           <FormLabel fontSize="md" fontWeight="normal" mt={4}>
+            Vorfall Tag
+          </FormLabel>
+          <InputField
+            id="tag"
+            placeholder="Tag..."
+            value={incident.incident_date ?? ""}
+            regex={
+              /^(0[1-9]|[12]\d|3[01])\.(0[1-9]|1[0-2])\.(\d{2}|\d{4})(\s([01]\d|2[0-3]):([0-5]\d))?$/
+            }
+            regexErrorText="Bitte geben Sie ein Datum im Format '01.01.2024' ein."
+            onChange={(e) => handleInputChange("incident_date")(e)}
+          />
+        </FormControl>
+        <FormControl>
+          <FormLabel fontSize="md" fontWeight="normal" mt={4}>
             Vorfall Zeitpunkt
           </FormLabel>
           <InputField
             id="Zeitpunkt"
             placeholder="Zeitpunkt..."
-            value={incident.incident_date ?? ""}
-            regex={
-              /^(0[1-9]|[12]\d|3[01])\.(0[1-9]|1[0-2])\.(\d{2}|\d{4})(\s([01]\d|2[0-3]):([0-5]\d))?$/
-            }
-            regexErrorText="Bitte geben Sie ein Datum im Format '01.01.2024 12:00' ein."
-            onChange={(e) => handleInputChange("incident_date")(e)}
+            value={incident.incident_time ?? ""}
+            regex={/^([01]\d|2[0-3]):([0-5]\d)$/}
+            regexErrorText="Bitte geben Sie einen Zeitpunkt im Format '12:00' ein."
+            onChange={(e) => handleInputChange("incident_time")(e)}
           />
         </FormControl>
       </GridItem>
@@ -250,7 +246,13 @@ export const IncidentDetails = ({
           }
           onSelect={async (tem) => {
             await getEmployee(tem, (newEmployee) => {
-              setDriver(newEmployee);
+              const mappedDriver: Tables<"employees"> = {
+                ...newEmployee,
+                date_of_birth: newEmployee?.date_of_birth
+                  ? dayjs(newEmployee?.date_of_birth).format("DD.MM.YYYY")
+                  : "",
+              };
+              setDriver(mappedDriver);
               setIncident({ ...incident, driver_id: tem });
             });
           }}

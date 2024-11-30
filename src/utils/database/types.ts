@@ -218,6 +218,7 @@ export type Database = {
           first_registration: string | null
           id: number
           incident_date: string | null
+          incident_time: string | null
           injured_address: string | null
           injured_first_name: string | null
           injured_last_name: string | null
@@ -280,6 +281,7 @@ export type Database = {
           first_registration?: string | null
           id?: number
           incident_date?: string | null
+          incident_time?: string | null
           injured_address?: string | null
           injured_first_name?: string | null
           injured_last_name?: string | null
@@ -342,6 +344,7 @@ export type Database = {
           first_registration?: string | null
           id?: number
           incident_date?: string | null
+          incident_time?: string | null
           injured_address?: string | null
           injured_first_name?: string | null
           injured_last_name?: string | null

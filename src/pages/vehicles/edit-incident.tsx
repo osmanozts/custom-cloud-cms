@@ -15,6 +15,7 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import { getIncident, getVehicle, updateIncident } from "../../backend-queries";
 import { IncidentDetails } from "../../components";
 import { Tables } from "../../utils/database/types";
+import dayjs from "dayjs";
 
 type EditIncidentProps = {};
 
@@ -42,7 +43,24 @@ export const EditIncident = ({}: EditIncidentProps) => {
     const incidentId = searchParams.get("incident_id") ?? "";
     if (incidentId) {
       getIncident(Number(incidentId), (newIncident) => {
-        setIncident(newIncident);
+        if (newIncident) {
+          const time = newIncident?.incident_time?.split(":");
+          const newTime = `${time![0]}:${time![1]}`;
+
+          const mappedIncident: Tables<"incidents"> = {
+            ...newIncident,
+            incident_date: newIncident?.incident_date
+              ? dayjs(newIncident?.incident_date).format("DD.MM.YYYY")
+              : "",
+            incident_time: newIncident.incident_time ? newTime : "",
+            opponent_driver_birth_date: newIncident?.opponent_driver_birth_date
+              ? dayjs(newIncident?.opponent_driver_birth_date).format(
+                  "DD.MM.YYYY"
+                )
+              : "",
+          };
+          setIncident(mappedIncident);
+        }
       });
     }
   }, [searchParams]);
@@ -50,10 +68,33 @@ export const EditIncident = ({}: EditIncidentProps) => {
   const handleSave = async () => {
     if (!incident) return;
 
+    const incidentDate = incident?.incident_date
+      ? new Date(incident.incident_date).toLocaleDateString("de-DE")
+      : null;
+    const incidentTime = incident?.incident_time
+      ? incident.incident_time
+      : null;
+
+    const birthDate = incident?.opponent_driver_birth_date
+      ? new Date(incident.opponent_driver_birth_date).toLocaleDateString()
+      : null;
+
+    const mappedIncident: Tables<"incidents"> = {
+      ...incident,
+      incident_date: incidentDate,
+      incident_time: incidentTime,
+      opponent_driver_birth_date: birthDate,
+    };
+
     setIsLoading(true);
-    await updateIncident(incident);
-    setIsLoading(false);
-    navigate("/edit-vehicle?vehicle_id=" + vehicleID);
+    try {
+      await updateIncident(mappedIncident);
+      navigate("/edit-vehicle?vehicle_id=" + vehicleID);
+    } catch (error) {
+      console.error("Fehler beim Speichern des Vorfalls:", error);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   if (!incident) {
