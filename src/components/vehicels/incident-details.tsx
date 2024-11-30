@@ -120,7 +120,7 @@ export const IncidentDetails = ({
             regex={
               /^(0[1-9]|[12]\d|3[01])\.(0[1-9]|1[0-2])\.(\d{2}|\d{4})(\s([01]\d|2[0-3]):([0-5]\d))?$/
             }
-            regexErrorText="Bitte geben Sie ein Datum im Format '01.01.2024' ein."
+            regexErrorText="Bitte geben Sie ein Datum im Format '01.01.2024 12:00' ein."
             onChange={(e) => handleInputChange("incident_date")(e)}
           />
         </FormControl>
