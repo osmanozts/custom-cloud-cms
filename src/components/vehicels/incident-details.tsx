@@ -41,6 +41,25 @@ export const IncidentDetails = ({
     }
   }, [drivers]);
 
+  useEffect(() => {
+    if (driver && incident) {
+      const mappedDriver: Tables<"employees"> = {
+        ...driver,
+        date_of_birth: dayjs(driver?.date_of_birth).format("DD.MM.YYYY"),
+      };
+      setDriver(mappedDriver);
+
+      const mappedIncident: Tables<"incidents"> = {
+        ...incident,
+        incident_date: dayjs(incident?.incident_date).format("DD.MM.YYYY"),
+        opponent_driver_birth_date: dayjs(
+          incident?.opponent_driver_birth_date
+        ).format("DD.MM.YYYY"),
+      };
+      setIncident(mappedIncident);
+    }
+  }, [driver]);
+
   const gridTemplateColumns = useBreakpointValue({
     base: "1fr",
     md: "1fr 1fr",
@@ -93,11 +112,7 @@ export const IncidentDetails = ({
           <InputField
             id="Zeitpunkt"
             placeholder="Zeitpunkt..."
-            value={
-              incident.incident_date
-                ? dayjs(incident.incident_date).format("DD.MM.YYYY")
-                : ""
-            }
+            value={incident.incident_date ?? ""}
             regex={
               /^(0[1-9]|[12]\d|3[01])\.(0[1-9]|1[0-2])\.(\d{2}|\d{4})(\s([01]\d|2[0-3]):([0-5]\d))?$/
             }
@@ -290,11 +305,7 @@ export const IncidentDetails = ({
                     /^(0[1-9]|[12]\d|3[01])\.(0[1-9]|1[0-2])\.(\d{2}|\d{4})(\s([01]\d|2[0-3]):([0-5]\d))?$/
                   }
                   regexErrorText="Bitte geben Sie ein Datum im Format '01.01.2024' ein."
-                  value={
-                    driver?.date_of_birth
-                      ? dayjs(driver?.date_of_birth).format("DD.MM.YYYY")
-                      : ""
-                  }
+                  value={driver?.date_of_birth ?? ""}
                 />
               </FormControl>
               <FormControl>
@@ -377,13 +388,7 @@ export const IncidentDetails = ({
               <InputField
                 id="opponent_driver_birth_date"
                 placeholder="Geburtsdatum..."
-                value={
-                  incident.opponent_driver_birth_date
-                    ? dayjs(incident.opponent_driver_birth_date).format(
-                        "DD.MM.YYYY"
-                      )
-                    : ""
-                }
+                value={incident.opponent_driver_birth_date ?? ""}
                 regex={
                   /^(0[1-9]|[12]\d|3[01])\.(0[1-9]|1[0-2])\.(\d{2}|\d{4})(\s([01]\d|2[0-3]):([0-5]\d))?$/
                 }

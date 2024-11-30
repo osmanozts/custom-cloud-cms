@@ -6,11 +6,12 @@ import {
   Heading,
   Icon,
   Spinner,
+  Stack,
   Text,
   VStack,
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
-import { LuCar, LuCheck, LuWrench, LuX } from "react-icons/lu";
+import { LuCar, LuCheck, LuClock, LuWrench, LuX } from "react-icons/lu";
 import { useNavigate, useSearchParams } from "react-router-dom";
 
 import {
@@ -129,25 +130,31 @@ export const EditVehicle = ({}: EditVehicleProps) => {
             }}
           />
         </VStack>
-        <Heading fontSize="lg" fontWeight="semibold" my={4} color="textColor">
-          <Icon mr={2} as={LuCar} color="textColor" /> Fahrzeug Historie
-        </Heading>
-        <VStack spacing={6}>
-          <Flex alignItems="flex-end" height="100%">
-            <Button
-              borderWidth={1}
-              color="textColor"
-              width="100%"
-              bg="backgroundColor"
-              leftIcon={<RepeatClockIcon />}
-              onClick={() =>
-                navigate("/driver-history?vehicle_id=" + vehicle.id)
-              }
-            >
-              <Text>Fahrer Historie</Text>
-            </Button>
-          </Flex>
-        </VStack>
+        <Stack
+          bg="tileBgColor"
+          justifyContent="flex-start"
+          alignItems="flex-start"
+        >
+          <Heading fontSize="lg" fontWeight="semibold" my={4} color="textColor">
+            <Icon mr={2} as={LuClock} color="textColor" /> Fahrzeug Historie
+          </Heading>
+          <VStack spacing={6}>
+            <Flex alignItems="flex-end" height="100%">
+              <Button
+                borderWidth={1}
+                color="textColor"
+                width="100%"
+                bg="backgroundColor"
+                leftIcon={<RepeatClockIcon />}
+                onClick={() =>
+                  navigate("/driver-history?vehicle_id=" + vehicle.id)
+                }
+              >
+                <Text>Fahrer Historie</Text>
+              </Button>
+            </Flex>
+          </VStack>
+        </Stack>
 
         <Heading fontSize="lg" fontWeight="semibold" my={4} color="textColor">
           <Icon mr={2} as={LuWrench} /> Schadensmeldungen
