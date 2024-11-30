@@ -12,7 +12,7 @@ import { useEffect, useState } from "react";
 import { LuCheck, LuX } from "react-icons/lu";
 import { useNavigate, useSearchParams } from "react-router-dom";
 
-import { getIncident, updateIncident } from "../../backend-queries";
+import { getIncident, getVehicle, updateIncident } from "../../backend-queries";
 import { IncidentDetails } from "../../components";
 import { Tables } from "../../utils/database/types";
 
@@ -23,9 +23,15 @@ export const EditIncident = ({}: EditIncidentProps) => {
   const [searchParams] = useSearchParams();
 
   const vehicleID = searchParams.get("vehicle_id") ?? "";
-  const vehicle: Tables<"vehicles"> = JSON.parse(
-    searchParams.get("vehicle") as string
-  ) as Tables<"vehicles">;
+  const [vehicle, setVehicle] = useState<Tables<"vehicles">>();
+
+  useEffect(() => {
+    if (vehicleID) {
+      getVehicle(vehicleID, (newVehicle) => {
+        setVehicle(newVehicle);
+      });
+    }
+  }, [vehicleID]);
 
   const [incident, setIncident] = useState<Tables<"incidents"> | null>(null);
 
@@ -90,17 +96,18 @@ export const EditIncident = ({}: EditIncidentProps) => {
           </Button>
         </Flex>
       </Flex>
-
-      <Box pb={6}>
-        <IncidentDetails
-          incident={incident}
-          setIncident={(newIncident) => {
-            setIncident(newIncident);
-            setIsSaveDisabled(false);
-          }}
-          vehicle={vehicle}
-        />
-      </Box>
+      {vehicle && (
+        <Box pb={6}>
+          <IncidentDetails
+            incident={incident}
+            setIncident={(newIncident) => {
+              setIncident(newIncident);
+              setIsSaveDisabled(false);
+            }}
+            vehicle={vehicle}
+          />
+        </Box>
+      )}
     </Container>
   );
 };
