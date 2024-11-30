@@ -93,7 +93,11 @@ export const IncidentDetails = ({
           <InputField
             id="Zeitpunkt"
             placeholder="Zeitpunkt..."
-            value={dayjs(incident.incident_date).format("DD.MM.YYYY") ?? ""}
+            value={
+              incident.incident_date
+                ? dayjs(incident.incident_date).format("DD.MM.YYYY")
+                : ""
+            }
             regex={
               /^(0[1-9]|[12]\d|3[01])\.(0[1-9]|1[0-2])\.(\d{2}|\d{4})(\s([01]\d|2[0-3]):([0-5]\d))?$/
             }
@@ -206,6 +210,10 @@ export const IncidentDetails = ({
                 isDisabled
                 id="Erstzulassung"
                 placeholder="Erstzulassung..."
+                regex={
+                  /^(0[1-9]|[12]\d|3[01])\.(0[1-9]|1[0-2])\.(\d{2}|\d{4})(\s([01]\d|2[0-3]):([0-5]\d))?$/
+                }
+                regexErrorText="Bitte geben Sie ein Datum im Format '01.01.2024' ein."
                 value={vehicle.year ?? ""}
               />
             </FormControl>
@@ -283,7 +291,9 @@ export const IncidentDetails = ({
                   }
                   regexErrorText="Bitte geben Sie ein Datum im Format '01.01.2024' ein."
                   value={
-                    dayjs(driver?.date_of_birth).format("DD.MM.YYYY") ?? ""
+                    driver?.date_of_birth
+                      ? dayjs(driver?.date_of_birth).format("DD.MM.YYYY")
+                      : ""
                   }
                 />
               </FormControl>
@@ -368,9 +378,11 @@ export const IncidentDetails = ({
                 id="opponent_driver_birth_date"
                 placeholder="Geburtsdatum..."
                 value={
-                  dayjs(incident.opponent_driver_birth_date).format(
-                    "DD.MM.YYYY"
-                  ) ?? ""
+                  incident.opponent_driver_birth_date
+                    ? dayjs(incident.opponent_driver_birth_date).format(
+                        "DD.MM.YYYY"
+                      )
+                    : ""
                 }
                 regex={
                   /^(0[1-9]|[12]\d|3[01])\.(0[1-9]|1[0-2])\.(\d{2}|\d{4})(\s([01]\d|2[0-3]):([0-5]\d))?$/

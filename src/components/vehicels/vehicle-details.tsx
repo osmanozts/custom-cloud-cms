@@ -1,12 +1,9 @@
 import {
-  Button,
-  Flex,
   FormControl,
   FormLabel,
   Grid,
   GridItem,
   Stack,
-  Text,
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { Tables } from "../../utils/database/types";
@@ -16,8 +13,6 @@ import { DefaultMenu, MenuOption } from "../menu/default-menu";
 import { EmployeesMinimumDetail } from "../../backend-queries/query/get-min-detail-employees";
 import { CustomCalendar } from "../calendars/custom-calendar";
 import { VehicleProfilePic } from "./vehicle-profile-pic";
-import { RepeatClockIcon } from "@chakra-ui/icons";
-import { useNavigate } from "react-router-dom";
 import { DriverSelectDialog } from "../dialogs/driver-select-dialog";
 
 type VehicleDetailsProps = {
@@ -31,7 +26,6 @@ export const VehicleDetails = ({
   drivers,
   setVehicle,
 }: VehicleDetailsProps) => {
-  const navigate = useNavigate();
   const [driverOptions, setDriverOptions] = useState<MenuOption[]>([]);
 
   useEffect(() => {
@@ -206,12 +200,12 @@ export const VehicleDetails = ({
 
         <GridItem>
           <FormControl>
-            <FormLabel htmlFor="year">Baujahr</FormLabel>
+            <FormLabel htmlFor="year">Erstzulassung</FormLabel>
             <InputField
               id="year"
               value={vehicle.year ?? ""}
               onChange={(value) => setVehicle({ ...vehicle, year: value })}
-              placeholder="Baujahr"
+              placeholder="Erstzulassung..."
               regex={/^\d*$/} // Regex für nur Zahlen
               regexErrorText="Bitte nur Zahlen eingeben"
             />
@@ -227,22 +221,6 @@ export const VehicleDetails = ({
               onSelect={(value) => setVehicle({ ...vehicle, color: value })}
             />
           </FormControl>
-        </GridItem>
-
-        <GridItem>
-          <Flex alignItems="flex-end" height="100%">
-            <Button
-              borderWidth={1}
-              width="100%"
-              bg="backgroundColor"
-              leftIcon={<RepeatClockIcon />}
-              onClick={() =>
-                navigate("/driver-history?vehicle_id=" + vehicle.id)
-              }
-            >
-              <Text color="textColor">Fahrer Historie</Text>
-            </Button>
-          </Flex>
         </GridItem>
       </Grid>
     </Stack>

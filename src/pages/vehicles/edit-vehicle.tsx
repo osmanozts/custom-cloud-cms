@@ -6,6 +6,7 @@ import {
   Heading,
   Icon,
   Spinner,
+  Text,
   VStack,
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
@@ -21,6 +22,7 @@ import { EmployeesMinimumDetail } from "../../backend-queries/query/get-min-deta
 import { AllIncidents, VehicleDetails } from "../../components";
 import { Tables } from "../../utils/database/types";
 import { createDriverHistory } from "../../backend-queries/create/create-driver-history";
+import { RepeatClockIcon } from "@chakra-ui/icons";
 
 type EditVehicleProps = {};
 
@@ -127,14 +129,28 @@ export const EditVehicle = ({}: EditVehicleProps) => {
             }}
           />
         </VStack>
-        <Heading
-          fontSize="lg"
-          fontWeight="semibold"
-          mt={8}
-          mb={4}
-          color="textColor"
-        >
-          <Icon mr={2} as={LuWrench} color="textColor" /> Schadensmeldungen
+        <Heading fontSize="lg" fontWeight="semibold" my={4} color="textColor">
+          <Icon mr={2} as={LuCar} color="textColor" /> Fahrzeug Historie
+        </Heading>
+        <VStack spacing={6}>
+          <Flex alignItems="flex-end" height="100%">
+            <Button
+              borderWidth={1}
+              color="textColor"
+              width="100%"
+              bg="backgroundColor"
+              leftIcon={<RepeatClockIcon />}
+              onClick={() =>
+                navigate("/driver-history?vehicle_id=" + vehicle.id)
+              }
+            >
+              <Text>Fahrer Historie</Text>
+            </Button>
+          </Flex>
+        </VStack>
+
+        <Heading fontSize="lg" fontWeight="semibold" my={4} color="textColor">
+          <Icon mr={2} as={LuWrench} /> Schadensmeldungen
         </Heading>
         <VStack spacing={6}>
           <AllIncidents vehicle={vehicle} />
