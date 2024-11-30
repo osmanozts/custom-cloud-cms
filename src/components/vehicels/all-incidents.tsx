@@ -41,7 +41,9 @@ export const AllIncidents = ({ vehicle }: AllIncidentsProps) => {
         isClosable: true,
       });
       navigate(
-        `/edit-incident?incident_id=${newIncident.id}&vehicle_id=${vehicle.id}`
+        `/edit-incident?incident_id=${newIncident.id}&vehicle_id=${
+          vehicle.id
+        }&vehicle=${JSON.stringify(vehicle)}`
       );
     } catch (error) {
       toast({

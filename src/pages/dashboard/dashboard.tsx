@@ -30,7 +30,7 @@ export function Dashboard() {
     },
     {
       title: "Fahrzeug Management",
-      description: "Fahrzeug, Fahrer und Schaden Management",
+      description: "Fahrzeug, Fahrer und Schaden Management.",
       icon: LuCar,
       path: "/vehicle-management",
     },

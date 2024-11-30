@@ -21,6 +21,7 @@ import dayjs from "dayjs";
 type IncidentDetailsProps = {
   incident: Tables<"incidents">;
   setIncident: (incident: Tables<"incidents">) => void;
+  vehicle: Tables<"vehicles">;
 };
 
 export const IncidentDetails = ({
@@ -147,6 +148,52 @@ export const IncidentDetails = ({
           }
         />
       </FormControl>
+
+      <GridItem colSpan={{ base: 1, md: 2 }}>
+        <FormControl>
+          <Flex mb={4} alignItems="center">
+            <FormLabel fontSize="lg" fontWeight="bold">
+              Fahrzeuginformationen
+            </FormLabel>
+          </Flex>
+          <Grid templateColumns="1fr 1fr" gap={2}>
+            <FormControl>
+              <FormLabel fontSize="md" fontWeight="normal" mt={4}>
+                Kennzeichen
+              </FormLabel>
+              <InputField
+                isDisabled
+                id="Kennzeichen"
+                placeholder="Kennzeichen..."
+                value={driver?.first_name ?? ""}
+              />
+            </FormControl>
+            <FormControl>
+              <FormLabel fontSize="md" fontWeight="normal" mt={4}>
+                Kilometerstand
+              </FormLabel>
+              <InputField
+                isDisabled
+                id="Nachname des Kilometerstand..."
+                placeholder="Nachname des Kilometerstand..."
+                value={driver?.last_name ?? ""}
+              />
+            </FormControl>
+            <FormControl>
+              <FormLabel fontSize="md" fontWeight="normal" mt={4}>
+                Erstzulassung
+              </FormLabel>
+              <InputField
+                isDisabled
+                id="Erstzulassung"
+                placeholder="Erstzulassung..."
+                value={dayjs(driver?.date_of_birth).format("DD.MM.YYYY") ?? ""}
+              />
+            </FormControl>
+          </Grid>
+        </FormControl>
+      </GridItem>
+
       {!driver && !incident.driver_id ? (
         <DriverSelectDialog
           drivers={
@@ -181,9 +228,6 @@ export const IncidentDetails = ({
                 Fahrer wechseln
               </Button>
             </Flex>
-            <Text mb={2} fontSize="md">
-              Geben Sie die Details des Fahrers ein.
-            </Text>
             <Grid templateColumns="1fr 1fr" gap={2}>
               <FormControl>
                 <FormLabel fontSize="md" fontWeight="normal" mt={4}>
@@ -192,9 +236,8 @@ export const IncidentDetails = ({
                 <InputField
                   isDisabled
                   id="driver_name"
-                  placeholder="Vorname des Fahrers"
+                  placeholder="Vorname des Fahrers..."
                   value={driver?.first_name ?? ""}
-                  onChange={(e) => handleInputChange("driver_firstname")(e)}
                 />
               </FormControl>
               <FormControl>
@@ -204,9 +247,8 @@ export const IncidentDetails = ({
                 <InputField
                   isDisabled
                   id="driver_name"
-                  placeholder="Nachname des Fahrers"
+                  placeholder="Nachname des Fahrers..."
                   value={driver?.last_name ?? ""}
-                  onChange={(e) => handleInputChange("driver_lastname")(e)}
                 />
               </FormControl>
               <FormControl>
@@ -216,7 +258,7 @@ export const IncidentDetails = ({
                 <InputField
                   isDisabled
                   id="driver_birth_date"
-                  placeholder="Geburtsdatum"
+                  placeholder="Geburtsdatum..."
                   regex={
                     /^(0[1-9]|[12]\d|3[01])\.(0[1-9]|1[0-2])\.(\d{2}|\d{4})(\s([01]\d|2[0-3]):([0-5]\d))?$/
                   }
@@ -224,7 +266,6 @@ export const IncidentDetails = ({
                   value={
                     dayjs(driver?.date_of_birth).format("DD.MM.YYYY") ?? ""
                   }
-                  onChange={(e) => handleInputChange("driver_birth_date")(e)}
                 />
               </FormControl>
               <FormControl>
@@ -234,9 +275,8 @@ export const IncidentDetails = ({
                 <InputField
                   isDisabled
                   id="driver_license_class"
-                  placeholder="Kennzeichen"
+                  placeholder="Kennzeichen..."
                   value={incident.driver_licence_plate ?? ""}
-                  onChange={(e) => handleInputChange("driver_licence_plate")(e)}
                 />
               </FormControl>
               <FormControl>
@@ -246,9 +286,8 @@ export const IncidentDetails = ({
                 <InputField
                   isDisabled
                   id="driver_license_class"
-                  placeholder="Führerscheinklasse"
+                  placeholder="Führerscheinklasse..."
                   value={driver?.driver_license_level ?? ""}
-                  onChange={(e) => handleInputChange("driver_license_class")(e)}
                 />
               </FormControl>
               <FormControl>
@@ -258,9 +297,8 @@ export const IncidentDetails = ({
                 <InputField
                   isDisabled
                   id="mobile"
-                  placeholder="Telefonnummer"
+                  placeholder="Telefonnummer..."
                   value={driver?.mobile ?? ""}
-                  onChange={(e) => handleInputChange("mobile")(e)}
                 />
               </FormControl>
             </Grid>
@@ -283,7 +321,7 @@ export const IncidentDetails = ({
               </FormLabel>
               <InputField
                 id="opponent_driver_name"
-                placeholder="Vorname des Gegners"
+                placeholder="Vorname des Gegners..."
                 value={incident.opponent_driver_firstname ?? ""}
                 onChange={(e) =>
                   handleInputChange("opponent_driver_firstname")(e)
@@ -296,7 +334,7 @@ export const IncidentDetails = ({
               </FormLabel>
               <InputField
                 id="opponent_driver_name"
-                placeholder="Nachname des Gegners"
+                placeholder="Nachname des Gegners..."
                 value={incident.opponent_driver_lastname ?? ""}
                 onChange={(e) =>
                   handleInputChange("opponent_driver_lastname")(e)
@@ -309,7 +347,7 @@ export const IncidentDetails = ({
               </FormLabel>
               <InputField
                 id="opponent_driver_birth_date"
-                placeholder="Geburtsdatum"
+                placeholder="Geburtsdatum..."
                 value={incident.opponent_driver_birth_date ?? ""}
                 onChange={(e) =>
                   handleInputChange("opponent_driver_birth_date")(e)
@@ -322,7 +360,7 @@ export const IncidentDetails = ({
               </FormLabel>
               <InputField
                 id="opponent_license_plate"
-                placeholder="Kennzeichen"
+                placeholder="Kennzeichen..."
                 value={incident.opponent_license_plate ?? ""}
                 onChange={(e) => handleInputChange("opponent_license_plate")(e)}
               />
@@ -333,7 +371,7 @@ export const IncidentDetails = ({
               </FormLabel>
               <InputField
                 id="opponent_mobile"
-                placeholder="Telefonnummer"
+                placeholder="Telefonnummer..."
                 value={incident.opponent_mobile ?? ""}
                 onChange={(e) => handleInputChange("opponent_mobile")(e)}
               />

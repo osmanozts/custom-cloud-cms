@@ -23,6 +23,9 @@ export const EditIncident = ({}: EditIncidentProps) => {
   const [searchParams] = useSearchParams();
 
   const vehicleID = searchParams.get("vehicle_id") ?? "";
+  const vehicle: Tables<"vehicles"> = JSON.parse(
+    searchParams.get("vehicle") as string
+  ) as Tables<"vehicles">;
 
   const [incident, setIncident] = useState<Tables<"incidents"> | null>(null);
 
@@ -95,7 +98,7 @@ export const EditIncident = ({}: EditIncidentProps) => {
             setIncident(newIncident);
             setIsSaveDisabled(false);
           }}
-          // vehicle_id={vehicleID}
+          vehicle={vehicle}
         />
       </Box>
     </Container>
