@@ -52,14 +52,14 @@ export const VehiclesTable = ({ vehicles }: VehiclesTableProps) => {
   };
 
   const isKmThresholdExceeded = (
-    currentKm: string | null,
-    nextServiceKm: string | null,
+    currentKm: number | null,
+    nextServiceKm: number | null,
     threshold: number
   ) => {
     if (!currentKm || !nextServiceKm) return false;
 
-    const currentKmNum = parseInt(currentKm, 10);
-    const nextServiceKmNum = parseInt(nextServiceKm, 10);
+    const currentKmNum = currentKm;
+    const nextServiceKmNum = nextServiceKm;
 
     if (isNaN(currentKmNum) || isNaN(nextServiceKmNum)) return false;
 

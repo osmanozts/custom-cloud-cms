@@ -221,7 +221,7 @@ export const IncidentDetails = ({
                 isDisabled
                 id="Nachname des Kilometerstand..."
                 placeholder="Nachname des Kilometerstand..."
-                value={vehicle?.km_age ?? ""}
+                value={vehicle?.km_age?.toString() ?? ""}
               />
             </FormControl>
             <FormControl>
