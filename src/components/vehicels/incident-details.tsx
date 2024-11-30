@@ -62,7 +62,7 @@ export const IncidentDetails = ({
       };
       setIncident(mappedIncident);
     }
-  }, [driver]);
+  }, []);
 
   const gridTemplateColumns = useBreakpointValue({
     base: "1fr",
