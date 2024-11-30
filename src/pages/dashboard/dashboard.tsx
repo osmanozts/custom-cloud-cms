@@ -62,7 +62,7 @@ export function Dashboard() {
       bg="backgroundColor"
     >
       <Heading as="h1" mb={12} textAlign="center" textColor="textColor">
-        Unternehmens-Anwendungen
+        Local Parcel Logistics
       </Heading>
       <Grid
         width="100%"
