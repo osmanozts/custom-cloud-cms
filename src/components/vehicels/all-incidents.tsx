@@ -41,9 +41,7 @@ export const AllIncidents = ({ vehicle }: AllIncidentsProps) => {
         isClosable: true,
       });
       navigate(
-        `/edit-incident?incident_id=${newIncident.id}&vehicle_id=${
-          vehicle.id
-        }&vehicle=${JSON.stringify(vehicle)}`
+        `/edit-incident?incident_id=${newIncident.id}&vehicle_id=${vehicle.id}`
       );
     } catch (error) {
       toast({
@@ -71,9 +69,7 @@ export const AllIncidents = ({ vehicle }: AllIncidentsProps) => {
             incidents.map((incident) => (
               <GridItem key={incident.id} mb={2}>
                 <Link
-                  to={`/edit-incident?incident_id=${incident.id}&vehicle_id=${
-                    vehicle.id
-                  }&vehicle=${JSON.stringify(vehicle)}`}
+                  to={`/edit-incident?incident_id=${incident.id}&vehicle_id=${vehicle.id}`}
                   style={{ textDecoration: "none", maxWidth: "100%" }}
                 >
                   <Box
