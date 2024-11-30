@@ -11,7 +11,7 @@ import {
   VStack,
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
-import { LuCar, LuCheck, LuClock, LuWrench, LuX } from "react-icons/lu";
+import { LuCar, LuCheck, LuWrench, LuX } from "react-icons/lu";
 import { useNavigate, useSearchParams } from "react-router-dom";
 
 import {
