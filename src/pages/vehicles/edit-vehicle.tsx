@@ -134,10 +134,9 @@ export const EditVehicle = ({}: EditVehicleProps) => {
           bg="tileBgColor"
           justifyContent="flex-start"
           alignItems="flex-start"
+          p={8}
+          my={8}
         >
-          <Heading fontSize="lg" fontWeight="semibold" my={4} color="textColor">
-            <Icon mr={2} as={LuClock} color="textColor" /> Fahrzeug Historie
-          </Heading>
           <VStack spacing={6}>
             <Flex alignItems="flex-end" height="100%">
               <Button
