@@ -71,7 +71,9 @@ export const AllIncidents = ({ vehicle }: AllIncidentsProps) => {
             incidents.map((incident) => (
               <GridItem key={incident.id} mb={2}>
                 <Link
-                  to={`/edit-incident?incident_id=${incident.id}&vehicle_id=${vehicle.id}`}
+                  to={`/edit-incident?incident_id=${incident.id}&vehicle_id=${
+                    vehicle.id
+                  }&vehicle=${JSON.stringify(vehicle)}`}
                   style={{ textDecoration: "none", maxWidth: "100%" }}
                 >
                   <Box
