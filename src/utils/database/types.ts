@@ -466,14 +466,14 @@ export type Database = {
           color: string | null
           created_at: string
           id: number
-          km_age: string | null
+          km_age: number | null
           last_service_date: string | null
           license_plate: string | null
           location: string | null
           make: string | null
           model: string | null
           next_service_date: string | null
-          next_service_km: string | null
+          next_service_km: number | null
           profile_id: string | null
           profile_picture_url: string | null
           state: string | null
@@ -484,14 +484,14 @@ export type Database = {
           color?: string | null
           created_at?: string
           id?: number
-          km_age?: string | null
+          km_age?: number | null
           last_service_date?: string | null
           license_plate?: string | null
           location?: string | null
           make?: string | null
           model?: string | null
           next_service_date?: string | null
-          next_service_km?: string | null
+          next_service_km?: number | null
           profile_id?: string | null
           profile_picture_url?: string | null
           state?: string | null
@@ -502,14 +502,14 @@ export type Database = {
           color?: string | null
           created_at?: string
           id?: number
-          km_age?: string | null
+          km_age?: number | null
           last_service_date?: string | null
           license_plate?: string | null
           location?: string | null
           make?: string | null
           model?: string | null
           next_service_date?: string | null
-          next_service_km?: string | null
+          next_service_km?: number | null
           profile_id?: string | null
           profile_picture_url?: string | null
           state?: string | null

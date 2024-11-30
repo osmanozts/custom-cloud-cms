@@ -92,34 +92,41 @@ export const IncidentDetails = ({
       </GridItem>
 
       <GridItem>
-        <FormControl>
-          <FormLabel fontSize="md" fontWeight="normal" mt={4}>
-            Vorfall Tag
-          </FormLabel>
-          <InputField
-            id="tag"
-            placeholder="Tag..."
-            value={incident.incident_date ?? ""}
-            regex={
-              /^(0[1-9]|[12]\d|3[01])\.(0[1-9]|1[0-2])\.(\d{2}|\d{4})(\s([01]\d|2[0-3]):([0-5]\d))?$/
-            }
-            regexErrorText="Bitte geben Sie ein Datum im Format '01.01.2024' ein."
-            onChange={(e) => handleInputChange("incident_date")(e)}
-          />
-        </FormControl>
-        <FormControl>
-          <FormLabel fontSize="md" fontWeight="normal" mt={4}>
-            Vorfall Zeitpunkt
-          </FormLabel>
-          <InputField
-            id="Zeitpunkt"
-            placeholder="Zeitpunkt..."
-            value={incident.incident_time ?? ""}
-            regex={/^([01]\d|2[0-3]):([0-5]\d)$/}
-            regexErrorText="Bitte geben Sie einen Zeitpunkt im Format '12:00' ein."
-            onChange={(e) => handleInputChange("incident_time")(e)}
-          />
-        </FormControl>
+        <FormLabel htmlFor="time" fontSize="lg" fontWeight="bold">
+          Zeitpunkt
+        </FormLabel>
+        <Grid templateColumns="1fr 1fr" gap={8}>
+          <FormControl>
+            <FormLabel fontSize="md" fontWeight="normal">
+              Vorfall Tag
+            </FormLabel>
+            <InputField
+              id="tag"
+              placeholder="Tag..."
+              value={incident.incident_date ?? ""}
+              regex={
+                /^(0[1-9]|[12]\d|3[01])\.(0[1-9]|1[0-2])\.(\d{2}|\d{4})(\s([01]\d|2[0-3]):([0-5]\d))?$/
+              }
+              regexErrorText="Bitte geben Sie ein Datum im Format '01.01.2024' ein."
+              onChange={(e) => handleInputChange("incident_date")(e)}
+              isDate
+            />
+          </FormControl>
+          <FormControl>
+            <FormLabel fontSize="md" fontWeight="normal">
+              Vorfall Zeitpunkt
+            </FormLabel>
+            <InputField
+              id="Zeitpunkt"
+              placeholder="Zeitpunkt..."
+              value={incident.incident_time ?? ""}
+              regex={/^([01]\d|2[0-3]):([0-5]\d)$/}
+              regexErrorText="Bitte geben Sie einen Zeitpunkt im Format '12:00' ein."
+              onChange={(e) => handleInputChange("incident_time")(e)}
+              isTime
+            />
+          </FormControl>
+        </Grid>
       </GridItem>
 
       <GridItem colSpan={{ base: 1, md: 2 }}>
@@ -314,17 +321,7 @@ export const IncidentDetails = ({
                   value={driver?.date_of_birth ?? ""}
                 />
               </FormControl>
-              <FormControl>
-                <FormLabel fontSize="md" fontWeight="normal" mt={4}>
-                  Kennzeichen
-                </FormLabel>
-                <InputField
-                  isDisabled
-                  id="driver_license_class"
-                  placeholder="Kennzeichen..."
-                  value={incident.driver_licence_plate ?? ""}
-                />
-              </FormControl>
+
               <FormControl>
                 <FormLabel fontSize="md" fontWeight="normal" mt={4}>
                   Führerscheinklasse des Fahrers
@@ -402,6 +399,7 @@ export const IncidentDetails = ({
                 onChange={(e) =>
                   handleInputChange("opponent_driver_birth_date")(e)
                 }
+                isDate
               />
             </FormControl>
             <FormControl>

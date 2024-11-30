@@ -105,8 +105,10 @@ export const VehicleDetails = ({
             <FormLabel htmlFor="kmAge">Kilometerstand</FormLabel>
             <InputField
               id="kmAge"
-              value={vehicle.km_age ?? ""}
-              onChange={(value) => setVehicle({ ...vehicle, km_age: value })}
+              value={vehicle.km_age?.toString() ?? ""}
+              onChange={(value) =>
+                setVehicle({ ...vehicle, km_age: Number(value) })
+              }
               placeholder="Kilometerstand"
               regex={/^\d*$/} // Regex für nur Zahlen
               regexErrorText="Bitte nur Zahlen eingeben"
@@ -163,12 +165,12 @@ export const VehicleDetails = ({
             </FormLabel>
             <InputField
               id="service_year"
-              value={vehicle.next_service_km ?? ""}
+              value={vehicle.next_service_km?.toString() ?? ""}
               placeholder="km..."
               regex={/^\d*$/} // Regex für nur Zahlen
               regexErrorText="Bitte nur Zahlen eingeben"
               onChange={(value) =>
-                setVehicle({ ...vehicle, next_service_km: value })
+                setVehicle({ ...vehicle, next_service_km: Number(value) })
               }
             />
           </FormControl>
