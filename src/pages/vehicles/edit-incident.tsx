@@ -44,7 +44,7 @@ export const EditIncident = ({}: EditIncidentProps) => {
     if (incidentId) {
       getIncident(Number(incidentId), (newIncident) => {
         if (newIncident) {
-          const time = newIncident?.incident_time?.split(":");
+          const time = newIncident?.incident_time?.split(":") ?? ["-", "-"];
           const newTime = `${time![0]}:${time![1]}`;
 
           const mappedIncident: Tables<"incidents"> = {
