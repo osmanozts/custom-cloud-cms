@@ -45,16 +45,20 @@ export const IncidentDetails = ({
     if (driver && incident) {
       const mappedDriver: Tables<"employees"> = {
         ...driver,
-        date_of_birth: dayjs(driver?.date_of_birth).format("DD.MM.YYYY"),
+        date_of_birth: driver?.date_of_birth
+          ? dayjs(driver?.date_of_birth).format("DD.MM.YYYY")
+          : "",
       };
       setDriver(mappedDriver);
 
       const mappedIncident: Tables<"incidents"> = {
         ...incident,
-        incident_date: dayjs(incident?.incident_date).format("DD.MM.YYYY"),
-        opponent_driver_birth_date: dayjs(
-          incident?.opponent_driver_birth_date
-        ).format("DD.MM.YYYY"),
+        incident_date: incident?.incident_date
+          ? dayjs(incident?.incident_date).format("DD.MM.YYYY HH:mm")
+          : "",
+        opponent_driver_birth_date: incident?.opponent_driver_birth_date
+          ? dayjs(incident?.opponent_driver_birth_date).format("DD.MM.YYYY")
+          : "",
       };
       setIncident(mappedIncident);
     }
