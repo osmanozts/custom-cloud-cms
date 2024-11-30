@@ -27,6 +27,7 @@ type IncidentDetailsProps = {
 export const IncidentDetails = ({
   incident,
   setIncident,
+  vehicle,
 }: IncidentDetailsProps) => {
   const [drivers, setDrivers] = useState<Tables<"employees">[]>();
   const [driver, setDriver] = useState<Tables<"employees"> | null>();
@@ -80,6 +81,24 @@ export const IncidentDetails = ({
             width="100%"
             color="textColor"
             bg="#fff"
+          />
+        </FormControl>
+      </GridItem>
+
+      <GridItem>
+        <FormControl>
+          <FormLabel fontSize="md" fontWeight="normal" mt={4}>
+            Vorfall Zeitpunkt
+          </FormLabel>
+          <InputField
+            id="Zeitpunkt"
+            placeholder="Zeitpunkt..."
+            value={dayjs(incident.incident_date).format("DD.MM.YYYY") ?? ""}
+            regex={
+              /^(0[1-9]|[12]\d|3[01])\.(0[1-9]|1[0-2])\.(\d{2}|\d{4})(\s([01]\d|2[0-3]):([0-5]\d))?$/
+            }
+            regexErrorText="Bitte geben Sie ein Datum im Format '01.01.2024' ein."
+            onChange={(e) => handleInputChange("incident_date")(e)}
           />
         </FormControl>
       </GridItem>
@@ -165,7 +184,7 @@ export const IncidentDetails = ({
                 isDisabled
                 id="Kennzeichen"
                 placeholder="Kennzeichen..."
-                value={driver?.first_name ?? ""}
+                value={vehicle?.license_plate ?? ""}
               />
             </FormControl>
             <FormControl>
@@ -176,7 +195,7 @@ export const IncidentDetails = ({
                 isDisabled
                 id="Nachname des Kilometerstand..."
                 placeholder="Nachname des Kilometerstand..."
-                value={driver?.last_name ?? ""}
+                value={vehicle?.km_age ?? ""}
               />
             </FormControl>
             <FormControl>
@@ -187,7 +206,7 @@ export const IncidentDetails = ({
                 isDisabled
                 id="Erstzulassung"
                 placeholder="Erstzulassung..."
-                value={dayjs(driver?.date_of_birth).format("DD.MM.YYYY") ?? ""}
+                value={vehicle.year ?? ""}
               />
             </FormControl>
           </Grid>
@@ -348,7 +367,15 @@ export const IncidentDetails = ({
               <InputField
                 id="opponent_driver_birth_date"
                 placeholder="Geburtsdatum..."
-                value={incident.opponent_driver_birth_date ?? ""}
+                value={
+                  dayjs(incident.opponent_driver_birth_date).format(
+                    "DD.MM.YYYY"
+                  ) ?? ""
+                }
+                regex={
+                  /^(0[1-9]|[12]\d|3[01])\.(0[1-9]|1[0-2])\.(\d{2}|\d{4})(\s([01]\d|2[0-3]):([0-5]\d))?$/
+                }
+                regexErrorText="Bitte geben Sie ein Datum im Format '01.01.2024' ein."
                 onChange={(e) =>
                   handleInputChange("opponent_driver_birth_date")(e)
                 }
