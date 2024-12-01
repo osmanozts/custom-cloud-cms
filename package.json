@@ -5,6 +5,8 @@
   "type": "module",
   "scripts": {
     "dev": "vite --mode development",
+    "dev-test": "vite --mode test",
+    "build-test": "tsc && vite build --mode  test",
     "build": "tsc && vite build --mode production",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
