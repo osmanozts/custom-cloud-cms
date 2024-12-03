@@ -541,6 +541,7 @@ export type Database = {
       }
     }
     Enums: {
+      "auth-role": "superadmin" | "admin" | "employee"
       Role: "superadmin" | "admin" | "employee"
     }
     CompositeTypes: {

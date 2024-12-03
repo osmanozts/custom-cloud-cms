@@ -81,7 +81,7 @@ export const EditDriverHistory = ({}: EditDriverHistoryProps) => {
   return (
     <Container maxW="container.xl" bg="backgroundColor" borderRadius="lg">
       <Flex flexDirection="column" my={8} alignItems="center">
-        <Heading fontSize="2xl" fontWeight="bold" color="blue.700">
+        <Heading fontSize="2xl" fontWeight="bold" color="textColor">
           Fahrer Historie Ansehen / Bearbeiten
         </Heading>
         <Flex mt={4} width="250px" justifyContent="space-between">
@@ -99,8 +99,8 @@ export const EditDriverHistory = ({}: EditDriverHistoryProps) => {
             <Text>Speichern</Text>
           </Button>
           <Button
-            bg="dangerColor"
-            color="textColor"
+            bg="accentColor"
+            color="#fff"
             onClick={() =>
               navigate("/driver-history?vehicle_id=" + driverHistory.vehicle_id)
             }

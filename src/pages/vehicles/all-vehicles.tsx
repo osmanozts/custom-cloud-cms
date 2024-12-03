@@ -96,10 +96,11 @@ export function AllVehicles({}: AllVehiclesProps) {
           <Button
             isLoading={isLoading}
             onClick={createNewVehicle}
-            bg="successColor"
+            bg="parcelColor"
+            color="#fff"
           >
             <Icon as={LuPlus} mr={4} />
-            <Text color="textColor">Neues Fahrzeug</Text>
+            <Text>Neues Fahrzeug</Text>
           </Button>
         </Flex>
         <Flex

@@ -52,15 +52,16 @@ export const VehicleDetails = ({
       bg="tileBgColor"
       p={6}
     >
+      <Grid>
+        <GridItem colSpan={{ base: 1 }}>
+          <VehicleProfilePic vehicle_id={vehicle.id.toString()} />
+        </GridItem>
+      </Grid>
       <Grid
         templateColumns={{ base: "1fr", md: "repeat(4, 1fr)" }}
         gap={6}
         mt={4}
       >
-        <GridItem>
-          <VehicleProfilePic vehicle_id={vehicle.id.toString()} />
-        </GridItem>
-
         <GridItem>
           <FormControl>
             <FormLabel htmlFor="vin">VIN</FormLabel>

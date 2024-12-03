@@ -91,7 +91,8 @@ export const AllEmployees: React.FC<AllEmployeesProps> = () => {
 
           <Button
             onClick={() => navigate("/create-new-user")}
-            bg="successColor"
+            bg="parcelColor"
+            color="#fff"
             leftIcon={<Icon as={LuPlus} />}
           >
             Neuer Mitarbeiter

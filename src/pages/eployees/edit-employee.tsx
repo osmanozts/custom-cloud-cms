@@ -20,6 +20,7 @@ import {
 } from "../../backend-queries/update/update-profile";
 import { EmployeeDetails, EmployeeDocumentUpload } from "../../components";
 import { Tables } from "../../utils/database/types";
+import dayjs from "dayjs";
 
 type EditEmployeeProps = {};
 
@@ -39,7 +40,20 @@ export const EditEmployee = ({}: EditEmployeeProps) => {
     const profileId = searchParams.get("profile_id") ?? "";
     if (profileId) {
       getEmployee(profileId, (newEmployee) => {
-        setEmployee(newEmployee);
+        const mappedEmployee: Tables<"employees"> = {
+          ...newEmployee,
+          date_of_birth: newEmployee.date_of_birth
+            ? dayjs(newEmployee.date_of_birth).format("DD.MM.YYYY")
+            : "",
+          id_card_end_date: newEmployee.id_card_end_date
+            ? dayjs(newEmployee.id_card_end_date).format("DD.MM.YYYY")
+            : "",
+          driver_license_end_date: newEmployee.driver_license_end_date
+            ? dayjs(newEmployee.driver_license_end_date).format("DD.MM.YYYY")
+            : "",
+        };
+
+        setEmployee(mappedEmployee);
       });
 
       getProfile(profileId, (userProfile) => {
@@ -53,7 +67,25 @@ export const EditEmployee = ({}: EditEmployeeProps) => {
 
     setIsLoading(true);
 
-    await updateEmployee(employee);
+    console.log("driver_license_end_date: ", employee.driver_license_end_date);
+    const dateOfBirth = employee.date_of_birth
+      ? new Date(employee.date_of_birth).toLocaleString()
+      : null;
+    const idCardEndDate = employee.id_card_end_date
+      ? new Date(employee.id_card_end_date).toLocaleDateString()
+      : null;
+    const driverLicenseEndDate = employee.driver_license_end_date
+      ? new Date(employee.driver_license_end_date).toLocaleDateString()
+      : null;
+
+    const updatedEmployee: Tables<"employees"> = {
+      ...employee,
+      date_of_birth: dateOfBirth,
+      id_card_end_date: idCardEndDate,
+      driver_license_end_date: driverLicenseEndDate,
+    };
+
+    await updateEmployee(updatedEmployee);
 
     const newProfile: NewProfile = {
       id: profile.id,
@@ -81,7 +113,7 @@ export const EditEmployee = ({}: EditEmployeeProps) => {
       borderRadius="lg"
     >
       <Flex flexDirection="column" mb={8} alignItems="center">
-        <Heading fontSize="2xl" fontWeight="bold" color="blue.700">
+        <Heading fontSize="2xl" fontWeight="bold" color="textColor">
           Mitarbeiter Ansehen / Bearbeiten
         </Heading>
         <Flex mt={4} width="250px" justifyContent="space-between">
@@ -98,8 +130,8 @@ export const EditEmployee = ({}: EditEmployeeProps) => {
             <Text>Speichern</Text>
           </Button>
           <Button
-            bg="dangerColor"
-            color="textColor"
+            bg="accentColor"
+            color="#fff"
             onClick={() => navigate("/employee-management")}
             size="sm"
             alignSelf="center"
