@@ -17,6 +17,7 @@ import { getMinDetailEmployees } from "../../backend-queries";
 import { useEffect, useState } from "react";
 import { EmployeesMinimumDetail } from "../../backend-queries/query/get-min-detail-employees";
 import { InfoIcon } from "@chakra-ui/icons";
+import { LuCar } from "react-icons/lu";
 
 interface VehiclesTableProps {
   vehicles: Vehicles;
@@ -81,7 +82,7 @@ export const VehiclesTable = ({ vehicles }: VehiclesTableProps) => {
         </Tr>
       </Thead>
       <Tbody>
-        {vehicles.map((vehicle) => {
+        {vehicles.map((vehicle, index) => {
           const isNextServiceDateExpiring = isDateExpiring(
             vehicle.next_service_date,
             30
@@ -95,13 +96,6 @@ export const VehiclesTable = ({ vehicles }: VehiclesTableProps) => {
             5000
           );
 
-          let rowBg = "tileBgColor"; // Standardfarbe
-          if (isNextServiceDateExpired || isKmThresholdExceededFlag) {
-            rowBg = "red.100"; // Rot für abgelaufene Bedingungen
-          } else if (isNextServiceDateExpiring) {
-            rowBg = "yellow.100"; // Gelb für bald ablaufende Bedingungen
-          }
-
           return (
             <Tr
               key={vehicle.id}
@@ -113,16 +107,35 @@ export const VehiclesTable = ({ vehicles }: VehiclesTableProps) => {
                   search: `?vehicle_id=${vehicle.id}`,
                 })
               }
-              bg={rowBg}
-              _hover={
-                !isNextServiceDateExpired &&
-                !isNextServiceDateExpiring &&
-                !isKmThresholdExceededFlag
-                  ? { bg: "backgroundColor" }
-                  : undefined
-              }
+              bg={index % 2 == 0 ? "tileBgColor" : "invertedColor"}
+              _hover={{ bg: "backgroundColor" }}
             >
-              <Td>{vehicle.vin ?? "-"}</Td>
+              <Td>
+                <Flex alignItems="center" gap={2}>
+                  {!isNextServiceDateExpired &&
+                    !isNextServiceDateExpiring &&
+                    !isKmThresholdExceededFlag && (
+                      <Icon as={LuCar} boxSize={4} mr={2} />
+                    )}
+                  {(isNextServiceDateExpired || isNextServiceDateExpiring) && (
+                    <Tooltip
+                      label={
+                        isNextServiceDateExpired
+                          ? "Die Wartung ist überfällig."
+                          : "Die Wartung steht bald an."
+                      }
+                    >
+                      <Icon as={InfoIcon} color="accentColor" mr={2} />
+                    </Tooltip>
+                  )}
+                  {isKmThresholdExceededFlag && (
+                    <Tooltip label="Der Kilometerstand liegt nah an der Wartungsgrenze.">
+                      <Icon as={InfoIcon} color="accentColor" />
+                    </Tooltip>
+                  )}
+                  <Text>{vehicle.vin ?? "-"}</Text>
+                </Flex>
+              </Td>
               <Td>{vehicle.license_plate ?? "-"}</Td>
               <Td>{vehicle.state ?? "-"}</Td>
               <Td>{vehicle.location ?? "-"}</Td>
@@ -132,38 +145,18 @@ export const VehiclesTable = ({ vehicles }: VehiclesTableProps) => {
               </Td>
               <Td>{vehicle.km_age ? `${vehicle.km_age} km` : "-"}</Td>
               <Td>
-                <Flex alignItems="center" gap={2}>
-                  <Text>
-                    {vehicle.next_service_date
-                      ? dayjs(vehicle.next_service_date).format("DD/MM/YYYY")
-                      : "Kein Datum ausgewählt"}
-                  </Text>
-                  {(isNextServiceDateExpired || isNextServiceDateExpiring) && (
-                    <Tooltip
-                      label={
-                        isNextServiceDateExpired
-                          ? "Die Wartung ist überfällig."
-                          : "Die Wartung steht bald an."
-                      }
-                    >
-                      <Icon as={InfoIcon} color="red.500" />
-                    </Tooltip>
-                  )}
-                </Flex>
+                <Text>
+                  {vehicle.next_service_date
+                    ? dayjs(vehicle.next_service_date).format("DD/MM/YYYY")
+                    : "Kein Datum ausgewählt"}
+                </Text>
               </Td>
               <Td>
-                <Flex alignItems="center" gap={2}>
-                  <Text>
-                    {vehicle.next_service_km
-                      ? `${vehicle.next_service_km} km`
-                      : "Keine KM angegeben"}
-                  </Text>
-                  {isKmThresholdExceededFlag && (
-                    <Tooltip label="Der Kilometerstand liegt nah an der Wartungsgrenze.">
-                      <Icon as={InfoIcon} color="red.500" />
-                    </Tooltip>
-                  )}
-                </Flex>
+                <Text>
+                  {vehicle.next_service_km
+                    ? `${vehicle.next_service_km} km`
+                    : "Keine KM angegeben"}
+                </Text>
               </Td>
             </Tr>
           );

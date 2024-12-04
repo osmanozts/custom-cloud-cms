@@ -15,6 +15,7 @@ import { useNavigate } from "react-router-dom";
 import { EmployeeWithProfile } from "../../backend-queries/joins/employee-with-profile-query";
 import dayjs from "dayjs";
 import { InfoIcon } from "@chakra-ui/icons";
+import { LuUser } from "react-icons/lu";
 
 interface EmployeesTableProps {
   employees: EmployeeWithProfile[];
@@ -39,7 +40,7 @@ export const EmployeesTable: React.FC<EmployeesTableProps> = ({
   };
 
   return (
-    <Table borderWidth={1} mt={4}>
+    <Table borderWidth={2} borderColor="tileBgColor" mt={4}>
       <Thead>
         <Tr whiteSpace="nowrap">
           <Th>Personalnummer</Th>
@@ -57,7 +58,7 @@ export const EmployeesTable: React.FC<EmployeesTableProps> = ({
         </Tr>
       </Thead>
       <Tbody>
-        {employees.map((empl) => {
+        {employees.map((empl, index) => {
           // Führerscheinstatus prüfen
           const isDriverLicenseExpiring = isDateExpiring(
             empl.driver_license_end_date,
@@ -71,14 +72,6 @@ export const EmployeesTable: React.FC<EmployeesTableProps> = ({
           const isIdCardExpiring = isDateExpiring(empl.id_card_end_date, 30);
           const isIdCardExpired = isDateExpired(empl.id_card_end_date);
 
-          // Zeilenfarbe bestimmen
-          let rowBg = "tileBgColor"; // Standardfarbe
-          if (isDriverLicenseExpired || isIdCardExpired) {
-            rowBg = "red.100"; // Rot für abgelaufene Dokumente
-          } else if (isDriverLicenseExpiring || isIdCardExpiring) {
-            rowBg = "yellow.100"; // Gelb für bald ablaufende Dokumente
-          }
-
           return (
             <Tr
               key={empl.id}
@@ -90,19 +83,17 @@ export const EmployeesTable: React.FC<EmployeesTableProps> = ({
                   search: `?profile_id=${empl.profile_id}`,
                 })
               }
-              bg={rowBg}
-              _hover={
-                !isDriverLicenseExpired &&
-                !isDriverLicenseExpiring &&
-                !isIdCardExpired &&
-                !isIdCardExpiring
-                  ? { bg: "backgroundColor" }
-                  : undefined
-              }
+              bg={index % 2 == 0 ? "tileBgColor" : "invertedColor"}
+              _hover={{ bg: "backgroundColor" }}
             >
               <Td>
                 <Flex alignItems="center" gap={2}>
-                  <Text>{empl.personnel_number ?? "-"}</Text>
+                  {!isDriverLicenseExpired &&
+                    !isDriverLicenseExpiring &&
+                    !isIdCardExpired &&
+                    !isIdCardExpiring && (
+                      <Icon as={LuUser} boxSize={4} mr={2} />
+                    )}
                   {(isDriverLicenseExpired || isDriverLicenseExpiring) && (
                     <Tooltip
                       label={
@@ -111,7 +102,7 @@ export const EmployeesTable: React.FC<EmployeesTableProps> = ({
                           : "Der Führerschein läuft bald ab."
                       }
                     >
-                      <Icon as={InfoIcon} color="red.500" />
+                      <Icon as={InfoIcon} color="accentColor" mr={2} />
                     </Tooltip>
                   )}
                   {(isIdCardExpired || isIdCardExpiring) && (
@@ -122,9 +113,10 @@ export const EmployeesTable: React.FC<EmployeesTableProps> = ({
                           : "Der Ausweis läuft bald ab."
                       }
                     >
-                      <Icon as={InfoIcon} color="red.500" />
+                      <Icon as={InfoIcon} color="accentColor" mr={2} />
                     </Tooltip>
                   )}
+                  <Text>{empl.personnel_number ?? "-"}</Text>
                 </Flex>
               </Td>
               <Td>{empl.location ?? "-"}</Td>
