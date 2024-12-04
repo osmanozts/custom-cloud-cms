@@ -22,6 +22,7 @@ import { IconType } from "react-icons";
 import logo from "../../assets/logo/lp-logistics.png";
 import { NotificationDialog } from "../dialogs/notificatoin-dialog";
 import { AdminHamburger } from "./admin-hamburger";
+import { useAuth } from "../../providers/auth-provider";
 
 type NavigationItems = {
   id: number;
@@ -70,6 +71,8 @@ export function AdminNavbar() {
     else navigate(item.path);
   };
 
+  const { signOut } = useAuth();
+
   return (
     <Flex
       height="80px"
@@ -112,7 +115,7 @@ export function AdminNavbar() {
         <NotificationDialog />
       </Flex>
       {showNavItems ? (
-        <WrapItem cursor="pointer">
+        <WrapItem cursor="pointer" onClick={signOut}>
           <Icon as={LuLogOut} boxSize={6} />
         </WrapItem>
       ) : (

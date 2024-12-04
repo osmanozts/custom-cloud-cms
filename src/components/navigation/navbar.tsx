@@ -10,6 +10,7 @@ import {
 import { LuLogOut, LuUser } from "react-icons/lu";
 import logo from "../../assets/logo/lp-logistics.png";
 import { AdminHamburger } from "./admin-hamburger";
+import { useAuth } from "../../providers/auth-provider";
 
 export function Navbar() {
   const showNavItems = useBreakpointValue({
@@ -17,6 +18,9 @@ export function Navbar() {
     md: false,
     lg: true,
   });
+
+  const { signOut } = useAuth();
+
   return (
     <Flex height={70} backgroundColor="tileBgColor" alignItems="center" px={6}>
       <Box width="70px" justifyContent="center" alignItems="center">
@@ -30,7 +34,7 @@ export function Navbar() {
         </WrapItem>
       </Flex>
       {showNavItems ? (
-        <WrapItem cursor="pointer">
+        <WrapItem cursor="pointer" onClick={signOut}>
           <Icon as={LuLogOut} boxSize={6} />
         </WrapItem>
       ) : (
