@@ -1,7 +1,7 @@
 import { SearchIcon } from "@chakra-ui/icons";
 import { Box, Button, Flex, Icon, Text, VStack } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
-import { LuPlus } from "react-icons/lu";
+import { LuDownload, LuPlus } from "react-icons/lu";
 import { useNavigate } from "react-router-dom";
 import { EmployeeWithProfile } from "../../backend-queries/joins/employee-with-profile-query";
 import { getAllEmployees } from "../../backend-queries/query/get-all-employees";
@@ -102,7 +102,7 @@ export const AllEmployees: React.FC<AllEmployeesProps> = () => {
 
         <Flex
           w="100%"
-          maxW={800}
+          maxW={900}
           alignItems="center"
           alignSelf="flex-start"
           gap={8}
@@ -146,7 +146,16 @@ export const AllEmployees: React.FC<AllEmployeesProps> = () => {
         <Box w="100%" overflowX="auto">
           <EmployeesTable employees={employees} />
         </Box>
-        <Button onClick={() => printEmployeesToPdf(employees)}>Download</Button>
+        <Button
+          bg="tileBgColor"
+          alignSelf="flex-end"
+          leftIcon={<LuDownload />}
+          onClick={() => printEmployeesToPdf(employees)}
+          width="150px"
+          px={10}
+        >
+          <Text>Download</Text>
+        </Button>
       </VStack>
     </Flex>
   );

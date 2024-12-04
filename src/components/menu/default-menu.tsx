@@ -6,6 +6,7 @@ import {
   MenuItem,
   Button,
   Box,
+  Text,
 } from "@chakra-ui/react";
 
 export type MenuOption = {
@@ -63,7 +64,7 @@ export const DefaultMenu: React.FC<DefaultMenuProps> = ({
                 marginRight="8px"
               />
             )}
-            {selectedOption.label}
+            <Text textAlign="center">{selectedOption.label}</Text>
           </Box>
         ) : defaultValue ? (
           // Falls defaultOption gesetzt ist, zeige den Label des defaultOption an
