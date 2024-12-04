@@ -1,6 +1,6 @@
 import { Box, Button, Flex, Icon, Text, VStack } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
-import { LuPlus } from "react-icons/lu";
+import { LuDownload, LuPlus } from "react-icons/lu";
 
 import { getAllVehicles } from "../../backend-queries";
 import { Vehicles } from "../../backend-queries/query/get-all-vehicles";
@@ -9,6 +9,7 @@ import supabase from "../../utils/supabase";
 import { useNavigate } from "react-router-dom";
 import { SearchIcon } from "@chakra-ui/icons";
 import { DefaultMenu } from "../../components/menu/default-menu";
+import { printVehiclesToPdf } from "./services/print-vehicles-to-pdf";
 
 type AllVehiclesProps = {};
 
@@ -139,6 +140,16 @@ export function AllVehicles({}: AllVehiclesProps) {
         <Box w="100%" overflowX="auto">
           <VehiclesTable vehicles={vehicles} />
         </Box>
+        <Button
+          bg="tileBgColor"
+          alignSelf="flex-end"
+          leftIcon={<LuDownload />}
+          onClick={() => printVehiclesToPdf(vehicles)}
+          width="150px"
+          px={10}
+        >
+          <Text>Download</Text>
+        </Button>
       </VStack>
     </Flex>
   );
