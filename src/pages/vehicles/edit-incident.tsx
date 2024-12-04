@@ -12,10 +12,10 @@ import { useEffect, useState } from "react";
 import { LuCheck, LuX } from "react-icons/lu";
 import { useNavigate, useSearchParams } from "react-router-dom";
 
+import dayjs from "dayjs";
 import { getIncident, getVehicle, updateIncident } from "../../backend-queries";
 import { IncidentDetails } from "../../components";
 import { Tables } from "../../utils/database/types";
-import dayjs from "dayjs";
 
 type EditIncidentProps = {};
 

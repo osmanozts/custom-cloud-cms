@@ -17,6 +17,8 @@ import { useEffect, useState } from "react";
 import { DriverSelectDialog } from "../dialogs/driver-select-dialog";
 import { getAllEmployees, getEmployee } from "../../backend-queries";
 import dayjs from "dayjs";
+import { LuDownload } from "react-icons/lu";
+import html2pdf from "html2pdf.js";
 
 type IncidentDetailsProps = {
   incident: Tables<"incidents">;
@@ -69,6 +71,7 @@ export const IncidentDetails = ({
       overflowX="hidden"
       px={8}
       py={8}
+      id="incident-details"
     >
       <GridItem colSpan={{ base: 1, md: 2 }}>
         <FormControl>
@@ -487,6 +490,20 @@ export const IncidentDetails = ({
             onChange={(e) => handleInputChange("damage_location")(e)}
           />
         </FormControl>
+      </GridItem>
+
+      <GridItem>
+        <Button
+          leftIcon={<LuDownload />}
+          bg="parcelColor"
+          onClick={async () => {
+            console.log("download");
+            const element = document.querySelector("#incident-details");
+            await html2pdf(element, {});
+          }}
+        >
+          Download
+        </Button>
       </GridItem>
     </Grid>
   );

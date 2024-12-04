@@ -1,12 +1,13 @@
+import { SearchIcon } from "@chakra-ui/icons";
 import { Box, Button, Flex, Icon, Text, VStack } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
-import { SearchIcon } from "@chakra-ui/icons";
-import { EmployeesTable, InputField } from "../../components";
-import { useNavigate } from "react-router-dom";
-import { getAllEmployees } from "../../backend-queries/query/get-all-employees";
-import { EmployeeWithProfile } from "../../backend-queries/joins/employee-with-profile-query";
 import { LuPlus } from "react-icons/lu";
+import { useNavigate } from "react-router-dom";
+import { EmployeeWithProfile } from "../../backend-queries/joins/employee-with-profile-query";
+import { getAllEmployees } from "../../backend-queries/query/get-all-employees";
+import { EmployeesTable, InputField } from "../../components";
 import { DefaultMenu } from "../../components/menu/default-menu";
+import { printEmployeesToPdf } from "./services/print-employees-to-pdf";
 
 interface AllEmployeesProps {}
 
@@ -145,6 +146,7 @@ export const AllEmployees: React.FC<AllEmployeesProps> = () => {
         <Box w="100%" overflowX="auto">
           <EmployeesTable employees={employees} />
         </Box>
+        <Button onClick={() => printEmployeesToPdf(employees)}>Download</Button>
       </VStack>
     </Flex>
   );
