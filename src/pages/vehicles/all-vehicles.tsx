@@ -129,7 +129,7 @@ export function AllVehicles({}: AllVehiclesProps) {
           <Text fontWeight="bold">Standort:</Text>
           <DefaultMenu
             options={[
-              { value: null, label: "Alle", color: "grey" },
+              { value: null, label: "Alle" },
               { value: "DNX4", label: "DNX4 - Düsseldorf" },
             ]}
             defaultValue="Alle"

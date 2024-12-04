@@ -111,7 +111,7 @@ export const AllEmployees: React.FC<AllEmployeesProps> = () => {
           <Text fontWeight="bold">Abteilung:</Text>
           <DefaultMenu
             options={[
-              { value: null, label: "Alle", color: "grey" },
+              { value: null, label: "Alle" },
               { value: "warehouse", label: "Lager" },
               { value: "logistics", label: "Logistik" },
               { value: "administration", label: "Verwaltung" },
@@ -123,10 +123,10 @@ export const AllEmployees: React.FC<AllEmployeesProps> = () => {
           <Text fontWeight="bold">Status:</Text>
           <DefaultMenu
             options={[
-              { value: null, label: "Alle", color: "grey" },
-              { value: "active", label: "Aktiv", color: "green" },
-              { value: "inactive", label: "Ausgetreten", color: "red" },
-              { value: "pipeline", label: "Pipeline", color: "yellow" },
+              { value: null, label: "Alle" },
+              { value: "active", label: "Aktiv" },
+              { value: "inactive", label: "Ausgetreten" },
+              { value: "pipeline", label: "Pipeline" },
             ]}
             defaultValue="Alle"
             onSelect={(value) => setStatusFilter(value)}
@@ -135,8 +135,8 @@ export const AllEmployees: React.FC<AllEmployeesProps> = () => {
           <Text fontWeight="bold">Standort:</Text>
           <DefaultMenu
             options={[
-              { value: null, label: "Alle", color: "grey" },
-              { value: "DNX4", label: "DNX4", color: "blue" },
+              { value: null, label: "Alle" },
+              { value: "DNX4", label: "DNX4" },
             ]}
             defaultValue="Alle"
             onSelect={(value) => setLocationFilter(value)}
