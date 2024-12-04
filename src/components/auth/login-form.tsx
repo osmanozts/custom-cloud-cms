@@ -90,7 +90,7 @@ export function LoginForm() {
           <Button
             marginTop={4}
             bg="accentColor"
-            color="#fff"
+            color="invertedTextColor"
             size="md"
             onClick={handleLogin}
             isLoading={loading}

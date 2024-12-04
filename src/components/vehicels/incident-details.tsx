@@ -85,8 +85,7 @@ export const IncidentDetails = ({
             placeholder="Beschreibung"
             resize="vertical"
             width="100%"
-            color="textColor"
-            bg="#fff"
+            bg="invertedColor"
           />
         </FormControl>
       </GridItem>
@@ -274,7 +273,7 @@ export const IncidentDetails = ({
               <Button
                 mx={2}
                 bg="darkColor"
-                color="#fff"
+                color="invertedTextColor"
                 onClick={() => {
                   setDriver(null);
                   setIncident({ ...incident, driver_id: null });
@@ -476,7 +475,7 @@ export const IncidentDetails = ({
               handleInputChange("damage_description")(e.target.value)
             }
             resize="vertical"
-            bg="#fff"
+            bg="invertedColor"
           />
           <FormLabel fontSize="md" fontWeight="normal" mt={4}>
             Schadenort

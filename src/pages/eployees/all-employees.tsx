@@ -92,7 +92,7 @@ export const AllEmployees: React.FC<AllEmployeesProps> = () => {
           <Button
             onClick={() => navigate("/create-new-user")}
             bg="parcelColor"
-            color="#fff"
+            color="invertedTextColor"
             leftIcon={<Icon as={LuPlus} />}
           >
             Neuer Mitarbeiter
@@ -107,9 +107,7 @@ export const AllEmployees: React.FC<AllEmployeesProps> = () => {
           gap={8}
           mt={4}
         >
-          <Text fontWeight="bold" color="textColor">
-            Abteilung:
-          </Text>
+          <Text fontWeight="bold">Abteilung:</Text>
           <DefaultMenu
             options={[
               { value: null, label: "Alle", color: "grey" },
@@ -121,9 +119,7 @@ export const AllEmployees: React.FC<AllEmployeesProps> = () => {
             onSelect={(value) => setDepartmentFilter(value)}
           />
 
-          <Text fontWeight="bold" color="textColor">
-            Status:
-          </Text>
+          <Text fontWeight="bold">Status:</Text>
           <DefaultMenu
             options={[
               { value: null, label: "Alle", color: "grey" },
@@ -135,9 +131,7 @@ export const AllEmployees: React.FC<AllEmployeesProps> = () => {
             onSelect={(value) => setStatusFilter(value)}
           />
 
-          <Text fontWeight="bold" color="textColor">
-            Standort:
-          </Text>
+          <Text fontWeight="bold">Standort:</Text>
           <DefaultMenu
             options={[
               { value: null, label: "Alle", color: "grey" },

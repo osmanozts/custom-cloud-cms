@@ -43,14 +43,14 @@ export const DriverHistoryDetails = ({
         overflowX="hidden"
       >
         <GridItem colSpan={{ base: 1, md: 1 }}>
-          <Text fontWeight="bold" color="textColor" mb={2}>
+          <Text fontWeight="bold" mb={2}>
             ID
           </Text>
           <InputField value={driverHistory.id.toString() ?? ""} isDisabled />
         </GridItem>
 
         <GridItem colSpan={{ base: 1, md: 1 }}>
-          <Text fontWeight="bold" color="textColor" mb={2}>
+          <Text fontWeight="bold" mb={2}>
             Fahrt Beginn
           </Text>
           <CustomCalendar
@@ -68,7 +68,7 @@ export const DriverHistoryDetails = ({
           />
         </GridItem>
         <GridItem colSpan={{ base: 1, md: 1 }}>
-          <Text fontWeight="bold" color="textColor" mb={2}>
+          <Text fontWeight="bold" mb={2}>
             Fahrt Ende
           </Text>
           <CustomCalendar
@@ -87,7 +87,7 @@ export const DriverHistoryDetails = ({
         </GridItem>
 
         <GridItem colSpan={{ base: 1, md: 1 }}>
-          <Text fontWeight="bold" color="textColor" mb={2}>
+          <Text fontWeight="bold" mb={2}>
             Fahrer
           </Text>
           <DriverSelectDialog
@@ -100,7 +100,7 @@ export const DriverHistoryDetails = ({
         </GridItem>
 
         <GridItem colSpan={{ base: 1, md: 4 }} mt={4}>
-          <Text fontWeight="bold" color="textColor" mb={2}>
+          <Text fontWeight="bold" mb={2}>
             Beschreibung / Notizen
           </Text>
           <Textarea
@@ -115,7 +115,6 @@ export const DriverHistoryDetails = ({
             placeholder="Beschreibung..."
             resize="vertical"
             width="100%"
-            color="textColor"
             bg="backgroundColor"
           />
         </GridItem>

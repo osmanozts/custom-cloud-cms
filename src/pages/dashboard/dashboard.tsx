@@ -61,7 +61,7 @@ export function Dashboard() {
       mt={8}
       bg="backgroundColor"
     >
-      <Heading as="h1" mb={12} textAlign="center" textColor="textColor">
+      <Heading as="h1" mb={12} textAlign="center">
         Local Parcel Logistics
       </Heading>
       <Grid
@@ -92,13 +92,11 @@ export function Dashboard() {
           >
             <Flex alignItems="center" mb={4}>
               <Icon as={item.icon} boxSize={8} mr={4} color="accentColor" />
-              <Heading as="h2" size="md" color="textColor">
+              <Heading as="h2" size="md">
                 {item.title}
               </Heading>
             </Flex>
-            <Text fontSize="lg" color="textColor">
-              {item.description}
-            </Text>
+            <Text fontSize="lg">{item.description}</Text>
           </Box>
         ))}
       </Grid>

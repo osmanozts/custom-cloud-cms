@@ -90,7 +90,6 @@ export const EmployeesTable: React.FC<EmployeesTableProps> = ({
                   search: `?profile_id=${empl.profile_id}`,
                 })
               }
-              color="textColor"
               bg={rowBg}
               _hover={
                 !isDriverLicenseExpired &&
@@ -103,7 +102,7 @@ export const EmployeesTable: React.FC<EmployeesTableProps> = ({
             >
               <Td>
                 <Flex alignItems="center" gap={2}>
-                  <Text color="textColor">{empl.personnel_number ?? "-"}</Text>
+                  <Text>{empl.personnel_number ?? "-"}</Text>
                   {(isDriverLicenseExpired || isDriverLicenseExpiring) && (
                     <Tooltip
                       label={
@@ -131,9 +130,7 @@ export const EmployeesTable: React.FC<EmployeesTableProps> = ({
               <Td>{empl.location ?? "-"}</Td>
               <Td>{empl.department ?? "-"}</Td>
               <Td>{empl.profile?.email ?? "-"}</Td>
-              <Td>
-                {`${empl.first_name ?? ""} ${empl.last_name ?? ""}` ?? "-"}
-              </Td>
+              <Td>{`${empl.first_name ?? ""} ${empl.last_name ?? ""}`}</Td>
               <Td>{`${empl.street ?? ""} ${empl.city ?? ""} ${
                 empl.postal_code ?? ""
               }`}</Td>

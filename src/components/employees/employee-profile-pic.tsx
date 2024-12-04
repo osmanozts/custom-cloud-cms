@@ -115,7 +115,7 @@ export const EmployeeProfilePic = ({
               alignItems="center"
               justifyContent="center"
             >
-              <LuUser size="6em" color="textColor" />
+              <LuUser size="6em" />
             </Center>
           )}
           <Center
@@ -132,9 +132,7 @@ export const EmployeeProfilePic = ({
             flexDirection="column"
           >
             <Icon as={FaUpload} boxSize={6} mb={2} />
-            <Text textAlign="center" color="textColor">
-              Neues Bild hochladen
-            </Text>
+            <Text textAlign="center">Neues Bild hochladen</Text>
           </Center>
         </>
       )}

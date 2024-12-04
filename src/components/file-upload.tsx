@@ -94,7 +94,6 @@ export function FileUpload({ path, bucket, onUploadSuccess }: FileUploadProps) {
           bg="tileBgColor"
           p={2}
           borderRadius="md"
-          color="textColor"
         >
           {selectedFile.name}
         </Text>

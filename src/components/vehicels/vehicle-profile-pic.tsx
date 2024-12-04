@@ -131,9 +131,7 @@ export const VehicleProfilePic = ({
             flexDirection="column"
           >
             <Icon as={FaUpload} boxSize={6} mb={2} />
-            <Text textAlign="center" color="textColor">
-              Neues Bild hochladen
-            </Text>
+            <Text textAlign="center">Neues Bild hochladen</Text>
           </Center>
         </>
       )}

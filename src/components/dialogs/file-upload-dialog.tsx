@@ -105,9 +105,7 @@ export const FileUploadDialog = ({
             </Box>
             <Stack mt={files.length > 0 ? 4 : 0}>
               {files.map((file, index) => (
-                <Text key={index} color="textColor">
-                  {file.name}
-                </Text>
+                <Text key={index}>{file.name}</Text>
               ))}
             </Stack>
           </ModalBody>
@@ -119,7 +117,6 @@ export const FileUploadDialog = ({
               isLoading={isLoading}
               loadingText="Lädt hoch..."
               bg="successColor"
-              color="textColor"
             >
               Hochladen
             </Button>

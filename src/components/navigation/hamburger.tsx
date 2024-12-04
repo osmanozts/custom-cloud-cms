@@ -26,7 +26,7 @@ export function Hamburger({}: Props) {
       />
       <MenuList>
         <MenuItem icon={<LuLogOut />} onClick={signOut}>
-          <Text color="textColor">Ausloggen</Text>
+          <Text>Ausloggen</Text>
         </MenuItem>
       </MenuList>
     </Menu>

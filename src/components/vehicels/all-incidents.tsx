@@ -97,10 +97,8 @@ export const AllIncidents = ({ vehicle }: AllIncidentsProps) => {
                           gap={2}
                           p={4}
                         >
-                          <Text fontWeight="bold" color="textColor">
-                            Schaden ID:
-                          </Text>
-                          <Text color="textColor">{incident.id}</Text>
+                          <Text fontWeight="bold">Schaden ID:</Text>
+                          <Text>{incident.id}</Text>
                         </GridItem>
                         <GridItem
                           display="flex"
@@ -109,10 +107,8 @@ export const AllIncidents = ({ vehicle }: AllIncidentsProps) => {
                           gap={2}
                           p={4}
                         >
-                          <Text fontWeight="bold" color="textColor">
-                            Erstellt am:
-                          </Text>
-                          <Text color="textColor">
+                          <Text fontWeight="bold">Erstellt am:</Text>
+                          <Text>
                             {dayjs(incident.created_at).format(
                               "DD.MM.YYYY HH:mm"
                             )}
@@ -125,10 +121,8 @@ export const AllIncidents = ({ vehicle }: AllIncidentsProps) => {
                           gap={2}
                           p={4}
                         >
-                          <Text fontWeight="bold" color="textColor">
-                            Vorfall Datum:
-                          </Text>
-                          <Text color="textColor">
+                          <Text fontWeight="bold">Vorfall Datum:</Text>
+                          <Text>
                             {incident.incident_date
                               ? dayjs(incident.incident_date).format(
                                   "DD.MM.YYYY HH:mm"
@@ -143,10 +137,10 @@ export const AllIncidents = ({ vehicle }: AllIncidentsProps) => {
                           gap={2}
                           p={4}
                         >
-                          <Text fontWeight="bold" color="textColor">
+                          <Text fontWeight="bold">
                             Reperatur abgeschlossen:
                           </Text>
-                          <Text color="textColor">
+                          <Text>
                             {incident.repair_completed ? "Ja" : "Nein"}
                           </Text>
                         </GridItem>
@@ -157,7 +151,7 @@ export const AllIncidents = ({ vehicle }: AllIncidentsProps) => {
               </GridItem>
             ))
           ) : (
-            <Text color="textColor">Keine Schadensmeldungen vorhanden</Text>
+            <Text>Keine Schadensmeldungen vorhanden</Text>
           )}
         </Grid>
         <Button

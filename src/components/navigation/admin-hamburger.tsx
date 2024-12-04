@@ -33,28 +33,28 @@ export function AdminHamburger({}: Props) {
       />
       <MenuList>
         <MenuItem icon={<LuLayoutDashboard />} onClick={() => navigate("/")}>
-          <Text color="textColor">Startseite</Text>
+          <Text>Startseite</Text>
         </MenuItem>
         <MenuItem
           icon={<LuTable2 />}
           onClick={() => navigate("/employee-management")}
         >
-          <Text color="textColor">Mitarbeiter</Text>
+          <Text>Mitarbeiter</Text>
         </MenuItem>
         <MenuItem
           icon={<LuFileStack />}
           onClick={() => navigate("/document-management")}
         >
-          <Text color="textColor">interne Dokumente</Text>
+          <Text>interne Dokumente</Text>
         </MenuItem>
         <MenuItem
           icon={<LuCar />}
           onClick={() => navigate("/vehicle-management")}
         >
-          <Text color="textColor">Fahrzeuge</Text>
+          <Text>Fahrzeuge</Text>
         </MenuItem>
         <MenuItem icon={<LuLogOut />} onClick={signOut}>
-          <Text color="textColor">Ausloggen</Text>
+          <Text>Ausloggen</Text>
         </MenuItem>
       </MenuList>
     </Menu>

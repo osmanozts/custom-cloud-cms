@@ -113,13 +113,13 @@ export const EditEmployee = ({}: EditEmployeeProps) => {
       borderRadius="lg"
     >
       <Flex flexDirection="column" mb={8} alignItems="center">
-        <Heading fontSize="2xl" fontWeight="bold" color="textColor">
+        <Heading fontSize="2xl" fontWeight="bold">
           Mitarbeiter Ansehen / Bearbeiten
         </Heading>
         <Flex mt={4} width="250px" justifyContent="space-between">
           <Button
             bg="parcelColor"
-            color="#fff"
+            color="invertedTextColor"
             isLoading={isLoading}
             onClick={handleSave}
             size="sm"
@@ -131,7 +131,7 @@ export const EditEmployee = ({}: EditEmployeeProps) => {
           </Button>
           <Button
             bg="accentColor"
-            color="#fff"
+            color="invertedTextColor"
             onClick={() => navigate("/employee-management")}
             size="sm"
             alignSelf="center"

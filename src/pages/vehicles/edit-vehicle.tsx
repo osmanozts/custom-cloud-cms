@@ -80,18 +80,13 @@ export const EditVehicle = ({}: EditVehicleProps) => {
       borderRadius="lg"
     >
       <Flex flexDirection="column" mb={8} alignItems="center">
-        <Heading
-          fontSize="2xl"
-          fontWeight="bold"
-          color="blue.700"
-          textColor="textColor"
-        >
+        <Heading fontSize="2xl" fontWeight="bold" color="blue.700">
           Fahrzeug Ansehen / Bearbeiten
         </Heading>
         <Flex mt={4} width="250px" justifyContent="space-between">
           <Button
             bg="parcelColor"
-            color="#fff"
+            color="invertedTextColor"
             isLoading={isLoading}
             onClick={handleSave}
             size="sm"
@@ -104,7 +99,7 @@ export const EditVehicle = ({}: EditVehicleProps) => {
           </Button>
           <Button
             bg="accentColor"
-            color="#fff"
+            color="invertedTextColor"
             onClick={() => navigate("/vehicle-management")}
             size="sm"
             alignSelf="center"
@@ -117,8 +112,8 @@ export const EditVehicle = ({}: EditVehicleProps) => {
       </Flex>
 
       <Box>
-        <Heading fontSize="lg" fontWeight="semibold" mb={4} color="textColor">
-          <Icon mr={2} as={LuCar} color="textColor" /> Fahrzeug Daten
+        <Heading fontSize="lg" fontWeight="semibold" mb={4}>
+          <Icon mr={2} as={LuCar} /> Fahrzeug Daten
         </Heading>
         <VStack spacing={6}>
           <VehicleDetails
@@ -141,7 +136,6 @@ export const EditVehicle = ({}: EditVehicleProps) => {
             <Flex alignItems="flex-end" height="100%">
               <Button
                 borderWidth={1}
-                color="textColor"
                 width="100%"
                 bg="backgroundColor"
                 leftIcon={<RepeatClockIcon />}
@@ -155,7 +149,7 @@ export const EditVehicle = ({}: EditVehicleProps) => {
           </VStack>
         </Stack>
 
-        <Heading fontSize="lg" fontWeight="semibold" my={4} color="textColor">
+        <Heading fontSize="lg" fontWeight="semibold" my={4}>
           <Icon mr={2} as={LuWrench} /> Schadensmeldungen
         </Heading>
         <VStack spacing={6}>

@@ -43,7 +43,7 @@ export const DriverSelectDialog: React.FC<DriverSelectDialogProps> = ({
         width="100%"
         variant="outline"
         bg="backgroundColor"
-        _hover={{ bg: "darkColor", color: "#fff" }}
+        _hover={{ bg: "darkColor", color: "invertedTextColor" }}
       >
         {selectedDriver
           ? `${drivers.find((d) => d.value === selectedDriver)?.label}`
@@ -86,7 +86,11 @@ export const DriverSelectDialog: React.FC<DriverSelectDialogProps> = ({
                     _hover={{ cursor: "pointer" }}
                   >
                     <Text
-                      color={driverTemp !== driver.value ? "textColor" : "#fff"}
+                      color={
+                        driverTemp !== driver.value
+                          ? "textColor"
+                          : "invertedTextColor"
+                      }
                     >
                       {driver.label}
                     </Text>
@@ -105,11 +109,11 @@ export const DriverSelectDialog: React.FC<DriverSelectDialogProps> = ({
                 onClose();
               }}
               mr={6}
-              _hover={{ bg: "parcelColor", color: "#fff" }}
+              _hover={{ bg: "parcelColor", color: "invertedTextColor" }}
             >
               Bestätigen
             </Button>
-            <Button bg="accentColor" color="#fff" onClick={onClose}>
+            <Button bg="accentColor" color="invertedColor" onClick={onClose}>
               Abbrechen
             </Button>
           </ModalFooter>

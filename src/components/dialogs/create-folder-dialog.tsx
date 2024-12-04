@@ -48,12 +48,8 @@ export function CreateFolderDialog({
           <ModalHeader>Neuer Ordner erstellen</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            <Text mb={1} color="textColor">
-              Wie soll der neue Ordner heißen?
-            </Text>
-            <Text mb={6} color="textColor">
-              ** Bitte verwende keine Sonderzeichen
-            </Text>
+            <Text mb={1}>Wie soll der neue Ordner heißen?</Text>
+            <Text mb={6}>** Bitte verwende keine Sonderzeichen</Text>
             <InputField value={newFolderName} onChange={setNewFolderName} />
           </ModalBody>
 

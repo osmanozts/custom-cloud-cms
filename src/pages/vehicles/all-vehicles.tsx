@@ -97,7 +97,7 @@ export function AllVehicles({}: AllVehiclesProps) {
             isLoading={isLoading}
             onClick={createNewVehicle}
             bg="parcelColor"
-            color="#fff"
+            color="invertedTextColor"
           >
             <Icon as={LuPlus} mr={4} />
             <Text>Neues Fahrzeug</Text>
@@ -111,9 +111,7 @@ export function AllVehicles({}: AllVehiclesProps) {
           gap={8}
           mt={4}
         >
-          <Text fontWeight="bold" color="textColor">
-            Status:
-          </Text>
+          <Text fontWeight="bold">Status:</Text>
           <DefaultMenu
             options={[
               { value: null, label: "Alle", color: "grey" },
@@ -127,9 +125,7 @@ export function AllVehicles({}: AllVehiclesProps) {
             }}
           />
 
-          <Text fontWeight="bold" color="textColor">
-            Standort:
-          </Text>
+          <Text fontWeight="bold">Standort:</Text>
           <DefaultMenu
             options={[
               { value: null, label: "Alle", color: "grey" },

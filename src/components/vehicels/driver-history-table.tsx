@@ -46,46 +46,41 @@ export function DriverHistoryTable({ historyData }: DriverHistoryTableProps) {
                 key={data.id}
                 whiteSpace="nowrap"
                 cursor="pointer"
-                color="textColor"
                 bg={"tileBgColor"}
                 _hover={{ bg: "backgroundColor" }}
                 onClick={() => navigate("/edit-driver-history?id=" + data.id)}
               >
                 <Td>
-                  <Text color="textColor">{data.id ?? "-"}</Text>
+                  <Text>{data.id ?? "-"}</Text>
                 </Td>
                 <Td>
-                  <Text color="textColor">
+                  <Text>
                     {(data.employees?.first_name ?? "-") +
                       " " +
                       (data.employees?.last_name ?? "-")}
                   </Text>
                 </Td>
                 <Td>
-                  <Text color="textColor">
+                  <Text>
                     {dayjs(data.drive_start).format("DD.MM.YYYY").toString()}
                   </Text>
                 </Td>
                 <Td>
-                  <Text color="textColor">
+                  <Text>
                     {data.drive_end
                       ? dayjs(data.drive_end).format("DD.MM.YYYY").toString()
                       : "N/V"}
                   </Text>
                 </Td>
                 <Td>
-                  <Text color="textColor">{data.vehicles?.vin ?? "-"}</Text>
+                  <Text>{data.vehicles?.vin ?? "-"}</Text>
                 </Td>
                 <Td>
-                  <Text color="textColor">
-                    {data.vehicles?.license_plate ?? "-"}
-                  </Text>
+                  <Text>{data.vehicles?.license_plate ?? "-"}</Text>
                 </Td>
                 <Td>
                   <Flex alignItems="center" justifyContent="space-between">
-                    <Text color="textColor">
-                      {data.employees?.personnel_number ?? "-"}
-                    </Text>
+                    <Text>{data.employees?.personnel_number ?? "-"}</Text>
                     {isEdited && (
                       <Tooltip label="Dieser Eintrag wurde bearbeitet" hasArrow>
                         <Badge bg="transparent">

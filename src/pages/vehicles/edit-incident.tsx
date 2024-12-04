@@ -108,13 +108,13 @@ export const EditIncident = ({}: EditIncidentProps) => {
   return (
     <Container maxW="container.xl" bg="backgroundColor" borderRadius="lg">
       <Flex flexDirection="column" my={8} alignItems="center">
-        <Heading fontSize="2xl" fontWeight="bold" color="textColor">
+        <Heading fontSize="2xl" fontWeight="bold">
           Schadensmeldung Ansehen / Bearbeiten
         </Heading>
         <Flex mt={4} width="250px" justifyContent="space-between">
           <Button
             bg="parcelColor"
-            color="#fff"
+            color="invertedTextColor"
             isLoading={isLoading}
             loadingText="Speichern..."
             onClick={handleSave}
@@ -127,7 +127,7 @@ export const EditIncident = ({}: EditIncidentProps) => {
           </Button>
           <Button
             bg="accentColor"
-            color="#fff"
+            color="invertedTextColor"
             onClick={() => navigate("/edit-vehicle?vehicle_id=" + vehicleID)}
             size="sm"
             alignSelf="center"

@@ -56,8 +56,7 @@ export function AllDriverHistory() {
                 )
               }
               bg="tileBgColor"
-              color="textColor"
-              _hover={{ bg: "darkColor", color: "#fff" }}
+              _hover={{ bg: "darkColor", color: "invertedTextColor" }}
               display="flex"
             >
               <Icon as={LuStepBack} w={6} h={6} mr={2} />

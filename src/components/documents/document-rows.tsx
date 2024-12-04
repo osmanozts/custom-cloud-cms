@@ -63,7 +63,6 @@ export function DocumentRows({
                 fontSize={{ base: "sm", md: "md" }}
                 isTruncated
                 maxW={dynamicMaxWidth}
-                color="textColor"
               >
                 {f.name ?? ""}
               </Text>

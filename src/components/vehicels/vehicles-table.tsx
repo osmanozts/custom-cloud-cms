@@ -113,7 +113,6 @@ export const VehiclesTable = ({ vehicles }: VehiclesTableProps) => {
                   search: `?vehicle_id=${vehicle.id}`,
                 })
               }
-              color="textColor"
               bg={rowBg}
               _hover={
                 !isNextServiceDateExpired &&
@@ -134,7 +133,7 @@ export const VehiclesTable = ({ vehicles }: VehiclesTableProps) => {
               <Td>{vehicle.km_age ? `${vehicle.km_age} km` : "-"}</Td>
               <Td>
                 <Flex alignItems="center" gap={2}>
-                  <Text color="textColor">
+                  <Text>
                     {vehicle.next_service_date
                       ? dayjs(vehicle.next_service_date).format("DD/MM/YYYY")
                       : "Kein Datum ausgewählt"}
@@ -154,7 +153,7 @@ export const VehiclesTable = ({ vehicles }: VehiclesTableProps) => {
               </Td>
               <Td>
                 <Flex alignItems="center" gap={2}>
-                  <Text color="textColor">
+                  <Text>
                     {vehicle.next_service_km
                       ? `${vehicle.next_service_km} km`
                       : "Keine KM angegeben"}

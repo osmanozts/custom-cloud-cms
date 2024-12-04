@@ -65,7 +65,7 @@ export function NotificationDialog({}: NotificationDialogProps) {
     <>
       <Box onClick={onOpen} as="span" position="relative">
         <WrapItem cursor="pointer" mx={4}>
-          <Icon as={LuBell} boxSize={6} color="textColor" />
+          <Icon as={LuBell} boxSize={6} />
           {hasUnread && (
             <Circle
               size="8px"
@@ -89,14 +89,12 @@ export function NotificationDialog({}: NotificationDialogProps) {
       >
         <ModalOverlay />
         <ModalContent height="80vh" my={8}>
-          <ModalHeader color="textColor">Benachrichtigungen</ModalHeader>
+          <ModalHeader>Benachrichtigungen</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
             {notifications.length === 0 ? (
               <Box textAlign="center" py={6}>
-                <Heading size="md" color="textColor">
-                  Keine neuen Benachrichtigungen
-                </Heading>
+                <Heading size="md">Keine neuen Benachrichtigungen</Heading>
               </Box>
             ) : (
               <VStack spacing={4} height="70vh" overflowY="auto">
@@ -123,15 +121,10 @@ export function NotificationDialog({}: NotificationDialogProps) {
                     )}
                     <HStack justifyContent="space-between">
                       <Box>
-                        <Text
-                          fontSize="lg"
-                          fontWeight="bold"
-                          mb={1}
-                          color="textColor"
-                        >
+                        <Text fontSize="lg" fontWeight="bold" mb={1}>
                           {notification.title}
                         </Text>
-                        <Text fontSize="sm" color="textColor">
+                        <Text fontSize="sm">
                           {notification.description ||
                             "Keine Details verfügbar."}
                         </Text>
