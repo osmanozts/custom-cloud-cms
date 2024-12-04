@@ -7,12 +7,12 @@ import {
   Icon,
   Spinner,
   Text,
-  VStack,
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { LuCheck, LuX } from "react-icons/lu";
 import { useNavigate, useSearchParams } from "react-router-dom";
 
+import dayjs from "dayjs";
 import { getEmployee, getProfile, updateEmployee } from "../../backend-queries";
 import {
   NewProfile,
@@ -20,7 +20,6 @@ import {
 } from "../../backend-queries/update/update-profile";
 import { EmployeeDetails, EmployeeDocumentUpload } from "../../components";
 import { Tables } from "../../utils/database/types";
-import dayjs from "dayjs";
 
 type EditEmployeeProps = {};
 
