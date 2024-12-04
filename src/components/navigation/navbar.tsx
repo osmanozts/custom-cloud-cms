@@ -1,5 +1,4 @@
 import {
-  Avatar,
   Box,
   Circle,
   Flex,
@@ -8,8 +7,8 @@ import {
   useBreakpointValue,
   WrapItem,
 } from "@chakra-ui/react";
-import logo from "../../assets/logo/lp-logistics.png";
 import { LuLogOut, LuUser } from "react-icons/lu";
+import logo from "../../assets/logo/lp-logistics.png";
 import { AdminHamburger } from "./admin-hamburger";
 
 export function Navbar() {
