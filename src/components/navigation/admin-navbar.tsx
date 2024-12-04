@@ -94,10 +94,7 @@ export function AdminNavbar() {
                   mr={2}
                   color={isActive(item.path) ? "accentColor" : "textColor"}
                 />
-                <Text
-                  color={isActive(item.path) ? "accentColor" : "textColor"}
-                  textDecoration={isActive(item.path) ? "underline" : "none"}
-                >
+                <Text color={isActive(item.path) ? "accentColor" : "textColor"}>
                   {item.label}
                 </Text>
               </Flex>
