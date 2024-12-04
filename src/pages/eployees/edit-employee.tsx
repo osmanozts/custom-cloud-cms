@@ -143,26 +143,25 @@ export const EditEmployee = ({}: EditEmployeeProps) => {
       </Flex>
       <Box>
         <Box>
-          <Heading fontSize="lg" fontWeight="semibold" mb={4} color="gray.600">
+          <Heading fontSize="lg" fontWeight="semibold" mb={4}>
             Mitarbeiter Daten
           </Heading>
-          <VStack spacing={6}>
-            <EmployeeDetails
-              employee={employee}
-              profile={profile}
-              setEmployee={(newEmployee) => {
-                setEmployee(newEmployee);
-                setIsSaveDisabled(false);
-              }}
-              setProfile={(newProfile) => {
-                setProfile(newProfile);
-                setIsSaveDisabled(false);
-              }}
-            />
-          </VStack>
+
+          <EmployeeDetails
+            employee={employee}
+            profile={profile}
+            setEmployee={(newEmployee) => {
+              setEmployee(newEmployee);
+              setIsSaveDisabled(false);
+            }}
+            setProfile={(newProfile) => {
+              setProfile(newProfile);
+              setIsSaveDisabled(false);
+            }}
+          />
         </Box>
         <Box>
-          <Heading fontSize="lg" fontWeight="semibold" mb={4} color="gray.600">
+          <Heading fontSize="lg" fontWeight="semibold" mb={4}>
             Mitarbeiter Dateien
           </Heading>
           <EmployeeDocumentUpload employee={employee} />

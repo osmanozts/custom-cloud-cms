@@ -147,9 +147,10 @@ export const AllEmployees: React.FC<AllEmployeesProps> = () => {
           <EmployeesTable employees={employees} />
         </Box>
         <Button
-          bg="tileBgColor"
+          bg="parcelColor"
           alignSelf="flex-end"
           leftIcon={<LuDownload />}
+          color="invertedTextColor"
           onClick={() => printEmployeesToPdf(employees)}
           width="150px"
           px={10}

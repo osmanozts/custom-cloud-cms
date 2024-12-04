@@ -496,6 +496,7 @@ export const IncidentDetails = ({
         <Button
           leftIcon={<LuDownload />}
           bg="parcelColor"
+          color="invertedTextColor"
           onClick={async () => {
             console.log("download");
             const element = document.querySelector("#incident-details");

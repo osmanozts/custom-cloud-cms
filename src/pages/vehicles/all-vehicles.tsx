@@ -141,9 +141,10 @@ export function AllVehicles({}: AllVehiclesProps) {
           <VehiclesTable vehicles={vehicles} />
         </Box>
         <Button
-          bg="tileBgColor"
+          bg="parcelColor"
           alignSelf="flex-end"
           leftIcon={<LuDownload />}
+          color="invertedTextColor"
           onClick={() => printVehiclesToPdf(vehicles)}
           width="150px"
           px={10}
