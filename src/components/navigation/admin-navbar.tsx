@@ -1,6 +1,6 @@
 import {
-  Avatar,
   Box,
+  Circle,
   Flex,
   Icon,
   Image,
@@ -12,14 +12,16 @@ import {
   LuCar,
   LuFileStack,
   LuLayoutDashboard,
+  LuLogOut,
   LuTable2,
+  LuUser,
 } from "react-icons/lu";
 import { useLocation, useNavigate } from "react-router-dom";
 
-import logo from "../../assets/logo/lp-logistics.png";
-import { AdminHamburger } from "./admin-hamburger";
 import { IconType } from "react-icons";
+import logo from "../../assets/logo/lp-logistics.png";
 import { NotificationDialog } from "../dialogs/notificatoin-dialog";
+import { AdminHamburger } from "./admin-hamburger";
 
 type NavigationItems = {
   id: number;
@@ -102,14 +104,22 @@ export function AdminNavbar() {
           </Flex>
         )}
         <WrapItem cursor="pointer">
-          <Avatar name="Osman Öztas" bg="backgroundColor" />
+          <Circle bg="invertedColor" p={2}>
+            <Icon as={LuUser} boxSize={6} />
+          </Circle>
         </WrapItem>
 
         <NotificationDialog />
       </Flex>
-      <WrapItem cursor="pointer">
-        <AdminHamburger />
-      </WrapItem>
+      {showNavItems ? (
+        <WrapItem cursor="pointer">
+          <Icon as={LuLogOut} boxSize={6} />
+        </WrapItem>
+      ) : (
+        <WrapItem cursor="pointer">
+          <AdminHamburger />
+        </WrapItem>
+      )}
     </Flex>
   );
 }
