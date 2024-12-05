@@ -4,7 +4,7 @@ import { Box, Spinner, Text } from "@chakra-ui/react";
 import { AdminNavbar, Navbar } from "../../components";
 
 export const AuthRoute = () => {
-  const { user, loading, role } = useAuth();
+  const { user, loading, authRole } = useAuth();
   const location = useLocation();
 
   if (loading) {
@@ -31,7 +31,7 @@ export const AuthRoute = () => {
   if (!loading && user) {
     return (
       <>
-        {role === "employee" ? <Navbar /> : <AdminNavbar />}
+        {authRole === "employee" ? <Navbar /> : <AdminNavbar />}
         <Outlet />
       </>
     );

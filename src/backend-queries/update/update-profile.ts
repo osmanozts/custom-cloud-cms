@@ -1,18 +1,19 @@
+import { Enums } from "../../utils/database/types";
 import supabase from "../../utils/supabase";
 
 export interface NewProfile {
   id: string;
-  role: string;
+  auth_role: Enums<"auth-role">;
 }
 
 export async function updateProfile(newProfile: NewProfile) {
-  const { id, role } = newProfile;
+  const { id, auth_role } = newProfile;
 
   try {
     const { data, error } = await supabase
       .from("profile")
       .update({
-        role,
+        auth_role,
       })
       .eq("id", id)
       .select("*");

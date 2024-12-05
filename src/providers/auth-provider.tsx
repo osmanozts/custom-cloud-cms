@@ -8,11 +8,12 @@ import {
 } from "react";
 import supabase from "../utils/supabase";
 import { useNavigate } from "react-router-dom";
+import { Enums } from "../utils/database/types";
 
 // Definieren der Typen für den AuthContext
 interface AuthContextType {
   user: any;
-  role: string | null;
+  authRole: Enums<"auth-role"> | null;
   login: (email: string, password: string) => Promise<any>;
   sendOtp: (email: string) => Promise<any>;
   signOut: () => Promise<any>;
@@ -36,7 +37,7 @@ interface AuthProviderProps {
 
 const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
   const [user, setUser] = useState<any>(null);
-  const [role, setRole] = useState<string | null>(null);
+  const [authRole, setAuthRole] = useState<Enums<"auth-role"> | null>(null);
   const [loading, setLoading] = useState(true);
 
   const navigate = useNavigate();
@@ -80,16 +81,16 @@ const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
   const fetchUserRole = async (userId: string) => {
     const { data, error } = await supabase
       .from("profile")
-      .select("role")
+      .select("auth_role")
       .eq("id", userId)
       .single();
 
-    setRole(data?.role ?? "employee");
+    setAuthRole(data?.auth_role ?? "employee");
     if (error) {
       console.error("Error fetching user role:", error);
       return null;
     }
-    return data?.role || null;
+    return data?.auth_role || null;
   };
 
   useEffect(() => {
@@ -109,7 +110,7 @@ const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
 
   return (
     <AuthContext.Provider
-      value={{ user, role, login, sendOtp, signOut, loading }}
+      value={{ user, authRole, login, sendOtp, signOut, loading }}
     >
       {children}
     </AuthContext.Provider>

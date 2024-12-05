@@ -1,6 +1,6 @@
 import { Box, FormControl, FormLabel, Grid, GridItem } from "@chakra-ui/react";
 
-import { Tables } from "../../utils/database/types";
+import { Enums, Tables } from "../../utils/database/types";
 import { InputField } from "../input-field";
 import { DefaultMenu } from "../menu/default-menu";
 import { useAuth } from "../../providers/auth-provider";
@@ -19,7 +19,7 @@ export const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({
   setEmployee,
   setProfile,
 }) => {
-  const { role } = useAuth();
+  const { authRole } = useAuth();
 
   return (
     <Box bg="tileBgColor" borderWidth="1px" borderRadius="lg" p={6} mb={6}>
@@ -170,7 +170,7 @@ export const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({
               onSelect={(value) => setEmployee({ ...employee, state: value })}
             />
           </FormControl>
-          <FormControl isDisabled={role !== "superadmin"}>
+          <FormControl isDisabled={authRole !== "superadmin"}>
             <FormLabel htmlFor="role">Rolle</FormLabel>
             <DefaultMenu
               options={[
@@ -178,8 +178,13 @@ export const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({
                 { value: "admin", label: "Admin" },
                 { value: "employee", label: "Mitarbeiter" },
               ]}
-              defaultValue={profile.role ?? ""}
-              onSelect={(value) => setProfile({ ...profile, role: value })}
+              defaultValue={profile.auth_role ?? ""}
+              onSelect={(value) =>
+                setProfile({
+                  ...profile,
+                  auth_role: value as Enums<"auth-role">,
+                })
+              }
             />
           </FormControl>
 

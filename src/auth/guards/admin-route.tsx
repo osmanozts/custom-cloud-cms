@@ -48,7 +48,8 @@ export const AdminRoute = () => {
     );
   }
   if (profile)
-    return profile?.role === "superadmin" || profile?.role === "admin" ? (
+    return profile?.auth_role === "superadmin" ||
+      profile?.auth_role === "admin" ? (
       <>
         <Outlet />
       </>

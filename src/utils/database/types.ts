@@ -99,18 +99,18 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: "driver_history_driver_id_fkey"
-            columns: ["driver_id"]
-            isOneToOne: false
-            referencedRelation: "employees"
-            referencedColumns: ["profile_id"]
-          },
-          {
             foreignKeyName: "driver_history_vehicle_id_fkey"
             columns: ["vehicle_id"]
             isOneToOne: false
             referencedRelation: "vehicles"
             referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "public_driver_history_driver_id_fkey"
+            columns: ["driver_id"]
+            isOneToOne: false
+            referencedRelation: "employees"
+            referencedColumns: ["profile_id"]
           },
         ]
       }
@@ -186,7 +186,7 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: "employees_profile_id_fkey"
+            foreignKeyName: "public_employees_profile_id_fkey"
             columns: ["profile_id"]
             isOneToOne: true
             referencedRelation: "profile"
@@ -386,13 +386,6 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: "incidents_reporting_user_id_fkey"
-            columns: ["reporting_user_id"]
-            isOneToOne: false
-            referencedRelation: "employees"
-            referencedColumns: ["profile_id"]
-          },
-          {
             foreignKeyName: "incidents_vehicle_id_fkey"
             columns: ["vehicle_id"]
             isOneToOne: false
@@ -402,6 +395,13 @@ export type Database = {
           {
             foreignKeyName: "public_incidents_driver_id_fkey"
             columns: ["driver_id"]
+            isOneToOne: false
+            referencedRelation: "employees"
+            referencedColumns: ["profile_id"]
+          },
+          {
+            foreignKeyName: "public_incidents_reporting_user_id_fkey"
+            columns: ["reporting_user_id"]
             isOneToOne: false
             referencedRelation: "employees"
             referencedColumns: ["profile_id"]
@@ -434,18 +434,21 @@ export type Database = {
       }
       profile: {
         Row: {
+          auth_role: Database["public"]["Enums"]["auth-role"]
           created_at: string
           email: string | null
           id: string
           role: string | null
         }
         Insert: {
+          auth_role?: Database["public"]["Enums"]["auth-role"]
           created_at?: string
           email?: string | null
           id?: string
           role?: string | null
         }
         Update: {
+          auth_role?: Database["public"]["Enums"]["auth-role"]
           created_at?: string
           email?: string | null
           id?: string

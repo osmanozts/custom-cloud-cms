@@ -88,7 +88,7 @@ export const EditEmployee = ({}: EditEmployeeProps) => {
 
     const newProfile: NewProfile = {
       id: profile.id,
-      role: profile.role ?? "employee",
+      auth_role: profile.auth_role,
     };
     await updateProfile(newProfile);
     setIsLoading(false);

@@ -48,5 +48,5 @@ export function printEmployeesToPdf(employees: Tables<"employees">[]) {
     },
   });
 
-  pdf.save("employees.pdf");
+  pdf.save("mitarbeiter-tabelle.pdf");
 }

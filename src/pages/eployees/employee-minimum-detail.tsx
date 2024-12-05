@@ -87,7 +87,7 @@ export function EmployeeMinimumDetail() {
 
         <Box>
           <Text fontWeight="bold">Rolle:</Text>
-          <Text>{profile?.role ?? "N/A"}</Text>
+          <Text>{profile?.auth_role ?? "N/A"}</Text>
         </Box>
       </SimpleGrid>
       {vehicles && vehicles?.length > 0 && (
