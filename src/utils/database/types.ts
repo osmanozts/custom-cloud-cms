@@ -124,7 +124,7 @@ export type Database = {
           driver_license_level: string | null
           first_name: string | null
           health_insurance: string | null
-          id: number
+          id: string
           id_card_end_date: string | null
           last_name: string | null
           location: string | null
@@ -147,7 +147,7 @@ export type Database = {
           driver_license_level?: string | null
           first_name?: string | null
           health_insurance?: string | null
-          id?: number
+          id?: string
           id_card_end_date?: string | null
           last_name?: string | null
           location?: string | null
@@ -170,7 +170,7 @@ export type Database = {
           driver_license_level?: string | null
           first_name?: string | null
           health_insurance?: string | null
-          id?: number
+          id?: string
           id_card_end_date?: string | null
           last_name?: string | null
           location?: string | null
@@ -532,10 +532,6 @@ export type Database = {
     }
     Functions: {
       check_expiring_documents: {
-        Args: Record<PropertyKey, never>
-        Returns: undefined
-      }
-      test_cron_function: {
         Args: Record<PropertyKey, never>
         Returns: undefined
       }
