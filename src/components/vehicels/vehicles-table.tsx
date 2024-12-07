@@ -18,6 +18,7 @@ import { useEffect, useState } from "react";
 import { EmployeesMinimumDetail } from "../../backend-queries/query/get-min-detail-employees";
 import { InfoIcon } from "@chakra-ui/icons";
 import { LuCar } from "react-icons/lu";
+import { mapVehicleState } from "./services/map-vehicle-state";
 
 interface VehiclesTableProps {
   vehicles: Vehicles;
@@ -137,7 +138,7 @@ export const VehiclesTable = ({ vehicles }: VehiclesTableProps) => {
                 </Flex>
               </Td>
               <Td>{vehicle.license_plate ?? "-"}</Td>
-              <Td>{vehicle.state ?? "-"}</Td>
+              <Td>{mapVehicleState(vehicle.state ?? "active")}</Td>
               <Td>{vehicle.location ?? "-"}</Td>
               <Td>
                 {findMinEmployee(vehicle.profile_id ?? "")?.first_name}{" "}

@@ -167,7 +167,12 @@ export const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({
                 { value: "pipeline", label: "Pipeline" },
               ]}
               defaultValue={employee.state ?? ""}
-              onSelect={(value) => setEmployee({ ...employee, state: value })}
+              onSelect={(value) =>
+                setEmployee({
+                  ...employee,
+                  state: value as Enums<"employee_state">,
+                })
+              }
             />
           </FormControl>
           <FormControl isDisabled={authRole !== "superadmin"}>

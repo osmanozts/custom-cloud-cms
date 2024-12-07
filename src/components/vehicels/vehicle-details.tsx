@@ -6,7 +6,7 @@ import {
   Stack,
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
-import { Tables } from "../../utils/database/types";
+import { Enums, Tables } from "../../utils/database/types";
 import { InputField } from "../input-field";
 import { colors } from "../menu/color";
 import { DefaultMenu, MenuOption } from "../menu/default-menu";
@@ -127,7 +127,12 @@ export const VehicleDetails = ({
                 { value: "decommissioned", label: "Stillgelegt" },
               ]}
               defaultValue={vehicle.state ?? ""}
-              onSelect={(value) => setVehicle({ ...vehicle, state: value })}
+              onSelect={(value) =>
+                setVehicle({
+                  ...vehicle,
+                  state: value as Enums<"vehicle_state">,
+                })
+              }
             />
           </FormControl>
         </GridItem>

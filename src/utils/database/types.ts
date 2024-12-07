@@ -133,7 +133,7 @@ export type Database = {
           personnel_number: string | null
           postal_code: string | null
           profile_id: string | null
-          state: string | null
+          state: Database["public"]["Enums"]["employee_state"] | null
           street: string | null
           tax_id: string | null
           tax_level: string | null
@@ -156,7 +156,7 @@ export type Database = {
           personnel_number?: string | null
           postal_code?: string | null
           profile_id?: string | null
-          state?: string | null
+          state?: Database["public"]["Enums"]["employee_state"] | null
           street?: string | null
           tax_id?: string | null
           tax_level?: string | null
@@ -179,7 +179,7 @@ export type Database = {
           personnel_number?: string | null
           postal_code?: string | null
           profile_id?: string | null
-          state?: string | null
+          state?: Database["public"]["Enums"]["employee_state"] | null
           street?: string | null
           tax_id?: string | null
           tax_level?: string | null
@@ -476,7 +476,7 @@ export type Database = {
           next_service_km: number | null
           profile_id: string | null
           profile_picture_url: string | null
-          state: string | null
+          state: Database["public"]["Enums"]["vehicle_state"] | null
           vin: string | null
           year: string | null
         }
@@ -494,7 +494,7 @@ export type Database = {
           next_service_km?: number | null
           profile_id?: string | null
           profile_picture_url?: string | null
-          state?: string | null
+          state?: Database["public"]["Enums"]["vehicle_state"] | null
           vin?: string | null
           year?: string | null
         }
@@ -512,7 +512,7 @@ export type Database = {
           next_service_km?: number | null
           profile_id?: string | null
           profile_picture_url?: string | null
-          state?: string | null
+          state?: Database["public"]["Enums"]["vehicle_state"] | null
           vin?: string | null
           year?: string | null
         }
@@ -538,7 +538,8 @@ export type Database = {
     }
     Enums: {
       "auth-role": "superadmin" | "admin" | "employee"
-      Role: "superadmin" | "admin" | "employee"
+      employee_state: "active" | "inactive" | "pipeline"
+      vehicle_state: "active" | "in_service" | "decommissioned"
     }
     CompositeTypes: {
       [_ in never]: never
