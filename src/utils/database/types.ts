@@ -438,21 +438,18 @@ export type Database = {
           created_at: string
           email: string | null
           id: string
-          role: string | null
         }
         Insert: {
           auth_role?: Database["public"]["Enums"]["auth-role"]
           created_at?: string
           email?: string | null
           id?: string
-          role?: string | null
         }
         Update: {
           auth_role?: Database["public"]["Enums"]["auth-role"]
           created_at?: string
           email?: string | null
           id?: string
-          role?: string | null
         }
         Relationships: [
           {
