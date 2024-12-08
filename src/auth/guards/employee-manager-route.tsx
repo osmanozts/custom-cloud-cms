@@ -1,14 +1,15 @@
 // admin-route.tsx
-import { Box, Spinner } from "@chakra-ui/react";
+import { Box, Spinner, useDisclosure } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
-import { Navigate, Outlet, useLocation } from "react-router-dom";
+import { Navigate, Outlet } from "react-router-dom";
 import { getProfile } from "../../backend-queries";
 import { useAuth } from "../../providers/auth-provider";
 import { Tables } from "../../utils/database/types";
+import AccessDeniedDialog from "../components/access-denied-dialog";
 
-export const AdminRoute = () => {
+export const EmployeeManagerRoute = () => {
   const { user } = useAuth();
-  const location = useLocation();
+  const { isOpen, onClose } = useDisclosure();
   const [loading, setLoading] = useState<boolean>(true);
   const [profile, setProfile] = useState<Tables<"profile">>();
 
@@ -52,19 +53,17 @@ export const AdminRoute = () => {
       case "superadmin":
       case "admin":
       case "employee_manager":
-      case "vehicle_manager":
         return <Outlet />;
-      case "employee":
+
+      case "vehicle_manager":
         return (
-          <Navigate
-            to={`/employee-min-detail?profile_id=${user.id}`}
-            replace
-            state={{ path: location.pathname }}
-          />
+          <>
+            <AccessDeniedDialog isOpen={isOpen} onClose={onClose} />
+            <Navigate to={`/`} replace />;
+          </>
         );
       default:
         break;
     }
   }
-  return <Navigate to="/login" replace />;
 };

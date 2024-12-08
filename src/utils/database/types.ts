@@ -537,7 +537,12 @@ export type Database = {
       }
     }
     Enums: {
-      "auth-role": "superadmin" | "admin" | "employee"
+      "auth-role":
+        | "superadmin"
+        | "admin"
+        | "employee"
+        | "vehicle_manager"
+        | "employee_manager"
       employee_state: "active" | "inactive" | "pipeline"
       vehicle_state: "active" | "in_service" | "decommissioned"
     }

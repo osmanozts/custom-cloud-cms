@@ -181,6 +181,8 @@ export const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({
               options={[
                 { value: "superadmin", label: "Superadmin" },
                 { value: "admin", label: "Admin" },
+                { value: "employee_manager", label: "Mitarbeiter-Manager" },
+                { value: "vehicle_manager", label: "Fahrzeug-Manager" },
                 { value: "employee", label: "Mitarbeiter" },
               ]}
               defaultValue={profile.auth_role ?? ""}
