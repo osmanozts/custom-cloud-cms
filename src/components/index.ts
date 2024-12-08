@@ -11,6 +11,7 @@ export { DocumentRows } from "./documents/document-rows";
 export { CreateFolderDialog } from "./dialogs/create-folder-dialog";
 export { FileUploadDialog } from "./dialogs/file-upload-dialog";
 export { NotificationDialog } from "./dialogs/notificatoin-dialog";
+export { FeatureInConstructionDialog } from "./dialogs/feature-construction-dialog";
 export { EmployeeDocumentUpload } from "./employees/employee-document-upload";
 export { EmployeeDetails } from "./employees/employee-details";
 export { CustomToast } from "./toasts/custom-toast";
