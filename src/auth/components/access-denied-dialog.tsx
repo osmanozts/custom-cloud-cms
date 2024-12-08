@@ -20,7 +20,7 @@ export const AccessDeniedDialog: React.FC<AccessDeniedDialogProps> = ({
   onClose,
 }) => {
   return (
-    <Modal isOpen={isOpen} onClose={onClose}>
+    <Modal isOpen={isOpen} onClose={onClose} isCentered>
       <ModalOverlay />
       <ModalContent>
         <ModalHeader>Zugriff verweigert</ModalHeader>

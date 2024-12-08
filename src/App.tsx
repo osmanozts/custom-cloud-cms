@@ -34,8 +34,8 @@ function App() {
             <Route path="/create-new-user" element={<CreateNewUser />} />
             <Route path="/edit-employee" element={<EditEmployee />} />
           </Route>
-          <Route path="/vehicle-management" element={<AllVehicles />} />
           <Route element={<VehicleManagerRoute />}>
+            <Route path="/vehicle-management" element={<AllVehicles />} />
             <Route path="/driver-history" element={<AllDriverHistory />} />
             <Route path="/edit-vehicle" element={<EditVehicle />} />
             <Route path="/edit-vehicle" element={<EditVehicle />} />
