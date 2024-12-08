@@ -23,6 +23,8 @@ import logo from "../../assets/logo/lp-logistics.png";
 import { NotificationDialog } from "../dialogs/notificatoin-dialog";
 import { AdminHamburger } from "./admin-hamburger";
 import { useAuth } from "../../providers/auth-provider";
+import FeatureInConstructionDialog from "../dialogs/feature-construction-dialog";
+import { useState } from "react";
 
 type NavigationItems = {
   id: number;
@@ -34,6 +36,9 @@ type NavigationItems = {
 export function AdminNavbar() {
   const navigate = useNavigate();
   const location = useLocation();
+
+  const [isFeatureInConstructionOpen, setFeatureInConstructionOpen] =
+    useState(false);
 
   const navItems = [
     { id: 1, label: "Startseite", path: "/", icon: LuLayoutDashboard },
@@ -67,7 +72,7 @@ export function AdminNavbar() {
 
   const handleOnClick = (item: NavigationItems) => {
     if (item.path === "/document-management")
-      alert("Dieses Feature steht noch nicht zur Verfügung!");
+      setFeatureInConstructionOpen(true);
     else navigate(item.path);
   };
 
@@ -123,6 +128,11 @@ export function AdminNavbar() {
           <AdminHamburger />
         </WrapItem>
       )}
+      {/* Dialog für "Interne Dokumente" */}
+      <FeatureInConstructionDialog
+        isOpen={isFeatureInConstructionOpen}
+        onClose={() => setFeatureInConstructionOpen(false)}
+      />
     </Flex>
   );
 }
