@@ -34,38 +34,6 @@ export type Database = {
   }
   public: {
     Tables: {
-      documents: {
-        Row: {
-          created_at: string
-          document_type: string | null
-          document_url: string | null
-          id: number
-          profile_id: string | null
-        }
-        Insert: {
-          created_at?: string
-          document_type?: string | null
-          document_url?: string | null
-          id?: number
-          profile_id?: string | null
-        }
-        Update: {
-          created_at?: string
-          document_type?: string | null
-          document_url?: string | null
-          id?: number
-          profile_id?: string | null
-        }
-        Relationships: [
-          {
-            foreignKeyName: "documents_profile_id_fkey"
-            columns: ["profile_id"]
-            isOneToOne: false
-            referencedRelation: "employees"
-            referencedColumns: ["profile_id"]
-          },
-        ]
-      }
       driver_history: {
         Row: {
           created_at: string
@@ -73,9 +41,9 @@ export type Database = {
           drive_end: string | null
           drive_start: string | null
           driver_id: string | null
-          id: number
+          id: string
           is_edited: boolean | null
-          vehicle_id: number | null
+          vehicle_id: string | null
         }
         Insert: {
           created_at?: string
@@ -83,9 +51,9 @@ export type Database = {
           drive_end?: string | null
           drive_start?: string | null
           driver_id?: string | null
-          id?: number
+          id?: string
           is_edited?: boolean | null
-          vehicle_id?: number | null
+          vehicle_id?: string | null
         }
         Update: {
           created_at?: string
@@ -93,24 +61,56 @@ export type Database = {
           drive_end?: string | null
           drive_start?: string | null
           driver_id?: string | null
-          id?: number
+          id?: string
           is_edited?: boolean | null
-          vehicle_id?: number | null
+          vehicle_id?: string | null
         }
         Relationships: [
-          {
-            foreignKeyName: "driver_history_vehicle_id_fkey"
-            columns: ["vehicle_id"]
-            isOneToOne: false
-            referencedRelation: "vehicles"
-            referencedColumns: ["id"]
-          },
           {
             foreignKeyName: "public_driver_history_driver_id_fkey"
             columns: ["driver_id"]
             isOneToOne: false
             referencedRelation: "employees"
             referencedColumns: ["profile_id"]
+          },
+          {
+            foreignKeyName: "public_driver_history_vehicle_id_fkey"
+            columns: ["vehicle_id"]
+            isOneToOne: false
+            referencedRelation: "vehicles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      employee_files: {
+        Row: {
+          created_at: string | null
+          employee_id: string
+          file_name: string
+          id: string
+          path: string
+        }
+        Insert: {
+          created_at?: string | null
+          employee_id: string
+          file_name: string
+          id?: string
+          path: string
+        }
+        Update: {
+          created_at?: string | null
+          employee_id?: string
+          file_name?: string
+          id?: string
+          path?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "employee_files_employee_id_fkey"
+            columns: ["employee_id"]
+            isOneToOne: false
+            referencedRelation: "employees"
+            referencedColumns: ["id"]
           },
         ]
       }
@@ -216,7 +216,7 @@ export type Database = {
           driver_license_class: string | null
           email: string | null
           first_registration: string | null
-          id: number
+          id: string
           incident_date: string | null
           incident_time: string | null
           injured_address: string | null
@@ -252,7 +252,7 @@ export type Database = {
           repair_workshop: string | null
           reporting_user_id: string | null
           street: string | null
-          vehicle_id: number | null
+          vehicle_id: string | null
           vehicle_repaired: boolean | null
           witness_address: string | null
           witness_first_name: string | null
@@ -279,7 +279,7 @@ export type Database = {
           driver_license_class?: string | null
           email?: string | null
           first_registration?: string | null
-          id?: number
+          id?: string
           incident_date?: string | null
           incident_time?: string | null
           injured_address?: string | null
@@ -315,7 +315,7 @@ export type Database = {
           repair_workshop?: string | null
           reporting_user_id?: string | null
           street?: string | null
-          vehicle_id?: number | null
+          vehicle_id?: string | null
           vehicle_repaired?: boolean | null
           witness_address?: string | null
           witness_first_name?: string | null
@@ -342,7 +342,7 @@ export type Database = {
           driver_license_class?: string | null
           email?: string | null
           first_registration?: string | null
-          id?: number
+          id?: string
           incident_date?: string | null
           incident_time?: string | null
           injured_address?: string | null
@@ -378,20 +378,13 @@ export type Database = {
           repair_workshop?: string | null
           reporting_user_id?: string | null
           street?: string | null
-          vehicle_id?: number | null
+          vehicle_id?: string | null
           vehicle_repaired?: boolean | null
           witness_address?: string | null
           witness_first_name?: string | null
           witness_last_name?: string | null
         }
         Relationships: [
-          {
-            foreignKeyName: "incidents_vehicle_id_fkey"
-            columns: ["vehicle_id"]
-            isOneToOne: false
-            referencedRelation: "vehicles"
-            referencedColumns: ["id"]
-          },
           {
             foreignKeyName: "public_incidents_driver_id_fkey"
             columns: ["driver_id"]
@@ -405,6 +398,13 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "employees"
             referencedColumns: ["profile_id"]
+          },
+          {
+            foreignKeyName: "public_incidents_vehicle_id_fkey"
+            columns: ["vehicle_id"]
+            isOneToOne: false
+            referencedRelation: "vehicles"
+            referencedColumns: ["id"]
           },
         ]
       }
@@ -461,11 +461,43 @@ export type Database = {
           },
         ]
       }
+      vehicle_files: {
+        Row: {
+          created_at: string | null
+          file_name: string
+          id: string
+          path: string
+          vehicle_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          file_name: string
+          id?: string
+          path: string
+          vehicle_id: string
+        }
+        Update: {
+          created_at?: string | null
+          file_name?: string
+          id?: string
+          path?: string
+          vehicle_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "vehicle_files_vehicle_id_fkey"
+            columns: ["vehicle_id"]
+            isOneToOne: false
+            referencedRelation: "vehicles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       vehicles: {
         Row: {
           color: string | null
           created_at: string
-          id: number
+          id: string
           km_age: number | null
           last_service_date: string | null
           license_plate: string | null
@@ -483,7 +515,7 @@ export type Database = {
         Insert: {
           color?: string | null
           created_at?: string
-          id?: number
+          id?: string
           km_age?: number | null
           last_service_date?: string | null
           license_plate?: string | null
@@ -501,7 +533,7 @@ export type Database = {
         Update: {
           color?: string | null
           created_at?: string
-          id?: number
+          id?: string
           km_age?: number | null
           last_service_date?: string | null
           license_plate?: string | null

@@ -8,7 +8,7 @@ export const incidentsQuery = supabase.from("incidents").select(`
 export type Incidents = QueryData<typeof incidentsQuery>;
 
 export async function getAllVehicleIncidents(
-  vehicle_id: number,
+  vehicle_id: string,
   successCallback: (allIncidents: Incidents) => void
 ) {
   const { data: incidents, error } = await supabase

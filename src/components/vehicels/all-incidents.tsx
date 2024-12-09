@@ -4,6 +4,7 @@ import {
   Flex,
   Grid,
   GridItem,
+  Icon,
   Stack,
   Text,
   useToast,
@@ -15,6 +16,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { createIncident, getAllVehicleIncidents } from "../../backend-queries";
 import { Incidents } from "../../backend-queries/query/get-all-vehicle-incidents";
 import { Tables } from "../../utils/database/types";
+import { LuTrash } from "react-icons/lu";
 
 type AllIncidentsProps = {
   vehicle: Tables<"vehicles">;
@@ -68,86 +70,82 @@ export const AllIncidents = ({ vehicle }: AllIncidentsProps) => {
           {incidents.length > 0 ? (
             incidents.map((incident) => (
               <GridItem key={incident.id} mb={2}>
-                <Link
-                  to={`/edit-incident?incident_id=${incident.id}&vehicle_id=${vehicle.id}`}
-                  style={{ textDecoration: "none", maxWidth: "100%" }}
+                <Box
+                  borderWidth="1px"
+                  borderRadius="lg"
+                  bg="white"
+                  _hover={{ bg: "gray.100" }}
+                  transition="background-color 0.2s"
                 >
-                  <Box
-                    p={4}
-                    borderWidth="1px"
-                    borderRadius="lg"
-                    bg="white"
-                    _hover={{ bg: "gray.100" }}
-                    transition="background-color 0.2s"
+                  <Flex
+                    gap={6}
+                    alignItems="center"
+                    flexDirection={{ base: "column", md: "row" }}
+                    wrap="wrap"
                   >
-                    <Flex
-                      gap={6}
-                      alignItems="center"
-                      flexDirection={{ base: "column", md: "row" }}
-                      wrap="wrap"
+                    <Grid
+                      width="100%"
+                      templateColumns={{ base: "1fr", md: "repeat(2, 1fr)" }}
+                      gap={4}
                     >
-                      <Grid
-                        templateColumns={{ base: "1fr", md: "repeat(4, 1fr)" }}
-                        gap={4}
+                      <Link
+                        to={`/edit-incident?incident_id=${incident.id}&vehicle_id=${vehicle.id}`}
+                        style={{ textDecoration: "none", maxWidth: "100%" }}
                       >
-                        <GridItem
-                          display="flex"
-                          flexDirection="column"
-                          alignItems="flex-start"
-                          gap={2}
-                          p={4}
+                        <Grid
+                          width="100%"
+                          templateColumns={{
+                            base: "1fr",
+                            md: "repeat(2, 1fr)",
+                          }}
+                          gap={4}
                         >
-                          <Text fontWeight="bold">Schaden ID:</Text>
-                          <Text>{incident.id}</Text>
-                        </GridItem>
-                        <GridItem
-                          display="flex"
-                          flexDirection="column"
-                          alignItems="flex-start"
-                          gap={2}
-                          p={4}
-                        >
-                          <Text fontWeight="bold">Erstellt am:</Text>
-                          <Text>
-                            {dayjs(incident.created_at).format(
-                              "DD.MM.YYYY HH:mm"
-                            )}
-                          </Text>
-                        </GridItem>
-                        <GridItem
-                          display="flex"
-                          flexDirection="column"
-                          alignItems="flex-start"
-                          gap={2}
-                          p={4}
-                        >
-                          <Text fontWeight="bold">Vorfall Datum:</Text>
-                          <Text>
-                            {incident.incident_date
-                              ? dayjs(incident.incident_date).format(
-                                  "DD.MM.YYYY HH:mm"
-                                )
-                              : "Kein Datum eingetragen"}
-                          </Text>
-                        </GridItem>
-                        <GridItem
-                          display="flex"
-                          flexDirection="column"
-                          alignItems="flex-start"
-                          gap={2}
-                          p={4}
-                        >
-                          <Text fontWeight="bold">
-                            Reperatur abgeschlossen:
-                          </Text>
-                          <Text>
-                            {incident.repair_completed ? "Ja" : "Nein"}
-                          </Text>
-                        </GridItem>
-                      </Grid>
-                    </Flex>
-                  </Box>
-                </Link>
+                          <GridItem
+                            display="flex"
+                            flexDirection="row"
+                            alignItems="flex-start"
+                            gap={2}
+                            p={4}
+                          >
+                            <Text fontWeight="bold">Schaden ID:</Text>
+                            <Text>{incident.id}</Text>
+                          </GridItem>
+                          <GridItem
+                            display="flex"
+                            flexDirection="row"
+                            alignItems="flex-start"
+                            gap={2}
+                            p={4}
+                          >
+                            <Text fontWeight="bold">Erstellt am:</Text>
+                            <Text>
+                              {dayjs(incident.created_at).format(
+                                "DD.MM.YYYY HH:mm"
+                              )}
+                            </Text>
+                          </GridItem>
+                        </Grid>
+                      </Link>
+                      <GridItem
+                        width="100%"
+                        display="flex"
+                        flexDirection="row"
+                        justifyContent="flex-end"
+                        alignItems="center"
+                        gap={2}
+                        color="accentColor"
+                      >
+                        <Icon
+                          as={LuTrash}
+                          boxSize={6}
+                          mr={4}
+                          onClick={() => alert("delete clicked")}
+                          cursor="pointer"
+                        />
+                      </GridItem>
+                    </Grid>
+                  </Flex>
+                </Box>
               </GridItem>
             ))
           ) : (
@@ -158,7 +156,8 @@ export const AllIncidents = ({ vehicle }: AllIncidentsProps) => {
           onClick={handleCreateIncident}
           isLoading={isLoading}
           loadingText="Erstellt..."
-          bg="dangerColor"
+          bg="accentColor"
+          color="invertedColor"
         >
           Neuen Schaden / Panne melden
         </Button>

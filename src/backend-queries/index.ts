@@ -12,11 +12,16 @@ export { getAllVehicleIncidents } from "./query/get-all-vehicle-incidents";
 export { getIncident } from "./query/get-incident";
 export { getVehicle } from "./query/get-vehicle";
 export { getAllNotifications } from "./query/get-all-notifications";
+
 export { createIncident } from "./create/create-incident";
+
 export { updateEmployee } from "./update/update-employee";
 export { updateProfile } from "./update/update-profile";
 export { updateVehicle } from "./update/update-vehicle";
 export { updateIncident } from "./update/update-incident";
+
+export { deleteNotification } from "./delete/delete.notification";
+
 export { getFiles } from "./storage/get-files";
 export { openFile } from "./storage/open-file";
 export { uploadNewFile } from "./storage/upload-new-file";
@@ -24,5 +29,11 @@ export { createFolder } from "./storage/create-folder";
 export { deleteFolder } from "./storage/delete-folder";
 export { deleteFile } from "./storage/delete-file";
 export { getFilesWithUrls } from "./storage/get-files-with-urls";
-export { deleteNotification } from "./delete/delete.notification";
+
+export { getFilesOperation } from "./storage/operations/get-files";
+export { uploadFileOperation } from "./storage/operations/upload-file";
+export { deleteFilesOperation } from "./storage/operations/delete-files";
+export { moveFilesOperation } from "./storage/operations/move-files";
+export { createFolderOperation } from "./storage/operations/create-folder";
+
 export { notificationListener } from "./listener/notificatoin-listener";

@@ -13,7 +13,7 @@ export const incidentQuery = supabase
 export type Incident = QueryData<typeof incidentQuery>;
 
 export async function getIncident(
-  id: number,
+  id: string,
   successCallback: (incident: Incident) => void
 ) {
   const { data: incident, error } = await supabase

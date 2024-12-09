@@ -1,9 +1,9 @@
 import supabase from "../../utils/supabase";
 
-export const createIncident = async (vehicle_id: number) => {
+export const createIncident = async (vehicle_id: string) => {
   const { data, error } = await supabase
     .from("incidents")
-    .insert({ id: Math.floor(Math.random() * 1000001), vehicle_id })
+    .insert({ vehicle_id })
     .select()
     .single();
 

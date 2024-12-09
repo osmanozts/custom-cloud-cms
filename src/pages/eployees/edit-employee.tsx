@@ -18,7 +18,7 @@ import {
   NewProfile,
   updateProfile,
 } from "../../backend-queries/update/update-profile";
-import { EmployeeDetails, EmployeeDocumentUpload } from "../../components";
+import { DocumentManager, EmployeeDetails } from "../../components";
 import { Tables } from "../../utils/database/types";
 
 type EditEmployeeProps = {};
@@ -163,7 +163,11 @@ export const EditEmployee = ({}: EditEmployeeProps) => {
           <Heading fontSize="lg" fontWeight="semibold" mb={4}>
             Mitarbeiter Dateien
           </Heading>
-          <EmployeeDocumentUpload employee={employee} />
+          {/* <EmployeeDocumentUpload employee={employee} /> */}
+          <DocumentManager
+            bucket="dateien_mitarbeiter"
+            rootFolder={employee.profile_id!}
+          />
         </Box>
       </Box>
     </Container>

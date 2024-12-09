@@ -20,7 +20,11 @@ import {
   updateVehicle,
 } from "../../backend-queries";
 import { EmployeesMinimumDetail } from "../../backend-queries/query/get-min-detail-employees";
-import { AllIncidents, VehicleDetails } from "../../components";
+import {
+  AllIncidents,
+  DocumentManager,
+  VehicleDetails,
+} from "../../components";
 import { Tables } from "../../utils/database/types";
 import { createDriverHistory } from "../../backend-queries/create/create-driver-history";
 import { RepeatClockIcon } from "@chakra-ui/icons";
@@ -148,13 +152,24 @@ export const EditVehicle = ({}: EditVehicleProps) => {
             </Flex>
           </VStack>
         </Stack>
+        <Box>
+          <Heading fontSize="lg" fontWeight="semibold" my={4}>
+            <Icon mr={2} as={LuWrench} /> Schadensmeldungen
+          </Heading>
+          <VStack spacing={6}>
+            <AllIncidents vehicle={vehicle} />
+          </VStack>
+        </Box>
 
-        <Heading fontSize="lg" fontWeight="semibold" my={4}>
-          <Icon mr={2} as={LuWrench} /> Schadensmeldungen
-        </Heading>
-        <VStack spacing={6}>
-          <AllIncidents vehicle={vehicle} />
-        </VStack>
+        <Box mt={8}>
+          <Heading fontSize="lg" fontWeight="semibold" mb={4}>
+            Fahrzeug Dateien
+          </Heading>
+          <DocumentManager
+            bucket="dateien_fahrzeuge"
+            rootFolder={vehicle.id!}
+          />
+        </Box>
       </Box>
     </Container>
   );

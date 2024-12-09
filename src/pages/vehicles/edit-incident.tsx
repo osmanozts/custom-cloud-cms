@@ -14,7 +14,7 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 
 import dayjs from "dayjs";
 import { getIncident, getVehicle, updateIncident } from "../../backend-queries";
-import { IncidentDetails } from "../../components";
+import { DocumentManager, IncidentDetails } from "../../components";
 import { Tables } from "../../utils/database/types";
 
 type EditIncidentProps = {};
@@ -42,7 +42,7 @@ export const EditIncident = ({}: EditIncidentProps) => {
   useEffect(() => {
     const incidentId = searchParams.get("incident_id") ?? "";
     if (incidentId) {
-      getIncident(Number(incidentId), (newIncident) => {
+      getIncident(incidentId, (newIncident) => {
         if (newIncident) {
           const time = newIncident?.incident_time?.split(":") ?? ["-", "-"];
           const newTime = `${time![0]}:${time![1]}`;
@@ -149,6 +149,18 @@ export const EditIncident = ({}: EditIncidentProps) => {
           />
         </Box>
       )}
+
+      <Box my={8}>
+        <Heading fontSize="lg" fontWeight="semibold" mb={4}>
+          Schaden Dateien
+        </Heading>
+        <DocumentManager
+          bucket="dateien_fahrzeuge"
+          rootFolder={`${incident.vehicle_id!}/Schadensmeldungen/${
+            incident.id
+          }`}
+        />
+      </Box>
     </Container>
   );
 };
