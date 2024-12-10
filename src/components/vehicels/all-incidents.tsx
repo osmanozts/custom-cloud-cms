@@ -4,7 +4,7 @@ import {
   Flex,
   Grid,
   GridItem,
-  Icon,
+  IconButton,
   Stack,
   Text,
   useToast,
@@ -13,10 +13,15 @@ import dayjs from "dayjs";
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
-import { createIncident, getAllVehicleIncidents } from "../../backend-queries";
+import { LuTrash2 } from "react-icons/lu";
+import {
+  createIncident,
+  deleteIncident,
+  getAllVehicleIncidents,
+} from "../../backend-queries";
 import { Incidents } from "../../backend-queries/query/get-all-vehicle-incidents";
 import { Tables } from "../../utils/database/types";
-import { LuTrash } from "react-icons/lu";
+import { DeleteFileConfirmationDialog } from "../dialogs/delete-file-confirmation-dialog";
 
 type AllIncidentsProps = {
   vehicle: Tables<"vehicles">;
@@ -25,6 +30,10 @@ type AllIncidentsProps = {
 export const AllIncidents = ({ vehicle }: AllIncidentsProps) => {
   const [incidents, setIncidents] = useState<Incidents>([]);
   const [isLoading, setIsLoading] = useState(false);
+
+  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
+  const [clickedId, setClickedId] = useState<string | null>(null);
+
   const navigate = useNavigate();
   const toast = useToast();
 
@@ -93,7 +102,7 @@ export const AllIncidents = ({ vehicle }: AllIncidentsProps) => {
                         style={{ textDecoration: "none", maxWidth: "100%" }}
                       >
                         <Grid
-                          width="100%"
+                          width="200%"
                           templateColumns={{
                             base: "1fr",
                             md: "repeat(2, 1fr)",
@@ -135,12 +144,19 @@ export const AllIncidents = ({ vehicle }: AllIncidentsProps) => {
                         gap={2}
                         color="accentColor"
                       >
-                        <Icon
-                          as={LuTrash}
-                          boxSize={6}
+                        <IconButton
+                          color="accentColor"
+                          as={LuTrash2}
+                          boxSize={10}
+                          aria-label="delete employee entry"
+                          bg="invertedColor"
+                          padding={2}
                           mr={4}
-                          onClick={() => alert("delete clicked")}
-                          cursor="pointer"
+                          onClick={(e) => {
+                            e.stopPropagation(); // Stoppt die Weiterleitung des Klick-Ereignisses
+                            setClickedId(incident.id);
+                            setIsDeleteDialogOpen(true);
+                          }}
                         />
                       </GridItem>
                     </Grid>
@@ -162,6 +178,17 @@ export const AllIncidents = ({ vehicle }: AllIncidentsProps) => {
           Neuen Schaden / Panne melden
         </Button>
       </Stack>
+
+      <DeleteFileConfirmationDialog
+        isOpen={isDeleteDialogOpen}
+        onClose={() => setIsDeleteDialogOpen(false)}
+        onDelete={async () => {
+          if (clickedId) await deleteIncident(clickedId);
+          await getAllVehicleIncidents(vehicle.id, (incidents) =>
+            setIncidents(incidents)
+          );
+        }}
+      />
     </Stack>
   );
 };

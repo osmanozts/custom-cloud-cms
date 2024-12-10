@@ -23,6 +23,7 @@ export { updateIncident } from "./update/update-incident";
 export { deleteNotification } from "./delete/delete.notification";
 export { deleteEmployee } from "./delete/delete-employee";
 export { deleteVehicle } from "./delete/delete-vehicle";
+export { deleteIncident } from "./delete/delete-incident";
 export { deleteDriverHistory } from "./delete/delete-driver-history";
 
 export { getFiles } from "./storage/get-files";
