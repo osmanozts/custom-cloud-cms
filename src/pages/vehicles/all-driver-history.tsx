@@ -5,7 +5,7 @@ import { getVehicleDriverHistories } from "../../backend-queries/query/get-vehic
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { SearchIcon } from "@chakra-ui/icons";
 import { JoinedDriverHistory } from "../../backend-queries/joins/joined-driver-history";
-import { LuStepBack } from "react-icons/lu";
+import { LuPlus, LuStepBack } from "react-icons/lu";
 
 export function AllDriverHistory() {
   const navigate = useNavigate();
@@ -17,7 +17,7 @@ export function AllDriverHistory() {
   useEffect(() => {
     if (searchString.trim() === "") {
       getVehicleDriverHistories(
-        Number(searchParams.get("vehicle_id")),
+        searchParams.get("vehicle_id") ?? "",
         (fetchedData: JoinedDriverHistory) => setHistoryData(fetchedData)
       );
     } else {
@@ -48,7 +48,7 @@ export function AllDriverHistory() {
               icon={<SearchIcon color="gray.500" />}
             />
           </Box>
-          <Box>
+          <Flex gap={4}>
             <Button
               onClick={() =>
                 navigate(
@@ -62,7 +62,21 @@ export function AllDriverHistory() {
               <Icon as={LuStepBack} w={6} h={6} mr={2} />
               <Text>Zurück zum Fahrzeug</Text>
             </Button>
-          </Box>
+            <Button
+              onClick={() =>
+                navigate(
+                  `/edit-vehicle?vehicle_id=${searchParams.get("vehicle_id")}`
+                )
+              }
+              bg="parcelColor"
+              color="invertedTextColor"
+              _hover={{ bg: "darkColor" }}
+              display="flex"
+            >
+              <Icon as={LuPlus} w={6} h={6} mr={2} />
+              <Text>Neuer Eintrag</Text>
+            </Button>
+          </Flex>
         </Flex>
 
         <DriverHistoryTable historyData={historyData} />
