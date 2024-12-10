@@ -54,7 +54,7 @@ export const VehiclesTable = ({ vehicles }: VehiclesTableProps) => {
     return targetDate.isBefore(dayjs(), "day");
   };
 
-  const isKmThresholdExceeded = (
+  const isKmThresholdExceeding = (
     currentKm: number | null,
     nextServiceKm: number | null,
     threshold: number
@@ -66,7 +66,24 @@ export const VehiclesTable = ({ vehicles }: VehiclesTableProps) => {
 
     if (isNaN(currentKmNum) || isNaN(nextServiceKmNum)) return false;
 
-    return nextServiceKmNum - currentKmNum <= threshold;
+    return (
+      nextServiceKmNum - currentKmNum <= threshold &&
+      nextServiceKmNum - currentKmNum >= 0
+    );
+  };
+
+  const isKmThresholdExceeded = (
+    currentKm: number | null,
+    nextServiceKm: number | null
+  ) => {
+    if (!currentKm || !nextServiceKm) return false;
+
+    const currentKmNum = currentKm;
+    const nextServiceKmNum = nextServiceKm;
+
+    if (isNaN(currentKmNum) || isNaN(nextServiceKmNum)) return false;
+
+    return nextServiceKmNum - currentKmNum < 0;
   };
 
   return (
@@ -92,10 +109,26 @@ export const VehiclesTable = ({ vehicles }: VehiclesTableProps) => {
           const isNextServiceDateExpired = isDateExpired(
             vehicle.next_service_date
           );
-          const isKmThresholdExceededFlag = isKmThresholdExceeded(
+          const isKmThresholdExceedingFlag = isKmThresholdExceeding(
             vehicle.km_age,
             vehicle.next_service_km,
             5000
+          );
+          console.log(
+            "isKmThresholdExceedingFlag: ",
+            isKmThresholdExceedingFlag,
+            " for: ",
+            vehicle.id
+          );
+          const isKmThresholdExceededFlag = isKmThresholdExceeded(
+            vehicle.km_age,
+            vehicle.next_service_km
+          );
+          console.log(
+            "isKmThresholdExceededFlag: ",
+            isKmThresholdExceededFlag,
+            " for: ",
+            vehicle.id
           );
 
           return (
@@ -126,6 +159,7 @@ export const VehiclesTable = ({ vehicles }: VehiclesTableProps) => {
                 <Flex alignItems="center" gap={2}>
                   {!isNextServiceDateExpired &&
                     !isNextServiceDateExpiring &&
+                    !isKmThresholdExceeding &&
                     !isKmThresholdExceededFlag && (
                       <Icon as={LuCar} boxSize={4} mr={2} />
                     )}
@@ -140,8 +174,15 @@ export const VehiclesTable = ({ vehicles }: VehiclesTableProps) => {
                       <Icon as={InfoIcon} color="accentColor" mr={2} />
                     </Tooltip>
                   )}
-                  {isKmThresholdExceededFlag && (
-                    <Tooltip label="Der Kilometerstand liegt nah an der Wartungsgrenze.">
+                  {(isKmThresholdExceededFlag ||
+                    isKmThresholdExceedingFlag) && (
+                    <Tooltip
+                      label={
+                        isKmThresholdExceedingFlag
+                          ? "Der Kilometerstand liegt nah an der Wartungsgrenze."
+                          : "Der Kilometerstand ist bereits über der Grenze."
+                      }
+                    >
                       <Icon as={InfoIcon} color="accentColor" />
                     </Tooltip>
                   )}

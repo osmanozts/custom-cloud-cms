@@ -92,9 +92,12 @@ export const VehicleDetails = ({
             <InputField
               id="kmAge"
               value={vehicle.km_age?.toString() ?? ""}
-              onChange={(value) =>
-                setVehicle({ ...vehicle, km_age: Number(value) })
-              }
+              onChange={(value) => {
+                const numericValue = Number(value);
+                if (!isNaN(numericValue)) {
+                  setVehicle({ ...vehicle, km_age: numericValue });
+                }
+              }}
               placeholder="Kilometerstand"
               regex={/^\d*$/} // Regex für nur Zahlen
               regexErrorText="Bitte nur Zahlen eingeben"
@@ -163,9 +166,12 @@ export const VehicleDetails = ({
               placeholder="km..."
               regex={/^\d*$/} // Regex für nur Zahlen
               regexErrorText="Bitte nur Zahlen eingeben"
-              onChange={(value) =>
-                setVehicle({ ...vehicle, next_service_km: Number(value) })
-              }
+              onChange={(value) => {
+                const numericValue = Number(value);
+                if (!isNaN(numericValue)) {
+                  setVehicle({ ...vehicle, next_service_km: numericValue });
+                }
+              }}
             />
           </FormControl>
         </GridItem>
