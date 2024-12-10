@@ -4,7 +4,7 @@ import supabase from "../../utils/supabase";
 export const driverHistoryQuery = supabase.from("driver_history").select("*");
 
 export async function getDriverHistory(
-  id: number,
+  id: string,
   successCallback: (history: Tables<"driver_history">) => void
 ) {
   const { data: history, error } = await supabase

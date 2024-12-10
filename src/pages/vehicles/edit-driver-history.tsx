@@ -42,7 +42,7 @@ export const EditDriverHistory = ({}: EditDriverHistoryProps) => {
   useEffect(() => {
     const id = searchParams.get("id") ?? "";
     if (id) {
-      getDriverHistory(Number(id), (newValue) => {
+      getDriverHistory(id, (newValue) => {
         const mappedVehicle: Tables<"driver_history"> = {
           ...newValue,
           drive_start: newValue.drive_start
