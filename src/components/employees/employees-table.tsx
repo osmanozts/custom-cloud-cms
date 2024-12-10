@@ -10,12 +10,13 @@ import {
   Flex,
   Text,
   Box,
+  IconButton,
 } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 import { EmployeeWithProfile } from "../../backend-queries/joins/employee-with-profile-query";
 import dayjs from "dayjs";
 import { InfoIcon } from "@chakra-ui/icons";
-import { LuUser } from "react-icons/lu";
+import { LuTrash2, LuUser } from "react-icons/lu";
 
 interface EmployeesTableProps {
   employees: EmployeeWithProfile[];
@@ -43,6 +44,7 @@ export const EmployeesTable: React.FC<EmployeesTableProps> = ({
     <Table borderWidth={2} borderColor="tileBgColor" mt={4}>
       <Thead>
         <Tr whiteSpace="nowrap">
+          <Th>Aktion</Th>
           <Th>Personalnummer</Th>
           <Th>Standort</Th>
           <Th>Abteilung</Th>
@@ -86,6 +88,16 @@ export const EmployeesTable: React.FC<EmployeesTableProps> = ({
               bg={index % 2 == 0 ? "tileBgColor" : "invertedColor"}
               _hover={{ bg: "backgroundColor" }}
             >
+              <Td>
+                <IconButton
+                  color="accentColor"
+                  as={LuTrash2}
+                  boxSize={8}
+                  aria-label="delete employee entry"
+                  bg="invertedColor"
+                  padding={2}
+                />
+              </Td>
               <Td>
                 <Flex alignItems="center" gap={2}>
                   {!isDriverLicenseExpired &&

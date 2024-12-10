@@ -66,16 +66,29 @@ export const EditEmployee = ({}: EditEmployeeProps) => {
 
     setIsLoading(true);
 
-    console.log("driver_license_end_date: ", employee.driver_license_end_date);
-    const dateOfBirth = employee.date_of_birth
-      ? new Date(employee.date_of_birth).toLocaleString()
-      : null;
-    const idCardEndDate = employee.id_card_end_date
-      ? new Date(employee.id_card_end_date).toLocaleDateString()
-      : null;
-    const driverLicenseEndDate = employee.driver_license_end_date
-      ? new Date(employee.driver_license_end_date).toLocaleDateString()
-      : null;
+    const dateOfBirthParts = employee.date_of_birth?.split(".");
+    const dateOfBirth =
+      dateOfBirthParts?.length === 3
+        ? new Date(
+            `${dateOfBirthParts[2]}-${dateOfBirthParts[1]}-${dateOfBirthParts[0]}T00:00:00Z`
+          ).toISOString()
+        : null;
+
+    const idCardEndDateParts = employee.id_card_end_date?.split(".");
+    const idCardEndDate =
+      idCardEndDateParts?.length === 3
+        ? new Date(
+            `${idCardEndDateParts[2]}-${idCardEndDateParts[1]}-${idCardEndDateParts[0]}T00:00:00Z`
+          ).toISOString()
+        : null;
+
+    const licenseEndDateParts = employee.driver_license_end_date?.split(".");
+    const driverLicenseEndDate =
+      licenseEndDateParts?.length === 3
+        ? new Date(
+            `${licenseEndDateParts[2]}-${licenseEndDateParts[1]}-${licenseEndDateParts[0]}T00:00:00Z`
+          ).toISOString()
+        : null;
 
     const updatedEmployee: Tables<"employees"> = {
       ...employee,

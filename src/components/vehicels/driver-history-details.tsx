@@ -8,9 +8,8 @@ import {
 } from "@chakra-ui/react";
 
 import { Tables } from "../../utils/database/types";
-import { CustomCalendar } from "../calendars/custom-calendar";
-import { InputField } from "../input-field";
 import { DriverSelectDialog } from "../dialogs/driver-select-dialog";
+import { InputField } from "../input-field";
 
 type DriverHistoryDetailsProps = {
   driverHistory: Tables<"driver_history">;
@@ -53,17 +52,16 @@ export const DriverHistoryDetails = ({
           <Text fontWeight="bold" mb={2}>
             Fahrt Beginn
           </Text>
-          <CustomCalendar
-            value={
-              !!driverHistory.drive_start
-                ? new Date(driverHistory.drive_start)
-                : null
+          <InputField
+            id="start-driving-date"
+            regex={
+              /^(0[1-9]|[12]\d|3[01])\.(0[1-9]|1[0-2])\.(\d{2}|\d{4})(\s([01]\d|2[0-3]):([0-5]\d))?$/
             }
-            onChange={(date) => {
-              setDriverHistory({
-                ...driverHistory,
-                drive_start: date?.toISOString() ?? new Date().toISOString(),
-              });
+            regexErrorText="Bitte geben Sie ein Datum im Format '01.01.2024' ein."
+            value={driverHistory.drive_start ?? ""}
+            isDate
+            onChange={(e) => {
+              setDriverHistory({ ...driverHistory, drive_start: e });
             }}
           />
         </GridItem>
@@ -71,17 +69,16 @@ export const DriverHistoryDetails = ({
           <Text fontWeight="bold" mb={2}>
             Fahrt Ende
           </Text>
-          <CustomCalendar
-            value={
-              !!driverHistory.drive_end
-                ? new Date(driverHistory.drive_end)
-                : null
+          <InputField
+            id="end-driving-date"
+            regex={
+              /^(0[1-9]|[12]\d|3[01])\.(0[1-9]|1[0-2])\.(\d{2}|\d{4})(\s([01]\d|2[0-3]):([0-5]\d))?$/
             }
-            onChange={(date) => {
-              setDriverHistory({
-                ...driverHistory,
-                drive_end: date?.toISOString() ?? new Date().toISOString(),
-              });
+            regexErrorText="Bitte geben Sie ein Datum im Format '01.01.2024' ein."
+            value={driverHistory.drive_end ?? ""}
+            isDate
+            onChange={(e) => {
+              setDriverHistory({ ...driverHistory, drive_end: e });
             }}
           />
         </GridItem>

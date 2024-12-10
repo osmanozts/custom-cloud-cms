@@ -1,23 +1,24 @@
+import { InfoIcon } from "@chakra-ui/icons";
 import {
+  Flex,
+  Icon,
+  IconButton,
   Table,
   Tbody,
   Td,
+  Text,
   Th,
   Thead,
-  Tr,
   Tooltip,
-  Icon,
-  Flex,
-  Text,
+  Tr,
 } from "@chakra-ui/react";
-import { useNavigate } from "react-router-dom";
-import { Vehicles } from "../../backend-queries/query/get-all-vehicles";
 import dayjs from "dayjs";
-import { getMinDetailEmployees } from "../../backend-queries";
 import { useEffect, useState } from "react";
+import { LuCar, LuTrash2 } from "react-icons/lu";
+import { useNavigate } from "react-router-dom";
+import { getMinDetailEmployees } from "../../backend-queries";
+import { Vehicles } from "../../backend-queries/query/get-all-vehicles";
 import { EmployeesMinimumDetail } from "../../backend-queries/query/get-min-detail-employees";
-import { InfoIcon } from "@chakra-ui/icons";
-import { LuCar } from "react-icons/lu";
 import { mapVehicleState } from "./services/map-vehicle-state";
 
 interface VehiclesTableProps {
@@ -72,7 +73,7 @@ export const VehiclesTable = ({ vehicles }: VehiclesTableProps) => {
     <Table borderWidth={1} mt={4}>
       <Thead>
         <Tr whiteSpace="nowrap">
-          <Th>FIN</Th>
+          <Th>Aktion</Th>
           <Th>Kennzeichen</Th>
           <Th>Status</Th>
           <Th>Standort</Th>
@@ -111,6 +112,16 @@ export const VehiclesTable = ({ vehicles }: VehiclesTableProps) => {
               bg={index % 2 == 0 ? "tileBgColor" : "invertedColor"}
               _hover={{ bg: "backgroundColor" }}
             >
+              <Td color="accentColor">
+                <IconButton
+                  color="accentColor"
+                  as={LuTrash2}
+                  boxSize={8}
+                  aria-label="delete employee entry"
+                  bg="invertedColor"
+                  padding={2}
+                />
+              </Td>
               <Td>
                 <Flex alignItems="center" gap={2}>
                   {!isNextServiceDateExpired &&
@@ -134,10 +145,9 @@ export const VehiclesTable = ({ vehicles }: VehiclesTableProps) => {
                       <Icon as={InfoIcon} color="accentColor" />
                     </Tooltip>
                   )}
-                  <Text>{vehicle.vin ?? "-"}</Text>
+                  <Text>{vehicle.license_plate ?? "-"}</Text>
                 </Flex>
               </Td>
-              <Td>{vehicle.license_plate ?? "-"}</Td>
               <Td>{mapVehicleState(vehicle.state ?? "active")}</Td>
               <Td>{vehicle.location ?? "-"}</Td>
               <Td>

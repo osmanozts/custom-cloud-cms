@@ -28,6 +28,7 @@ import {
 import { Tables } from "../../utils/database/types";
 import { createDriverHistory } from "../../backend-queries/create/create-driver-history";
 import { RepeatClockIcon } from "@chakra-ui/icons";
+import dayjs from "dayjs";
 
 type EditVehicleProps = {};
 
@@ -50,7 +51,14 @@ export const EditVehicle = ({}: EditVehicleProps) => {
     const vehicleId = searchParams.get("vehicle_id") ?? "";
     if (vehicleId) {
       getVehicle(vehicleId, (newVehicle) => {
-        setVehicle(newVehicle);
+        const mappedVehicle: Tables<"vehicles"> = {
+          ...newVehicle,
+          next_service_date: newVehicle.next_service_date
+            ? dayjs(newVehicle.next_service_date).format("DD.MM.YYYY")
+            : "",
+        };
+
+        setVehicle(mappedVehicle);
       });
     }
   }, [searchParams]);
@@ -58,8 +66,21 @@ export const EditVehicle = ({}: EditVehicleProps) => {
   const handleSave = async () => {
     if (!vehicle) return;
 
+    const nextServiceDateParts = vehicle.next_service_date?.split(".");
+    const nextServiceDate =
+      nextServiceDateParts?.length === 3
+        ? new Date(
+            `${nextServiceDateParts[2]}-${nextServiceDateParts[1]}-${nextServiceDateParts[0]}T00:00:00Z`
+          ).toISOString()
+        : null;
+
     setIsLoading(true);
-    await updateVehicle(vehicle);
+
+    const updatedVehicle: Tables<"vehicles"> = {
+      ...vehicle,
+      next_service_date: nextServiceDate,
+    };
+    await updateVehicle(updatedVehicle);
     if (vehicle.profile_id) {
       await createDriverHistory(vehicle.profile_id, vehicle.id);
     }

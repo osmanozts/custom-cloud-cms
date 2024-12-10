@@ -20,6 +20,7 @@ import {
 import { DriverHistoryDetails } from "../../components";
 import { updateDriverHistory } from "../../backend-queries/update/update-driver-history";
 import { Tables } from "../../utils/database/types";
+import dayjs from "dayjs";
 
 type EditDriverHistoryProps = {};
 
@@ -42,7 +43,16 @@ export const EditDriverHistory = ({}: EditDriverHistoryProps) => {
     const id = searchParams.get("id") ?? "";
     if (id) {
       getDriverHistory(Number(id), (newValue) => {
-        setDriverHistory(newValue);
+        const mappedVehicle: Tables<"driver_history"> = {
+          ...newValue,
+          drive_start: newValue.drive_start
+            ? dayjs(newValue.drive_start).format("DD.MM.YYYY HH:mm")
+            : null,
+          drive_end: newValue.drive_end
+            ? dayjs(newValue.drive_end).format("DD.MM.YYYY HH:mm")
+            : null,
+        };
+        setDriverHistory(mappedVehicle);
       });
     }
   }, [searchParams]);
@@ -62,8 +72,30 @@ export const EditDriverHistory = ({}: EditDriverHistoryProps) => {
   const handleSave = async () => {
     if (!driverHistory) return;
 
+    const driveStartDateParts = driverHistory.drive_start?.split(".");
+    const driveStartDate =
+      driveStartDateParts?.length === 3
+        ? new Date(
+            `${driveStartDateParts[2]}-${driveStartDateParts[1]}-${driveStartDateParts[0]}T00:00:00Z`
+          ).toISOString()
+        : null;
+
+    const driveEndDateParts = driverHistory.drive_end?.split(".");
+    const driveEndDate =
+      driveEndDateParts?.length === 3
+        ? new Date(
+            `${driveEndDateParts[2]}-${driveEndDateParts[1]}-${driveEndDateParts[0]}T00:00:00Z`
+          ).toISOString()
+        : null;
+
     setIsLoading(true);
-    await updateDriverHistory(driverHistory);
+
+    const updatedDriverHistory: Tables<"driver_history"> = {
+      ...driverHistory,
+      drive_start: driveStartDate,
+      drive_end: driveEndDate,
+    };
+    await updateDriverHistory(updatedDriverHistory);
     setIsLoading(false);
     navigate(
       "/driver-history?vehicle_id=" + driverHistory.vehicle_id?.toString()

@@ -6,14 +6,12 @@ import {
   Stack,
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
+import { EmployeesMinimumDetail } from "../../backend-queries/query/get-min-detail-employees";
 import { Enums, Tables } from "../../utils/database/types";
+import { DriverSelectDialog } from "../dialogs/driver-select-dialog";
 import { InputField } from "../input-field";
 import { colors } from "../menu/color";
 import { DefaultMenu, MenuOption } from "../menu/default-menu";
-import { EmployeesMinimumDetail } from "../../backend-queries/query/get-min-detail-employees";
-import { CustomCalendar } from "../calendars/custom-calendar";
-import { VehicleProfilePic } from "./vehicle-profile-pic";
-import { DriverSelectDialog } from "../dialogs/driver-select-dialog";
 
 type VehicleDetailsProps = {
   vehicle: Tables<"vehicles">;
@@ -36,14 +34,6 @@ export const VehicleDetails = ({
     setDriverOptions(optionalDrivers);
   }, [drivers]);
 
-  const handleDateChange =
-    (dateKey: keyof Tables<"vehicles">) => (value: Date | null) => {
-      setVehicle({
-        ...vehicle,
-        [dateKey]: value ? value : "",
-      });
-    };
-
   return (
     <Stack
       width="100%"
@@ -52,11 +42,6 @@ export const VehicleDetails = ({
       bg="tileBgColor"
       p={6}
     >
-      <Grid>
-        <GridItem colSpan={{ base: 1 }}>
-          <VehicleProfilePic vehicle_id={vehicle.id.toString()} />
-        </GridItem>
-      </Grid>
       <Grid
         templateColumns={{ base: "1fr", md: "repeat(4, 1fr)" }}
         gap={6}
@@ -151,14 +136,17 @@ export const VehicleDetails = ({
         <GridItem>
           <FormControl>
             <FormLabel htmlFor="nextServiceDate">Nächste Wartung am</FormLabel>
-            <CustomCalendar
-              value={
-                vehicle.next_service_date
-                  ? new Date(vehicle.next_service_date)
-                  : null
+
+            <InputField
+              id="vehicle-service-expire-date"
+              regex={
+                /^(0[1-9]|[12]\d|3[01])\.(0[1-9]|1[0-2])\.(\d{2}|\d{4})(\s([01]\d|2[0-3]):([0-5]\d))?$/
               }
-              onChange={(date) => {
-                handleDateChange("next_service_date")(date);
+              regexErrorText="Bitte geben Sie ein Datum im Format '01.01.2024' ein."
+              value={vehicle.next_service_date ?? ""}
+              isDate
+              onChange={(e) => {
+                setVehicle({ ...vehicle, next_service_date: e });
               }}
             />
           </FormControl>
