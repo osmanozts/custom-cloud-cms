@@ -21,6 +21,9 @@ export { updateVehicle } from "./update/update-vehicle";
 export { updateIncident } from "./update/update-incident";
 
 export { deleteNotification } from "./delete/delete.notification";
+export { deleteEmployee } from "./delete/delete-employee";
+export { deleteVehicle } from "./delete/delete-vehicle";
+export { deleteDriverHistory } from "./delete/delete-driver-history";
 
 export { getFiles } from "./storage/get-files";
 export { openFile } from "./storage/open-file";

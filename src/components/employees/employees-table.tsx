@@ -17,6 +17,9 @@ import { EmployeeWithProfile } from "../../backend-queries/joins/employee-with-p
 import dayjs from "dayjs";
 import { InfoIcon } from "@chakra-ui/icons";
 import { LuTrash2, LuUser } from "react-icons/lu";
+import { useState } from "react";
+import { DeleteFileConfirmationDialog } from "../dialogs/delete-file-confirmation-dialog";
+import { deleteEmployee } from "../../backend-queries";
 
 interface EmployeesTableProps {
   employees: EmployeeWithProfile[];
@@ -26,6 +29,11 @@ export const EmployeesTable: React.FC<EmployeesTableProps> = ({
   employees,
 }) => {
   const navigate = useNavigate();
+
+  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
+  const [clickedEmployeeId, setClickedEmployeeId] = useState<string | null>(
+    null
+  );
 
   const isDateExpiring = (date: string | null, daysBeforeExpire: number) => {
     if (!date) return false;
@@ -96,6 +104,11 @@ export const EmployeesTable: React.FC<EmployeesTableProps> = ({
                   aria-label="delete employee entry"
                   bg="invertedColor"
                   padding={2}
+                  onClick={(e) => {
+                    e.stopPropagation(); // Stoppt die Weiterleitung des Klick-Ereignisses
+                    setIsDeleteDialogOpen(true);
+                    setClickedEmployeeId(empl.id);
+                  }}
                 />
               </Td>
               <Td>
@@ -166,6 +179,14 @@ export const EmployeesTable: React.FC<EmployeesTableProps> = ({
           );
         })}
       </Tbody>
+
+      <DeleteFileConfirmationDialog
+        isOpen={isDeleteDialogOpen}
+        onClose={() => setIsDeleteDialogOpen(false)}
+        onDelete={() => {
+          if (clickedEmployeeId) deleteEmployee(clickedEmployeeId);
+        }}
+      />
     </Table>
   );
 };

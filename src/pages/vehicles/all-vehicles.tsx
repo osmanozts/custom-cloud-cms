@@ -2,7 +2,7 @@ import { Box, Button, Flex, Icon, Text, VStack } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { LuDownload, LuPlus } from "react-icons/lu";
 
-import { getAllVehicles } from "../../backend-queries";
+import { deleteVehicle, getAllVehicles } from "../../backend-queries";
 import { Vehicles } from "../../backend-queries/query/get-all-vehicles";
 import { InputField, VehiclesTable } from "../../components";
 import supabase from "../../utils/supabase";
@@ -24,7 +24,11 @@ export function AllVehicles({}: AllVehiclesProps) {
   const [locationFilter, setLocationFilter] = useState<string | null>(null);
 
   useEffect(() => {
-    getAllVehicles((allVehicles: Vehicles) => {
+    fetchVehicles();
+  }, [searchString, stateFilter, locationFilter]);
+
+  const fetchVehicles = async () => {
+    await getAllVehicles((allVehicles: Vehicles) => {
       let filteredVehicles = allVehicles;
 
       if (searchString.trim() !== "") {
@@ -53,7 +57,7 @@ export function AllVehicles({}: AllVehiclesProps) {
 
       setVehicles(filteredVehicles);
     });
-  }, [searchString, stateFilter, locationFilter]);
+  };
 
   const createNewVehicle = async () => {
     setIsLoading(true);
@@ -136,7 +140,13 @@ export function AllVehicles({}: AllVehiclesProps) {
         </Flex>
 
         <Box w="100%" overflowX="auto">
-          <VehiclesTable vehicles={vehicles} />
+          <VehiclesTable
+            vehicles={vehicles}
+            deleteVehicle={async (id) => {
+              await deleteVehicle(id);
+              await fetchVehicles();
+            }}
+          />
         </Box>
         <Button
           bg="parcelColor"

@@ -20,13 +20,21 @@ import { getMinDetailEmployees } from "../../backend-queries";
 import { Vehicles } from "../../backend-queries/query/get-all-vehicles";
 import { EmployeesMinimumDetail } from "../../backend-queries/query/get-min-detail-employees";
 import { mapVehicleState } from "./services/map-vehicle-state";
+import { DeleteFileConfirmationDialog } from "../dialogs/delete-file-confirmation-dialog";
 
 interface VehiclesTableProps {
   vehicles: Vehicles;
+  deleteVehicle: (id: string) => void;
 }
 
-export const VehiclesTable = ({ vehicles }: VehiclesTableProps) => {
+export const VehiclesTable = ({
+  vehicles,
+  deleteVehicle,
+}: VehiclesTableProps) => {
   const navigate = useNavigate();
+
+  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
+  const [clickedVehicleId, setClickedVehicleId] = useState<string | null>(null);
 
   const [minEmployees, setMinEmployees] = useState<EmployeesMinimumDetail>([]);
 
@@ -153,6 +161,11 @@ export const VehiclesTable = ({ vehicles }: VehiclesTableProps) => {
                   aria-label="delete employee entry"
                   bg="invertedColor"
                   padding={2}
+                  onClick={(e) => {
+                    e.stopPropagation(); // Stoppt die Weiterleitung des Klick-Ereignisses
+                    setIsDeleteDialogOpen(true);
+                    setClickedVehicleId(vehicle.id);
+                  }}
                 />
               </Td>
               <Td>
@@ -214,6 +227,13 @@ export const VehiclesTable = ({ vehicles }: VehiclesTableProps) => {
           );
         })}
       </Tbody>
+      <DeleteFileConfirmationDialog
+        isOpen={isDeleteDialogOpen}
+        onClose={() => setIsDeleteDialogOpen(false)}
+        onDelete={async () => {
+          if (clickedVehicleId) await deleteVehicle(clickedVehicleId);
+        }}
+      />
     </Table>
   );
 };
