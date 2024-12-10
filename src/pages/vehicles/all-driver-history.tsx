@@ -6,6 +6,7 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import { SearchIcon } from "@chakra-ui/icons";
 import { JoinedDriverHistory } from "../../backend-queries/joins/joined-driver-history";
 import { LuPlus, LuStepBack } from "react-icons/lu";
+import { deleteDriverHistory } from "../../backend-queries";
 
 export function AllDriverHistory() {
   const navigate = useNavigate();
@@ -15,8 +16,12 @@ export function AllDriverHistory() {
   const [searchString, setSearchString] = useState<string>("");
 
   useEffect(() => {
+    fetchedData();
+  }, [searchString]);
+
+  const fetchedData = async () => {
     if (searchString.trim() === "") {
-      getVehicleDriverHistories(
+      await getVehicleDriverHistories(
         searchParams.get("vehicle_id") ?? "",
         (fetchedData: JoinedDriverHistory) => setHistoryData(fetchedData)
       );
@@ -29,7 +34,7 @@ export function AllDriverHistory() {
       );
       setHistoryData(filteredData);
     }
-  }, [searchString]);
+  };
 
   return (
     <Flex
@@ -79,7 +84,13 @@ export function AllDriverHistory() {
           </Flex>
         </Flex>
 
-        <DriverHistoryTable historyData={historyData} />
+        <DriverHistoryTable
+          historyData={historyData}
+          deleteDriverHistory={async (id) => {
+            await deleteDriverHistory(id);
+            await fetchedData();
+          }}
+        />
       </VStack>
     </Flex>
   );

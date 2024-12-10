@@ -34,7 +34,7 @@ export const VehiclesTable = ({
   const navigate = useNavigate();
 
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
-  const [clickedVehicleId, setClickedVehicleId] = useState<string | null>(null);
+  const [clickedId, setClickedId] = useState<string | null>(null);
 
   const [minEmployees, setMinEmployees] = useState<EmployeesMinimumDetail>([]);
 
@@ -164,7 +164,7 @@ export const VehiclesTable = ({
                   onClick={(e) => {
                     e.stopPropagation(); // Stoppt die Weiterleitung des Klick-Ereignisses
                     setIsDeleteDialogOpen(true);
-                    setClickedVehicleId(vehicle.id);
+                    setClickedId(vehicle.id);
                   }}
                 />
               </Td>
@@ -231,7 +231,7 @@ export const VehiclesTable = ({
         isOpen={isDeleteDialogOpen}
         onClose={() => setIsDeleteDialogOpen(false)}
         onDelete={async () => {
-          if (clickedVehicleId) await deleteVehicle(clickedVehicleId);
+          if (clickedId) await deleteVehicle(clickedId);
         }}
       />
     </Table>
