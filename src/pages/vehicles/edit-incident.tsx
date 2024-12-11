@@ -68,16 +68,25 @@ export const EditIncident = ({}: EditIncidentProps) => {
   const handleSave = async () => {
     if (!incident) return;
 
-    const incidentDate = incident?.incident_date
-      ? new Date(incident.incident_date).toLocaleDateString("de-DE")
-      : null;
+    const incidentDateParts = incident.incident_date?.split(".");
+    const incidentDate =
+      incidentDateParts?.length === 3
+        ? new Date(
+            `${incidentDateParts[2]}-${incidentDateParts[1]}-${incidentDateParts[0]}T00:00:00Z`
+          ).toISOString()
+        : null;
+
     const incidentTime = incident?.incident_time
       ? incident.incident_time
       : null;
 
-    const birthDate = incident?.opponent_driver_birth_date
-      ? new Date(incident.opponent_driver_birth_date).toLocaleDateString()
-      : null;
+    const birthDatePart = incident?.opponent_driver_birth_date?.split(".");
+    const birthDate =
+      birthDatePart?.length === 3
+        ? new Date(
+            `${birthDatePart[2]}-${birthDatePart[1]}-${birthDatePart[0]}T00:00:00Z`
+          ).toISOString()
+        : null;
 
     const mappedIncident: Tables<"incidents"> = {
       ...incident,
