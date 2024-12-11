@@ -113,7 +113,7 @@ export function EmployeeMinimumDetail() {
             return (
               <SimpleGrid key={vehicle.id} columns={{ base: 1, md: 2 }} gap={2}>
                 <Text key={vehicle.id}>
-                  Kennzeichen: {vehicle.license_plate}
+                  Kennzeichen: {vehicle.license_plate ?? "N/V"}
                 </Text>
 
                 <Divider m={4} />
