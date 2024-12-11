@@ -11,7 +11,7 @@ import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 
 import {
-  createIncident,
+  createIncidentEmployee,
   getEmployee,
   getProfile,
   getVehiclesByProfile,
@@ -128,7 +128,7 @@ export function EmployeeMinimumDetail() {
                     onClick={async () => {
                       setIsLoading(true);
                       try {
-                        await createIncident(vehicle.id);
+                        await createIncidentEmployee(vehicle.id);
                       } catch (e) {
                         throw new Error(`${e}`);
                       } finally {

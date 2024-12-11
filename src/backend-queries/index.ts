@@ -14,6 +14,7 @@ export { getVehicle } from "./query/get-vehicle";
 export { getAllNotifications } from "./query/get-all-notifications";
 
 export { createIncident } from "./create/create-incident";
+export { createIncidentEmployee } from "./create/create-incident-employee";
 
 export { updateEmployee } from "./update/update-employee";
 export { updateProfile } from "./update/update-profile";
