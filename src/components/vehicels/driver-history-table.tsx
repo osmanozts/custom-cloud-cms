@@ -1,24 +1,22 @@
 import {
+  Badge,
   Box,
+  Flex,
+  Icon,
   Table,
   Tbody,
   Td,
   Text,
   Th,
   Thead,
-  Tr,
-  Badge,
   Tooltip,
-  Flex,
-  Icon,
-  IconButton,
+  Tr,
 } from "@chakra-ui/react";
-import { JoinedDriverHistory } from "../../backend-queries/joins/joined-driver-history";
 import dayjs from "dayjs";
+import { LuPencil } from "react-icons/lu";
 import { useNavigate } from "react-router-dom";
-import { LuPencil, LuTrash2 } from "react-icons/lu";
-import { useState } from "react";
-import { DeleteFileConfirmationDialog } from "../dialogs/delete-file-confirmation-dialog";
+import { JoinedDriverHistory } from "../../backend-queries/joins/joined-driver-history";
+import { DeleteIconButton } from "../buttons/delete-icon-button";
 
 type DriverHistoryTableProps = {
   historyData: JoinedDriverHistory;
@@ -29,9 +27,6 @@ export function DriverHistoryTable({
   historyData,
   deleteDriverHistory,
 }: DriverHistoryTableProps) {
-  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
-  const [clickedId, setClickedId] = useState<string | null>(null);
-
   const navigate = useNavigate();
 
   return (
@@ -62,17 +57,10 @@ export function DriverHistoryTable({
                 onClick={() => navigate("/edit-driver-history?id=" + data.id)}
               >
                 <Td>
-                  <IconButton
-                    color="accentColor"
-                    as={LuTrash2}
-                    boxSize={8}
-                    aria-label="delete employee entry"
-                    bg="invertedColor"
-                    padding={2}
-                    onClick={(e) => {
-                      e.stopPropagation(); // Stoppt die Weiterleitung des Klick-Ereignisses
-                      setIsDeleteDialogOpen(true);
-                      setClickedId(data.id);
+                  <DeleteIconButton
+                    clickedItem={data.id}
+                    onDelete={async (id) => {
+                      await deleteDriverHistory(id);
                     }}
                   />
                 </Td>
@@ -122,13 +110,6 @@ export function DriverHistoryTable({
           })}
         </Tbody>
       </Table>
-      <DeleteFileConfirmationDialog
-        isOpen={isDeleteDialogOpen}
-        onClose={() => setIsDeleteDialogOpen(false)}
-        onDelete={async () => {
-          if (clickedId) await deleteDriverHistory(clickedId);
-        }}
-      />
     </Box>
   );
 }

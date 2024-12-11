@@ -2,7 +2,6 @@ import { InfoIcon } from "@chakra-ui/icons";
 import {
   Flex,
   Icon,
-  IconButton,
   Table,
   Tbody,
   Td,
@@ -14,13 +13,13 @@ import {
 } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import { useEffect, useState } from "react";
-import { LuCar, LuTrash2 } from "react-icons/lu";
+import { LuCar } from "react-icons/lu";
 import { useNavigate } from "react-router-dom";
 import { getMinDetailEmployees } from "../../backend-queries";
 import { Vehicles } from "../../backend-queries/query/get-all-vehicles";
 import { EmployeesMinimumDetail } from "../../backend-queries/query/get-min-detail-employees";
+import { DeleteIconButton } from "../buttons/delete-icon-button";
 import { mapVehicleState } from "./services/map-vehicle-state";
-import { DeleteFileConfirmationDialog } from "../dialogs/delete-file-confirmation-dialog";
 
 interface VehiclesTableProps {
   vehicles: Vehicles;
@@ -32,9 +31,6 @@ export const VehiclesTable = ({
   deleteVehicle,
 }: VehiclesTableProps) => {
   const navigate = useNavigate();
-
-  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
-  const [clickedId, setClickedId] = useState<string | null>(null);
 
   const [minEmployees, setMinEmployees] = useState<EmployeesMinimumDetail>([]);
 
@@ -154,17 +150,10 @@ export const VehiclesTable = ({
               _hover={{ bg: "backgroundColor" }}
             >
               <Td color="accentColor">
-                <IconButton
-                  color="accentColor"
-                  as={LuTrash2}
-                  boxSize={8}
-                  aria-label="delete employee entry"
-                  bg="invertedColor"
-                  padding={2}
-                  onClick={(e) => {
-                    e.stopPropagation(); // Stoppt die Weiterleitung des Klick-Ereignisses
-                    setIsDeleteDialogOpen(true);
-                    setClickedId(vehicle.id);
+                <DeleteIconButton
+                  clickedItem={vehicle.id}
+                  onDelete={async (id) => {
+                    await deleteVehicle(id);
                   }}
                 />
               </Td>
@@ -227,13 +216,6 @@ export const VehiclesTable = ({
           );
         })}
       </Tbody>
-      <DeleteFileConfirmationDialog
-        isOpen={isDeleteDialogOpen}
-        onClose={() => setIsDeleteDialogOpen(false)}
-        onDelete={async () => {
-          if (clickedId) await deleteVehicle(clickedId);
-        }}
-      />
     </Table>
   );
 };
