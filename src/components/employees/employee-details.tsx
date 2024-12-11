@@ -100,7 +100,7 @@ export const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({
             />
           </FormControl>
           <FormControl my={4}>
-            <FormLabel htmlFor="street">Straße</FormLabel>
+            <FormLabel htmlFor="street">Straße, Hausnummer</FormLabel>
             <InputField
               id="street"
               value={employee.street ?? ""}

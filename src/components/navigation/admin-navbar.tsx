@@ -34,6 +34,7 @@ type NavigationItems = {
 };
 
 export function AdminNavbar() {
+  const { user } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -111,7 +112,10 @@ export function AdminNavbar() {
             ))}
           </Flex>
         )}
-        <WrapItem cursor="pointer">
+        <WrapItem
+          cursor="pointer"
+          onClick={() => navigate(`/employee-min-detail?profile_id=${user.id}`)}
+        >
           <Circle bg="invertedColor" p={2}>
             <Icon as={LuUser} boxSize={6} />
           </Circle>

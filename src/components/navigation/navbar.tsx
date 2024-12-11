@@ -34,7 +34,7 @@ export function Navbar() {
         </WrapItem>
       </Flex>
       {showNavItems ? (
-        <WrapItem cursor="pointer" onClick={signOut}>
+        <WrapItem cursor="pointer" onClick={signOut} mx={4}>
           <Icon as={LuLogOut} boxSize={6} />
         </WrapItem>
       ) : (

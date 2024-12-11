@@ -1,6 +1,5 @@
 import {
   Box,
-  Button,
   Container,
   Divider,
   Heading,
@@ -81,19 +80,34 @@ export function EmployeeMinimumDetail() {
         </Box>
 
         <Box>
-          <Text fontWeight="bold">Straße:</Text>
+          <Text fontWeight="bold">Straße, Hausnummer:</Text>
           <Text>{employee?.street ?? "N/A"}</Text>
+        </Box>
+
+        <Box>
+          <Text fontWeight="bold">Mobil:</Text>
+          <Text>{employee?.mobile ?? "N/A"}</Text>
+        </Box>
+
+        <Box>
+          <Text fontWeight="bold">Nationalität:</Text>
+          <Text>{employee?.nationality ?? "N/A"}</Text>
         </Box>
 
         <Box>
           <Text fontWeight="bold">Rolle:</Text>
           <Text>{profile?.auth_role ?? "N/A"}</Text>
         </Box>
+
+        <Box>
+          <Text fontWeight="bold">Standort:</Text>
+          <Text>{employee?.location ?? "N/A"}</Text>
+        </Box>
       </SimpleGrid>
       {vehicles && vehicles?.length > 0 && (
         <Box borderWidth="1px" borderRadius="lg" bg="tileBgColor" p={6} my={4}>
           <Text mb={4} fontWeight="bold">
-            Deine Fahrzeuge:
+            Zugewiesene Fahrzeuge:
           </Text>
           {vehicles?.map((vehicle) => {
             return (
@@ -101,8 +115,6 @@ export function EmployeeMinimumDetail() {
                 <Text key={vehicle.id}>
                   Kennzeichen: {vehicle.license_plate}
                 </Text>
-
-                <Button>Schaden melden</Button>
 
                 <Divider m={4} />
               </SimpleGrid>
