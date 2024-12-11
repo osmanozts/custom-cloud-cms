@@ -27,6 +27,7 @@ export { EmployeeDocumentUpload } from "./employees/employee-document-upload";
 export { EmployeeDetails } from "./employees/employee-details";
 export { EmployeeProfilePic } from "./employees/employee-profile-pic";
 export { EmployeesTable } from "./employees/employees-table";
+export { CreateEmployeeForm } from "./employees/create-employee-form";
 
 export { CustomToast } from "./toasts/custom-toast";
 
@@ -39,3 +40,5 @@ export { DriverHistoryTable } from "./vehicels/driver-history-table";
 export { DriverHistoryDetails } from "./vehicels/driver-history-details";
 
 export { CustomCalendar } from "./calendars/custom-calendar";
+
+export { DeleteIconButton } from "./buttons/delete-icon-button";
