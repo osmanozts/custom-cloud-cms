@@ -2,7 +2,6 @@ import {
   Box,
   Button,
   Container,
-  Divider,
   Flex,
   Heading,
   SimpleGrid,
@@ -26,6 +25,7 @@ export function EmployeeMinimumDetail() {
   const [employee, setEmployee] = useState<Tables<"employees"> | null>(null);
   const [profile, setProfile] = useState<Tables<"profile"> | null>(null);
   const [vehicles, setVehicles] = useState<VehiclesMinData | null>(null);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   useEffect(() => {
     const profileId = searchParams.get("profile_id") ?? "";
@@ -124,8 +124,16 @@ export function EmployeeMinimumDetail() {
                     width={200}
                     bg="accentColor"
                     color="invertedTextColor"
-                    onClick={() => {
-                      createIncident(vehicle.id);
+                    isLoading={isLoading}
+                    onClick={async () => {
+                      setIsLoading(true);
+                      try {
+                        await createIncident(vehicle.id);
+                      } catch (e) {
+                        throw new Error(`${e}`);
+                      } finally {
+                        setIsLoading(false);
+                      }
                     }}
                   >
                     Schaden melden
