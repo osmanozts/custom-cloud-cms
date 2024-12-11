@@ -18,6 +18,7 @@ import {
 } from "../../backend-queries";
 import { VehiclesMinData } from "../../backend-queries/query/get-vehicles-by-profile";
 import { Tables } from "../../utils/database/types";
+import { DocumentView } from "../../components";
 
 export function EmployeeMinimumDetail() {
   const [searchParams] = useSearchParams();
@@ -143,6 +144,12 @@ export function EmployeeMinimumDetail() {
             );
           })}
         </Box>
+      )}
+      {employee?.profile_id && (
+        <DocumentView
+          bucket="dateien_mitarbeiter"
+          rootFolder={employee.profile_id}
+        />
       )}
     </Container>
   );
