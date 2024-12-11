@@ -1,4 +1,4 @@
-import { Box, Button, Flex, Stack, Text, useToast } from "@chakra-ui/react";
+import { Button, Flex, Stack, Text, useToast } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
