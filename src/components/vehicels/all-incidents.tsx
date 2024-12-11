@@ -92,6 +92,9 @@ export const AllIncidents = ({ vehicle }: AllIncidentsProps) => {
               clickedItem={incident.id}
               onDelete={async (id) => {
                 await deleteIncident(id);
+                getAllVehicleIncidents(vehicle.id, (incidents) =>
+                  setIncidents(incidents)
+                );
               }}
             />
           </Flex>
