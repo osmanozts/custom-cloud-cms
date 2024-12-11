@@ -1,7 +1,9 @@
 import {
   Box,
+  Button,
   Container,
   Divider,
+  Flex,
   Heading,
   SimpleGrid,
   Text,
@@ -10,6 +12,7 @@ import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 
 import {
+  createIncident,
   getEmployee,
   getProfile,
   getVehiclesByProfile,
@@ -111,12 +114,23 @@ export function EmployeeMinimumDetail() {
           </Text>
           {vehicles?.map((vehicle) => {
             return (
-              <SimpleGrid key={vehicle.id} columns={{ base: 1, md: 2 }} gap={2}>
-                <Text key={vehicle.id}>
-                  Kennzeichen: {vehicle.license_plate ?? "N/V"}
-                </Text>
+              <SimpleGrid key={vehicle.id} columns={{ base: 1, md: 1 }} gap={2}>
+                <Flex justifyContent="space-between" alignItems="center">
+                  <Text key={vehicle.id}>
+                    Kennzeichen: {vehicle.license_plate ?? "N/V"}
+                  </Text>
 
-                <Divider m={4} />
+                  <Button
+                    width={200}
+                    bg="accentColor"
+                    color="invertedTextColor"
+                    onClick={() => {
+                      createIncident(vehicle.id);
+                    }}
+                  >
+                    Schaden melden
+                  </Button>
+                </Flex>
               </SimpleGrid>
             );
           })}
