@@ -4,6 +4,7 @@ import {
   Container,
   Flex,
   Heading,
+  Icon,
   SimpleGrid,
   Text,
 } from "@chakra-ui/react";
@@ -19,6 +20,7 @@ import {
 import { VehiclesMinData } from "../../backend-queries/query/get-vehicles-by-profile";
 import { Tables } from "../../utils/database/types";
 import { DocumentView } from "../../components";
+import { LuCar, LuFile, LuFileKey } from "react-icons/lu";
 
 export function EmployeeMinimumDetail() {
   const [searchParams] = useSearchParams();
@@ -109,13 +111,25 @@ export function EmployeeMinimumDetail() {
         </Box>
       </SimpleGrid>
       {vehicles && vehicles?.length > 0 && (
-        <Box borderWidth="1px" borderRadius="lg" bg="tileBgColor" p={6} my={4}>
-          <Text mb={4} fontWeight="bold">
-            Zugewiesene Fahrzeuge:
-          </Text>
+        <Box mt={8}>
+          <Flex mb={4}>
+            <Icon as={LuCar} boxSize={4} mr={4} />
+            <Heading fontSize="lg" fontWeight="semibold" mb={4}>
+              Zugewiesene Fahrzeuge:
+            </Heading>
+          </Flex>
+
           {vehicles?.map((vehicle) => {
             return (
-              <SimpleGrid key={vehicle.id} columns={{ base: 1, md: 1 }} gap={2}>
+              <SimpleGrid
+                key={vehicle.id}
+                columns={{ base: 1, md: 1 }}
+                gap={2}
+                borderWidth="1px"
+                borderRadius="lg"
+                bg="tileBgColor"
+                p={6}
+              >
                 <Flex justifyContent="space-between" alignItems="center">
                   <Text key={vehicle.id}>
                     Kennzeichen: {vehicle.license_plate ?? "N/V"}
@@ -146,7 +160,13 @@ export function EmployeeMinimumDetail() {
         </Box>
       )}
 
-      <Box my={4}>
+      <Box my={8}>
+        <Flex>
+          <Icon as={LuFile} boxSize={4} mr={4} />
+          <Heading fontSize="lg" fontWeight="semibold" mb={4}>
+            Persönliche Bibliothek
+          </Heading>
+        </Flex>
         {employee?.profile_id && (
           <DocumentView
             bucket="dateien_mitarbeiter"

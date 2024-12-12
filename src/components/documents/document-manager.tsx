@@ -150,7 +150,7 @@ export const DocumentManager = ({
         {currentFolder.split("/").map((crumb, index) => (
           <BreadcrumbItem key={index}>
             <BreadcrumbLink onClick={() => handleBreadcrumbClick(index)}>
-              {index === 0 ? "Root" : crumb}
+              {index === 0 ? "..." : crumb}
             </BreadcrumbLink>
           </BreadcrumbItem>
         ))}
