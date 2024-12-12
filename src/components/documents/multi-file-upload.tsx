@@ -23,7 +23,7 @@ import {
 } from "@chakra-ui/react";
 import { useRef, useState } from "react";
 import { FiUpload } from "react-icons/fi";
-import { LuTrash2 } from "react-icons/lu"; // Importiere das LuTrash2-Icon
+import { LuPencil, LuTrash2 } from "react-icons/lu"; // Importiere das LuTrash2-Icon
 import { uploadFilesOperation } from "../../backend-queries";
 
 interface MultiFileUploadProps {
@@ -105,10 +105,10 @@ export const MultiFileUpload = ({
         <Icon as={FiUpload} boxSize={6} />
       </Button>
 
-      <Modal isOpen={isOpen} onClose={onClose} size="lg">
+      <Modal isOpen={isOpen} onClose={onClose} size="lg" isCentered>
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>Upload Files</ModalHeader>
+          <ModalHeader>Lade Dokumente hoch!</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
             <InputGroup mb={4}>
@@ -137,10 +137,9 @@ export const MultiFileUpload = ({
               />
               <Button
                 as="span"
-                bg="blue.500"
+                bg="parcelColor"
                 color="white"
-                _hover={{ bg: "blue.600" }}
-                _active={{ bg: "blue.700" }}
+                width="100%"
                 borderRadius="md"
                 fontSize="sm"
                 boxShadow="md"
@@ -151,11 +150,13 @@ export const MultiFileUpload = ({
             </InputGroup>
             {files.length > 0 && (
               <Box>
-                <Text mb={2}>Ausgewähle Dateien:</Text>
+                <Text fontWeight="bold" mt={8} mb={2}>
+                  Ausgewähle Dateien:
+                </Text>
                 <List spacing={2}>
                   {files.map((file, index) => (
                     <ListItem
-                      key={file.name} // Verwenden von file.name als unique key
+                      key={file.name}
                       bg="invertedColor"
                       p={2}
                       borderRadius="md"
@@ -163,14 +164,24 @@ export const MultiFileUpload = ({
                       display="flex"
                       justifyContent="space-between"
                       alignItems="center"
+                      cursor="pointer"
                     >
-                      <Box display="flex" alignItems="center">
-                        {/* Editable Input für Dateinamen */}
+                      <Box display="flex" alignItems="center" gap={2}>
+                        {/* Datei- oder Ordner-Icon */}
+                        <Icon as={LuPencil} boxSize={5} color={"darkColor"} />
+                        {/* Bearbeitbarer Dateiname */}
                         <Editable
-                          defaultValue={fileNames[index]}
-                          onSubmit={(newName) =>
-                            handleNameChange(index, newName)
-                          }
+                          defaultValue={fileNames[index].split(".")[0]} // Nur Präfix anzeigen
+                          onSubmit={(newPrefix) => {
+                            const extension = fileNames[index].split(".").pop(); // Hole die Dateiendung
+                            handleNameChange(
+                              index,
+                              `${newPrefix}.${extension}`
+                            );
+                          }}
+                          display="flex"
+                          alignItems="center"
+                          gap={2}
                         >
                           <EditablePreview
                             bg="editableBg"
@@ -180,17 +191,30 @@ export const MultiFileUpload = ({
                             borderRadius="md"
                             _hover={{ bg: "editableHover" }}
                           />
-                          <EditableInput />
+                          <EditableInput
+                            value={fileNames[index].split(".")[0]} // Nur den Präfix zeigen
+                            onChange={(e) => {
+                              // Aktualisiere nur den Präfix
+                              const updatedPrefix = e.target.value;
+                              const extension = fileNames[index]
+                                .split(".")
+                                .pop(); // Behalte die Dateiendung
+                              handleNameChange(
+                                index,
+                                `${updatedPrefix}.${extension}`
+                              );
+                            }}
+                          />
                         </Editable>
                       </Box>
-                      {/* Papierkorb-Icon zum Entfernen der Datei */}
+                      {/* Papierkorb-Icon */}
                       <IconButton
                         aria-label="Remove file"
                         icon={<LuTrash2 />}
                         size="sm"
                         variant="ghost"
                         colorScheme="red"
-                        onClick={() => handleRemoveFile(file.name)} // Verwendung des Dateinamens zum Entfernen
+                        onClick={() => handleRemoveFile(file.name)}
                       />
                     </ListItem>
                   ))}
