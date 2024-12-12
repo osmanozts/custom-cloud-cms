@@ -145,12 +145,15 @@ export function EmployeeMinimumDetail() {
           })}
         </Box>
       )}
-      {employee?.profile_id && (
-        <DocumentView
-          bucket="dateien_mitarbeiter"
-          rootFolder={employee.profile_id}
-        />
-      )}
+
+      <Box my={4}>
+        {employee?.profile_id && (
+          <DocumentView
+            bucket="dateien_mitarbeiter"
+            rootFolder={employee.profile_id}
+          />
+        )}
+      </Box>
     </Container>
   );
 }
