@@ -4,37 +4,37 @@ import {
   BreadcrumbItem,
   BreadcrumbLink,
   Button,
-  Checkbox,
   Flex,
-  Icon,
-  Input,
   List,
   ListItem,
   Text,
   useToast,
+  Center,
+  Icon,
+  Checkbox,
 } from "@chakra-ui/react";
-import React, { useEffect, useState } from "react";
-import { FiFile, FiFolder, FiTrash2 } from "react-icons/fi";
-import { LuFilePlus, LuFolderPlus } from "react-icons/lu";
+import { useEffect, useState } from "react";
+import { FiFile, FiFolder, FiInbox, FiTrash2 } from "react-icons/fi";
+import { LuFolderPlus } from "react-icons/lu";
 import {
   createFolderOperation,
   deleteFilesOperation,
   getFilesOperation,
-  uploadFileOperation,
 } from "../../backend-queries";
 import supabase from "../../utils/supabase";
 import { CreateNewFolderDialog } from "../dialogs/create-new-folder-dialog";
 import { DeleteFileConfirmationDialog } from "../dialogs/delete-file-confirmation-dialog";
+import { MultiFileUpload } from "./multi-file-upload";
 
 interface DocumentManagerProps {
   bucket: string;
   rootFolder: string;
 }
 
-export const DocumentManager: React.FC<DocumentManagerProps> = ({
+export const DocumentManager = ({
   bucket,
   rootFolder,
-}) => {
+}: DocumentManagerProps) => {
   const [currentFolder, setCurrentFolder] = useState(rootFolder);
   const [files, setFiles] = useState<any[]>([]);
   const [selectedFiles, setSelectedFiles] = useState<any[]>([]);
@@ -73,6 +73,26 @@ export const DocumentManager: React.FC<DocumentManagerProps> = ({
     setCurrentFolder(`${currentFolder}/${folderName}`);
   };
 
+  const handleFileClick = async (filePath: string) => {
+    try {
+      const { data } = await supabase.storage
+        .from(bucket)
+        .createSignedUrl(filePath, 6000);
+      if (data?.signedUrl) {
+        window.location.href = data.signedUrl; // Öffnet die Datei im gleichen Fenster
+      } else {
+        throw new Error("Unable to generate file URL");
+      }
+    } catch (error) {
+      toast({
+        title: "Error opening file",
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+      });
+    }
+  };
+
   const handleCreateFolder = async (folderName: string) => {
     try {
       await createFolderOperation(bucket, `${currentFolder}/${folderName}`);
@@ -89,7 +109,7 @@ export const DocumentManager: React.FC<DocumentManagerProps> = ({
 
   const handleDeleteFiles = async () => {
     try {
-      const paths: string[] = selectedFiles.map((f) => f.path as string);
+      const paths = selectedFiles.map((f) => f.path as string);
       await deleteFilesOperation(bucket, paths);
       setSelectedFiles([]);
       await fetchFiles(currentFolder);
@@ -110,35 +130,24 @@ export const DocumentManager: React.FC<DocumentManagerProps> = ({
   };
 
   return (
-    <Box p={4} borderWidth={1} borderRadius="md">
-      <Breadcrumb mb={4}>
+    <Box p={4} borderWidth={1} borderRadius="md" bg="tileBgColor">
+      <Breadcrumb mb={4} fontSize="sm">
         {currentFolder.split("/").map((crumb, index) => (
           <BreadcrumbItem key={index}>
             <BreadcrumbLink onClick={() => handleBreadcrumbClick(index)}>
-              {index === 0 ? "..." : crumb || "."}
+              {index === 0 ? "Root" : crumb}
             </BreadcrumbLink>
           </BreadcrumbItem>
         ))}
       </Breadcrumb>
 
-      <Flex mb={4} alignItems="center" gap={2}>
-        <Input
-          type="file"
-          onChange={async (e) => {
-            const file = e.target.files?.[0];
-            if (file) {
-              await uploadFileOperation(bucket, currentFolder, file);
-              await fetchFiles(currentFolder);
-            }
-          }}
-          display="none"
-          id="file-upload"
+      <Flex mb={4} gap={2} alignItems="center">
+        <MultiFileUpload
+          bucket={bucket}
+          currentFolder={currentFolder}
+          onUploadComplete={() => fetchFiles(currentFolder)}
         />
-        <Button bg="parcelColor" color="invertedColor">
-          <label htmlFor="file-upload">
-            <Icon as={LuFilePlus} boxSize={6} mt={2} />
-          </label>
-        </Button>
+
         <Button
           bg="parcelColor"
           color="invertedColor"
@@ -156,41 +165,63 @@ export const DocumentManager: React.FC<DocumentManagerProps> = ({
         </Button>
       </Flex>
 
-      <List spacing={2}>
-        {files.map((file) => (
-          <ListItem
-            key={file.file_name}
-            display="flex"
-            alignItems="center"
-            gap={2}
-            cursor="pointer"
-          >
-            <Checkbox
-              onChange={(e) => {
-                const updatedSelection = e.target.checked
-                  ? [...selectedFiles, file]
-                  : selectedFiles.filter((f) => f.name !== file.name);
-                setSelectedFiles(updatedSelection);
-              }}
-            />
-            <Flex
-              gap={2}
-              onClick={async () => {
-                if (file.isFolder) handleFolderClick(file.file_name);
-                else {
-                  const urlToOpen = await supabase.storage
-                    .from(bucket)
-                    .createSignedUrl(file.path, 6000);
-                  window.open(urlToOpen.data?.signedUrl);
-                }
-              }}
+      {files.length === 0 ? (
+        <Center mt={8} flexDirection="column">
+          <Icon as={FiInbox} boxSize={12} color="textColor" />
+          <Text mt={4} color="textColor" fontSize="lg">
+            This folder is empty
+          </Text>
+        </Center>
+      ) : (
+        <List spacing={2}>
+          {files.map((file) => (
+            <ListItem
+              key={file.file_name}
+              bg="invertedColor"
+              display="flex"
+              alignItems="center"
+              gap={4}
+              p={2}
+              borderWidth={1}
+              borderRadius="md"
+              _hover={{ bg: "hoverColor" }}
+              cursor="pointer"
             >
-              {file.isFolder ? <FiFolder size={20} /> : <FiFile size={20} />}
-              <Text>{file.file_name}</Text>
-            </Flex>
-          </ListItem>
-        ))}
-      </List>
+              <Checkbox
+                isChecked={selectedFiles.some(
+                  (f) => f.file_name === file.file_name
+                )}
+                onChange={(e) => {
+                  const updatedSelection = e.target.checked
+                    ? [...selectedFiles, file]
+                    : selectedFiles.filter(
+                        (f) => f.file_name !== file.file_name
+                      );
+                  setSelectedFiles(updatedSelection);
+                }}
+              />
+              <Flex
+                width="100%"
+                gap={4}
+                onClick={() =>
+                  file.isFolder
+                    ? handleFolderClick(file.file_name)
+                    : handleFileClick(file.path)
+                }
+              >
+                {file.isFolder ? (
+                  <FiFolder size={24} color="textColor" />
+                ) : (
+                  <FiFile size={24} color="textColor" />
+                )}
+                <Text flex={1} isTruncated>
+                  {file.file_name}
+                </Text>
+              </Flex>
+            </ListItem>
+          ))}
+        </List>
+      )}
 
       <CreateNewFolderDialog
         isOpen={isCreateFolderDialogOpen}

@@ -15,6 +15,7 @@ export { FileUpload } from "./file-upload";
 export { DocumentRows } from "./documents/document-rows";
 export { DocumentManager } from "./documents/document-manager";
 export { DocumentView } from "./documents/document-view";
+export { MultiFileUpload } from "./documents/multi-file-upload";
 export { UploadedFilesGrid } from "./files/uploaded-filed-grid";
 
 export { CreateFolderDialog } from "./dialogs/create-folder-dialog";

@@ -36,7 +36,7 @@ export { deleteFile } from "./storage/delete-file";
 export { getFilesWithUrls } from "./storage/get-files-with-urls";
 
 export { getFilesOperation } from "./storage/operations/get-files";
-export { uploadFileOperation } from "./storage/operations/upload-file";
+export { uploadFilesOperation } from "./storage/operations/upload-files";
 export { deleteFilesOperation } from "./storage/operations/delete-files";
 export { moveFilesOperation } from "./storage/operations/move-files";
 export { createFolderOperation } from "./storage/operations/create-folder";

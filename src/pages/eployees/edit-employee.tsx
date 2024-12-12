@@ -9,7 +9,7 @@ import {
   Text,
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
-import { LuCheck, LuX } from "react-icons/lu";
+import { LuCheck, LuFileCheck2, LuFileKey, LuX } from "react-icons/lu";
 import { useNavigate, useSearchParams } from "react-router-dom";
 
 import dayjs from "dayjs";
@@ -173,13 +173,29 @@ export const EditEmployee = ({}: EditEmployeeProps) => {
           />
         </Box>
         <Box>
-          <Heading fontSize="lg" fontWeight="semibold" mb={4}>
-            Mitarbeiter Dateien
-          </Heading>
-          {/* <EmployeeDocumentUpload employee={employee} /> */}
+          <Flex>
+            <Icon as={LuFileCheck2} boxSize={4} mr={4} />
+            <Heading fontSize="lg" fontWeight="semibold" mb={4}>
+              Öffentliche Mitarbeiter Dateien
+            </Heading>
+          </Flex>
+
           <DocumentManager
             bucket="dateien_mitarbeiter"
             rootFolder={employee.profile_id!}
+          />
+        </Box>
+
+        <Box mt={4}>
+          <Flex>
+            <Icon as={LuFileKey} boxSize={4} mr={4} />
+            <Heading fontSize="lg" fontWeight="semibold" mb={4}>
+              Private Mitarbeiter Dateien
+            </Heading>
+          </Flex>
+          <DocumentManager
+            bucket="dateien_mitarbeiter"
+            rootFolder={`${employee.profile_id!}-private`}
           />
         </Box>
       </Box>
