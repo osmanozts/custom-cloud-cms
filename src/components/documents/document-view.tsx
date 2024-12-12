@@ -57,17 +57,32 @@ export const DocumentView = ({ bucket, rootFolder }: DocumentViewProps) => {
 
   const handleFileClick = async (filePath: string) => {
     try {
-      const { data } = await supabase.storage
+      const { data, error } = await supabase.storage
         .from(bucket)
-        .createSignedUrl(filePath, 6000);
-      if (data?.signedUrl) {
-        window.open(data.signedUrl, "_blank");
-      } else {
-        throw new Error("Unable to generate file URL");
+        .download(filePath);
+
+      if (error) {
+        throw error;
+      }
+
+      if (data) {
+        // Erstelle eine temporäre URL für den heruntergeladenen Blob
+        const url = URL.createObjectURL(data);
+
+        // Erstelle ein unsichtbares Link-Element und simuliere den Klick darauf
+        const link = document.createElement("a");
+        link.href = url;
+        link.download = filePath.split("/").pop() || "file"; // Datei-Name aus dem Pfad extrahieren
+        document.body.appendChild(link);
+        link.click();
+
+        // Bereinige das DOM und die URL
+        document.body.removeChild(link);
+        URL.revokeObjectURL(url);
       }
     } catch (error) {
       toast({
-        title: "Error opening file",
+        title: "Error downloading file",
         status: "error",
         duration: 3000,
         isClosable: true,
