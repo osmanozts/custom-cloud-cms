@@ -8,6 +8,7 @@ import { getAllEmployees } from "../../backend-queries/query/get-all-employees";
 import { EmployeesTable, InputField } from "../../components";
 import { DefaultMenu } from "../../components/menu/default-menu";
 import { printEmployeesToPdf } from "./services/print-employees-to-pdf";
+import supabase from "../../utils/supabase";
 
 interface AllEmployeesProps {}
 
@@ -144,7 +145,23 @@ export const AllEmployees: React.FC<AllEmployeesProps> = () => {
         </Flex>
 
         <Box w="100%" overflowX="auto">
-          <EmployeesTable employees={employees} />
+          <EmployeesTable
+            employees={employees}
+            onDelete={async (id) => {
+              const { data, error } = await supabase.functions.invoke(
+                "delete-user",
+                { body: { id } }
+              );
+              if (error) {
+                throw error;
+              }
+              getAllEmployees((allEmployees: EmployeeWithProfile[]) =>
+                setEmployees(allEmployees)
+              );
+
+              console.log("🚀 ~ data:", data);
+            }}
+          />
         </Box>
         <Button
           bg="parcelColor"

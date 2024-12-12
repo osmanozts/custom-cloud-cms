@@ -15,16 +15,17 @@ import {
 import dayjs from "dayjs";
 import { LuUser } from "react-icons/lu";
 import { useNavigate } from "react-router-dom";
-import { deleteEmployee } from "../../backend-queries";
 import { EmployeeWithProfile } from "../../backend-queries/joins/employee-with-profile-query";
 import { DeleteIconButton } from "../buttons/delete-icon-button";
 
 interface EmployeesTableProps {
   employees: EmployeeWithProfile[];
+  onDelete: (id: string) => void;
 }
 
 export const EmployeesTable: React.FC<EmployeesTableProps> = ({
   employees,
+  onDelete,
 }) => {
   const navigate = useNavigate();
 
@@ -91,9 +92,9 @@ export const EmployeesTable: React.FC<EmployeesTableProps> = ({
             >
               <Td>
                 <DeleteIconButton
-                  clickedItem={empl.id}
+                  clickedItem={empl.profile_id ?? ""}
                   onDelete={async (id) => {
-                    await deleteEmployee(id);
+                    onDelete(id);
                   }}
                 />
               </Td>
