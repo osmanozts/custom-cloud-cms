@@ -11,6 +11,7 @@ import {
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 
+import { LuCar, LuFile } from "react-icons/lu";
 import {
   createIncidentEmployee,
   getEmployee,
@@ -18,9 +19,8 @@ import {
   getVehiclesByProfile,
 } from "../../backend-queries";
 import { VehiclesMinData } from "../../backend-queries/query/get-vehicles-by-profile";
-import { Tables } from "../../utils/database/types";
 import { DocumentView } from "../../components";
-import { LuCar, LuFile, LuFileKey } from "react-icons/lu";
+import { Tables } from "../../utils/database/types";
 
 export function EmployeeMinimumDetail() {
   const [searchParams] = useSearchParams();
