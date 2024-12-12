@@ -1,7 +1,7 @@
 import { IconButton } from "@chakra-ui/react";
 import { LuTrash2 } from "react-icons/lu";
 import { useState } from "react";
-import { DeleteFileConfirmationDialog } from "../dialogs/delete-file-confirmation-dialog";
+import { DeleteConfirmationDialog } from "../dialogs/delete-confirmation-dialog";
 
 interface DeleteIconButtonProps {
   clickedItem: string;
@@ -30,7 +30,7 @@ export const DeleteIconButton = ({
           setIsDeleteDialogOpen(true);
         }}
       />
-      <DeleteFileConfirmationDialog
+      <DeleteConfirmationDialog
         isOpen={isDeleteDialogOpen}
         onClose={() => setIsDeleteDialogOpen(false)}
         onDelete={async () => {

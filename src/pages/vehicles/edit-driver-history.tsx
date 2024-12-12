@@ -46,10 +46,10 @@ export const EditDriverHistory = ({}: EditDriverHistoryProps) => {
         const mappedVehicle: Tables<"driver_history"> = {
           ...newValue,
           drive_start: newValue.drive_start
-            ? dayjs(newValue.drive_start).format("DD.MM.YYYY HH:mm")
+            ? dayjs(newValue.drive_start).format("DD.MM.YYYY")
             : null,
           drive_end: newValue.drive_end
-            ? dayjs(newValue.drive_end).format("DD.MM.YYYY HH:mm")
+            ? dayjs(newValue.drive_end).format("DD.MM.YYYY")
             : null,
         };
         setDriverHistory(mappedVehicle);

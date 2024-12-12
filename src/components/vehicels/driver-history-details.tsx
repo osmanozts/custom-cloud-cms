@@ -50,7 +50,7 @@ export const DriverHistoryDetails = ({
 
         <GridItem colSpan={{ base: 1, md: 1 }}>
           <Text fontWeight="bold" mb={2}>
-            Fahrt Beginn
+            Fahrt Beginn (Tag)
           </Text>
           <InputField
             id="start-driving-date"
@@ -67,7 +67,7 @@ export const DriverHistoryDetails = ({
         </GridItem>
         <GridItem colSpan={{ base: 1, md: 1 }}>
           <Text fontWeight="bold" mb={2}>
-            Fahrt Ende
+            Fahrt Ende (Tag)
           </Text>
           <InputField
             id="end-driving-date"

@@ -10,38 +10,39 @@ import {
   ModalOverlay,
 } from "@chakra-ui/react";
 
-interface DeleteFileConfirmationDialogProps {
+interface DeleteConfirmationDialogProps {
   isOpen: boolean;
   onClose: () => void;
   onDelete: () => void;
 }
 
-export const DeleteFileConfirmationDialog = ({
+export const DeleteConfirmationDialog = ({
   isOpen,
   onClose,
   onDelete,
-}: DeleteFileConfirmationDialogProps) => {
+}: DeleteConfirmationDialogProps) => {
   return (
-    <Modal isOpen={isOpen} onClose={onClose}>
+    <Modal isOpen={isOpen} onClose={onClose} isCentered>
       <ModalOverlay />
       <ModalContent>
-        <ModalHeader>Confirm Deletion</ModalHeader>
+        <ModalHeader>Löschen Bestätigen</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
-          <Box>Are you sure you want to delete the selected files?</Box>
+          <Box>Bist du sicher, dass du den Eintrag löschen willst?</Box>
         </ModalBody>
         <ModalFooter>
           <Button
-            colorScheme="red"
+            bg="accentColor"
+            color="invertedColor"
             onClick={() => {
               onDelete();
               onClose();
             }}
           >
-            Yes, Delete
+            Ja, Löschen
           </Button>
           <Button variant="outline" onClick={onClose} ml={4}>
-            Cancel
+            Abbrechen
           </Button>
         </ModalFooter>
       </ModalContent>

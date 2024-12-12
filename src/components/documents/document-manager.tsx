@@ -23,7 +23,7 @@ import {
 } from "../../backend-queries";
 import supabase from "../../utils/supabase";
 import { CreateNewFolderDialog } from "../dialogs/create-new-folder-dialog";
-import { DeleteFileConfirmationDialog } from "../dialogs/delete-file-confirmation-dialog";
+import { DeleteConfirmationDialog } from "../dialogs/delete-confirmation-dialog";
 import { MultiFileUpload } from "./multi-file-upload";
 
 interface DocumentManagerProps {
@@ -243,7 +243,7 @@ export const DocumentManager = ({
         onClose={() => setIsCreateFolderDialogOpen(false)}
         onCreate={handleCreateFolder}
       />
-      <DeleteFileConfirmationDialog
+      <DeleteConfirmationDialog
         isOpen={isDeleteDialogOpen}
         onClose={() => setIsDeleteDialogOpen(false)}
         onDelete={handleDeleteFiles}

@@ -23,7 +23,7 @@ export { FileUploadDialog } from "./dialogs/file-upload-dialog";
 export { NotificationDialog } from "./dialogs/notificatoin-dialog";
 export { FeatureInConstructionDialog } from "./dialogs/feature-construction-dialog";
 export { CreateNewFolderDialog } from "./dialogs/create-new-folder-dialog";
-export { DeleteFileConfirmationDialog } from "./dialogs/delete-file-confirmation-dialog";
+export { DeleteConfirmationDialog } from "./dialogs/delete-confirmation-dialog";
 
 export { EmployeeDocumentUpload } from "./employees/employee-document-upload";
 export { EmployeeDetails } from "./employees/employee-details";

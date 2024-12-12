@@ -36,17 +36,21 @@ export const CreateNewFolderDialog: React.FC<CreateNewFolderDialogProps> = ({
     <Modal isOpen={isOpen} onClose={onClose} isCentered>
       <ModalOverlay />
       <ModalContent>
-        <ModalHeader>Create New Folder</ModalHeader>
+        <ModalHeader>Neuen Ordner erstellen</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
           <Input
-            placeholder="Folder Name"
+            placeholder="Name des Ordners"
             value={newFolderName}
             onChange={(e) => setNewFolderName(e.target.value)}
           />
         </ModalBody>
         <ModalFooter>
-          <Button colorScheme="blue" onClick={handleCreate}>
+          <Button
+            bg="parcelColor"
+            color="invertedTextColor"
+            onClick={handleCreate}
+          >
             Create
           </Button>
         </ModalFooter>
