@@ -15,16 +15,10 @@ import {
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { FiFile, FiFolder, FiInbox } from "react-icons/fi";
-import {
-  LuDownload,
-  LuFileSymlink,
-  LuFolderPlus,
-  LuTrash2,
-} from "react-icons/lu";
+import { LuFileSymlink, LuFolderPlus, LuTrash2 } from "react-icons/lu";
 import {
   createFolderOperation,
   deleteFilesOperation,
-  downloadSelectedAsZip,
   fetchAllFolders,
   getFilesOperation,
   moveFilesOperation,
