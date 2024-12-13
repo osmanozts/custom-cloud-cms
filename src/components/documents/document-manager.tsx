@@ -4,26 +4,35 @@ import {
   BreadcrumbItem,
   BreadcrumbLink,
   Button,
+  Center,
+  Checkbox,
   Flex,
+  Icon,
   List,
   ListItem,
   Text,
   useToast,
-  Center,
-  Icon,
-  Checkbox,
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
-import { FiFile, FiFolder, FiInbox, FiTrash2 } from "react-icons/fi";
-import { LuFolderPlus } from "react-icons/lu";
+import { FiFile, FiFolder, FiInbox } from "react-icons/fi";
+import {
+  LuDownload,
+  LuFileSymlink,
+  LuFolderPlus,
+  LuTrash2,
+} from "react-icons/lu";
 import {
   createFolderOperation,
   deleteFilesOperation,
+  downloadSelectedAsZip,
+  fetchAllFolders,
   getFilesOperation,
+  moveFilesOperation,
 } from "../../backend-queries";
 import supabase from "../../utils/supabase";
 import { CreateNewFolderDialog } from "../dialogs/create-new-folder-dialog";
 import { DeleteConfirmationDialog } from "../dialogs/delete-confirmation-dialog";
+import { MoveFileDialog } from "../dialogs/move-file-dialog";
 import { MultiFileUpload } from "./multi-file-upload";
 
 interface DocumentManagerProps {
@@ -36,12 +45,28 @@ export const DocumentManager = ({
   rootFolder,
 }: DocumentManagerProps) => {
   const [currentFolder, setCurrentFolder] = useState(rootFolder);
+  const [availableFolders, setAvailableFolders] = useState<string[]>();
+  const [isMoveDialogOpen, setIsMoveDialogOpen] = useState(false);
+
   const [files, setFiles] = useState<any[]>([]);
   const [selectedFiles, setSelectedFiles] = useState<any[]>([]);
   const [isCreateFolderDialogOpen, setIsCreateFolderDialogOpen] =
     useState(false);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const toast = useToast();
+
+  useEffect(() => {
+    const loadFolders = async () => {
+      const allFolders = await fetchAllFolders(
+        "dateien_mitarbeiter",
+        rootFolder
+      );
+
+      setAvailableFolders(allFolders);
+    };
+
+    loadFolders();
+  }, [rootFolder]);
 
   useEffect(() => {
     fetchFiles(currentFolder);
@@ -112,6 +137,12 @@ export const DocumentManager = ({
     try {
       await createFolderOperation(bucket, `${currentFolder}/${folderName}`);
       await fetchFiles(currentFolder);
+      const allFolders = await fetchAllFolders(
+        "dateien_mitarbeiter",
+        rootFolder
+      );
+
+      setAvailableFolders(allFolders);
     } catch (error) {
       toast({
         title: "Error creating folder",
@@ -137,6 +168,28 @@ export const DocumentManager = ({
     } catch (error) {
       toast({
         title: "Error deleting files",
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+      });
+    }
+  };
+
+  const handleFolderSelection = async (selectedFolder: string) => {
+    try {
+      const paths = selectedFiles.map((f) => f.path as string);
+      await moveFilesOperation(bucket, paths, selectedFolder);
+      setSelectedFiles([]);
+      await fetchFiles(currentFolder);
+      toast({
+        title: "Dateien erfolgreich verschoben",
+        status: "success",
+        duration: 3000,
+        isClosable: true,
+      });
+    } catch (error) {
+      toast({
+        title: "Fehler beim Verschieben",
         status: "error",
         duration: 3000,
         isClosable: true,
@@ -176,8 +229,36 @@ export const DocumentManager = ({
           onClick={() => setIsDeleteDialogOpen(true)}
           isDisabled={selectedFiles.length === 0}
         >
-          <Icon as={FiTrash2} boxSize={6} />
+          <Icon as={LuTrash2} boxSize={6} />
         </Button>
+
+        <Button
+          bg="darkColor"
+          color="invertedColor"
+          onClick={() => setIsMoveDialogOpen(true)}
+          isDisabled={selectedFiles.length === 0}
+        >
+          <Icon as={LuFileSymlink} boxSize={6} />
+        </Button>
+
+        {/* <Button
+          bg="darkColor"
+          color="invertedColor"
+          onClick={async () => {
+            if (selectedFiles.length > 0) {
+              const selectedPaths = selectedFiles.map((file) => ({
+                path: file.path,
+                isFolder: file.isFolder,
+              }));
+              await downloadSelectedAsZip(bucket, selectedPaths);
+            } else {
+              console.warn("Keine Dateien ausgewählt.");
+            }
+          }}
+          isDisabled={selectedFiles.length === 0}
+        >
+          <Icon as={LuDownload} boxSize={6} />
+        </Button> */}
       </Flex>
 
       {files.length === 0 ? (
@@ -247,6 +328,18 @@ export const DocumentManager = ({
         isOpen={isDeleteDialogOpen}
         onClose={() => setIsDeleteDialogOpen(false)}
         onDelete={handleDeleteFiles}
+      />
+
+      <MoveFileDialog
+        isOpen={isMoveDialogOpen}
+        onClose={() => setIsMoveDialogOpen(false)}
+        folders={
+          availableFolders?.map((folder) => ({
+            path: folder,
+            name: folder.split("/").pop(),
+          })) ?? []
+        }
+        onSelectFolder={handleFolderSelection}
       />
     </Box>
   );

@@ -35,15 +35,14 @@ export async function getFilesOperation(
   const { data, error } = await supabase.storage
     .from(bucket)
     .list(folder, { limit: 100, sortBy: { column: "name", order: "asc" } });
-  console.log("🚀 ~ data:", data);
 
   if (error) {
     throw new Error(`Fehler beim Abrufen der Dateien: ${error.message}`);
   }
 
   return data
+    .filter((file) => file.name !== ".dummy")
     .map((file) => {
-      // Extrahiere die Dateiendung, falls vorhanden
       const extensionMatch = file.name.match(/\.([a-zA-Z0-9]+)$/);
       const extension = extensionMatch ? extensionMatch[1].toLowerCase() : "";
 
@@ -52,6 +51,5 @@ export async function getFilesOperation(
         path: `${folder}/${file.name}`,
         isFolder: !extension || !knownFileExtensions.includes(extension),
       };
-    })
-    .filter((file) => file.file_name !== ".dummy");
+    });
 }

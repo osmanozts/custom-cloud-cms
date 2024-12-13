@@ -1,26 +1,36 @@
 import supabase from "../../../utils/supabase";
-import { deleteFilesOperation } from "./delete-files";
+import { moveFolder } from "./move-folder";
 
 export async function moveFilesOperation(
   bucket: string,
   filePaths: string[],
-  newFolder: string
+  destinationFolder: string
 ): Promise<void> {
-  for (const oldPath of filePaths) {
-    const fileName = oldPath.split("/").pop() || "";
-    const newPath = `${newFolder}/${fileName}`;
+  await Promise.all(
+    filePaths.map(async (path) => {
+      const { data: filesList, error } = await supabase.storage
+        .from(bucket)
+        .list(path, { limit: 1 });
 
-    // Datei im Storage verschieben (Kopie erstellen und Original löschen)
-    const { error: copyError } = await supabase.storage
-      .from(bucket)
-      .copy(oldPath, newPath);
+      if (error) {
+        throw new Error(`Fehler beim Abrufen der Liste: ${error.message}`);
+      }
 
-    if (copyError) {
-      throw new Error(
-        `Fehler beim Kopieren von ${oldPath}: ${copyError.message}`
-      );
-    }
+      if (filesList && filesList.length > 0) {
+        await moveFolder(bucket, path, destinationFolder);
+      } else {
+        const fileName = path.split("/").pop();
+        const newDestination = `${destinationFolder}/${fileName}`;
+        const { error: moveError } = await supabase.storage
+          .from(bucket)
+          .move(path, newDestination);
 
-    await deleteFilesOperation(bucket, [oldPath]);
-  }
+        if (moveError) {
+          throw new Error(
+            `Fehler beim Verschieben der Datei: ${moveError.message}`
+          );
+        }
+      }
+    })
+  );
 }

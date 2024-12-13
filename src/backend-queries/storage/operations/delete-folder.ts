@@ -1,8 +1,11 @@
 import supabase from "../../../utils/supabase";
 
-export const deleteFolder = async (bucket: string, folderPath: string) => {
+export const deleteFolder = async (
+  bucket: string,
+  folderPath: string
+): Promise<void> => {
   try {
-    const { data: list, error: listError } = await supabase.storage
+    const { data: items, error: listError } = await supabase.storage
       .from(bucket)
       .list(folderPath);
 
@@ -10,22 +13,28 @@ export const deleteFolder = async (bucket: string, folderPath: string) => {
       throw new Error(`Fehler beim Auflisten: ${listError.message}`);
     }
 
-    if (list && list.length > 0) {
-      const filesToRemove = list.map((item) => `${folderPath}/${item.name}`);
+    if (items && items.length > 0) {
+      const filesToRemove = items
+        .filter((item) => item.id !== null)
+        .map((item) => `${folderPath}/${item.name}`);
 
-      const { error: deleteError } = await supabase.storage
-        .from(bucket)
-        .remove(filesToRemove);
+      if (filesToRemove.length > 0) {
+        const { error: deleteFilesError } = await supabase.storage
+          .from(bucket)
+          .remove(filesToRemove);
 
-      if (deleteError) {
-        throw new Error(`Löschen fehlgeschlagen: ${deleteError.message}`);
+        if (deleteFilesError) {
+          throw new Error(
+            `Löschen von Dateien fehlgeschlagen: ${deleteFilesError.message}`
+          );
+        }
       }
-    }
 
-    for (const item of list) {
-      if (item.id === null) {
-        await deleteFolder(bucket, `${folderPath}/${item.name}`);
-      }
+      const subFolderPromises = items
+        .filter((item) => item.id === null)
+        .map((folder) => deleteFolder(bucket, `${folderPath}/${folder.name}`));
+
+      await Promise.all(subFolderPromises);
     }
 
     const { error: deleteEmptyFolderError } = await supabase.storage
@@ -38,7 +47,7 @@ export const deleteFolder = async (bucket: string, folderPath: string) => {
       );
     }
   } catch (error) {
-    console.error(error);
-    throw new Error(`Fehler beim Löschen des Ordners: ${error}`);
+    console.error(`Fehler beim Löschen des Ordners ${folderPath}:`, error);
+    throw error;
   }
 };
