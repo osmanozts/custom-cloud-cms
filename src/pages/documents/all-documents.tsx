@@ -1,13 +1,6 @@
 import { Container, Flex, Heading, useBreakpointValue } from "@chakra-ui/react";
-import { useEffect, useState } from "react";
 
-import { getFiles } from "../../backend-queries";
-import {
-  BreadcrumbNav,
-  CreateFolderDialog,
-  DocumentRows,
-  FileUploadDialog,
-} from "../../components";
+import { DocumentManager } from "../../components";
 
 export interface File {
   name: string;
@@ -16,13 +9,6 @@ export interface File {
 }
 
 export function AllDocuments() {
-  const [files, setFiles] = useState<File[]>([]);
-  const [path, setPath] = useState<string>("");
-
-  useEffect(() => {
-    getFiles(path, "dateien_unternehmen", (newFile) => setFiles(newFile ?? []));
-  }, [path]);
-
   const containerPadding = useBreakpointValue({ base: 4, md: 12 });
 
   return (
@@ -43,40 +29,9 @@ export function AllDocuments() {
         </Heading>
       </Flex>
 
-      <BreadcrumbNav
-        path={path}
-        onBreadcrumbClick={(newPath) => setPath(newPath)}
-      />
-
-      <DocumentRows
-        path={path}
-        files={files}
-        onOpenFolder={setPath}
-        successCallback={() =>
-          getFiles(path, "dateien_unternehmen", (newFile) =>
-            setFiles(newFile ?? [])
-          )
-        }
-      />
-
-      <CreateFolderDialog
-        path={path}
-        successCallback={() =>
-          getFiles(path, "dateien_unternehmen", (newFile) =>
-            setFiles(newFile ?? [])
-          )
-        }
-      />
-
-      <FileUploadDialog
-        path={`${path}/`}
+      <DocumentManager
         bucket="dateien_unternehmen"
-        title="Lade Dateien hoch"
-        successCallback={() =>
-          getFiles(path, "dateien_unternehmen", (newFile) =>
-            setFiles(newFile ?? [])
-          )
-        }
+        rootFolder="interne_dokumente"
       />
     </Container>
   );

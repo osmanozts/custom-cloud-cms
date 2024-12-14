@@ -7,11 +7,9 @@ import {
   Icon,
   Text,
 } from "@chakra-ui/react";
-import { useState } from "react";
 import { IconType } from "react-icons";
 import { LuCar, LuFileStack, LuTable2 } from "react-icons/lu";
 import { useNavigate } from "react-router-dom";
-import { FeatureInConstructionDialog } from "../../components";
 
 type NavigationItems = {
   title: string;
@@ -22,8 +20,6 @@ type NavigationItems = {
 
 export function Dashboard() {
   const navigate = useNavigate();
-  const [isFeatureInConstructionOpen, setFeatureInConstructionOpen] =
-    useState(false);
 
   const items = [
     {
@@ -47,12 +43,7 @@ export function Dashboard() {
   ];
 
   const handleOnClick = (item: NavigationItems) => {
-    if (item.path === "/document-management") {
-      // Zeige den Dialog an, wenn auf "Interne Dokumente" geklickt wird
-      setFeatureInConstructionOpen(true);
-    } else {
-      navigate(item.path);
-    }
+    navigate(item.path);
   };
 
   return (
@@ -107,12 +98,6 @@ export function Dashboard() {
           </Box>
         ))}
       </Grid>
-
-      {/* Dialog für "Interne Dokumente" */}
-      <FeatureInConstructionDialog
-        isOpen={isFeatureInConstructionOpen}
-        onClose={() => setFeatureInConstructionOpen(false)}
-      />
     </Container>
   );
 }

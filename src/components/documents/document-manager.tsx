@@ -57,10 +57,7 @@ export const DocumentManager = ({
 
   useEffect(() => {
     const loadFolders = async () => {
-      const allFolders = await fetchAllFolders(
-        "dateien_mitarbeiter",
-        rootFolder
-      );
+      const allFolders = await fetchAllFolders(bucket, rootFolder);
 
       setAvailableFolders(allFolders);
     };
@@ -134,10 +131,7 @@ export const DocumentManager = ({
     try {
       await createFolderOperation(bucket, `${currentFolder}/${folderName}`);
       await fetchFiles(currentFolder);
-      const allFolders = await fetchAllFolders(
-        "dateien_mitarbeiter",
-        rootFolder
-      );
+      const allFolders = await fetchAllFolders(bucket, rootFolder);
 
       setAvailableFolders(allFolders);
     } catch (error) {
@@ -261,7 +255,7 @@ export const DocumentManager = ({
         <Center mt={8} flexDirection="column">
           <Icon as={FiInbox} boxSize={12} color="textColor" />
           <Text mt={4} color="textColor" fontSize="lg">
-            This folder is empty
+            Dieser Bereich ist leer
           </Text>
         </Center>
       ) : (
