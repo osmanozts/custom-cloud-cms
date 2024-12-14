@@ -15,10 +15,16 @@ import {
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { FiFile, FiFolder, FiInbox } from "react-icons/fi";
-import { LuFileSymlink, LuFolderPlus, LuTrash2 } from "react-icons/lu";
+import {
+  LuDownload,
+  LuFileSymlink,
+  LuFolderPlus,
+  LuTrash2,
+} from "react-icons/lu";
 import {
   createFolderOperation,
   deleteFilesOperation,
+  downloadSelectedAsZip,
   fetchAllFolders,
   getFilesOperation,
   moveFilesOperation,
@@ -103,17 +109,14 @@ export const DocumentManager = ({
       }
 
       if (data) {
-        // Erstelle eine temporäre URL für den heruntergeladenen Blob
         const url = URL.createObjectURL(data);
 
-        // Erstelle ein unsichtbares Link-Element und simuliere den Klick darauf
         const link = document.createElement("a");
         link.href = url;
-        link.download = filePath.split("/").pop() || "file"; // Datei-Name aus dem Pfad extrahieren
+        link.download = filePath.split("/").pop() || "file";
         document.body.appendChild(link);
         link.click();
 
-        // Bereinige das DOM und die URL
         document.body.removeChild(link);
         URL.revokeObjectURL(url);
       }
@@ -235,15 +238,14 @@ export const DocumentManager = ({
           <Icon as={LuFileSymlink} boxSize={6} />
         </Button>
 
-        {/* <Button
+        <Button
           bg="darkColor"
           color="invertedColor"
           onClick={async () => {
             if (selectedFiles.length > 0) {
-              const selectedPaths = selectedFiles.map((file) => ({
-                path: file.path,
-                isFolder: file.isFolder,
-              }));
+              const selectedPaths = selectedFiles.map((file) => {
+                return { path: file.path, isFolder: file.isFolder };
+              });
               await downloadSelectedAsZip(bucket, selectedPaths);
             } else {
               console.warn("Keine Dateien ausgewählt.");
@@ -252,7 +254,7 @@ export const DocumentManager = ({
           isDisabled={selectedFiles.length === 0}
         >
           <Icon as={LuDownload} boxSize={6} />
-        </Button> */}
+        </Button>
       </Flex>
 
       {files.length === 0 ? (

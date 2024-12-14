@@ -1,3 +1,4 @@
+import pLimit from "p-limit";
 import supabase from "../../../utils/supabase";
 
 export async function uploadFilesOperation(
@@ -5,16 +6,21 @@ export async function uploadFilesOperation(
   folder: string,
   files: { originalFile: File; newFileName: string }[]
 ): Promise<void> {
-  for (const fileObj of files) {
-    const filePath = `${folder}/${fileObj.newFileName}`;
+  const limit = pLimit(5);
+  const uploadPromises = files.map((fileObj) =>
+    limit(async () => {
+      const filePath = `${folder}/${fileObj.newFileName}`;
+      const { error: uploadError } = await supabase.storage
+        .from(bucket)
+        .upload(filePath, fileObj.originalFile);
 
-    // Datei im Storage hochladen
-    const { error: uploadError } = await supabase.storage
-      .from(bucket)
-      .upload(filePath, fileObj.originalFile);
+      if (uploadError) {
+        throw new Error(
+          `Upload fehlgeschlagen für ${filePath}: ${uploadError.message}`
+        );
+      }
+    })
+  );
 
-    if (uploadError) {
-      throw new Error(`Upload fehlgeschlagen: ${uploadError.message}`);
-    }
-  }
+  await Promise.all(uploadPromises);
 }

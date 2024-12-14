@@ -34,7 +34,7 @@ export async function getFilesOperation(
 ): Promise<FileInfo[]> {
   const { data, error } = await supabase.storage
     .from(bucket)
-    .list(folder, { limit: 100, sortBy: { column: "name", order: "asc" } });
+    .list(folder, { sortBy: { column: "name", order: "asc" } });
 
   if (error) {
     throw new Error(`Fehler beim Abrufen der Dateien: ${error.message}`);
