@@ -136,7 +136,7 @@ export function CreateEmployeeForm() {
             size="md"
             onClick={handleSubmit}
             isLoading={isLoading}
-            isDisabled={!email && !password && !personnelNumber}
+            isDisabled={!email || !password || !personnelNumber}
             _hover={{ bg: "accentColorHover" }}
           >
             Nutzer erstellen
