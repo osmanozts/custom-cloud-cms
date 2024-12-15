@@ -20,10 +20,14 @@ import {
 } from "../../backend-queries/update/update-profile";
 import { DocumentManager, EmployeeDetails } from "../../components";
 import { Tables } from "../../utils/database/types";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "../../redux/store";
+import { setToast } from "../../redux/toast-slice";
 
 type EditEmployeeProps = {};
 
 export const EditEmployee = ({}: EditEmployeeProps) => {
+  const dispatch: AppDispatch = useDispatch();
   const navigate = useNavigate();
 
   const [searchParams] = useSearchParams();
@@ -66,46 +70,66 @@ export const EditEmployee = ({}: EditEmployeeProps) => {
 
     setIsLoading(true);
 
-    const dateOfBirthParts = employee.date_of_birth?.split(".");
-    const dateOfBirth =
-      dateOfBirthParts?.length === 3
-        ? new Date(
-            `${dateOfBirthParts[2]}-${dateOfBirthParts[1]}-${dateOfBirthParts[0]}T00:00:00Z`
-          ).toISOString()
-        : null;
+    try {
+      const dateOfBirthParts = employee.date_of_birth?.split(".");
+      const dateOfBirth =
+        dateOfBirthParts?.length === 3
+          ? new Date(
+              `${dateOfBirthParts[2]}-${dateOfBirthParts[1]}-${dateOfBirthParts[0]}T00:00:00Z`
+            ).toISOString()
+          : null;
 
-    const idCardEndDateParts = employee.id_card_end_date?.split(".");
-    const idCardEndDate =
-      idCardEndDateParts?.length === 3
-        ? new Date(
-            `${idCardEndDateParts[2]}-${idCardEndDateParts[1]}-${idCardEndDateParts[0]}T00:00:00Z`
-          ).toISOString()
-        : null;
+      const idCardEndDateParts = employee.id_card_end_date?.split(".");
+      const idCardEndDate =
+        idCardEndDateParts?.length === 3
+          ? new Date(
+              `${idCardEndDateParts[2]}-${idCardEndDateParts[1]}-${idCardEndDateParts[0]}T00:00:00Z`
+            ).toISOString()
+          : null;
 
-    const licenseEndDateParts = employee.driver_license_end_date?.split(".");
-    const driverLicenseEndDate =
-      licenseEndDateParts?.length === 3
-        ? new Date(
-            `${licenseEndDateParts[2]}-${licenseEndDateParts[1]}-${licenseEndDateParts[0]}T00:00:00Z`
-          ).toISOString()
-        : null;
+      const licenseEndDateParts = employee.driver_license_end_date?.split(".");
+      const driverLicenseEndDate =
+        licenseEndDateParts?.length === 3
+          ? new Date(
+              `${licenseEndDateParts[2]}-${licenseEndDateParts[1]}-${licenseEndDateParts[0]}T00:00:00Z`
+            ).toISOString()
+          : null;
 
-    const updatedEmployee: Tables<"employees"> = {
-      ...employee,
-      date_of_birth: dateOfBirth,
-      id_card_end_date: idCardEndDate,
-      driver_license_end_date: driverLicenseEndDate,
-    };
+      const updatedEmployee: Tables<"employees"> = {
+        ...employee,
+        date_of_birth: dateOfBirth,
+        id_card_end_date: idCardEndDate,
+        driver_license_end_date: driverLicenseEndDate,
+      };
 
-    await updateEmployee(updatedEmployee);
+      await updateEmployee(updatedEmployee);
 
-    const newProfile: NewProfile = {
-      id: profile.id,
-      auth_role: profile.auth_role,
-    };
-    await updateProfile(newProfile);
-    setIsLoading(false);
-    navigate("/employee-management");
+      const newProfile: NewProfile = {
+        id: profile.id,
+        auth_role: profile.auth_role,
+      };
+      await updateProfile(newProfile);
+      dispatch(
+        setToast({
+          title: "Erfolgreich!",
+          description: "Mitarbeiter Informationen erfolgreich gespeichert.",
+          status: "success",
+        })
+      );
+      navigate("/employee-management");
+    } catch (error) {
+      dispatch(
+        setToast({
+          title: "Fehler!",
+          description:
+            "Beim Speichern der Mitarbeiter Informationen ist ein Fehler aufgetreten.",
+          status: "error",
+        })
+      );
+      throw error;
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   if (!employee || !profile) {
@@ -182,7 +206,7 @@ export const EditEmployee = ({}: EditEmployeeProps) => {
 
           <DocumentManager
             bucket="dateien_mitarbeiter"
-            rootFolder={employee.profile_id!}
+            rootFolder={employee.personnel_number!}
           />
         </Box>
 
@@ -195,7 +219,7 @@ export const EditEmployee = ({}: EditEmployeeProps) => {
           </Flex>
           <DocumentManager
             bucket="dateien_mitarbeiter"
-            rootFolder={`${employee.profile_id!}-private`}
+            rootFolder={`${employee.personnel_number!}-private`}
           />
         </Box>
       </Box>

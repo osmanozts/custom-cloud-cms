@@ -2,12 +2,11 @@ import { Box, Button, Flex, Icon, Text, VStack } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { LuDownload, LuPlus } from "react-icons/lu";
 
+import { SearchIcon } from "@chakra-ui/icons";
+import { useNavigate } from "react-router-dom";
 import { deleteVehicle, getAllVehicles } from "../../backend-queries";
 import { Vehicles } from "../../backend-queries/query/get-all-vehicles";
 import { InputField, VehiclesTable } from "../../components";
-import supabase from "../../utils/supabase";
-import { useNavigate } from "react-router-dom";
-import { SearchIcon } from "@chakra-ui/icons";
 import { DefaultMenu } from "../../components/menu/default-menu";
 import { printVehiclesToPdf } from "./services/print-vehicles-to-pdf";
 
@@ -17,7 +16,6 @@ export function AllVehicles({}: AllVehiclesProps) {
   const navigate = useNavigate();
 
   const [vehicles, setVehicles] = useState<Vehicles>([]);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const [searchString, setSearchString] = useState<string>("");
   const [stateFilter, setStateFilter] = useState<string | null>(null);
@@ -60,23 +58,7 @@ export function AllVehicles({}: AllVehiclesProps) {
   };
 
   const createNewVehicle = async () => {
-    setIsLoading(true);
-    const { data: vehicle, error } = await supabase
-      .from("vehicles")
-      .insert({})
-      .select()
-      .single();
-
-    if (error) {
-      throw new Error(error.message);
-    }
-    if (vehicle) {
-      setIsLoading(false);
-      navigate({
-        pathname: "/edit-vehicle",
-        search: `?vehicle_id=${vehicle.id}`,
-      });
-    }
+    navigate("create-vehicle");
   };
 
   return (
@@ -97,7 +79,6 @@ export function AllVehicles({}: AllVehiclesProps) {
             />
           </Box>
           <Button
-            isLoading={isLoading}
             onClick={createNewVehicle}
             bg="parcelColor"
             color="invertedTextColor"

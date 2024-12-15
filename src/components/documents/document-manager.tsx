@@ -11,7 +11,6 @@ import {
   List,
   ListItem,
   Text,
-  useToast,
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { FiFile, FiFolder, FiInbox } from "react-icons/fi";
@@ -21,6 +20,7 @@ import {
   LuFolderPlus,
   LuTrash2,
 } from "react-icons/lu";
+import { useDispatch } from "react-redux";
 import {
   createFolderOperation,
   deleteFilesOperation,
@@ -29,6 +29,8 @@ import {
   getFilesOperation,
   moveFilesOperation,
 } from "../../backend-queries";
+import { AppDispatch } from "../../redux/store";
+import { setToast } from "../../redux/toast-slice";
 import supabase from "../../utils/supabase";
 import { CreateNewFolderDialog } from "../dialogs/create-new-folder-dialog";
 import { DeleteConfirmationDialog } from "../dialogs/delete-confirmation-dialog";
@@ -44,7 +46,10 @@ export const DocumentManager = ({
   bucket,
   rootFolder,
 }: DocumentManagerProps) => {
+  const dispatch: AppDispatch = useDispatch();
+
   const [currentFolder, setCurrentFolder] = useState(rootFolder);
+
   const [availableFolders, setAvailableFolders] = useState<string[]>();
   const [isMoveDialogOpen, setIsMoveDialogOpen] = useState(false);
 
@@ -53,7 +58,6 @@ export const DocumentManager = ({
   const [isCreateFolderDialogOpen, setIsCreateFolderDialogOpen] =
     useState(false);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
-  const toast = useToast();
 
   useEffect(() => {
     const loadFolders = async () => {
@@ -74,12 +78,14 @@ export const DocumentManager = ({
       const data = await getFilesOperation(bucket, folder);
       setFiles(data);
     } catch (error) {
-      toast({
-        title: "Error fetching files",
-        status: "error",
-        duration: 3000,
-        isClosable: true,
-      });
+      dispatch(
+        setToast({
+          title: "Fehler!",
+          description: "Beim Laden der Dateien ist ein Fehler aufgetreten.",
+          status: "error",
+        })
+      );
+      throw error;
     }
   };
 
@@ -118,12 +124,15 @@ export const DocumentManager = ({
         URL.revokeObjectURL(url);
       }
     } catch (error) {
-      toast({
-        title: "Error downloading file",
-        status: "error",
-        duration: 3000,
-        isClosable: true,
-      });
+      dispatch(
+        setToast({
+          title: "Fehler!",
+          description:
+            "Beim Herunterladen der Dateien ist ein Fehler aufgetreten.",
+          status: "error",
+        })
+      );
+      throw error;
     }
   };
 
@@ -135,12 +144,15 @@ export const DocumentManager = ({
 
       setAvailableFolders(allFolders);
     } catch (error) {
-      toast({
-        title: "Error creating folder",
-        status: "error",
-        duration: 3000,
-        isClosable: true,
-      });
+      dispatch(
+        setToast({
+          title: "Fehler!",
+          description:
+            "Beim Erstellen eines Ordners ist ein Fehler aufgetreten.",
+          status: "error",
+        })
+      );
+      throw error;
     }
   };
 
@@ -150,19 +162,22 @@ export const DocumentManager = ({
       await deleteFilesOperation(bucket, paths);
       setSelectedFiles([]);
       await fetchFiles(currentFolder);
-      toast({
-        title: "Files deleted",
-        status: "success",
-        duration: 3000,
-        isClosable: true,
-      });
+      dispatch(
+        setToast({
+          title: "Erfolgreich!",
+          description: "Dokumente erfolgreich gelöscht.",
+          status: "success",
+        })
+      );
     } catch (error) {
-      toast({
-        title: "Error deleting files",
-        status: "error",
-        duration: 3000,
-        isClosable: true,
-      });
+      dispatch(
+        setToast({
+          title: "Fehler!",
+          description: "Beim Löschen Dateien ist ein Fehler aufgetreten.",
+          status: "error",
+        })
+      );
+      throw error;
     }
   };
 
@@ -172,19 +187,23 @@ export const DocumentManager = ({
       await moveFilesOperation(bucket, paths, selectedFolder);
       setSelectedFiles([]);
       await fetchFiles(currentFolder);
-      toast({
-        title: "Dateien erfolgreich verschoben",
-        status: "success",
-        duration: 3000,
-        isClosable: true,
-      });
+      dispatch(
+        setToast({
+          title: "Erfolgreich!",
+          description: "Dateien erfolgreich verschoben.",
+          status: "error",
+        })
+      );
     } catch (error) {
-      toast({
-        title: "Fehler beim Verschieben",
-        status: "error",
-        duration: 3000,
-        isClosable: true,
-      });
+      dispatch(
+        setToast({
+          title: "Fehler!",
+          description:
+            "Beim Verschieben der Dateien ist ein Fehler aufgetreten.",
+          status: "error",
+        })
+      );
+      throw error;
     }
   };
 
@@ -242,6 +261,13 @@ export const DocumentManager = ({
               });
               await downloadSelectedAsZip(bucket, selectedPaths);
             } else {
+              dispatch(
+                setToast({
+                  title: "Fehler!",
+                  description: "Keine Dateien ausgewählt.",
+                  status: "error",
+                })
+              );
               console.warn("Keine Dateien ausgewählt.");
             }
           }}

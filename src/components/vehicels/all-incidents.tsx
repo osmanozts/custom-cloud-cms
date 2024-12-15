@@ -1,6 +1,7 @@
-import { Button, Flex, Stack, Text, useToast } from "@chakra-ui/react";
+import { Button, Flex, Stack, Text } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import {
   createIncident,
@@ -8,6 +9,8 @@ import {
   getAllVehicleIncidents,
 } from "../../backend-queries";
 import { Incidents } from "../../backend-queries/query/get-all-vehicle-incidents";
+import { AppDispatch } from "../../redux/store";
+import { setToast } from "../../redux/toast-slice";
 import { Tables } from "../../utils/database/types";
 import { DeleteIconButton } from "../buttons/delete-icon-button";
 
@@ -16,11 +19,12 @@ type AllIncidentsProps = {
 };
 
 export const AllIncidents = ({ vehicle }: AllIncidentsProps) => {
+  const dispatch: AppDispatch = useDispatch();
+
   const [incidents, setIncidents] = useState<Incidents>([]);
   const [isLoading, setIsLoading] = useState(false);
 
   const navigate = useNavigate();
-  const toast = useToast();
 
   useEffect(() => {
     getAllVehicleIncidents(vehicle.id, (incidents) => setIncidents(incidents));
@@ -30,22 +34,27 @@ export const AllIncidents = ({ vehicle }: AllIncidentsProps) => {
     setIsLoading(true);
     try {
       const newIncident = await createIncident(vehicle.id);
-      toast({
-        title: "Schadensmeldung erstellt.",
-        status: "success",
-        duration: 5000,
-        isClosable: true,
-      });
+      dispatch(
+        setToast({
+          title: "Erfolgreich!",
+          description: "Schadensmeldung erstellt.",
+          status: "success",
+        })
+      );
+
       navigate(
         `/edit-incident?incident_id=${newIncident.id}&vehicle_id=${vehicle.id}`
       );
     } catch (error) {
-      toast({
-        title: "Fehler.",
-        status: "error",
-        duration: 5000,
-        isClosable: true,
-      });
+      dispatch(
+        setToast({
+          title: "Fehler!",
+          description:
+            "Beim Erstellen der Schadenmeldng ist ein Fehler aufgetreten.",
+          status: "error",
+        })
+      );
+      throw error;
     } finally {
       setIsLoading(false);
     }

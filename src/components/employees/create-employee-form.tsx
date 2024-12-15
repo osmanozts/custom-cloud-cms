@@ -1,5 +1,4 @@
 // CreateUserForm.js
-import { EmailIcon, LockIcon } from "@chakra-ui/icons";
 import {
   Alert,
   AlertIcon,
@@ -9,21 +8,28 @@ import {
   Card,
   CardBody,
   Fade,
+  Icon,
   Image,
   Text,
   VStack,
 } from "@chakra-ui/react";
 import React, { useState } from "react";
+import { LuLock, LuMail, LuUser } from "react-icons/lu";
 import { useNavigate } from "react-router-dom";
+import logo from "../../assets/logo/lp-logistics.png";
 import { InputField } from "../../components";
 import supabase from "../../utils/supabase";
-import logo from "../../assets/logo/lp-logistics.png";
+import { AppDispatch } from "../../redux/store";
+import { useDispatch } from "react-redux";
+import { setToast } from "../../redux/toast-slice";
 
 export function CreateEmployeeForm() {
+  const dispatch: AppDispatch = useDispatch();
   const navigate = useNavigate();
 
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+  const [personnelNumber, setPersonnelNumber] = useState<string>("");
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
@@ -34,12 +40,29 @@ export function CreateEmployeeForm() {
     try {
       const { data, error } = await supabase.functions.invoke(
         "create-new-user",
-        { body: { email, password } }
+        { body: { email, password, personnelNumber } }
       );
 
-      if (error) throw error;
+      if (error) {
+        dispatch(
+          setToast({
+            title: "Fehler!",
+            description:
+              "Beim Erstellen eines Mitarbeiter Kontos ist ein Fehler aufgetreten.",
+            status: "error",
+          })
+        );
+        throw error;
+      }
 
       if (data?.user) {
+        dispatch(
+          setToast({
+            title: "Erfolgreich!",
+            description: "Mitarbeiter Konto erfolgreich angelegt.",
+            status: "success",
+          })
+        );
         navigate({
           pathname: "/edit-employee",
           search: `?profile_id=${data.user.id}`,
@@ -53,7 +76,13 @@ export function CreateEmployeeForm() {
   };
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
-    if (event.key === "Enter" && email && password && !isLoading) {
+    if (
+      event.key === "Enter" &&
+      email &&
+      password &&
+      personnelNumber &&
+      !isLoading
+    ) {
       handleSubmit();
     }
   };
@@ -75,15 +104,21 @@ export function CreateEmployeeForm() {
             value={email}
             placeholder="Email..."
             onChange={setEmail}
-            icon={<EmailIcon color="gray" />}
+            icon={<Icon as={LuMail} color="gray" />}
           />
 
           <InputField
             value={password}
             placeholder="Passwort"
-            isPasswordField
             onChange={setPassword}
-            icon={<LockIcon color="gray" />}
+            icon={<Icon as={LuLock} color="gray" />}
+          />
+
+          <InputField
+            value={personnelNumber}
+            placeholder="Personalnummer"
+            onChange={setPersonnelNumber}
+            icon={<Icon as={LuUser} color="gray" />}
           />
 
           {error && (
@@ -101,7 +136,7 @@ export function CreateEmployeeForm() {
             size="md"
             onClick={handleSubmit}
             isLoading={isLoading}
-            isDisabled={!email || !password}
+            isDisabled={!email && !password && !personnelNumber}
             _hover={{ bg: "accentColorHover" }}
           >
             Nutzer erstellen

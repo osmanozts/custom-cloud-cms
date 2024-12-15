@@ -21,10 +21,14 @@ import { DriverHistoryDetails } from "../../components";
 import { updateDriverHistory } from "../../backend-queries/update/update-driver-history";
 import { Tables } from "../../utils/database/types";
 import dayjs from "dayjs";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "../../redux/store";
+import { setToast } from "../../redux/toast-slice";
 
 type EditDriverHistoryProps = {};
 
 export const EditDriverHistory = ({}: EditDriverHistoryProps) => {
+  const dispatch: AppDispatch = useDispatch();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
 
@@ -72,34 +76,53 @@ export const EditDriverHistory = ({}: EditDriverHistoryProps) => {
   const handleSave = async () => {
     if (!driverHistory) return;
 
-    const driveStartDateParts = driverHistory.drive_start?.split(".");
-    const driveStartDate =
-      driveStartDateParts?.length === 3
-        ? new Date(
-            `${driveStartDateParts[2]}-${driveStartDateParts[1]}-${driveStartDateParts[0]}T00:00:00Z`
-          ).toISOString()
-        : null;
-
-    const driveEndDateParts = driverHistory.drive_end?.split(".");
-    const driveEndDate =
-      driveEndDateParts?.length === 3
-        ? new Date(
-            `${driveEndDateParts[2]}-${driveEndDateParts[1]}-${driveEndDateParts[0]}T00:00:00Z`
-          ).toISOString()
-        : null;
-
     setIsLoading(true);
+    try {
+      const driveStartDateParts = driverHistory.drive_start?.split(".");
+      const driveStartDate =
+        driveStartDateParts?.length === 3
+          ? new Date(
+              `${driveStartDateParts[2]}-${driveStartDateParts[1]}-${driveStartDateParts[0]}T00:00:00Z`
+            ).toISOString()
+          : null;
 
-    const updatedDriverHistory: Tables<"driver_history"> = {
-      ...driverHistory,
-      drive_start: driveStartDate,
-      drive_end: driveEndDate,
-    };
-    await updateDriverHistory(updatedDriverHistory);
-    setIsLoading(false);
-    navigate(
-      "/driver-history?vehicle_id=" + driverHistory.vehicle_id?.toString()
-    );
+      const driveEndDateParts = driverHistory.drive_end?.split(".");
+      const driveEndDate =
+        driveEndDateParts?.length === 3
+          ? new Date(
+              `${driveEndDateParts[2]}-${driveEndDateParts[1]}-${driveEndDateParts[0]}T00:00:00Z`
+            ).toISOString()
+          : null;
+
+      const updatedDriverHistory: Tables<"driver_history"> = {
+        ...driverHistory,
+        drive_start: driveStartDate,
+        drive_end: driveEndDate,
+      };
+      await updateDriverHistory(updatedDriverHistory);
+      navigate(
+        "/driver-history?vehicle_id=" + driverHistory.vehicle_id?.toString()
+      );
+      dispatch(
+        setToast({
+          title: "Erfolgreich!",
+          description:
+            "Fahrzeug-Historie Informationen erfolgreich gespeichert.",
+          status: "success",
+        })
+      );
+    } catch (error) {
+      dispatch(
+        setToast({
+          title: "Fehler!",
+          description:
+            "Beim Speichern der Fahrzeug-Historie Informationen ist ein Fehler aufgetreten.",
+          status: "error",
+        })
+      );
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   if (!driverHistory) {

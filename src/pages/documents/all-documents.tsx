@@ -18,12 +18,11 @@ export function AllDocuments() {
       pt={containerPadding}
       pl={containerPadding}
       pr={containerPadding}
-      height="100svh"
       maxW="container.xl"
       boxShadow="xl"
-      bg="backgroundColor"
+      pb={12}
     >
-      <Flex mb={6} justifyContent="center">
+      <Flex my={6} justifyContent="center" bg="backgroundColor">
         <Heading fontSize={{ base: 24, md: 28 }}>
           Unternehmensinterne Dateien
         </Heading>
@@ -33,6 +32,20 @@ export function AllDocuments() {
         bucket="dateien_unternehmen"
         rootFolder="interne_dokumente"
       />
+
+      <Flex my={6} justifyContent="center" bg="backgroundColor">
+        <Heading fontSize={{ base: 24, md: 28 }}>
+          Alle Mitarbeiter Dateien
+        </Heading>
+      </Flex>
+
+      <DocumentManager bucket="dateien_mitarbeiter" rootFolder="" />
+
+      <Flex my={6} justifyContent="center" bg="backgroundColor">
+        <Heading fontSize={{ base: 24, md: 28 }}>Alle Fahrzeug Dateien</Heading>
+      </Flex>
+
+      <DocumentManager bucket="dateien_fahrzeuge" rootFolder="" />
     </Container>
   );
 }

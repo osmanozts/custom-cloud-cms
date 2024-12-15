@@ -30,6 +30,7 @@ export function AdminHamburger({}: Props) {
         aria-label="Options"
         icon={<HamburgerIcon />}
         variant="outline"
+        mx={2}
       />
       <MenuList>
         <MenuItem icon={<LuLayoutDashboard />} onClick={() => navigate("/")}>

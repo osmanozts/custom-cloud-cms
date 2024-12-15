@@ -29,10 +29,14 @@ import { Tables } from "../../utils/database/types";
 import { createDriverHistory } from "../../backend-queries/create/create-driver-history";
 import { RepeatClockIcon } from "@chakra-ui/icons";
 import dayjs from "dayjs";
+import { AppDispatch } from "../../redux/store";
+import { useDispatch } from "react-redux";
+import { setToast } from "../../redux/toast-slice";
 
 type EditVehicleProps = {};
 
 export const EditVehicle = ({}: EditVehicleProps) => {
+  const dispatch: AppDispatch = useDispatch();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
 
@@ -66,26 +70,44 @@ export const EditVehicle = ({}: EditVehicleProps) => {
   const handleSave = async () => {
     if (!vehicle) return;
 
-    const nextServiceDateParts = vehicle.next_service_date?.split(".");
-    const nextServiceDate =
-      nextServiceDateParts?.length === 3
-        ? new Date(
-            `${nextServiceDateParts[2]}-${nextServiceDateParts[1]}-${nextServiceDateParts[0]}T00:00:00Z`
-          ).toISOString()
-        : null;
-
     setIsLoading(true);
+    try {
+      const nextServiceDateParts = vehicle.next_service_date?.split(".");
+      const nextServiceDate =
+        nextServiceDateParts?.length === 3
+          ? new Date(
+              `${nextServiceDateParts[2]}-${nextServiceDateParts[1]}-${nextServiceDateParts[0]}T00:00:00Z`
+            ).toISOString()
+          : null;
 
-    const updatedVehicle: Tables<"vehicles"> = {
-      ...vehicle,
-      next_service_date: nextServiceDate,
-    };
-    await updateVehicle(updatedVehicle);
-    if (vehicle.profile_id) {
-      await createDriverHistory(vehicle.profile_id, vehicle.id);
+      const updatedVehicle: Tables<"vehicles"> = {
+        ...vehicle,
+        next_service_date: nextServiceDate,
+      };
+      await updateVehicle(updatedVehicle);
+      if (vehicle.profile_id) {
+        await createDriverHistory(vehicle.profile_id, vehicle.id);
+      }
+      dispatch(
+        setToast({
+          title: "Erfolgreich!",
+          description: "Fahrzeug Informationen erfolgreich gespeichert.",
+          status: "success",
+        })
+      );
+      navigate("/vehicle-management");
+    } catch (error) {
+      dispatch(
+        setToast({
+          title: "Fehler!",
+          description:
+            "Beim Speichern der Fahrzeug Informationen ist ein Fehler aufgetreten.",
+          status: "error",
+        })
+      );
+    } finally {
+      setIsLoading(false);
     }
-    setIsLoading(false);
-    navigate("/vehicle-management");
   };
 
   if (!vehicle) {
@@ -105,7 +127,7 @@ export const EditVehicle = ({}: EditVehicleProps) => {
       borderRadius="lg"
     >
       <Flex flexDirection="column" mb={8} alignItems="center">
-        <Heading fontSize="2xl" fontWeight="bold" color="blue.700">
+        <Heading fontSize="2xl" fontWeight="bold">
           Fahrzeug Ansehen / Bearbeiten
         </Heading>
         <Flex mt={4} width="250px" justifyContent="space-between">
@@ -188,7 +210,7 @@ export const EditVehicle = ({}: EditVehicleProps) => {
           </Heading>
           <DocumentManager
             bucket="dateien_fahrzeuge"
-            rootFolder={vehicle.id!}
+            rootFolder={vehicle.license_plate!}
           />
         </Box>
       </Box>

@@ -14,3 +14,4 @@ export { EditVehicle } from "./vehicles/edit-vehicle";
 export { EditIncident } from "./vehicles/edit-incident";
 export { EditDriverHistory } from "./vehicles/edit-driver-history";
 export { AllDriverHistory } from "./vehicles/all-driver-history";
+export { CreateVehicle } from "./vehicles/create-vehicle";

@@ -14,6 +14,7 @@ import {
   AllEmployees,
   AllVehicles,
   CreateNewUser,
+  CreateVehicle,
   Dashboard,
   EditDriverHistory,
   EditEmployee,
@@ -36,6 +37,7 @@ function App() {
           </Route>
           <Route element={<VehicleManagerRoute />}>
             <Route path="/vehicle-management" element={<AllVehicles />} />
+            <Route path="/create-vehicle" element={<CreateVehicle />} />
             <Route path="/driver-history" element={<AllDriverHistory />} />
             <Route path="/edit-vehicle" element={<EditVehicle />} />
             <Route path="/edit-vehicle" element={<EditVehicle />} />

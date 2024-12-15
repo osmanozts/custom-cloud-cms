@@ -2,6 +2,9 @@ import { IconButton } from "@chakra-ui/react";
 import { LuTrash2 } from "react-icons/lu";
 import { useState } from "react";
 import { DeleteConfirmationDialog } from "../dialogs/delete-confirmation-dialog";
+import { AppDispatch } from "../../redux/store";
+import { useDispatch } from "react-redux";
+import { setToast } from "../../redux/toast-slice";
 
 interface DeleteIconButtonProps {
   clickedItem: string;
@@ -12,6 +15,8 @@ export const DeleteIconButton = ({
   clickedItem,
   onDelete,
 }: DeleteIconButtonProps) => {
+  const dispatch: AppDispatch = useDispatch();
+
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [clickedId, setClickedId] = useState<string | null>(null);
 
@@ -35,8 +40,25 @@ export const DeleteIconButton = ({
         onClose={() => setIsDeleteDialogOpen(false)}
         onDelete={async () => {
           if (clickedId) {
-            await onDelete(clickedId);
-            setIsDeleteDialogOpen(false); // Dialog schließen nach erfolgreichem Löschen
+            try {
+              await onDelete(clickedId);
+              dispatch(
+                setToast({
+                  title: "Erfolgreich!",
+                  description: "Erfolgreich gelöscht.",
+                  status: "success",
+                })
+              );
+              setIsDeleteDialogOpen(false);
+            } catch (error) {
+              dispatch(
+                setToast({
+                  title: "Fehler!",
+                  description: "Beim Löschen ist ein Fehler aufgetreten.",
+                  status: "error",
+                })
+              );
+            }
           }
         }}
       />

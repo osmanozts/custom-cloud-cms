@@ -14,7 +14,7 @@ Deno.serve(async (req) => {
   }
 
   try {
-    const { email, password } = await req.json();
+    const { email, password, personnelNumber } = await req.json();
 
     const { data, error } = await supabase.auth.admin.createUser({
       email,
@@ -22,10 +22,17 @@ Deno.serve(async (req) => {
       email_confirm: true,
     });
 
+    await supabase.from("employees").select("*").eq("profile_id", data.user.id);
+
+    await supabase
+      .from("employees")
+      .update({ personnel_number: personnelNumber })
+      .eq("profile_id", data.user.id)
+      .select("*");
+
     if (error) {
       throw error;
     }
-
     return new Response(JSON.stringify(data), {
       headers: { ...corsHeaders, "Content-Type": "application/json" },
       status: 200,

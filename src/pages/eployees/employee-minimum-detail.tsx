@@ -170,7 +170,7 @@ export function EmployeeMinimumDetail() {
         {employee?.profile_id && (
           <DocumentView
             bucket="dateien_mitarbeiter"
-            rootFolder={employee.profile_id}
+            rootFolder={employee.personnel_number ?? ""}
           />
         )}
       </Box>

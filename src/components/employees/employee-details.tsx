@@ -25,7 +25,7 @@ export const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({
     <Box bg="tileBgColor" borderWidth="1px" borderRadius="lg" p={6} mb={6}>
       <Grid templateColumns={{ base: "1fr", md: "repeat(1, 1fr)" }} mb={4}>
         <GridItem>
-          <EmployeeProfilePic employee_id={employee.id.toString()} />
+          <EmployeeProfilePic employee_id={employee.personnel_number ?? ""} />
         </GridItem>
       </Grid>
       <Grid
@@ -48,6 +48,7 @@ export const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({
             <FormLabel htmlFor="personnelNumber">Personalnummer</FormLabel>
             <InputField
               id="personnelNumber"
+              isDisabled
               value={employee.personnel_number ?? ""}
               onChange={(value) =>
                 setEmployee({ ...employee, personnel_number: value })

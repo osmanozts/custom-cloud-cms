@@ -19,12 +19,14 @@ import {
   ModalOverlay,
   Text,
   useDisclosure,
-  useToast,
 } from "@chakra-ui/react";
 import { useRef, useState } from "react";
 import { FiUpload } from "react-icons/fi";
 import { LuPencil, LuTrash2 } from "react-icons/lu"; // Importiere das LuTrash2-Icon
+import { useDispatch } from "react-redux";
 import { uploadFilesOperation } from "../../backend-queries";
+import { AppDispatch } from "../../redux/store";
+import { setToast } from "../../redux/toast-slice";
 
 interface MultiFileUploadProps {
   bucket: string;
@@ -37,6 +39,8 @@ export const MultiFileUpload = ({
   currentFolder,
   onUploadComplete,
 }: MultiFileUploadProps) => {
+  const dispatch: AppDispatch = useDispatch();
+
   const fileInputRef = useRef<HTMLInputElement>(null); // Ref für das Input-Feld
 
   const triggerFileInput = () => {
@@ -48,7 +52,6 @@ export const MultiFileUpload = ({
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [files, setFiles] = useState<File[]>([]);
   const [fileNames, setFileNames] = useState<string[]>([]);
-  const toast = useToast();
 
   const handleFileSelection = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files) {
@@ -79,23 +82,25 @@ export const MultiFileUpload = ({
 
       await uploadFilesOperation(bucket, currentFolder, formattedFiles);
 
-      toast({
-        title: "Files uploaded successfully",
-        status: "success",
-        duration: 3000,
-        isClosable: true,
-      });
+      dispatch(
+        setToast({
+          title: "Erfolgreich!",
+          description: "Dateien erfolgreich hochgeladen.",
+          status: "success",
+        })
+      );
       setFiles([]);
       setFileNames([]);
       onUploadComplete();
       onClose();
     } catch (error) {
-      toast({
-        title: "Error uploading files",
-        status: "error",
-        duration: 3000,
-        isClosable: true,
-      });
+      dispatch(
+        setToast({
+          title: "Fehler!",
+          description: "Beim Hochladen der Dateien ist ein Fehler aufgetreten.",
+          status: "error",
+        })
+      );
     }
   };
 

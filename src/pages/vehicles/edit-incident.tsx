@@ -16,10 +16,14 @@ import dayjs from "dayjs";
 import { getIncident, getVehicle, updateIncident } from "../../backend-queries";
 import { DocumentManager, IncidentDetails } from "../../components";
 import { Tables } from "../../utils/database/types";
+import { AppDispatch } from "../../redux/store";
+import { useDispatch } from "react-redux";
+import { setToast } from "../../redux/toast-slice";
 
 type EditIncidentProps = {};
 
 export const EditIncident = ({}: EditIncidentProps) => {
+  const dispatch: AppDispatch = useDispatch();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
 
@@ -67,40 +71,55 @@ export const EditIncident = ({}: EditIncidentProps) => {
 
   const handleSave = async () => {
     if (!incident) return;
-
-    const incidentDateParts = incident.incident_date?.split(".");
-    const incidentDate =
-      incidentDateParts?.length === 3
-        ? new Date(
-            `${incidentDateParts[2]}-${incidentDateParts[1]}-${incidentDateParts[0]}T00:00:00Z`
-          ).toISOString()
-        : null;
-
-    const incidentTime = incident?.incident_time
-      ? incident.incident_time
-      : null;
-
-    const birthDatePart = incident?.opponent_driver_birth_date?.split(".");
-    const birthDate =
-      birthDatePart?.length === 3
-        ? new Date(
-            `${birthDatePart[2]}-${birthDatePart[1]}-${birthDatePart[0]}T00:00:00Z`
-          ).toISOString()
-        : null;
-
-    const mappedIncident: Tables<"incidents"> = {
-      ...incident,
-      incident_date: incidentDate,
-      incident_time: incidentTime,
-      opponent_driver_birth_date: birthDate,
-    };
-
     setIsLoading(true);
+
     try {
+      const incidentDateParts = incident.incident_date?.split(".");
+      const incidentDate =
+        incidentDateParts?.length === 3
+          ? new Date(
+              `${incidentDateParts[2]}-${incidentDateParts[1]}-${incidentDateParts[0]}T00:00:00Z`
+            ).toISOString()
+          : null;
+
+      const incidentTime = incident?.incident_time
+        ? incident.incident_time
+        : null;
+
+      const birthDatePart = incident?.opponent_driver_birth_date?.split(".");
+      const birthDate =
+        birthDatePart?.length === 3
+          ? new Date(
+              `${birthDatePart[2]}-${birthDatePart[1]}-${birthDatePart[0]}T00:00:00Z`
+            ).toISOString()
+          : null;
+
+      const mappedIncident: Tables<"incidents"> = {
+        ...incident,
+        incident_date: incidentDate,
+        incident_time: incidentTime,
+        opponent_driver_birth_date: birthDate,
+      };
+
       await updateIncident(mappedIncident);
+      dispatch(
+        setToast({
+          title: "Erfolgreich!",
+          description: "Schadensmeldung Informationen erfolgreich gespeichert.",
+          status: "success",
+        })
+      );
       navigate("/edit-vehicle?vehicle_id=" + vehicleID);
     } catch (error) {
-      console.error("Fehler beim Speichern des Vorfalls:", error);
+      dispatch(
+        setToast({
+          title: "Fehler!",
+          description:
+            "Beim Speichern der Schadensmeldung Informationen ist ein Fehler aufgetreten.",
+          status: "error",
+        })
+      );
+      throw error;
     } finally {
       setIsLoading(false);
     }
