@@ -19,12 +19,14 @@ type DefaultMenuProps = {
   options: MenuOption[];
   defaultValue?: string;
   onSelect: (value: string | null) => void;
+  isDisabled?: boolean;
 };
 
 export const DefaultMenu: React.FC<DefaultMenuProps> = ({
   options,
   defaultValue,
   onSelect,
+  isDisabled,
 }) => {
   const [selectedOption, setSelectedOption] = useState<MenuOption | null>(null);
 
@@ -52,6 +54,7 @@ export const DefaultMenu: React.FC<DefaultMenuProps> = ({
         width="100%"
         bg="backgroundColor"
         _hover={{ bg: "darkColor", color: "invertedTextColor" }}
+        isDisabled={isDisabled}
       >
         {selectedOption ? (
           <Box display="flex" alignItems="center">
@@ -71,7 +74,7 @@ export const DefaultMenu: React.FC<DefaultMenuProps> = ({
           options.find((option) => option.value === defaultValue)?.label ||
           defaultValue
         ) : (
-          "Wähle eine Farbe aus"
+          "Wähle eine Option aus"
         )}
       </MenuButton>
       <MenuList>
