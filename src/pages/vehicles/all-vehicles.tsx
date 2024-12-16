@@ -58,7 +58,7 @@ export function AllVehicles({}: AllVehiclesProps) {
   };
 
   const createNewVehicle = async () => {
-    navigate("create-vehicle");
+    navigate("/create-vehicle");
   };
 
   return (
