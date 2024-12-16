@@ -49,26 +49,26 @@ export const VehicleDetails = ({
       >
         <GridItem>
           <FormControl>
-            <FormLabel htmlFor="vin">VIN</FormLabel>
-            <InputField
-              id="vin"
-              value={vehicle.vin ?? ""}
-              onChange={(value) => setVehicle({ ...vehicle, vin: value })}
-              placeholder="VIN"
-            />
-          </FormControl>
-        </GridItem>
-
-        <GridItem>
-          <FormControl>
             <FormLabel htmlFor="licensePlate">Kennzeichen</FormLabel>
             <InputField
               id="licensePlate"
+              isDisabled
               value={vehicle.license_plate ?? ""}
               onChange={(value) =>
                 setVehicle({ ...vehicle, license_plate: value })
               }
               placeholder="Kennzeichen"
+            />
+          </FormControl>
+        </GridItem>
+        <GridItem>
+          <FormControl>
+            <FormLabel htmlFor="vin">FIN</FormLabel>
+            <InputField
+              id="FIN"
+              value={vehicle.vin ?? ""}
+              onChange={(value) => setVehicle({ ...vehicle, vin: value })}
+              placeholder="VIN"
             />
           </FormControl>
         </GridItem>
