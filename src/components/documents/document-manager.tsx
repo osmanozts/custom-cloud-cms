@@ -98,7 +98,9 @@ export const DocumentManager = ({
   };
 
   const handleFolderClick = (folderName: string) => {
-    setCurrentFolder(`${currentFolder}/${folderName}`);
+    if (currentFolder.length > 0 && currentFolder)
+      setCurrentFolder(`${currentFolder}/${folderName}`);
+    else setCurrentFolder(folderName);
   };
 
   const handleFileClick = async (filePath: string) => {

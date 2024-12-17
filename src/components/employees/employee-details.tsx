@@ -36,6 +36,14 @@ export const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({
             Persönliche Daten
           </Heading>
           <FormControl my={4}>
+            <FormLabel htmlFor="firstName">Personalnummer</FormLabel>
+            <InputField
+              id="personnel_number"
+              value={employee.personnel_number ?? ""}
+              isDisabled
+            />
+          </FormControl>
+          <FormControl my={4}>
             <FormLabel htmlFor="firstName">Vorname</FormLabel>
             <InputField
               id="firstName"

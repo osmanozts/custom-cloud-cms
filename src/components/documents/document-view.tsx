@@ -63,7 +63,9 @@ export const DocumentView = ({ bucket, rootFolder }: DocumentViewProps) => {
   };
 
   const handleFolderClick = (folderName: string) => {
-    setCurrentFolder(`${currentFolder}/${folderName}`);
+    if (currentFolder.length > 0 && currentFolder)
+      setCurrentFolder(`${currentFolder}/${folderName}`);
+    else setCurrentFolder(folderName);
   };
 
   const handleFileSelection = (file: any, isSelected: boolean) => {
