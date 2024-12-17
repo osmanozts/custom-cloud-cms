@@ -1,4 +1,3 @@
-// CreateUserForm.js
 import {
   Box,
   Button,
@@ -25,12 +24,33 @@ export function CreateVehicleForm() {
 
   const [licensePlate, setLicensePlate] = useState<string>("");
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [errorMessage, setErrorMessage] = useState<string>("");
+
+  const validateLicensePlate = (value: string) => {
+    const regex = /^[A-ZÄÖÜ]+-[A-Z]+-\d+$/i;
+    return regex.test(value);
+  };
+
+  const handleLicensePlateChange = (e: string) => {
+    const value = e;
+    const cleanedValue = value.replace(/[^a-zA-Z0-9-]/g, "");
+    setLicensePlate(cleanedValue);
+
+    if (validateLicensePlate(cleanedValue)) {
+      setErrorMessage("");
+    } else {
+      setErrorMessage("Ungültiges Format. Beispiel: DU-XX-123");
+    }
+  };
 
   const handleSubmit = async () => {
-    setIsLoading(true);
+    if (!validateLicensePlate(licensePlate)) {
+      setErrorMessage("Bitte geben Sie ein gültiges Kennzeichen ein.");
+      return;
+    }
 
+    setIsLoading(true);
     try {
-      setIsLoading(true);
       const { data: vehicle, error } = await supabase
         .from("vehicles")
         .insert({ license_plate: licensePlate })
@@ -59,7 +79,7 @@ export function CreateVehicleForm() {
         setToast({
           title: "Fehler!",
           description:
-            "Beim anlegen eines neuen Fahrzeuges ist ein fehler aufgetreten.",
+            "Beim Anlegen eines neuen Fahrzeuges ist ein Fehler aufgetreten.",
           status: "error",
         })
       );
@@ -78,7 +98,6 @@ export function CreateVehicleForm() {
     <Card width="100%" backgroundColor="tileBgColor" onKeyDown={handleKeyDown}>
       <CardBody>
         <VStack spacing={6}>
-          {/* Logo */}
           <Box justifyContent="center" alignItems="center" width="50%">
             <Image src={logo} alt="Logo" objectFit="contain" />
           </Box>
@@ -90,9 +109,15 @@ export function CreateVehicleForm() {
           <InputField
             value={licensePlate}
             placeholder="Kennzeichen..."
-            onChange={setLicensePlate}
+            onChange={handleLicensePlateChange}
             icon={<Icon as={LuCar} color="gray" />}
           />
+
+          {errorMessage && (
+            <Text fontSize="sm" color="red.500">
+              {errorMessage}
+            </Text>
+          )}
 
           <Button
             bg="accentColor"
@@ -107,7 +132,7 @@ export function CreateVehicleForm() {
           </Button>
 
           <Text fontSize="sm" color="gray.500" mt={2}>
-            Bitte geben Sie die notwendigen Informationen ein.
+            Bitte geben Sie ein gültiges Kennzeichen ein, z. B. DU-XX-123.
           </Text>
         </VStack>
       </CardBody>

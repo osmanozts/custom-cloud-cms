@@ -11,8 +11,13 @@ import { JoinedDriverHistory } from "../../backend-queries/joins/joined-driver-h
 import { getVehicleDriverHistories } from "../../backend-queries/query/get-vehicle-histories";
 import { DriverHistoryTable, InputField } from "../../components";
 import { useAuth } from "../../providers/auth-provider";
+import { setToast } from "../../redux/toast-slice";
+import { AppDispatch } from "../../redux/store";
+import { useDispatch } from "react-redux";
 
 export function AllDriverHistory() {
+  const dispatch: AppDispatch = useDispatch();
+
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
 
@@ -85,7 +90,22 @@ export function AllDriverHistory() {
                     user.id
                   );
                   fetchedData();
+                  dispatch(
+                    setToast({
+                      title: "Erfolgreich!",
+                      description: "Schadenmeldng erfolgreich erstellt.",
+                      status: "error",
+                    })
+                  );
                 } catch (e) {
+                  dispatch(
+                    setToast({
+                      title: "Fehler!",
+                      description:
+                        "Beim Erstellen der Schadenmeldng ist ein Fehler aufgetreten.",
+                      status: "error",
+                    })
+                  );
                   throw new Error(
                     `Fehler beim manuellen Erstellen einer Driver History: ${e}`
                   );

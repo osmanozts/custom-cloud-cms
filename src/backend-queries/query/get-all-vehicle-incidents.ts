@@ -1,9 +1,9 @@
 import supabase from "../../utils/supabase";
 import { QueryData } from "@supabase/supabase-js";
 
-export const incidentsQuery = supabase.from("incidents").select(`
-*
-`);
+export const incidentsQuery = supabase
+  .from("incidents")
+  .select("id, created_at");
 
 export type Incidents = QueryData<typeof incidentsQuery>;
 
@@ -13,11 +13,7 @@ export async function getAllVehicleIncidents(
 ) {
   const { data: incidents, error } = await supabase
     .from("incidents")
-    .select(
-      `
-      *
-      `
-    )
+    .select("id, created_at")
     .eq("vehicle_id", vehicle_id);
   if (error) throw error;
 
