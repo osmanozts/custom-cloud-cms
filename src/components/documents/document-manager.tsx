@@ -90,17 +90,20 @@ export const DocumentManager = ({
   };
 
   const handleBreadcrumbClick = (index: number) => {
-    const newFolder = currentFolder
-      .split("/")
-      .slice(0, index + 1)
-      .join("/");
-    setCurrentFolder(newFolder || rootFolder);
+    if (rootFolder.length === 0 && index === 0) setCurrentFolder("");
+    else {
+      const newFolder = currentFolder
+        .split("/")
+        .slice(0, index + 1)
+        .join("/");
+      setCurrentFolder(newFolder || rootFolder);
+    }
   };
 
   const handleFolderClick = (folderName: string) => {
     if (currentFolder.length > 0 && currentFolder)
       setCurrentFolder(`${currentFolder}/${folderName}`);
-    else setCurrentFolder(folderName);
+    else setCurrentFolder(`${folderName}/`);
   };
 
   const handleFileClick = async (filePath: string) => {
