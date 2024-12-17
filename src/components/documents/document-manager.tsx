@@ -101,9 +101,9 @@ export const DocumentManager = ({
   };
 
   const handleFolderClick = (folderName: string) => {
-    if (currentFolder.length > 0 && currentFolder)
-      setCurrentFolder(`${currentFolder}/${folderName}`);
-    else setCurrentFolder(`${folderName}/`);
+    setCurrentFolder((prevFolder) =>
+      prevFolder ? `${prevFolder}/${folderName}` : folderName
+    );
   };
 
   const handleFileClick = async (filePath: string) => {
@@ -215,13 +215,20 @@ export const DocumentManager = ({
   return (
     <Box p={4} borderWidth={1} borderRadius="md" bg="tileBgColor">
       <Breadcrumb mb={4} fontSize="sm">
-        {currentFolder.split("/").map((crumb, index) => (
-          <BreadcrumbItem key={index}>
-            <BreadcrumbLink onClick={() => handleBreadcrumbClick(index)}>
-              {index === 0 ? "..." : crumb}
-            </BreadcrumbLink>
-          </BreadcrumbItem>
-        ))}
+        {["", ...currentFolder.split("/").filter(Boolean)].map(
+          (crumb, index, arr) => {
+            const isLast = index === arr.length - 1;
+            const breadcrumbLabel = index === 0 ? "..." : crumb;
+
+            return (
+              <BreadcrumbItem key={index} isCurrentPage={isLast}>
+                <BreadcrumbLink onClick={() => handleBreadcrumbClick(index)}>
+                  {breadcrumbLabel}
+                </BreadcrumbLink>
+              </BreadcrumbItem>
+            );
+          }
+        )}
       </Breadcrumb>
 
       <Flex mb={4} gap={2} alignItems="center">
