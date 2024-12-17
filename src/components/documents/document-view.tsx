@@ -66,9 +66,9 @@ export const DocumentView = ({ bucket, rootFolder }: DocumentViewProps) => {
   };
 
   const handleFolderClick = (folderName: string) => {
-    if (currentFolder.length > 0 && currentFolder)
-      setCurrentFolder(`${currentFolder}/${folderName}`);
-    else setCurrentFolder(`${folderName}/`);
+    setCurrentFolder((prevFolder) =>
+      prevFolder ? `${prevFolder}/${folderName}` : folderName
+    );
   };
 
   const handleFileSelection = (file: any, isSelected: boolean) => {
@@ -82,16 +82,20 @@ export const DocumentView = ({ bucket, rootFolder }: DocumentViewProps) => {
   return (
     <Box p={4} borderWidth={1} borderRadius="md" bg="tileBgColor">
       <Breadcrumb mb={4} fontSize="sm">
-        {currentFolder.split("/").map((folder, index) => (
-          <BreadcrumbItem key={index}>
-            <BreadcrumbLink
-              onClick={() => handleBreadcrumbClick(index)}
-              cursor="pointer"
-            >
-              {folder || "Root"}
-            </BreadcrumbLink>
-          </BreadcrumbItem>
-        ))}
+        {["", ...currentFolder.split("/").filter(Boolean)].map(
+          (crumb, index, arr) => {
+            const isLast = index === arr.length - 1;
+            const breadcrumbLabel = index === 0 ? "..." : crumb;
+
+            return (
+              <BreadcrumbItem key={index} isCurrentPage={isLast}>
+                <BreadcrumbLink onClick={() => handleBreadcrumbClick(index)}>
+                  {breadcrumbLabel}
+                </BreadcrumbLink>
+              </BreadcrumbItem>
+            );
+          }
+        )}
       </Breadcrumb>
 
       <Flex alignItems="center" gap={4} mb={4}>
