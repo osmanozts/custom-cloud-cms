@@ -14,24 +14,24 @@ import { useEffect, useState } from "react";
 import { LuCar, LuCheck, LuWrench, LuX } from "react-icons/lu";
 import { useNavigate, useSearchParams } from "react-router-dom";
 
+import { RepeatClockIcon } from "@chakra-ui/icons";
+import dayjs from "dayjs";
+import { useDispatch } from "react-redux";
 import {
   getMinDetailEmployees,
   getVehicle,
   updateVehicle,
 } from "../../backend-queries";
+import { createDriverHistory } from "../../backend-queries/create/create-driver-history";
 import { EmployeesMinimumDetail } from "../../backend-queries/query/get-min-detail-employees";
 import {
   AllIncidents,
   DocumentManager,
   VehicleDetails,
 } from "../../components";
-import { Tables } from "../../utils/database/types";
-import { createDriverHistory } from "../../backend-queries/create/create-driver-history";
-import { RepeatClockIcon } from "@chakra-ui/icons";
-import dayjs from "dayjs";
 import { AppDispatch } from "../../redux/store";
-import { useDispatch } from "react-redux";
 import { setToast } from "../../redux/toast-slice";
+import { Tables } from "../../utils/database/types";
 
 type EditVehicleProps = {};
 
@@ -41,6 +41,8 @@ export const EditVehicle = ({}: EditVehicleProps) => {
   const [searchParams] = useSearchParams();
 
   const [vehicle, setVehicle] = useState<Tables<"vehicles"> | null>(null);
+  const [oldDriverId, setOldDriverId] = useState<string | null>(null);
+
   const [drivers, setDrivers] = useState<EmployeesMinimumDetail>([]);
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -61,6 +63,8 @@ export const EditVehicle = ({}: EditVehicleProps) => {
             ? dayjs(newVehicle.next_service_date).format("DD.MM.YYYY")
             : "",
         };
+
+        setOldDriverId(newVehicle.profile_id);
 
         setVehicle(mappedVehicle);
       });
@@ -85,7 +89,7 @@ export const EditVehicle = ({}: EditVehicleProps) => {
         next_service_date: nextServiceDate,
       };
       await updateVehicle(updatedVehicle);
-      if (vehicle.profile_id) {
+      if (vehicle.profile_id && vehicle.profile_id !== oldDriverId) {
         await createDriverHistory(vehicle.profile_id, vehicle.id);
       }
       dispatch(

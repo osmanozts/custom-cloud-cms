@@ -118,21 +118,10 @@ export const VehiclesTable = ({
             vehicle.next_service_km,
             5000
           );
-          console.log(
-            "isKmThresholdExceedingFlag: ",
-            isKmThresholdExceedingFlag,
-            " for: ",
-            vehicle.id
-          );
+
           const isKmThresholdExceededFlag = isKmThresholdExceeded(
             vehicle.km_age,
             vehicle.next_service_km
-          );
-          console.log(
-            "isKmThresholdExceededFlag: ",
-            isKmThresholdExceededFlag,
-            " for: ",
-            vehicle.id
           );
 
           return (

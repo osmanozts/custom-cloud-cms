@@ -35,13 +35,11 @@ export function DriverHistoryTable({
         <Thead>
           <Tr whiteSpace="nowrap">
             <Th>Aktion</Th>
-            <Th>Verlauf ID</Th>
+            <Th>Personalnummer</Th>
             <Th>Fahrer</Th>
             <Th>Fahrt Beginn</Th>
-            <Th>Fahrt Ende</Th>
             <Th>VIN</Th>
             <Th>Kennzeichen</Th>
-            <Th>Personalnummer</Th>
           </Tr>
         </Thead>
         <Tbody>
@@ -65,13 +63,13 @@ export function DriverHistoryTable({
                   />
                 </Td>
                 <Td>
-                  <Text>{data.id ?? "-"}</Text>
+                  <Text>{data.employees?.personnel_number ?? "N/V"}</Text>
                 </Td>
                 <Td>
                   <Text>
-                    {(data.employees?.first_name ?? "-") +
+                    {(data.employees?.first_name ?? "N/V") +
                       " " +
-                      (data.employees?.last_name ?? "-")}
+                      (data.employees?.last_name ?? "N/V")}
                   </Text>
                 </Td>
                 <Td>
@@ -80,21 +78,11 @@ export function DriverHistoryTable({
                   </Text>
                 </Td>
                 <Td>
-                  <Text>
-                    {data.drive_end
-                      ? dayjs(data.drive_end).format("DD.MM.YYYY").toString()
-                      : "N/V"}
-                  </Text>
-                </Td>
-                <Td>
-                  <Text>{data.vehicles?.vin ?? "-"}</Text>
-                </Td>
-                <Td>
-                  <Text>{data.vehicles?.license_plate ?? "-"}</Text>
+                  <Text>{data.vehicles?.vin ?? "N/V"}</Text>
                 </Td>
                 <Td>
                   <Flex alignItems="center" justifyContent="space-between">
-                    <Text>{data.employees?.personnel_number ?? "-"}</Text>
+                    <Text>{data.vehicles?.license_plate ?? "N/V"}</Text>
                     {isEdited && (
                       <Tooltip label="Dieser Eintrag wurde bearbeitet" hasArrow>
                         <Badge bg="transparent">

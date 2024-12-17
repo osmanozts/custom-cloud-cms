@@ -15,11 +15,13 @@ export { getAllNotifications } from "./query/get-all-notifications";
 
 export { createIncident } from "./create/create-incident";
 export { createIncidentEmployee } from "./create/create-incident-employee";
+export { createDriverHistoryManuel } from "./create/create-driver-history-manuel";
 
 export { updateEmployee } from "./update/update-employee";
 export { updateProfile } from "./update/update-profile";
 export { updateVehicle } from "./update/update-vehicle";
 export { updateIncident } from "./update/update-incident";
+export { updateOldestDriverHistory } from "./update/update-oldest-driver-history";
 
 export { deleteNotification } from "./delete/delete.notification";
 export { deleteEmployee } from "./delete/delete-employee";
