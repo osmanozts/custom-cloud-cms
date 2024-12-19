@@ -51,7 +51,7 @@ export const CreateNewFolderDialog: React.FC<CreateNewFolderDialogProps> = ({
             color="invertedTextColor"
             onClick={handleCreate}
           >
-            Create
+            Erstellen
           </Button>
         </ModalFooter>
       </ModalContent>

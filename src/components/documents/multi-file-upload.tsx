@@ -22,7 +22,7 @@ import {
 } from "@chakra-ui/react";
 import { useRef, useState } from "react";
 import { FiUpload } from "react-icons/fi";
-import { LuPencil, LuTrash2 } from "react-icons/lu"; // Importiere das LuTrash2-Icon
+import { LuPencil, LuTrash2 } from "react-icons/lu";
 import { useDispatch } from "react-redux";
 import { uploadFilesOperation } from "../../backend-queries";
 import { AppDispatch } from "../../redux/store";
@@ -41,11 +41,11 @@ export const MultiFileUpload = ({
 }: MultiFileUploadProps) => {
   const dispatch: AppDispatch = useDispatch();
 
-  const fileInputRef = useRef<HTMLInputElement>(null); // Ref für das Input-Feld
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const triggerFileInput = () => {
     if (fileInputRef.current) {
-      fileInputRef.current.click(); // Die .click() Methode für das referenzierte Input-Feld
+      fileInputRef.current.click();
     }
   };
 
@@ -120,7 +120,7 @@ export const MultiFileUpload = ({
               <Input
                 type="file"
                 multiple
-                ref={fileInputRef} // Setze die Ref hier
+                ref={fileInputRef}
                 onChange={handleFileSelection}
                 accept="*/*"
                 placeholder="Drag or click to select files"
@@ -138,7 +138,7 @@ export const MultiFileUpload = ({
                 color="gray.700"
                 borderRadius="md"
                 transition="border-color 0.3s ease"
-                display="none" // Verhindert, dass der Standard-Dateiauswahl-Button angezeigt wird
+                display="none"
               />
               <Button
                 as="span"
@@ -148,7 +148,7 @@ export const MultiFileUpload = ({
                 borderRadius="md"
                 fontSize="sm"
                 boxShadow="md"
-                onClick={triggerFileInput} // Ruft die Funktion auf, die das versteckte Input-Feld aktiviert
+                onClick={triggerFileInput}
               >
                 Wähle Dateien aus
               </Button>
@@ -172,13 +172,12 @@ export const MultiFileUpload = ({
                       cursor="pointer"
                     >
                       <Box display="flex" alignItems="center" gap={2}>
-                        {/* Datei- oder Ordner-Icon */}
                         <Icon as={LuPencil} boxSize={5} color={"darkColor"} />
-                        {/* Bearbeitbarer Dateiname */}
+
                         <Editable
-                          defaultValue={fileNames[index].split(".")[0]} // Nur Präfix anzeigen
+                          defaultValue={fileNames[index].split(".")[0]}
                           onSubmit={(newPrefix) => {
-                            const extension = fileNames[index].split(".").pop(); // Hole die Dateiendung
+                            const extension = fileNames[index].split(".").pop();
                             handleNameChange(
                               index,
                               `${newPrefix}.${extension}`
@@ -199,11 +198,10 @@ export const MultiFileUpload = ({
                           <EditableInput
                             value={fileNames[index].split(".")[0]} // Nur den Präfix zeigen
                             onChange={(e) => {
-                              // Aktualisiere nur den Präfix
                               const updatedPrefix = e.target.value;
                               const extension = fileNames[index]
                                 .split(".")
-                                .pop(); // Behalte die Dateiendung
+                                .pop();
                               handleNameChange(
                                 index,
                                 `${updatedPrefix}.${extension}`
@@ -212,7 +210,7 @@ export const MultiFileUpload = ({
                           />
                         </Editable>
                       </Box>
-                      {/* Papierkorb-Icon */}
+
                       <IconButton
                         aria-label="Remove file"
                         icon={<LuTrash2 />}
@@ -234,10 +232,10 @@ export const MultiFileUpload = ({
               onClick={handleUpload}
               isDisabled={files.length === 0}
             >
-              Upload
+              Hochladen
             </Button>
             <Button onClick={onClose} ml={3}>
-              Cancel
+              Abbrechen
             </Button>
           </ModalFooter>
         </ModalContent>
