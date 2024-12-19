@@ -169,10 +169,9 @@ export const AllEmployees: React.FC<AllEmployeesProps> = () => {
           leftIcon={<LuDownload />}
           color="invertedTextColor"
           onClick={() => printEmployeesToPdf(employees)}
-          width="150px"
-          px={10}
+          px={4}
         >
-          <Text>Download</Text>
+          <Text>PDF Herunterladen</Text>
         </Button>
       </VStack>
     </Flex>

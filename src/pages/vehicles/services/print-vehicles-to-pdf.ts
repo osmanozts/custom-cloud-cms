@@ -1,6 +1,7 @@
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
 import { Vehicles } from "../../../backend-queries/query/get-all-vehicles";
+import { mapVehicleState } from "../../../components/vehicels/services/map-vehicle-state";
 
 export function printVehiclesToPdf(vehicles: Vehicles) {
   const pdf = new jsPDF({ orientation: "landscape" });
@@ -8,7 +9,7 @@ export function printVehiclesToPdf(vehicles: Vehicles) {
   const rows = vehicles.map((vehcl) => [
     vehcl.vin ?? "-",
     vehcl.license_plate ?? "-",
-    vehcl.state ?? "-",
+    mapVehicleState(vehcl.state ?? "active") ?? "-",
     vehcl.location ?? "-",
     vehcl.km_age ?? "-",
     vehcl.next_service_date ?? "-",
@@ -37,5 +38,5 @@ export function printVehiclesToPdf(vehicles: Vehicles) {
     },
   });
 
-  pdf.save("employees.pdf");
+  pdf.save("fahrzeuge.pdf");
 }

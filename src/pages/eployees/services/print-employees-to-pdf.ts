@@ -31,7 +31,7 @@ export function printEmployeesToPdf(employees: Tables<"employees">[]) {
         "Abteilung",
         "Name",
         "Führerschein Ablaufdatum",
-        "Perso Ablaufdatum",
+        "Ausweis Ablaufdatum",
         "Geburtsdatum",
         "Krankenkasse",
         "SteuerID.",

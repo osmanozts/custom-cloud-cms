@@ -1,24 +1,25 @@
 import {
+  Button,
+  Flex,
   FormControl,
   FormLabel,
-  Text,
   Grid,
   GridItem,
+  Text,
   Textarea,
   useBreakpointValue,
-  Flex,
-  Button,
 } from "@chakra-ui/react";
 
+import { PDFDownloadLink } from "@react-pdf/renderer";
+import dayjs from "dayjs";
+import { useEffect, useState } from "react";
+import { LuDownload } from "react-icons/lu";
+import { getAllEmployees, getEmployee } from "../../backend-queries";
 import { Tables } from "../../utils/database/types";
+import { DriverSelectDialog } from "../dialogs/driver-select-dialog";
 import { InputField } from "../input-field";
 import { RadioButtons } from "../radio-buttons";
-import { useEffect, useState } from "react";
-import { DriverSelectDialog } from "../dialogs/driver-select-dialog";
-import { getAllEmployees, getEmployee } from "../../backend-queries";
-import dayjs from "dayjs";
-import { LuDownload } from "react-icons/lu";
-import html2pdf from "html2pdf.js";
+import { IncidentPDF } from "./incident-pdf";
 
 type IncidentDetailsProps = {
   incident: Tables<"incidents">;
@@ -492,20 +493,26 @@ export const IncidentDetails = ({
         </FormControl>
       </GridItem>
 
-      <GridItem>
-        <Button
-          leftIcon={<LuDownload />}
-          bg="parcelColor"
-          color="invertedTextColor"
-          onClick={async () => {
-            console.log("download");
-            const element = document.querySelector("#incident-details");
-            await html2pdf(element, {});
-          }}
+      <Flex mt={4} justifyContent="flex-start">
+        <PDFDownloadLink
+          document={
+            <IncidentPDF
+              incident={incident}
+              vehicle={vehicle}
+              driver={driver ?? null}
+            />
+          }
+          fileName={`schadens_meldung_${incident.id}.pdf`}
         >
-          Download
-        </Button>
-      </GridItem>
+          <Button
+            leftIcon={<LuDownload />}
+            bg="parcelColor"
+            color="invertedTextColor"
+          >
+            PDF Herunterladen
+          </Button>
+        </PDFDownloadLink>
+      </Flex>
     </Grid>
   );
 };
