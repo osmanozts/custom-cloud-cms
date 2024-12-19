@@ -4,7 +4,6 @@ export { VerifyOtpForm } from "./auth/verify-otp-form";
 export { InputField } from "./input-field";
 
 export { Navbar } from "./navigation/navbar";
-export { AdminNavbar } from "./navigation/admin-navbar";
 
 export { RadioButtons } from "./radio-buttons";
 

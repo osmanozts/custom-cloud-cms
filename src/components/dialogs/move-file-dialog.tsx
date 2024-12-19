@@ -2,6 +2,7 @@ import {
   Button,
   Checkbox,
   Flex,
+  Icon,
   List,
   ListItem,
   Modal,
@@ -14,6 +15,7 @@ import {
   Text,
 } from "@chakra-ui/react";
 import { useState } from "react";
+import { LuFolderTree } from "react-icons/lu";
 
 interface MoveFileDialogProps {
   isOpen: boolean;
@@ -67,9 +69,14 @@ export const MoveFileDialog = ({
                   </Checkbox>
                 </Flex>
 
-                <Text ml={2} color="gray.500">
-                  {shortenPath(folder.path)}
-                </Text>
+                <Flex mt={2} color="gray.500" alignItems="center">
+                  <Icon as={LuFolderTree} boxSize={4} />
+                  <Text ml={2}>
+                    {shortenPath(folder.path).length > 0
+                      ? shortenPath(folder.path)
+                      : "root"}
+                  </Text>
+                </Flex>
               </ListItem>
             ))}
           </List>

@@ -60,16 +60,6 @@ export const DocumentManager = ({
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
 
   useEffect(() => {
-    const loadFolders = async () => {
-      const allFolders = await fetchAllFolders(bucket, rootFolder);
-
-      setAvailableFolders(allFolders);
-    };
-
-    loadFolders();
-  }, [rootFolder]);
-
-  useEffect(() => {
     fetchFiles(currentFolder);
   }, [currentFolder]);
 
@@ -196,7 +186,7 @@ export const DocumentManager = ({
         setToast({
           title: "Erfolgreich!",
           description: "Dateien erfolgreich verschoben.",
-          status: "error",
+          status: "success",
         })
       );
     } catch (error) {
@@ -209,6 +199,24 @@ export const DocumentManager = ({
         })
       );
       throw error;
+    }
+  };
+
+  const handleDownloadAsZip = async () => {
+    if (selectedFiles.length > 0) {
+      const selectedPaths = selectedFiles.map((file) => {
+        return { path: file.path, isFolder: file.isFolder };
+      });
+      await downloadSelectedAsZip(bucket, selectedPaths);
+    } else {
+      dispatch(
+        setToast({
+          title: "Fehler!",
+          description: "Keine Dateien ausgewählt.",
+          status: "error",
+        })
+      );
+      console.warn("Keine Dateien ausgewählt.");
     }
   };
 
@@ -257,7 +265,12 @@ export const DocumentManager = ({
         <Button
           bg="darkColor"
           color="invertedColor"
-          onClick={() => setIsMoveDialogOpen(true)}
+          onClick={async () => {
+            const allFolders = await fetchAllFolders(bucket, rootFolder);
+            setAvailableFolders(allFolders);
+
+            setIsMoveDialogOpen(true);
+          }}
           isDisabled={selectedFiles.length === 0}
         >
           <Icon as={LuFileSymlink} boxSize={6} />
@@ -266,23 +279,7 @@ export const DocumentManager = ({
         <Button
           bg="darkColor"
           color="invertedColor"
-          onClick={async () => {
-            if (selectedFiles.length > 0) {
-              const selectedPaths = selectedFiles.map((file) => {
-                return { path: file.path, isFolder: file.isFolder };
-              });
-              await downloadSelectedAsZip(bucket, selectedPaths);
-            } else {
-              dispatch(
-                setToast({
-                  title: "Fehler!",
-                  description: "Keine Dateien ausgewählt.",
-                  status: "error",
-                })
-              );
-              console.warn("Keine Dateien ausgewählt.");
-            }
-          }}
+          onClick={handleDownloadAsZip}
           isDisabled={selectedFiles.length === 0}
         >
           <Icon as={LuDownload} boxSize={6} />

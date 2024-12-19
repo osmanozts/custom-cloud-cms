@@ -1,10 +1,10 @@
-import { Navigate, Outlet, useLocation } from "react-router-dom";
-import { useAuth } from "../../providers/auth-provider";
 import { Box, Spinner, Text } from "@chakra-ui/react";
-import { AdminNavbar, Navbar } from "../../components";
+import { Navigate, Outlet, useLocation } from "react-router-dom";
+import { Navbar } from "../../components";
+import { useAuth } from "../../providers/auth-provider";
 
 export const AuthRoute = () => {
-  const { user, loading, authRole } = useAuth();
+  const { user, loading } = useAuth();
   const location = useLocation();
 
   if (loading) {
@@ -31,7 +31,7 @@ export const AuthRoute = () => {
   if (!loading && user) {
     return (
       <>
-        {authRole === "employee" ? <Navbar /> : <AdminNavbar />}
+        <Navbar />
         <Outlet />
       </>
     );

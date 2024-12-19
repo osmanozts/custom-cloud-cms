@@ -93,8 +93,8 @@ export function AllDriverHistory() {
                   dispatch(
                     setToast({
                       title: "Erfolgreich!",
-                      description: "Schadenmeldng erfolgreich erstellt.",
-                      status: "error",
+                      description: "Historie erfolgreich manuell erstellt.",
+                      status: "success",
                     })
                   );
                 } catch (e) {
@@ -102,7 +102,7 @@ export function AllDriverHistory() {
                     setToast({
                       title: "Fehler!",
                       description:
-                        "Beim Erstellen der Schadenmeldng ist ein Fehler aufgetreten.",
+                        "Beim Löschen der Historie ist ein Fehler aufgetreten.",
                       status: "error",
                     })
                   );
