@@ -14,7 +14,8 @@ export async function getAllVehicleIncidents(
   const { data: incidents, error } = await supabase
     .from("incidents")
     .select("id, created_at")
-    .eq("vehicle_id", vehicle_id);
+    .eq("vehicle_id", vehicle_id)
+    .order("created_at", { ascending: false });
   if (error) throw error;
 
   successCallback(incidents);

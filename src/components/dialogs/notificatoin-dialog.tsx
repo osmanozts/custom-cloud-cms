@@ -125,8 +125,17 @@ export function NotificationDialog({}: NotificationDialogProps) {
                           {notification.title}
                         </Text>
                         <Text fontSize="sm">
-                          {notification.description ||
-                            "Keine Details verfügbar."}
+                          {/* Hier wird der Zeilenumbruch angewendet */}
+                          {notification.description
+                            ? notification.description
+                                .split("\n")
+                                .map((line, idx) => (
+                                  <span key={idx}>
+                                    {line}
+                                    <br />
+                                  </span>
+                                ))
+                            : "Keine Details verfügbar."}
                         </Text>
                       </Box>
 
