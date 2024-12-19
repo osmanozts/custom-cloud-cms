@@ -135,9 +135,6 @@ export const DocumentManager = ({
     try {
       await createFolderOperation(bucket, `${currentFolder}/${folderName}`);
       await fetchFiles(currentFolder);
-      const allFolders = await fetchAllFolders(bucket, rootFolder);
-
-      setAvailableFolders(allFolders);
     } catch (error) {
       dispatch(
         setToast({
@@ -268,7 +265,6 @@ export const DocumentManager = ({
           onClick={async () => {
             const allFolders = await fetchAllFolders(bucket, rootFolder);
             setAvailableFolders(allFolders);
-
             setIsMoveDialogOpen(true);
           }}
           isDisabled={selectedFiles.length === 0}
