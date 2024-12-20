@@ -139,90 +139,94 @@ export const EditEmployee = ({}: EditEmployeeProps) => {
       </Flex>
     );
   }
-
-  return (
-    <Container
-      maxW="container.xl"
-      p={8}
-      bg="backgroundColor"
-      boxShadow="md"
-      borderRadius="lg"
-    >
-      <Flex flexDirection="column" mb={8} alignItems="center">
-        <Heading fontSize="2xl" fontWeight="bold">
-          Mitarbeiter Ansehen / Bearbeiten
-        </Heading>
-        <Flex mt={4} width="250px" justifyContent="space-between">
-          <Button
-            bg="parcelColor"
-            color="invertedTextColor"
-            isLoading={isLoading}
-            onClick={handleSave}
-            size="sm"
-            alignSelf="center"
-            isDisabled={isSaveDisabled}
-          >
-            <Icon mr={2} as={LuCheck} />
-            <Text>Speichern</Text>
-          </Button>
-          <Button
-            bg="accentColor"
-            color="invertedTextColor"
-            onClick={() => navigate("/employee-management")}
-            size="sm"
-            alignSelf="center"
-          >
-            <Icon mr={2} as={LuX} />
-            Verwerfen
-          </Button>
-        </Flex>
-      </Flex>
-      <Box>
-        <Box>
-          <Heading fontSize="lg" fontWeight="semibold" mb={4}>
-            Mitarbeiter Daten
+  try {
+    return (
+      <Container
+        maxW="container.xl"
+        p={8}
+        bg="backgroundColor"
+        boxShadow="md"
+        borderRadius="lg"
+      >
+        <Flex flexDirection="column" mb={8} alignItems="center">
+          <Heading fontSize="2xl" fontWeight="bold">
+            Mitarbeiter Ansehen / Bearbeiten
           </Heading>
-
-          <EmployeeDetails
-            employee={employee}
-            profile={profile}
-            setEmployee={(newEmployee) => {
-              setEmployee(newEmployee);
-              setIsSaveDisabled(false);
-            }}
-            setProfile={(newProfile) => {
-              setProfile(newProfile);
-              setIsSaveDisabled(false);
-            }}
-          />
-        </Box>
+          <Flex mt={4} width="250px" justifyContent="space-between">
+            <Button
+              bg="parcelColor"
+              color="invertedTextColor"
+              isLoading={isLoading}
+              onClick={handleSave}
+              size="sm"
+              alignSelf="center"
+              isDisabled={isSaveDisabled}
+            >
+              <Icon mr={2} as={LuCheck} />
+              <Text>Speichern</Text>
+            </Button>
+            <Button
+              bg="accentColor"
+              color="invertedTextColor"
+              onClick={() => navigate("/employee-management")}
+              size="sm"
+              alignSelf="center"
+            >
+              <Icon mr={2} as={LuX} />
+              Verwerfen
+            </Button>
+          </Flex>
+        </Flex>
         <Box>
-          <Flex>
-            <Icon as={LuFileCheck2} boxSize={4} mr={4} />
+          <Box>
             <Heading fontSize="lg" fontWeight="semibold" mb={4}>
-              Öffentliche Mitarbeiter Dateien
+              Mitarbeiter Daten
             </Heading>
-          </Flex>
 
-          <DocumentManager
-            bucket="dateien_mitarbeiter"
-            rootFolder={employee.personnel_number!}
-          />
-        </Box>
+            <EmployeeDetails
+              employee={employee}
+              profile={profile}
+              setEmployee={(newEmployee) => {
+                setEmployee(newEmployee);
+                setIsSaveDisabled(false);
+              }}
+              setProfile={(newProfile) => {
+                setProfile(newProfile);
+                setIsSaveDisabled(false);
+              }}
+            />
+          </Box>
+          <Box>
+            <Flex>
+              <Icon as={LuFileCheck2} boxSize={4} mr={4} />
+              <Heading fontSize="lg" fontWeight="semibold" mb={4}>
+                Öffentliche Mitarbeiter Dateien
+              </Heading>
+            </Flex>
 
-        <Box mt={4}>
-          <Flex>
-            <Icon as={LuFileKey} boxSize={4} mr={4} />
-            <Heading fontSize="lg" fontWeight="semibold" mb={4}>
-              Private Mitarbeiter Dateien
-            </Heading>
-          </Flex>
-          <DocumentManager
-            bucket="dateien_mitarbeiter"
-            rootFolder={`${employee.personnel_number!}-private`}
-          />
+            <DocumentManager
+              bucket="dateien_mitarbeiter"
+              rootFolder={employee.personnel_number!}
+            />
+          </Box>
+
+          <Box mt={4}>
+            <Flex>
+              <Icon as={LuFileKey} boxSize={4} mr={4} />
+              <Heading fontSize="lg" fontWeight="semibold" mb={4}>
+                Private Mitarbeiter Dateien
+              </Heading>
+            </Flex>
+            <DocumentManager
+              bucket="dateien_mitarbeiter"
+              rootFolder={`${employee.personnel_number!}-private`}
+            />
+          </Box>
         </Box>
-      </Box>
-    </Container>
-  );
+      </Container>
+    );
+  } catch (e) {
+    console.error(e);
+    return <p>Fehler beim Anzeigen der Mitarbeiterdaten </p>;
+  }
 };
