@@ -13,16 +13,16 @@ import { LuCheck, LuFileCheck2, LuFileKey, LuX } from "react-icons/lu";
 import { useNavigate, useSearchParams } from "react-router-dom";
 
 import dayjs from "dayjs";
+import { useDispatch } from "react-redux";
 import { getEmployee, getProfile, updateEmployee } from "../../backend-queries";
 import {
   NewProfile,
   updateProfile,
 } from "../../backend-queries/update/update-profile";
-import { DocumentManager, EmployeeDetails } from "../../components";
-import { Tables } from "../../utils/database/types";
-import { useDispatch } from "react-redux";
+import { DocumentManager } from "../../components";
 import { AppDispatch } from "../../redux/store";
 import { setToast } from "../../redux/toast-slice";
+import { Tables } from "../../utils/database/types";
 
 type EditEmployeeProps = {};
 
