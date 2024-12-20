@@ -183,7 +183,7 @@ export const EditEmployee = ({}: EditEmployeeProps) => {
               Mitarbeiter Daten
             </Heading>
 
-            <EmployeeDetails
+            {/* <EmployeeDetails
               employee={employee}
               profile={profile}
               setEmployee={(newEmployee) => {
@@ -194,7 +194,7 @@ export const EditEmployee = ({}: EditEmployeeProps) => {
                 setProfile(newProfile);
                 setIsSaveDisabled(false);
               }}
-            />
+            /> */}
           </Box>
           <Box>
             <Flex>
