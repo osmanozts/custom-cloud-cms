@@ -227,7 +227,9 @@ export const EditEmployee = ({}: EditEmployeeProps) => {
               </Box>
             </>
           ) : (
-            <Text>Bitte vergeben sie eine Personalnummer</Text>
+            <Text>
+              Bitte vergeben sie eine Personalnummer um die Dateien zu sehen{" "}
+            </Text>
           )}
         </Box>
       </Container>
