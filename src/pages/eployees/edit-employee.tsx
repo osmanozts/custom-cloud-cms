@@ -22,6 +22,7 @@ import {
 import { AppDispatch } from "../../redux/store";
 import { setToast } from "../../redux/toast-slice";
 import { Tables } from "../../utils/database/types";
+import { EmployeeDetails } from "../../components";
 
 type EditEmployeeProps = {};
 
@@ -183,7 +184,7 @@ export const EditEmployee = ({}: EditEmployeeProps) => {
               Mitarbeiter Daten
             </Heading>
 
-            {/* <EmployeeDetails
+            <EmployeeDetails
               employee={employee}
               profile={profile}
               setEmployee={(newEmployee) => {
@@ -194,7 +195,7 @@ export const EditEmployee = ({}: EditEmployeeProps) => {
                 setProfile(newProfile);
                 setIsSaveDisabled(false);
               }}
-            /> */}
+            />
           </Box>
           <Box>
             <Flex>
