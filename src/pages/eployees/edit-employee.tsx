@@ -19,7 +19,6 @@ import {
   NewProfile,
   updateProfile,
 } from "../../backend-queries/update/update-profile";
-import { DocumentManager } from "../../components";
 import { AppDispatch } from "../../redux/store";
 import { setToast } from "../../redux/toast-slice";
 import { Tables } from "../../utils/database/types";
@@ -205,10 +204,10 @@ export const EditEmployee = ({}: EditEmployeeProps) => {
               </Heading>
             </Flex>
 
-            <DocumentManager
+            {/* <DocumentManager
               bucket="dateien_mitarbeiter"
               rootFolder={employee.personnel_number!}
-            />
+            /> */}
           </Box>
 
           <Box mt={4}>
@@ -218,10 +217,10 @@ export const EditEmployee = ({}: EditEmployeeProps) => {
                 Private Mitarbeiter Dateien
               </Heading>
             </Flex>
-            <DocumentManager
+            {/* <DocumentManager
               bucket="dateien_mitarbeiter"
               rootFolder={`${employee.personnel_number!}-private`}
-            />
+            /> */}
           </Box>
         </Box>
       </Container>
