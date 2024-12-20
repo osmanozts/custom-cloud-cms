@@ -22,7 +22,7 @@ import {
 import { AppDispatch } from "../../redux/store";
 import { setToast } from "../../redux/toast-slice";
 import { Tables } from "../../utils/database/types";
-import { EmployeeDetails } from "../../components";
+import { DocumentManager, EmployeeDetails } from "../../components";
 
 type EditEmployeeProps = {};
 
@@ -197,32 +197,38 @@ export const EditEmployee = ({}: EditEmployeeProps) => {
               }}
             />
           </Box>
-          <Box>
-            <Flex>
-              <Icon as={LuFileCheck2} boxSize={4} mr={4} />
-              <Heading fontSize="lg" fontWeight="semibold" mb={4}>
-                Öffentliche Mitarbeiter Dateien
-              </Heading>
-            </Flex>
+          {employee.personnel_number !== null ? (
+            <>
+              <Box>
+                <Flex>
+                  <Icon as={LuFileCheck2} boxSize={4} mr={4} />
+                  <Heading fontSize="lg" fontWeight="semibold" mb={4}>
+                    Öffentliche Mitarbeiter Dateien
+                  </Heading>
+                </Flex>
 
-            {/* <DocumentManager
-              bucket="dateien_mitarbeiter"
-              rootFolder={employee.personnel_number!}
-            /> */}
-          </Box>
+                <DocumentManager
+                  bucket="dateien_mitarbeiter"
+                  rootFolder={employee.personnel_number!}
+                />
+              </Box>
 
-          <Box mt={4}>
-            <Flex>
-              <Icon as={LuFileKey} boxSize={4} mr={4} />
-              <Heading fontSize="lg" fontWeight="semibold" mb={4}>
-                Private Mitarbeiter Dateien
-              </Heading>
-            </Flex>
-            {/* <DocumentManager
-              bucket="dateien_mitarbeiter"
-              rootFolder={`${employee.personnel_number!}-private`}
-            /> */}
-          </Box>
+              <Box mt={4}>
+                <Flex>
+                  <Icon as={LuFileKey} boxSize={4} mr={4} />
+                  <Heading fontSize="lg" fontWeight="semibold" mb={4}>
+                    Private Mitarbeiter Dateien
+                  </Heading>
+                </Flex>
+                <DocumentManager
+                  bucket="dateien_mitarbeiter"
+                  rootFolder={`${employee.personnel_number!}-private`}
+                />
+              </Box>
+            </>
+          ) : (
+            <Text>Bitte vergeben sie eine Personalnummer</Text>
+          )}
         </Box>
       </Container>
     );
