@@ -130,7 +130,7 @@ export const EditVehicle = ({}: EditVehicleProps) => {
       boxShadow="md"
       borderRadius="lg"
     >
-      <Flex flexDirection="column" mb={8} alignItems="center">
+      <Flex flexDirection="column" alignItems="center">
         <Heading fontSize="2xl" fontWeight="bold">
           Fahrzeug Ansehen / Bearbeiten
         </Heading>
@@ -199,14 +199,6 @@ export const EditVehicle = ({}: EditVehicleProps) => {
             </Flex>
           </VStack>
         </Stack>
-        <Box>
-          <Heading fontSize="lg" fontWeight="semibold" my={4}>
-            <Icon mr={2} as={LuWrench} /> Schadensmeldungen
-          </Heading>
-          <VStack spacing={6}>
-            <AllIncidents vehicle={vehicle} />
-          </VStack>
-        </Box>
 
         <Box mt={8}>
           <Heading fontSize="lg" fontWeight="semibold" mb={4}>
@@ -216,6 +208,15 @@ export const EditVehicle = ({}: EditVehicleProps) => {
             bucket="dateien_fahrzeuge"
             rootFolder={vehicle.license_plate!}
           />
+        </Box>
+
+        <Box mt={8}>
+          <Heading fontSize="lg" fontWeight="semibold" my={4}>
+            <Icon mr={2} as={LuWrench} /> Schadensmeldungen
+          </Heading>
+          <VStack spacing={6}>
+            <AllIncidents vehicle={vehicle} />
+          </VStack>
         </Box>
       </Box>
     </Container>
