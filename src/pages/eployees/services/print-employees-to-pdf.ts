@@ -3,7 +3,7 @@ import { Tables } from "../../../utils/database/types";
 import dayjs from "dayjs";
 import autoTable from "jspdf-autotable";
 
-export function printEmployeesToPdf(employees: Tables<"employees">[]) {
+export async function printEmployeesToPdf(employees: Tables<"employees">[]) {
   const pdf = new jsPDF({ orientation: "landscape" });
 
   const rows = employees.map((empl) => [
@@ -23,7 +23,7 @@ export function printEmployeesToPdf(employees: Tables<"employees">[]) {
     empl.tax_level ?? "-",
   ]);
 
-  autoTable(pdf, {
+  await autoTable(pdf, {
     head: [
       [
         "Personalnummer",
@@ -48,5 +48,5 @@ export function printEmployeesToPdf(employees: Tables<"employees">[]) {
     },
   });
 
-  pdf.save("mitarbeiter-tabelle.pdf");
+  await pdf.save("mitarbeiter-tabelle.pdf");
 }

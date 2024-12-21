@@ -3,7 +3,7 @@ import autoTable from "jspdf-autotable";
 import { Vehicles } from "../../../backend-queries/query/get-all-vehicles";
 import { mapVehicleState } from "../../../components/vehicels/services/map-vehicle-state";
 
-export function printVehiclesToPdf(vehicles: Vehicles) {
+export async function printVehiclesToPdf(vehicles: Vehicles) {
   const pdf = new jsPDF({ orientation: "landscape" });
 
   const rows = vehicles.map((vehcl) => [
@@ -16,7 +16,7 @@ export function printVehiclesToPdf(vehicles: Vehicles) {
     vehcl.next_service_km ?? "-",
   ]);
 
-  autoTable(pdf, {
+  await autoTable(pdf, {
     head: [
       [
         "FIN",
@@ -38,5 +38,5 @@ export function printVehiclesToPdf(vehicles: Vehicles) {
     },
   });
 
-  pdf.save("fahrzeuge.pdf");
+  await pdf.save("fahrzeuge.pdf");
 }

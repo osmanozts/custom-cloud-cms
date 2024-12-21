@@ -15,6 +15,8 @@ type AllVehiclesProps = {};
 export function AllVehicles({}: AllVehiclesProps) {
   const navigate = useNavigate();
 
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+
   const [vehicles, setVehicles] = useState<Vehicles>([]);
 
   const [searchString, setSearchString] = useState<string>("");
@@ -134,8 +136,18 @@ export function AllVehicles({}: AllVehiclesProps) {
           alignSelf="flex-end"
           leftIcon={<LuDownload />}
           color="invertedTextColor"
-          onClick={() => printVehiclesToPdf(vehicles)}
           px={4}
+          isLoading={isLoading}
+          onClick={async () => {
+            setIsLoading(true);
+            try {
+              await printVehiclesToPdf(vehicles);
+            } catch (e) {
+              throw new Error(`Error downloading pdf: ${e}`);
+            } finally {
+              setIsLoading(false);
+            }
+          }}
         >
           <Text>PDF Herunterladen</Text>
         </Button>

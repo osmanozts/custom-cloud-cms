@@ -15,8 +15,12 @@ interface AllEmployeesProps {}
 export const AllEmployees: React.FC<AllEmployeesProps> = () => {
   const navigate = useNavigate();
 
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+
   const [employees, setEmployees] = useState<EmployeeWithProfile[]>([]);
+
   const [searchString, setSearchString] = useState<string>("");
+
   const [departmentFilter, setDepartmentFilter] = useState<string | null>(null);
   const [statusFilter, setStatusFilter] = useState<string | null>(null);
   const [locationFilter, setLocationFilter] = useState<string | null>(null);
@@ -168,7 +172,17 @@ export const AllEmployees: React.FC<AllEmployeesProps> = () => {
           alignSelf="flex-end"
           leftIcon={<LuDownload />}
           color="invertedTextColor"
-          onClick={() => printEmployeesToPdf(employees)}
+          isLoading={isLoading}
+          onClick={async () => {
+            setIsLoading(true);
+            try {
+              await printEmployeesToPdf(employees);
+            } catch (e) {
+              throw new Error(`Error downloading pdf: ${e}`);
+            } finally {
+              setIsLoading(false);
+            }
+          }}
           px={4}
         >
           <Text>PDF Herunterladen</Text>
