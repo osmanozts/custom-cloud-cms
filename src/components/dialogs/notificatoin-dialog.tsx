@@ -25,7 +25,7 @@ import {
   notificationListener,
   getAllNotifications,
 } from "../../backend-queries";
-import { Notifications } from "../../backend-queries/query/get-all-notifications";
+import { Notifications } from "../../backend-queries/query/notifications/get-all-notifications";
 import { LuBell } from "react-icons/lu";
 import { readNotifactions } from "../../backend-queries/update/read-notifications";
 
