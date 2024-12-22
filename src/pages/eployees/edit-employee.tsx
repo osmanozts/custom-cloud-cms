@@ -38,7 +38,6 @@ export const EditEmployee = ({}: EditEmployeeProps) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const [isSaveDisabled, setIsSaveDisabled] = useState<boolean>(true);
-  console.log("🚀 ~ setIsSaveDisabled:", setIsSaveDisabled);
 
   useEffect(() => {
     const profileId = searchParams.get("profile_id") ?? "";

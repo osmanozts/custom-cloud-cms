@@ -8,8 +8,7 @@ import {
   Text,
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
-import { FaUpload } from "react-icons/fa";
-import { LuUser } from "react-icons/lu";
+import { LuUpload, LuUser } from "react-icons/lu";
 import supabase from "../../utils/supabase";
 
 interface EmployeeProfilePicProps {
@@ -27,24 +26,37 @@ export const EmployeeProfilePic = ({
   useEffect(() => {
     const fetchProfilePic = async () => {
       setIsLoading(true);
-      const { data, error } = await supabase.storage
-        .from("dateien_mitarbeiter")
-        .list(`${employee_id}`);
 
-      if (error) {
-        console.error(error);
-        setIsLoading(false);
-        return;
-      }
-      if (data && data.length > 0) {
-        const { data: file } = await supabase.storage
+      try {
+        // Überprüfe, ob die Datei existiert
+        const { data, error } = await supabase.storage
           .from("dateien_mitarbeiter")
-          .createSignedUrl(`${employee_id}/profile_pic.jpg`, 180 * 3);
-        if (file) setProfilePicUrl(file?.signedUrl);
-      } else {
-        setProfilePicUrl(null);
+          .list(employee_id);
+
+        if (error) throw error;
+
+        const profilePicExists = data?.some(
+          (file) => file.name === "profile_pic.jpg"
+        );
+
+        if (profilePicExists) {
+          const { data: signedUrlData, error: urlError } =
+            await supabase.storage
+              .from("dateien_mitarbeiter")
+              .createSignedUrl(`${employee_id}/profile_pic.jpg`, 180 * 3);
+
+          if (urlError) throw urlError;
+
+          setProfilePicUrl(signedUrlData?.signedUrl || null);
+        } else {
+          setProfilePicUrl(null);
+        }
+      } catch (err) {
+        console.error("Fehler beim Abrufen des Profilbilds:", err);
+        setProfilePicUrl(null); // Fallback, wenn ein Fehler auftritt
+      } finally {
+        setIsLoading(false);
       }
-      setIsLoading(false);
     };
 
     fetchProfilePic();
@@ -58,23 +70,25 @@ export const EmployeeProfilePic = ({
 
     setIsLoading(true);
 
-    const { error } = await supabase.storage
-      .from("dateien_mitarbeiter")
-      .upload(`${employee_id}/profile_pic.jpg`, file, { upsert: true });
+    try {
+      const { error } = await supabase.storage
+        .from("dateien_mitarbeiter")
+        .upload(`${employee_id}/profile_pic.jpg`, file, { upsert: true });
 
-    if (error) {
-      console.error(error);
+      if (error) throw error;
+
+      const { data: signedUrlData, error: urlError } = await supabase.storage
+        .from("dateien_mitarbeiter")
+        .createSignedUrl(`${employee_id}/profile_pic.jpg`, 180 * 3);
+
+      if (urlError) throw urlError;
+
+      setProfilePicUrl(signedUrlData?.signedUrl || null);
+    } catch (err) {
+      console.error("Fehler beim Hochladen des Profilbilds:", err);
+    } finally {
       setIsLoading(false);
-      return;
     }
-
-    // Refresh the profile picture URL
-    const { data } = await supabase.storage
-      .from("dateien_mitarbeiter")
-      .createSignedUrl(`${employee_id}/profile_pic.jpg`, 180 * 3);
-    if (data) setProfilePicUrl(data?.signedUrl);
-
-    setIsLoading(false);
   };
 
   return (
@@ -101,7 +115,6 @@ export const EmployeeProfilePic = ({
           {profilePicUrl ? (
             <Image
               src={profilePicUrl}
-              alt="Profilbild"
               width="100%"
               height="100%"
               objectFit="cover"
@@ -131,7 +144,7 @@ export const EmployeeProfilePic = ({
             color="white"
             flexDirection="column"
           >
-            <Icon as={FaUpload} boxSize={6} mb={2} />
+            <Icon as={LuUpload} boxSize={6} mb={2} />
             <Text textAlign="center">Neues Bild hochladen</Text>
           </Center>
         </>

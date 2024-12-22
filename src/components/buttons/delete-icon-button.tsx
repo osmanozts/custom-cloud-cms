@@ -24,7 +24,7 @@ export const DeleteIconButton = ({
     <>
       <IconButton
         color="accentColor"
-        as={LuTrash2}
+        icon={<LuTrash2 />}
         boxSize={8}
         aria-label="delete entry"
         bg="invertedColor"
