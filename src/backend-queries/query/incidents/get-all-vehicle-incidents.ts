@@ -1,4 +1,4 @@
-import supabase from "../../utils/supabase";
+import supabase from "../../../utils/supabase";
 import { QueryData } from "@supabase/supabase-js";
 
 export const incidentsQuery = supabase

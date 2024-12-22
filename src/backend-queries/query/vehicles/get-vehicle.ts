@@ -1,5 +1,5 @@
-import supabase from "../../utils/supabase";
-import { Tables } from "../../utils/database/types";
+import supabase from "../../../utils/supabase";
+import { Tables } from "../../../utils/database/types";
 
 export async function getVehicle(
   id: string,

@@ -1,5 +1,5 @@
 import { QueryData } from "@supabase/supabase-js";
-import supabase from "../../utils/supabase";
+import supabase from "../../../utils/supabase";
 
 export const notificationsQuery = supabase.from("notifications").select(`
     *

@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { LuDownload, LuPlus } from "react-icons/lu";
 import { useNavigate } from "react-router-dom";
 import { EmployeeWithProfile } from "../../backend-queries/joins/employee-with-profile-query";
-import { getAllEmployees } from "../../backend-queries/query/get-all-employees";
+import { getAllEmployees } from "../../backend-queries/query/employees/get-all-employees";
 import { EmployeesTable, InputField } from "../../components";
 import { DefaultMenu } from "../../components/menu/default-menu";
 import { printEmployeesToPdf } from "./services/print-employees-to-pdf";

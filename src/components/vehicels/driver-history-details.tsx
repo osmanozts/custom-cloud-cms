@@ -65,23 +65,6 @@ export const DriverHistoryDetails = ({
             }}
           />
         </GridItem>
-        <GridItem colSpan={{ base: 1, md: 1 }}>
-          <Text fontWeight="bold" mb={2}>
-            Fahrt Ende (Tag)
-          </Text>
-          <InputField
-            id="end-driving-date"
-            regex={
-              /^(0[1-9]|[12]\d|3[01])\.(0[1-9]|1[0-2])\.(\d{2}|\d{4})(\s([01]\d|2[0-3]):([0-5]\d))?$/
-            }
-            regexErrorText="Bitte geben Sie ein Datum im Format '01.01.2024' ein."
-            value={driverHistory.drive_end ?? ""}
-            isDate
-            onChange={(e) => {
-              setDriverHistory({ ...driverHistory, drive_end: e });
-            }}
-          />
-        </GridItem>
 
         <GridItem colSpan={{ base: 1, md: 1 }}>
           <Text fontWeight="bold" mb={2}>

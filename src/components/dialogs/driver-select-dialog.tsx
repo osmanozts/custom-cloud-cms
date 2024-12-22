@@ -18,7 +18,7 @@ import { InputField } from "../input-field";
 
 type DriverSelectDialogProps = {
   drivers: MenuOption[];
-  onSelect: (value: string) => void;
+  onSelect?: (value: string) => void;
   selectedDriver?: string;
 };
 
@@ -39,7 +39,7 @@ export const DriverSelectDialog: React.FC<DriverSelectDialogProps> = ({
   return (
     <>
       <Button
-        onClick={onOpen}
+        onClick={onSelect ? onOpen : undefined}
         width="100%"
         variant="outline"
         bg="backgroundColor"
@@ -105,8 +105,10 @@ export const DriverSelectDialog: React.FC<DriverSelectDialogProps> = ({
             <Button
               bg="tileBgColor"
               onClick={() => {
-                onSelect(driverTemp ?? "");
-                onClose();
+                if (onSelect) {
+                  onSelect(driverTemp ?? "");
+                  onClose();
+                }
               }}
               mr={6}
               _hover={{ bg: "parcelColor", color: "invertedTextColor" }}

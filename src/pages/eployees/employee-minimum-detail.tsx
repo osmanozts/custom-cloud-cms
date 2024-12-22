@@ -18,7 +18,7 @@ import {
   getProfile,
   getVehiclesByProfile,
 } from "../../backend-queries";
-import { VehiclesMinData } from "../../backend-queries/query/get-vehicles-by-profile";
+import { VehiclesMinData } from "../../backend-queries/query/vehicles/get-vehicles-by-profile";
 import { DocumentView } from "../../components";
 import { Tables } from "../../utils/database/types";
 

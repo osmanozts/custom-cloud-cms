@@ -16,8 +16,8 @@ import { useEffect, useState } from "react";
 import { LuCar } from "react-icons/lu";
 import { useNavigate } from "react-router-dom";
 import { getMinDetailEmployees } from "../../backend-queries";
-import { Vehicles } from "../../backend-queries/query/get-all-vehicles";
-import { EmployeesMinimumDetail } from "../../backend-queries/query/get-min-detail-employees";
+import { Vehicles } from "../../backend-queries/query/vehicles/get-all-vehicles";
+import { EmployeesMinimumDetail } from "../../backend-queries/query/employees/get-min-detail-employees";
 import { DeleteIconButton } from "../buttons/delete-icon-button";
 import { mapVehicleState } from "./services/map-vehicle-state";
 

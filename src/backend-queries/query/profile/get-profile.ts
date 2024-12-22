@@ -1,5 +1,5 @@
-import { Tables } from "../../utils/database/types";
-import supabase from "../../utils/supabase";
+import { Tables } from "../../../utils/database/types";
+import supabase from "../../../utils/supabase";
 
 export async function getProfile(
   id: string,

@@ -150,7 +150,27 @@ export const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({
               ]}
               defaultValue={employee.department ?? "Wähle eine Abteilung aus"}
               onSelect={(value) =>
-                setEmployee({ ...employee, department: value })
+                setEmployee({
+                  ...employee,
+                  department: value as Enums<"departments">,
+                })
+              }
+            />
+          </FormControl>
+          <FormControl my={4}>
+            <FormLabel htmlFor="department">Standort</FormLabel>
+            <DefaultMenu
+              options={[
+                { value: "warehouse", label: "Lager" },
+                { value: "logistics", label: "Logistik" },
+                { value: "administration", label: "Verwaltung" },
+              ]}
+              defaultValue={employee.department ?? "Wähle eine Abteilung aus"}
+              onSelect={(value) =>
+                setEmployee({
+                  ...employee,
+                  location: value as Enums<"locations">,
+                })
               }
             />
           </FormControl>

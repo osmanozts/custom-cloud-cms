@@ -1,5 +1,5 @@
 import { QueryData } from "@supabase/supabase-js";
-import supabase from "../../utils/supabase";
+import supabase from "../../../utils/supabase";
 
 const employeesMinimumDetail = supabase.from("employees").select(
   `

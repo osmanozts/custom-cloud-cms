@@ -119,7 +119,7 @@ export type Database = {
           city: string | null
           created_at: string
           date_of_birth: string | null
-          department: string | null
+          department: Database["public"]["Enums"]["departments"] | null
           driver_license_end_date: string | null
           driver_license_level: string | null
           first_name: string | null
@@ -127,7 +127,7 @@ export type Database = {
           id: string
           id_card_end_date: string | null
           last_name: string | null
-          location: string | null
+          location: Database["public"]["Enums"]["locations"] | null
           mobile: string | null
           nationality: string | null
           personnel_number: string | null
@@ -142,7 +142,7 @@ export type Database = {
           city?: string | null
           created_at?: string
           date_of_birth?: string | null
-          department?: string | null
+          department?: Database["public"]["Enums"]["departments"] | null
           driver_license_end_date?: string | null
           driver_license_level?: string | null
           first_name?: string | null
@@ -150,7 +150,7 @@ export type Database = {
           id?: string
           id_card_end_date?: string | null
           last_name?: string | null
-          location?: string | null
+          location?: Database["public"]["Enums"]["locations"] | null
           mobile?: string | null
           nationality?: string | null
           personnel_number?: string | null
@@ -165,7 +165,7 @@ export type Database = {
           city?: string | null
           created_at?: string
           date_of_birth?: string | null
-          department?: string | null
+          department?: Database["public"]["Enums"]["departments"] | null
           driver_license_end_date?: string | null
           driver_license_level?: string | null
           first_name?: string | null
@@ -173,7 +173,7 @@ export type Database = {
           id?: string
           id_card_end_date?: string | null
           last_name?: string | null
-          location?: string | null
+          location?: Database["public"]["Enums"]["locations"] | null
           mobile?: string | null
           nationality?: string | null
           personnel_number?: string | null
@@ -408,6 +408,48 @@ export type Database = {
           },
         ]
       }
+      km_history: {
+        Row: {
+          created_at: string
+          driver_id: string | null
+          id: string
+          is_edited: boolean | null
+          km_age: number | null
+          vehicle_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          driver_id?: string | null
+          id?: string
+          is_edited?: boolean | null
+          km_age?: number | null
+          vehicle_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          driver_id?: string | null
+          id?: string
+          is_edited?: boolean | null
+          km_age?: number | null
+          vehicle_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "public_km_history_driver_id_fkey"
+            columns: ["driver_id"]
+            isOneToOne: false
+            referencedRelation: "employees"
+            referencedColumns: ["profile_id"]
+          },
+          {
+            foreignKeyName: "public_km_history_vehicle_id_fkey"
+            columns: ["vehicle_id"]
+            isOneToOne: false
+            referencedRelation: "vehicles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       notifications: {
         Row: {
           created_at: string
@@ -501,7 +543,7 @@ export type Database = {
           km_age: number | null
           last_service_date: string | null
           license_plate: string | null
-          location: string | null
+          location: Database["public"]["Enums"]["locations"] | null
           make: string | null
           model: string | null
           next_service_date: string | null
@@ -519,7 +561,7 @@ export type Database = {
           km_age?: number | null
           last_service_date?: string | null
           license_plate?: string | null
-          location?: string | null
+          location?: Database["public"]["Enums"]["locations"] | null
           make?: string | null
           model?: string | null
           next_service_date?: string | null
@@ -537,7 +579,7 @@ export type Database = {
           km_age?: number | null
           last_service_date?: string | null
           license_plate?: string | null
-          location?: string | null
+          location?: Database["public"]["Enums"]["locations"] | null
           make?: string | null
           model?: string | null
           next_service_date?: string | null
@@ -575,7 +617,9 @@ export type Database = {
         | "employee"
         | "vehicle_manager"
         | "employee_manager"
+      departments: "administration" | "logistics" | "warehouse"
       employee_state: "active" | "inactive" | "pipeline"
+      locations: "DNX4"
       vehicle_state: "active" | "in_service" | "decommissioned"
     }
     CompositeTypes: {

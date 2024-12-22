@@ -34,6 +34,8 @@ export { IncidentDetails } from "./vehicels/incident-details";
 export { VehicleProfilePic } from "./vehicels/vehicle-profile-pic";
 export { DriverHistoryTable } from "./vehicels/driver-history-table";
 export { DriverHistoryDetails } from "./vehicels/driver-history-details";
+export { KmHistoryTable } from "./vehicels/km-history-table";
+export { KmHistoryDetails } from "./vehicels/km-history-details";
 export { CreateVehicleForm } from "./vehicels/create-vehicle-form";
 export { IncidentPDF } from "./vehicels/incident-pdf";
 

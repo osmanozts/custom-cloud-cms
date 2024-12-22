@@ -1,4 +1,4 @@
-import supabase from "../../utils/supabase";
+import supabase from "../../../utils/supabase";
 
 export const createIncident = async (vehicle_id: string) => {
   const now = new Date();

@@ -1,6 +1,6 @@
 import { FormControl, FormLabel, Grid, Stack, Heading } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
-import { EmployeesMinimumDetail } from "../../backend-queries/query/get-min-detail-employees";
+import { EmployeesMinimumDetail } from "../../backend-queries/query/employees/get-min-detail-employees";
 import { Enums, Tables } from "../../utils/database/types";
 import { DriverSelectDialog } from "../dialogs/driver-select-dialog";
 import { InputField } from "../input-field";
@@ -135,7 +135,9 @@ export const VehicleDetails = ({
           <DefaultMenu
             options={[{ value: "DNX4", label: "DNX4 - Düsseldorf" }]}
             defaultValue={vehicle.location ?? ""}
-            onSelect={(value) => setVehicle({ ...vehicle, location: value })}
+            onSelect={(value) =>
+              setVehicle({ ...vehicle, location: value as Enums<"locations"> })
+            }
           />
         </FormControl>
       </Grid>

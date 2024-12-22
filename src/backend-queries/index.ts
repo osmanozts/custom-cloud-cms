@@ -1,21 +1,31 @@
+export { getProfile } from "./query/profile/get-profile";
+
 export { employeesWithProfileQuery } from "./joins/employees-with-profile-query";
 export { singleEmployeeWithProfile } from "./joins/employee-with-profile-query";
-export { getVehicleDriverHistories } from "./query/get-vehicle-histories";
-export { getProfile } from "./query/get-profile";
-export { getDriverHistory } from "./query/get-driver-history";
-export { getEmployee } from "./query/get-employee";
-export { getAllEmployees } from "./query/get-all-employees";
-export { getMinDetailEmployees } from "./query/get-min-detail-employees";
-export { getAllVehicles } from "./query/get-all-vehicles";
-export { getVehiclesByProfile } from "./query/get-vehicles-by-profile";
-export { getAllVehicleIncidents } from "./query/get-all-vehicle-incidents";
-export { getIncident } from "./query/get-incident";
-export { getVehicle } from "./query/get-vehicle";
-export { getAllNotifications } from "./query/get-all-notifications";
 
-export { createIncident } from "./create/create-incident";
-export { createIncidentEmployee } from "./create/create-incident-employee";
-export { createDriverHistoryManuel } from "./create/create-driver-history-manuel";
+export { getMinDetailEmployees } from "./query/employees/get-min-detail-employees";
+export { getEmployee } from "./query/employees/get-employee";
+export { getAllEmployees } from "./query/employees/get-all-employees";
+
+export { getVehicleDriverHistories } from "./query/driver_history/get-driver-histories";
+export { getDriverHistory } from "./query/driver_history/get-driver-history";
+
+export { getKmHistory } from "./query/km_history/get-km-history";
+export { getKmHistories } from "./query/km_history/get-km-histories";
+
+export { getAllVehicles } from "./query/vehicles/get-all-vehicles";
+export { getVehiclesByProfile } from "./query/vehicles/get-vehicles-by-profile";
+export { getVehicle } from "./query/vehicles/get-vehicle";
+
+export { getAllVehicleIncidents } from "./query/incidents/get-all-vehicle-incidents";
+export { getIncident } from "./query/incidents/get-incident";
+
+export { getAllNotifications } from "./query/notifications/get-all-notifications";
+
+export { createIncident } from "./create/incidents/create-incident";
+export { createIncidentEmployee } from "./create/incidents/create-incident-employee";
+export { createDriverHistoryManuel } from "./create/driver_history/create-driver-history-manuel";
+export { createKmHistory } from "./create/km_history/create-km-history";
 
 export { updateEmployee } from "./update/update-employee";
 export { updateProfile } from "./update/update-profile";

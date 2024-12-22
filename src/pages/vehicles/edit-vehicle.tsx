@@ -11,19 +11,27 @@ import {
   VStack,
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
-import { LuCar, LuCheck, LuWrench, LuX } from "react-icons/lu";
+import {
+  LuCar,
+  LuCheck,
+  LuFile,
+  LuPersonStanding,
+  LuWrench,
+  LuX,
+} from "react-icons/lu";
 import { useNavigate, useSearchParams } from "react-router-dom";
 
 import { RepeatClockIcon } from "@chakra-ui/icons";
 import dayjs from "dayjs";
 import { useDispatch } from "react-redux";
 import {
+  createKmHistory,
   getMinDetailEmployees,
   getVehicle,
   updateVehicle,
 } from "../../backend-queries";
-import { createDriverHistory } from "../../backend-queries/create/create-driver-history";
-import { EmployeesMinimumDetail } from "../../backend-queries/query/get-min-detail-employees";
+import { createDriverHistory } from "../../backend-queries/create/driver_history/create-driver-history";
+import { EmployeesMinimumDetail } from "../../backend-queries/query/employees/get-min-detail-employees";
 import {
   AllIncidents,
   DocumentManager,
@@ -42,6 +50,7 @@ export const EditVehicle = ({}: EditVehicleProps) => {
 
   const [vehicle, setVehicle] = useState<Tables<"vehicles"> | null>(null);
   const [oldDriverId, setOldDriverId] = useState<string | null>(null);
+  const [oldKmAge, setOldKmAge] = useState<number | null>(null);
 
   const [drivers, setDrivers] = useState<EmployeesMinimumDetail>([]);
 
@@ -65,7 +74,7 @@ export const EditVehicle = ({}: EditVehicleProps) => {
         };
 
         setOldDriverId(newVehicle.profile_id);
-
+        setOldKmAge(newVehicle.km_age);
         setVehicle(mappedVehicle);
       });
     }
@@ -91,6 +100,13 @@ export const EditVehicle = ({}: EditVehicleProps) => {
       await updateVehicle(updatedVehicle);
       if (vehicle.profile_id && vehicle.profile_id !== oldDriverId) {
         await createDriverHistory(vehicle.profile_id, vehicle.id);
+      }
+      if (vehicle.profile_id && vehicle.km_age && vehicle.km_age !== oldKmAge) {
+        await createKmHistory(
+          vehicle.km_age,
+          vehicle.profile_id ?? "",
+          vehicle.id
+        );
       }
       dispatch(
         setToast({
@@ -176,25 +192,38 @@ export const EditVehicle = ({}: EditVehicleProps) => {
             }}
           />
         </VStack>
+        <Heading fontSize="lg" fontWeight="semibold" mb={4} mt={8}>
+          <RepeatClockIcon mr={2} />
+          Historien
+        </Heading>
         <Stack
           bg="tileBgColor"
           justifyContent="flex-start"
           alignItems="flex-start"
           p={8}
-          my={8}
         >
           <VStack spacing={6}>
-            <Flex alignItems="flex-end" height="100%">
+            <Flex alignItems="flex-end" height="100%" gap={4}>
               <Button
                 borderWidth={1}
-                width="100%"
+                width={200}
                 bg="backgroundColor"
-                leftIcon={<RepeatClockIcon />}
+                leftIcon={<LuPersonStanding />}
                 onClick={() =>
                   navigate("/driver-history?vehicle_id=" + vehicle.id)
                 }
               >
                 <Text>Fahrer Historie</Text>
+              </Button>
+
+              <Button
+                borderWidth={1}
+                width={250}
+                bg="backgroundColor"
+                leftIcon={<LuCar />}
+                onClick={() => navigate("/km-history?vehicle_id=" + vehicle.id)}
+              >
+                <Text>Kilometerstand Historie</Text>
               </Button>
             </Flex>
           </VStack>
@@ -202,6 +231,7 @@ export const EditVehicle = ({}: EditVehicleProps) => {
 
         <Box mt={8}>
           <Heading fontSize="lg" fontWeight="semibold" mb={4}>
+            <Icon mr={2} as={LuFile} />
             Fahrzeug Dateien
           </Heading>
           <DocumentManager

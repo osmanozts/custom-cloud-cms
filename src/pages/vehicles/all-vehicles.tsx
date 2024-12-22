@@ -5,7 +5,7 @@ import { LuDownload, LuPlus } from "react-icons/lu";
 import { SearchIcon } from "@chakra-ui/icons";
 import { useNavigate } from "react-router-dom";
 import { deleteVehicle, getAllVehicles } from "../../backend-queries";
-import { Vehicles } from "../../backend-queries/query/get-all-vehicles";
+import { Vehicles } from "../../backend-queries/query/vehicles/get-all-vehicles";
 import { InputField, VehiclesTable } from "../../components";
 import { DefaultMenu } from "../../components/menu/default-menu";
 import { printVehiclesToPdf } from "./services/print-vehicles-to-pdf";

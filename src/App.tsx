@@ -23,6 +23,8 @@ import {
   EmployeeMinimumDetail,
   Login,
 } from "./pages";
+import { AllKmHistory } from "./pages/vehicles/all-km-history";
+import { EditKmHistory } from "./pages/vehicles/edit-km-history";
 
 function App() {
   return (
@@ -38,14 +40,16 @@ function App() {
           <Route element={<VehicleManagerRoute />}>
             <Route path="/vehicle-management" element={<AllVehicles />} />
             <Route path="/create-vehicle" element={<CreateVehicle />} />
-            <Route path="/driver-history" element={<AllDriverHistory />} />
             <Route path="/edit-vehicle" element={<EditVehicle />} />
             <Route path="/edit-vehicle" element={<EditVehicle />} />
             <Route path="/edit-incident" element={<EditIncident />} />
+            <Route path="/driver-history" element={<AllDriverHistory />} />
             <Route
               path="/edit-driver-history"
               element={<EditDriverHistory />}
             />
+            <Route path="/edit-km-history" element={<EditKmHistory />} />
+            <Route path="/km-history" element={<AllKmHistory />} />
           </Route>
           <Route path="/document-management" element={<AllDocuments />} />
         </Route>

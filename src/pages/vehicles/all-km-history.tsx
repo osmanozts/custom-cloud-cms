@@ -6,16 +6,16 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import {
   createDriverHistoryManuel,
   deleteDriverHistory,
+  getKmHistories,
 } from "../../backend-queries";
-import { JoinedDriverHistory } from "../../backend-queries/joins/joined-driver-history";
-import { getVehicleDriverHistories } from "../../backend-queries/query/driver_history/get-driver-histories";
-import { DriverHistoryTable, InputField } from "../../components";
+import { InputField, KmHistoryTable } from "../../components";
 import { useAuth } from "../../providers/auth-provider";
 import { setToast } from "../../redux/toast-slice";
 import { AppDispatch } from "../../redux/store";
 import { useDispatch } from "react-redux";
+import { JoinedKmHistory } from "../../backend-queries/joins/joined-km-history";
 
-export function AllDriverHistory() {
+export function AllKmHistory() {
   const dispatch: AppDispatch = useDispatch();
 
   const navigate = useNavigate();
@@ -24,7 +24,7 @@ export function AllDriverHistory() {
   const { user } = useAuth();
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  const [historyData, setHistoryData] = useState<JoinedDriverHistory>([]);
+  const [historyData, setHistoryData] = useState<JoinedKmHistory>([]);
   const [searchString, setSearchString] = useState<string>("");
 
   useEffect(() => {
@@ -33,18 +33,17 @@ export function AllDriverHistory() {
 
   const fetchedData = async () => {
     if (searchString.trim() === "") {
-      await getVehicleDriverHistories(
+      await getKmHistories(
         searchParams.get("vehicle_id") ?? "",
-        (fetchedData: JoinedDriverHistory) => setHistoryData(fetchedData)
+        (fetchedData: JoinedKmHistory) => setHistoryData(fetchedData)
       );
     } else {
       const filteredData = historyData.filter(
         (data) =>
+          data.km_age?.toString().includes(searchString) ||
           data.employees?.first_name?.includes(searchString) ||
           data.employees?.last_name?.includes(searchString) ||
-          data.employees?.personnel_number?.includes(searchString) ||
-          data.drive_start?.includes(searchString) ||
-          data.drive_end?.includes(searchString)
+          data.employees?.personnel_number?.includes(searchString)
       );
       setHistoryData(filteredData);
     }
@@ -107,7 +106,7 @@ export function AllDriverHistory() {
                     })
                   );
                   throw new Error(
-                    `Fehler beim manuellen Erstellen einer Driver History: ${e}`
+                    `Fehler beim manuellen Erstellen einer Kilometerstand History: ${e}`
                   );
                 } finally {
                   setIsLoading(false);
@@ -125,7 +124,7 @@ export function AllDriverHistory() {
           </Flex>
         </Flex>
 
-        <DriverHistoryTable
+        <KmHistoryTable
           historyData={historyData}
           deleteDriverHistory={async (id) => {
             await deleteDriverHistory(id);

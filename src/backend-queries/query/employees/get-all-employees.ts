@@ -1,5 +1,5 @@
-import supabase from "../../utils/supabase";
-import { EmployeesWithProfile } from "../joins/employees-with-profile-query";
+import supabase from "../../../utils/supabase";
+import { EmployeesWithProfile } from "../../joins/employees-with-profile-query";
 
 export async function getAllEmployees(
   successCallback: (allEmployees: EmployeesWithProfile) => void

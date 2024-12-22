@@ -1,6 +1,6 @@
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
-import { Vehicles } from "../../../backend-queries/query/get-all-vehicles";
+import { Vehicles } from "../../../backend-queries/query/vehicles/get-all-vehicles";
 import { mapVehicleState } from "../../../components/vehicels/services/map-vehicle-state";
 
 export async function printVehiclesToPdf(vehicles: Vehicles) {
