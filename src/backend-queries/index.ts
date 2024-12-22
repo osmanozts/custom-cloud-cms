@@ -54,5 +54,6 @@ export { moveFilesOperation } from "./storage/operations/move-files";
 export { fetchAllFolders } from "./storage/operations/fetch-all-folders";
 export { createFolderOperation } from "./storage/operations/create-folder";
 export { downloadSelectedAsZip } from "./storage/operations/download-selected-as-zip";
+export { renameFileOperation } from "./storage/operations/rename-file-operation";
 
 export { notificationListener } from "./listener/notificatoin-listener";

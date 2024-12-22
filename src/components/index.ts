@@ -19,6 +19,7 @@ export { NotificationDialog } from "./dialogs/notificatoin-dialog";
 export { FeatureInConstructionDialog } from "./dialogs/feature-construction-dialog";
 export { CreateNewFolderDialog } from "./dialogs/create-new-folder-dialog";
 export { DeleteConfirmationDialog } from "./dialogs/delete-confirmation-dialog";
+export { RenameFileDialog } from "./dialogs/rename-file-dialog";
 
 export { EmployeeDetails } from "./employees/employee-details";
 export { EmployeeProfilePic } from "./employees/employee-profile-pic";

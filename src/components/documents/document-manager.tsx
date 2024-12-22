@@ -28,6 +28,7 @@ import {
   fetchAllFolders,
   getFilesOperation,
   moveFilesOperation,
+  renameFileOperation,
 } from "../../backend-queries";
 import { AppDispatch } from "../../redux/store";
 import { setToast } from "../../redux/toast-slice";
@@ -36,6 +37,7 @@ import { CreateNewFolderDialog } from "../dialogs/create-new-folder-dialog";
 import { DeleteConfirmationDialog } from "../dialogs/delete-confirmation-dialog";
 import { MoveFileDialog } from "../dialogs/move-file-dialog";
 import { MultiFileUpload } from "./multi-file-upload";
+import { RenameFileDialog } from "../dialogs/rename-file-dialog";
 
 interface DocumentManagerProps {
   bucket: string;
@@ -55,6 +57,10 @@ export const DocumentManager = ({
 
   const [files, setFiles] = useState<any[]>([]);
   const [selectedFiles, setSelectedFiles] = useState<any[]>([]);
+
+  const [fileToRename, setFileToRename] = useState<any>(null);
+
+  const [isRenameDialogOpen, setIsRenameDialogOpen] = useState(false);
   const [isCreateFolderDialogOpen, setIsCreateFolderDialogOpen] =
     useState(false);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
@@ -217,6 +223,29 @@ export const DocumentManager = ({
     }
   };
 
+  const handleRenameFile = async (newName: string) => {
+    try {
+      await renameFileOperation(bucket, fileToRename.path, newName); // Rename Operation
+      setFileToRename(null);
+      await fetchFiles(currentFolder);
+      dispatch(
+        setToast({
+          title: "Erfolgreich!",
+          description: "Datei erfolgreich umbenannt.",
+          status: "success",
+        })
+      );
+    } catch (error) {
+      dispatch(
+        setToast({
+          title: "Fehler!",
+          description: "Beim Umbenennen der Datei ist ein Fehler aufgetreten.",
+          status: "error",
+        })
+      );
+    }
+  };
+
   return (
     <Box p={4} borderWidth={1} borderRadius="md" bg="tileBgColor">
       <Breadcrumb mb={4} fontSize="sm">
@@ -294,14 +323,12 @@ export const DocumentManager = ({
           {files.map((file) => (
             <ListItem
               key={file.file_name}
-              bg="invertedColor"
               display="flex"
               alignItems="center"
               gap={4}
               p={2}
-              borderWidth={1}
-              borderRadius="md"
-              _hover={{ bg: "hoverColor" }}
+              mb={2}
+              bg="invertedColor"
               cursor="pointer"
             >
               <Checkbox
@@ -326,15 +353,24 @@ export const DocumentManager = ({
                     : handleFileClick(file.path)
                 }
               >
-                {file.isFolder ? (
-                  <FiFolder size={24} color="textColor" />
-                ) : (
-                  <FiFile size={24} color="textColor" />
-                )}
+                {file.isFolder ? <FiFolder size={24} /> : <FiFile size={24} />}
                 <Text flex={1} isTruncated>
                   {file.file_name}
                 </Text>
               </Flex>
+              {!file.isFolder && (
+                <Button
+                  size="sm"
+                  bg="darkColor"
+                  color="invertedColor"
+                  onClick={() => {
+                    setFileToRename(file);
+                    setIsRenameDialogOpen(true);
+                  }}
+                >
+                  Umbenennen
+                </Button>
+              )}
             </ListItem>
           ))}
         </List>
@@ -361,6 +397,13 @@ export const DocumentManager = ({
           })) ?? []
         }
         onSelectFolder={handleFolderSelection}
+      />
+
+      <RenameFileDialog
+        isOpen={isRenameDialogOpen}
+        onClose={() => setIsRenameDialogOpen(false)}
+        fileName={fileToRename?.file_name || ""}
+        onRename={handleRenameFile}
       />
     </Box>
   );
