@@ -20,6 +20,7 @@ import { Vehicles } from "../../backend-queries/query/vehicles/get-all-vehicles"
 import { EmployeesMinimumDetail } from "../../backend-queries/query/employees/get-min-detail-employees";
 import { DeleteIconButton } from "../buttons/delete-icon-button";
 import { mapVehicleState } from "./services/map-vehicle-state";
+import { useAuth } from "../../providers/auth-provider";
 
 interface VehiclesTableProps {
   vehicles: Vehicles;
@@ -31,6 +32,7 @@ export const VehiclesTable = ({
   deleteVehicle,
 }: VehiclesTableProps) => {
   const navigate = useNavigate();
+  const { authRole } = useAuth();
 
   const [minEmployees, setMinEmployees] = useState<EmployeesMinimumDetail>([]);
 
@@ -144,6 +146,7 @@ export const VehiclesTable = ({
                   onDelete={async (id) => {
                     await deleteVehicle(id);
                   }}
+                  authRole={authRole}
                 />
               </Td>
               <Td>

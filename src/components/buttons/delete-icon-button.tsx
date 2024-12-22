@@ -5,15 +5,18 @@ import { DeleteConfirmationDialog } from "../dialogs/delete-confirmation-dialog"
 import { AppDispatch } from "../../redux/store";
 import { useDispatch } from "react-redux";
 import { setToast } from "../../redux/toast-slice";
+import { Enums } from "../../utils/database/types";
 
 interface DeleteIconButtonProps {
   clickedItem: string;
-  onDelete: (id: string) => Promise<void>; // Funktion, die beim Löschen aufgerufen wird
+  onDelete: (id: string) => Promise<void>;
+  authRole: Enums<"auth-role"> | null;
 }
 
 export const DeleteIconButton = ({
   clickedItem,
   onDelete,
+  authRole,
 }: DeleteIconButtonProps) => {
   const dispatch: AppDispatch = useDispatch();
 
@@ -29,6 +32,7 @@ export const DeleteIconButton = ({
         aria-label="delete entry"
         bg="invertedColor"
         padding={2}
+        isDisabled={authRole !== "superadmin"}
         onClick={(e) => {
           setClickedId(clickedItem);
           e.stopPropagation(); // Stoppt die Weiterleitung des Klick-Ereignisses

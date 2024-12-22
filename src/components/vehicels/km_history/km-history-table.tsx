@@ -17,6 +17,7 @@ import { LuPencil } from "react-icons/lu";
 import { useNavigate } from "react-router-dom";
 import { DeleteIconButton } from "../../buttons/delete-icon-button";
 import { JoinedKmHistory } from "../../../backend-queries/joins/joined-km-history";
+import { useAuth } from "../../../providers/auth-provider";
 
 type KmHistoryTableProps = {
   historyData: JoinedKmHistory;
@@ -28,6 +29,7 @@ export function KmHistoryTable({
   deleteDriverHistory,
 }: KmHistoryTableProps) {
   const navigate = useNavigate();
+  const { authRole } = useAuth();
 
   return (
     <Box width="100%">
@@ -61,6 +63,7 @@ export function KmHistoryTable({
                     onDelete={async (id) => {
                       await deleteDriverHistory(id);
                     }}
+                    authRole={authRole}
                   />
                 </Td>
                 <Td>

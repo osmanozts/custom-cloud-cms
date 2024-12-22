@@ -1,15 +1,19 @@
 import {
   Box,
+  Flex,
   FormControl,
   FormLabel,
   Heading,
+  Icon,
   SimpleGrid,
+  Text,
 } from "@chakra-ui/react";
 import { useAuth } from "../../providers/auth-provider";
 import { Enums, Tables } from "../../utils/database/types";
 import { InputField } from "../input-field";
 import { DefaultMenu } from "../menu/default-menu";
 import { EmployeeProfilePic } from "./employee-profile-pic";
+import { LuAtSign } from "react-icons/lu";
 
 type EmployeeDetailsProps = {
   employee: Tables<"employees">;
@@ -29,20 +33,24 @@ export const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({
   return (
     <Box bg="tileBgColor" borderWidth="1px" borderRadius="lg" p={6} mb={6}>
       <EmployeeProfilePic employee_id={employee.personnel_number ?? ""} />
+
+      <Box mt={8}>
+        <Flex gap={2} mb={2} fontWeight="bold">
+          <Icon as={LuAtSign} />
+          <Text>Personalnummer</Text>
+        </Flex>
+        <InputField
+          id="personnel_number"
+          value={employee.personnel_number ?? ""}
+          isDisabled
+        />
+      </Box>
       <SimpleGrid columns={{ base: 1, md: 2 }} spacing={6} mt={6}>
         {/* Persönliche Daten */}
         <Box>
           <Heading size="sm" mb={4}>
             Persönliche Daten
           </Heading>
-          <FormControl my={4}>
-            <FormLabel htmlFor="firstName">Personalnummer</FormLabel>
-            <InputField
-              id="personnel_number"
-              value={employee.personnel_number ?? ""}
-              isDisabled
-            />
-          </FormControl>
           <FormControl my={4}>
             <FormLabel htmlFor="firstName">Vorname</FormLabel>
             <InputField

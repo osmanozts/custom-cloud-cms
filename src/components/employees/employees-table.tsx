@@ -17,6 +17,7 @@ import { LuUser } from "react-icons/lu";
 import { useNavigate } from "react-router-dom";
 import { EmployeeWithProfile } from "../../backend-queries/joins/employee-with-profile-query";
 import { DeleteIconButton } from "../buttons/delete-icon-button";
+import { useAuth } from "../../providers/auth-provider";
 
 interface EmployeesTableProps {
   employees: EmployeeWithProfile[];
@@ -28,6 +29,7 @@ export const EmployeesTable: React.FC<EmployeesTableProps> = ({
   onDelete,
 }) => {
   const navigate = useNavigate();
+  const { authRole } = useAuth();
 
   const isDateExpiring = (date: string | null, daysBeforeExpire: number) => {
     if (!date) return false;
@@ -96,6 +98,7 @@ export const EmployeesTable: React.FC<EmployeesTableProps> = ({
                   onDelete={async (id) => {
                     onDelete(id);
                   }}
+                  authRole={authRole}
                 />
               </Td>
               <Td>

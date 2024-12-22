@@ -13,6 +13,7 @@ import { AppDispatch } from "../../../redux/store";
 import { setToast } from "../../../redux/toast-slice";
 import { Tables } from "../../../utils/database/types";
 import { DeleteIconButton } from "../../buttons/delete-icon-button";
+import { useAuth } from "../../../providers/auth-provider";
 
 type AllIncidentsProps = {
   vehicle: Tables<"vehicles">;
@@ -20,6 +21,7 @@ type AllIncidentsProps = {
 
 export const AllIncidents = ({ vehicle }: AllIncidentsProps) => {
   const dispatch: AppDispatch = useDispatch();
+  const { authRole } = useAuth();
 
   const [incidents, setIncidents] = useState<Incidents>([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -105,6 +107,7 @@ export const AllIncidents = ({ vehicle }: AllIncidentsProps) => {
                   setIncidents(incidents)
                 );
               }}
+              authRole={authRole}
             />
           </Flex>
         ))

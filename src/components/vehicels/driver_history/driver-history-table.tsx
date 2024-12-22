@@ -17,6 +17,7 @@ import { LuPencil } from "react-icons/lu";
 import { useNavigate } from "react-router-dom";
 import { JoinedDriverHistory } from "../../../backend-queries/joins/joined-driver-history";
 import { DeleteIconButton } from "../../buttons/delete-icon-button";
+import { useAuth } from "../../../providers/auth-provider";
 
 type DriverHistoryTableProps = {
   historyData: JoinedDriverHistory;
@@ -28,6 +29,7 @@ export function DriverHistoryTable({
   deleteDriverHistory,
 }: DriverHistoryTableProps) {
   const navigate = useNavigate();
+  const { authRole } = useAuth();
 
   return (
     <Box width="100%">
@@ -59,6 +61,7 @@ export function DriverHistoryTable({
                     onDelete={async (id) => {
                       await deleteDriverHistory(id);
                     }}
+                    authRole={authRole}
                   />
                 </Td>
                 <Td>
