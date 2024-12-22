@@ -29,15 +29,15 @@ export { ToastListener } from "./toasts/toast-listener";
 
 export { VehiclesTable } from "./vehicels/vehicles-table";
 export { VehicleDetails } from "./vehicels/vehicle-details";
-export { AllIncidents } from "./vehicels/all-incidents";
-export { IncidentDetails } from "./vehicels/incident-details";
+export { AllIncidents } from "./vehicels/incidents/all-incidents";
+export { IncidentDetails } from "./vehicels/incidents/incident-details";
 export { VehicleProfilePic } from "./vehicels/vehicle-profile-pic";
-export { DriverHistoryTable } from "./vehicels/driver-history-table";
-export { DriverHistoryDetails } from "./vehicels/driver-history-details";
-export { KmHistoryTable } from "./vehicels/km-history-table";
-export { KmHistoryDetails } from "./vehicels/km-history-details";
+export { DriverHistoryTable } from "./vehicels/driver_history/driver-history-table";
+export { DriverHistoryDetails } from "./vehicels/driver_history/driver-history-details";
+export { KmHistoryTable } from "./vehicels/km_history/km-history-table";
+export { KmHistoryDetails } from "./vehicels/km_history/km-history-details";
 export { CreateVehicleForm } from "./vehicels/create-vehicle-form";
-export { IncidentPDF } from "./vehicels/incident-pdf";
+export { IncidentPDF } from "./vehicels/incidents/incident-pdf";
 
 export { CustomCalendar } from "./calendars/custom-calendar";
 

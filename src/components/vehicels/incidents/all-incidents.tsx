@@ -7,12 +7,12 @@ import {
   createIncident,
   deleteIncident,
   getAllVehicleIncidents,
-} from "../../backend-queries";
-import { Incidents } from "../../backend-queries/query/incidents/get-all-vehicle-incidents";
-import { AppDispatch } from "../../redux/store";
-import { setToast } from "../../redux/toast-slice";
-import { Tables } from "../../utils/database/types";
-import { DeleteIconButton } from "../buttons/delete-icon-button";
+} from "../../../backend-queries";
+import { Incidents } from "../../../backend-queries/query/incidents/get-all-vehicle-incidents";
+import { AppDispatch } from "../../../redux/store";
+import { setToast } from "../../../redux/toast-slice";
+import { Tables } from "../../../utils/database/types";
+import { DeleteIconButton } from "../../buttons/delete-icon-button";
 
 type AllIncidentsProps = {
   vehicle: Tables<"vehicles">;

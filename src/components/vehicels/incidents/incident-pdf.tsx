@@ -1,5 +1,5 @@
 import { Document, Page, Text, View, StyleSheet } from "@react-pdf/renderer";
-import { Tables } from "../../utils/database/types";
+import { Tables } from "../../../utils/database/types";
 
 type IncidentPDFProps = {
   incident: Tables<"incidents">;

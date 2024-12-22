@@ -15,18 +15,18 @@ import {
 import dayjs from "dayjs";
 import { LuPencil } from "react-icons/lu";
 import { useNavigate } from "react-router-dom";
-import { DeleteIconButton } from "../buttons/delete-icon-button";
-import { JoinedKmHistory } from "../../backend-queries/joins/joined-km-history";
+import { JoinedDriverHistory } from "../../../backend-queries/joins/joined-driver-history";
+import { DeleteIconButton } from "../../buttons/delete-icon-button";
 
-type KmHistoryTableProps = {
-  historyData: JoinedKmHistory;
+type DriverHistoryTableProps = {
+  historyData: JoinedDriverHistory;
   deleteDriverHistory: (id: string) => void;
 };
 
-export function KmHistoryTable({
+export function DriverHistoryTable({
   historyData,
   deleteDriverHistory,
-}: KmHistoryTableProps) {
+}: DriverHistoryTableProps) {
   const navigate = useNavigate();
 
   return (
@@ -35,11 +35,9 @@ export function KmHistoryTable({
         <Thead>
           <Tr whiteSpace="nowrap">
             <Th>Aktion</Th>
-            <Th>Datum</Th>
-            <Th>Kilometerstand</Th>
             <Th>Personalnummer</Th>
             <Th>Fahrer</Th>
-            <Th>VIN</Th>
+            <Th>Fahrt Beginn</Th>
             <Th>Kennzeichen</Th>
           </Tr>
         </Thead>
@@ -53,7 +51,7 @@ export function KmHistoryTable({
                 cursor="pointer"
                 bg={"tileBgColor"}
                 _hover={{ bg: "backgroundColor" }}
-                onClick={() => navigate("/edit-km-history?id=" + data.id)}
+                onClick={() => navigate("/edit-driver-history?id=" + data.id)}
               >
                 <Td>
                   <DeleteIconButton
@@ -62,14 +60,6 @@ export function KmHistoryTable({
                       await deleteDriverHistory(id);
                     }}
                   />
-                </Td>
-                <Td>
-                  <Text>
-                    {dayjs(data.created_at).format("DD.MM.YYYY").toString()}
-                  </Text>
-                </Td>
-                <Td>
-                  <Text>{data.km_age}</Text>
                 </Td>
                 <Td>
                   <Text>{data.employees?.personnel_number ?? "N/V"}</Text>
@@ -82,7 +72,9 @@ export function KmHistoryTable({
                   </Text>
                 </Td>
                 <Td>
-                  <Text>{data.vehicles?.vin ?? "N/V"}</Text>
+                  <Text>
+                    {dayjs(data.drive_start).format("DD.MM.YYYY").toString()}
+                  </Text>
                 </Td>
                 <Td>
                   <Flex alignItems="center" justifyContent="space-between">

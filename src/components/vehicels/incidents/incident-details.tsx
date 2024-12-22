@@ -14,11 +14,11 @@ import { PDFDownloadLink } from "@react-pdf/renderer";
 import dayjs from "dayjs";
 import { useEffect, useState } from "react";
 import { LuDownload } from "react-icons/lu";
-import { getAllEmployees, getEmployee } from "../../backend-queries";
-import { Tables } from "../../utils/database/types";
-import { DriverSelectDialog } from "../dialogs/driver-select-dialog";
-import { InputField } from "../input-field";
-import { RadioButtons } from "../radio-buttons";
+import { getAllEmployees, getEmployee } from "../../../backend-queries";
+import { Tables } from "../../../utils/database/types";
+import { DriverSelectDialog } from "../../dialogs/driver-select-dialog";
+import { InputField } from "../../input-field";
+import { RadioButtons } from "../../radio-buttons";
 import { IncidentPDF } from "./incident-pdf";
 
 type IncidentDetailsProps = {

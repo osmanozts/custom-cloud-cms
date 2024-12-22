@@ -7,9 +7,9 @@ import {
   useBreakpointValue,
 } from "@chakra-ui/react";
 
-import { Tables } from "../../utils/database/types";
-import { DriverSelectDialog } from "../dialogs/driver-select-dialog";
-import { InputField } from "../input-field";
+import { Tables } from "../../../utils/database/types";
+import { DriverSelectDialog } from "../../dialogs/driver-select-dialog";
+import { InputField } from "../../input-field";
 
 type DriverHistoryDetailsProps = {
   driverHistory: Tables<"driver_history">;
