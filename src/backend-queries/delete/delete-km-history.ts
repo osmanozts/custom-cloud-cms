@@ -1,8 +1,8 @@
 import supabase from "../../utils/supabase";
 
-export async function deleteVehicle(id: string) {
+export async function deleteKmHistory(id: string) {
   const { error, status } = await supabase
-    .from("vehicles")
+    .from("km_history")
     .delete()
     .eq("id", id);
 

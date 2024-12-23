@@ -21,7 +21,7 @@ import { useAuth } from "../../providers/auth-provider";
 
 interface EmployeesTableProps {
   employees: EmployeeWithProfile[];
-  onDelete: (id: string) => void;
+  onDelete: (id: string) => Promise<"error" | "success" | "unauthorized">;
 }
 
 export const EmployeesTable: React.FC<EmployeesTableProps> = ({
@@ -96,7 +96,7 @@ export const EmployeesTable: React.FC<EmployeesTableProps> = ({
                 <DeleteIconButton
                   clickedItem={empl.profile_id ?? ""}
                   onDelete={async (id) => {
-                    onDelete(id);
+                    return onDelete(id);
                   }}
                   authRole={authRole}
                 />

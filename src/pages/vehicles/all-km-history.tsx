@@ -1,28 +1,15 @@
 import { SearchIcon } from "@chakra-ui/icons";
 import { Box, Button, Flex, Icon, Text, VStack } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
-import { LuPlus, LuStepBack } from "react-icons/lu";
+import { LuStepBack } from "react-icons/lu";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import {
-  createDriverHistoryManuel,
-  deleteDriverHistory,
-  getKmHistories,
-} from "../../backend-queries";
-import { InputField, KmHistoryTable } from "../../components";
-import { useAuth } from "../../providers/auth-provider";
-import { setToast } from "../../redux/toast-slice";
-import { AppDispatch } from "../../redux/store";
-import { useDispatch } from "react-redux";
+import { deleteKmHistory, getKmHistories } from "../../backend-queries";
 import { JoinedKmHistory } from "../../backend-queries/joins/joined-km-history";
+import { InputField, KmHistoryTable } from "../../components";
 
 export function AllKmHistory() {
-  const dispatch: AppDispatch = useDispatch();
-
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
-
-  const { user } = useAuth();
-  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const [historyData, setHistoryData] = useState<JoinedKmHistory>([]);
   const [searchString, setSearchString] = useState<string>("");
@@ -80,55 +67,17 @@ export function AllKmHistory() {
               <Icon as={LuStepBack} w={6} h={6} mr={2} />
               <Text>Zurück zum Fahrzeug</Text>
             </Button>
-            <Button
-              onClick={async () => {
-                setIsLoading(true);
-                try {
-                  await createDriverHistoryManuel(
-                    searchParams.get("vehicle_id") ?? "",
-                    user.id
-                  );
-                  fetchedData();
-                  dispatch(
-                    setToast({
-                      title: "Erfolgreich!",
-                      description: "Historie erfolgreich manuell erstellt.",
-                      status: "success",
-                    })
-                  );
-                } catch (e) {
-                  dispatch(
-                    setToast({
-                      title: "Fehler!",
-                      description:
-                        "Beim Löschen der Historie ist ein Fehler aufgetreten.",
-                      status: "error",
-                    })
-                  );
-                  throw new Error(
-                    `Fehler beim manuellen Erstellen einer Kilometerstand History: ${e}`
-                  );
-                } finally {
-                  setIsLoading(false);
-                }
-              }}
-              bg="parcelColor"
-              color="invertedTextColor"
-              _hover={{ bg: "darkColor" }}
-              display="flex"
-              isLoading={isLoading}
-            >
-              <Icon as={LuPlus} w={6} h={6} mr={2} />
-              <Text>Neuer Eintrag</Text>
-            </Button>
           </Flex>
         </Flex>
 
         <KmHistoryTable
           historyData={historyData}
-          deleteDriverHistory={async (id) => {
-            await deleteDriverHistory(id);
-            await fetchedData();
+          deleteHistory={async (id) => {
+            const status = await deleteKmHistory(id);
+            if (status === "success") {
+              await fetchedData();
+            }
+            return status;
           }}
         />
       </VStack>

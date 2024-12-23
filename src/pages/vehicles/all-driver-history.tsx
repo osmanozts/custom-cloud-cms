@@ -128,8 +128,11 @@ export function AllDriverHistory() {
         <DriverHistoryTable
           historyData={historyData}
           deleteDriverHistory={async (id) => {
-            await deleteDriverHistory(id);
-            await fetchedData();
+            const status = await deleteDriverHistory(id);
+            if (status === "success") {
+              await fetchedData();
+            }
+            return status;
           }}
         />
       </VStack>

@@ -126,8 +126,12 @@ export function AllVehicles({}: AllVehiclesProps) {
           <VehiclesTable
             vehicles={vehicles}
             deleteVehicle={async (id) => {
-              await deleteVehicle(id);
-              await fetchVehicles();
+              const status = await deleteVehicle(id);
+              console.log("🚀 ~ status:", status);
+              if (status === "success") {
+                await fetchVehicles();
+              }
+              return status;
             }}
           />
         </Box>

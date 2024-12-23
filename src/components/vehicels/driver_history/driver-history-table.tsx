@@ -21,7 +21,9 @@ import { useAuth } from "../../../providers/auth-provider";
 
 type DriverHistoryTableProps = {
   historyData: JoinedDriverHistory;
-  deleteDriverHistory: (id: string) => void;
+  deleteDriverHistory: (
+    id: string
+  ) => Promise<"error" | "success" | "unauthorized">;
 };
 
 export function DriverHistoryTable({
@@ -59,7 +61,7 @@ export function DriverHistoryTable({
                   <DeleteIconButton
                     clickedItem={data.id}
                     onDelete={async (id) => {
-                      await deleteDriverHistory(id);
+                      return await deleteDriverHistory(id);
                     }}
                     authRole={authRole}
                   />

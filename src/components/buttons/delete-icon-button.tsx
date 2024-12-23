@@ -9,7 +9,7 @@ import { Enums } from "../../utils/database/types";
 
 interface DeleteIconButtonProps {
   clickedItem: string;
-  onDelete: (id: string) => Promise<void>;
+  onDelete: (id: string) => Promise<"error" | "success" | "unauthorized">;
   authRole: Enums<"auth-role"> | null;
 }
 
@@ -19,6 +19,8 @@ export const DeleteIconButton = ({
   authRole,
 }: DeleteIconButtonProps) => {
   const dispatch: AppDispatch = useDispatch();
+
+  const [isLoading, setIsLoading] = useState(false);
 
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [clickedId, setClickedId] = useState<string | null>(null);
@@ -32,6 +34,7 @@ export const DeleteIconButton = ({
         aria-label="delete entry"
         bg="invertedColor"
         padding={2}
+        isLoading={isLoading}
         isDisabled={authRole !== "superadmin"}
         onClick={(e) => {
           setClickedId(clickedItem);
@@ -43,16 +46,51 @@ export const DeleteIconButton = ({
         isOpen={isDeleteDialogOpen}
         onClose={() => setIsDeleteDialogOpen(false)}
         onDelete={async () => {
+          setIsLoading(true);
           if (clickedId) {
             try {
-              await onDelete(clickedId);
-              dispatch(
-                setToast({
-                  title: "Erfolgreich!",
-                  description: "Erfolgreich gelöscht.",
-                  status: "success",
-                })
-              );
+              const status = await onDelete(clickedId);
+              console.log("🚀 ~ status:", status);
+              switch (status) {
+                case "success":
+                  dispatch(
+                    setToast({
+                      title: "Erfolgreich!",
+                      description: "Erfolgreich gelöscht.",
+                      status: "success",
+                    })
+                  );
+                  break;
+
+                case "unauthorized":
+                  dispatch(
+                    setToast({
+                      title: "Nicht Authorisiert!",
+                      description:
+                        "Du bist nicht authorisiert diesen Eintrag zu Löschen.",
+                      status: "error",
+                    })
+                  );
+                  break;
+                case "error":
+                  dispatch(
+                    setToast({
+                      title: "Fehler!",
+                      description: "Beim Löschen ist ein Fehler aufgetreten.",
+                      status: "error",
+                    })
+                  );
+                  break;
+                default:
+                  dispatch(
+                    setToast({
+                      title: "Fehler!",
+                      description: "Beim Löschen ist ein Fehler aufgetreten.",
+                      status: "error",
+                    })
+                  );
+              }
+
               setIsDeleteDialogOpen(false);
             } catch (error) {
               dispatch(
@@ -62,6 +100,8 @@ export const DeleteIconButton = ({
                   status: "error",
                 })
               );
+            } finally {
+              setIsLoading(false);
             }
           }
         }}

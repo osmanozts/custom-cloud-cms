@@ -21,12 +21,12 @@ import { useAuth } from "../../../providers/auth-provider";
 
 type KmHistoryTableProps = {
   historyData: JoinedKmHistory;
-  deleteDriverHistory: (id: string) => void;
+  deleteHistory: (id: string) => Promise<"error" | "success" | "unauthorized">;
 };
 
 export function KmHistoryTable({
   historyData,
-  deleteDriverHistory,
+  deleteHistory,
 }: KmHistoryTableProps) {
   const navigate = useNavigate();
   const { authRole } = useAuth();
@@ -61,7 +61,7 @@ export function KmHistoryTable({
                   <DeleteIconButton
                     clickedItem={data.id}
                     onDelete={async (id) => {
-                      await deleteDriverHistory(id);
+                      return await deleteHistory(id);
                     }}
                     authRole={authRole}
                   />

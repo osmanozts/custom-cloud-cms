@@ -24,7 +24,7 @@ import { useAuth } from "../../providers/auth-provider";
 
 interface VehiclesTableProps {
   vehicles: Vehicles;
-  deleteVehicle: (id: string) => void;
+  deleteVehicle: (id: string) => Promise<"error" | "success" | "unauthorized">;
 }
 
 export const VehiclesTable = ({
@@ -144,7 +144,7 @@ export const VehiclesTable = ({
                 <DeleteIconButton
                   clickedItem={vehicle.id}
                   onDelete={async (id) => {
-                    await deleteVehicle(id);
+                    return await deleteVehicle(id);
                   }}
                   authRole={authRole}
                 />

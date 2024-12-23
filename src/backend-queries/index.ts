@@ -38,6 +38,7 @@ export { deleteEmployee } from "./delete/delete-employee";
 export { deleteVehicle } from "./delete/delete-vehicle";
 export { deleteIncident } from "./delete/delete-incident";
 export { deleteDriverHistory } from "./delete/delete-driver-history";
+export { deleteKmHistory } from "./delete/delete-km-history";
 
 export { getFiles } from "./storage/get-files";
 export { openFile } from "./storage/open-file";

@@ -1,5 +1,16 @@
 import { SearchIcon } from "@chakra-ui/icons";
-import { Box, Button, Flex, Icon, Text, VStack } from "@chakra-ui/react";
+import {
+  Alert,
+  AlertDescription,
+  AlertIcon,
+  AlertTitle,
+  Box,
+  Button,
+  Flex,
+  Icon,
+  Text,
+  VStack,
+} from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { LuDownload, LuPlus } from "react-icons/lu";
 import { useNavigate } from "react-router-dom";
@@ -7,8 +18,8 @@ import { EmployeeWithProfile } from "../../backend-queries/joins/employee-with-p
 import { getAllEmployees } from "../../backend-queries/query/employees/get-all-employees";
 import { EmployeesTable, InputField } from "../../components";
 import { DefaultMenu } from "../../components/menu/default-menu";
-import { printEmployeesToPdf } from "./services/print-employees-to-pdf";
 import supabase from "../../utils/supabase";
+import { printEmployeesToPdf } from "./services/print-employees-to-pdf";
 
 interface AllEmployeesProps {}
 
@@ -16,14 +27,13 @@ export const AllEmployees: React.FC<AllEmployeesProps> = () => {
   const navigate = useNavigate();
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
-
   const [employees, setEmployees] = useState<EmployeeWithProfile[]>([]);
-
   const [searchString, setSearchString] = useState<string>("");
-
   const [departmentFilter, setDepartmentFilter] = useState<string | null>(null);
   const [statusFilter, setStatusFilter] = useState<string | null>(null);
   const [locationFilter, setLocationFilter] = useState<string | null>(null);
+
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   useEffect(() => {
     getAllEmployees((allEmployees: EmployeeWithProfile[]) =>
@@ -35,7 +45,7 @@ export const AllEmployees: React.FC<AllEmployeesProps> = () => {
     getAllEmployees((allEmployees: EmployeeWithProfile[]) => {
       let filteredEmployees = allEmployees;
 
-      // Suche nach Name oder Personalnummer
+      // Filterlogik
       if (searchString.trim() !== "") {
         filteredEmployees = filteredEmployees.filter(
           (employee) =>
@@ -52,21 +62,18 @@ export const AllEmployees: React.FC<AllEmployeesProps> = () => {
         );
       }
 
-      // Filter nach Abteilung
       if (departmentFilter !== null) {
         filteredEmployees = filteredEmployees.filter(
           (employee) => employee.department === departmentFilter
         );
       }
 
-      // Filter nach Status
       if (statusFilter !== null) {
         filteredEmployees = filteredEmployees.filter(
           (employee) => employee.state === statusFilter
         );
       }
 
-      // Filter nach Standort
       if (locationFilter !== null) {
         filteredEmployees = filteredEmployees.filter(
           (employee) => employee.location === locationFilter
@@ -85,6 +92,15 @@ export const AllEmployees: React.FC<AllEmployeesProps> = () => {
       bg="backgroundColor"
     >
       <VStack width="100%" maxWidth="1200px" p={6}>
+        {/* Fehleranzeige im UI */}
+        {errorMessage && (
+          <Alert status="error" borderRadius="md" mb={4}>
+            <AlertIcon />
+            <AlertTitle>Unauthorized</AlertTitle>
+            <AlertDescription>{errorMessage}</AlertDescription>
+          </Alert>
+        )}
+
         <Flex w="100%" justify="space-between" align="center">
           <Box maxW={300}>
             <InputField
@@ -152,21 +168,41 @@ export const AllEmployees: React.FC<AllEmployeesProps> = () => {
           <EmployeesTable
             employees={employees}
             onDelete={async (id) => {
-              const { data, error } = await supabase.functions.invoke(
-                "delete-user",
-                { body: { id } }
-              );
-              if (error) {
-                throw error;
-              }
-              getAllEmployees((allEmployees: EmployeeWithProfile[]) =>
-                setEmployees(allEmployees)
-              );
+              try {
+                const response = await supabase.functions.invoke(
+                  "delete-user",
+                  {
+                    body: { id },
+                  }
+                );
 
-              console.log("🚀 ~ data:", data);
+                console.log("🚀 ~ response:", response);
+
+                if (!response.error) {
+                  // Erfolgreiche Löschung
+                  getAllEmployees((allEmployees: EmployeeWithProfile[]) =>
+                    setEmployees(allEmployees)
+                  );
+                  return "success";
+                }
+
+                // Fehleranalyse basierend auf status_code
+                const status = response.error.context.status;
+                if (status === 401) {
+                  return "unauthorized";
+                } else if (status === 500) {
+                  return "error";
+                }
+
+                return "success";
+              } catch (e) {
+                console.error("Error deleting user:", e);
+                return "error";
+              }
             }}
           />
         </Box>
+
         <Button
           bg="parcelColor"
           alignSelf="flex-end"
@@ -178,7 +214,7 @@ export const AllEmployees: React.FC<AllEmployeesProps> = () => {
             try {
               await printEmployeesToPdf(employees);
             } catch (e) {
-              throw new Error(`Error downloading pdf: ${e}`);
+              setErrorMessage(`Fehler beim Herunterladen der PDF: ${e}`);
             } finally {
               setIsLoading(false);
             }

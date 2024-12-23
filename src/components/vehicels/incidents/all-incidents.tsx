@@ -102,10 +102,13 @@ export const AllIncidents = ({ vehicle }: AllIncidentsProps) => {
             <DeleteIconButton
               clickedItem={incident.id}
               onDelete={async (id) => {
-                await deleteIncident(id);
-                getAllVehicleIncidents(vehicle.id, (incidents) =>
-                  setIncidents(incidents)
-                );
+                const status = await deleteIncident(id);
+                if (status === "success") {
+                  getAllVehicleIncidents(vehicle.id, (incidents) =>
+                    setIncidents(incidents)
+                  );
+                }
+                return status;
               }}
               authRole={authRole}
             />
