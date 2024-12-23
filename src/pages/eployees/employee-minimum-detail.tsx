@@ -21,8 +21,13 @@ import {
 import { VehiclesMinData } from "../../backend-queries/query/vehicles/get-vehicles-by-profile";
 import { DocumentView } from "../../components";
 import { Tables } from "../../utils/database/types";
+import { setToast } from "../../redux/toast-slice";
+import { AppDispatch } from "../../redux/store";
+import { useDispatch } from "react-redux";
 
 export function EmployeeMinimumDetail() {
+  const dispatch: AppDispatch = useDispatch();
+
   const [searchParams] = useSearchParams();
 
   const [employee, setEmployee] = useState<Tables<"employees"> | null>(null);
@@ -143,7 +148,47 @@ export function EmployeeMinimumDetail() {
                     onClick={async () => {
                       setIsLoading(true);
                       try {
-                        await createIncidentEmployee(vehicle.id);
+                        const state = await createIncidentEmployee(vehicle.id);
+
+                        switch (state) {
+                          case "success":
+                            dispatch(
+                              setToast({
+                                title: "Erfolgreich!",
+                                description: "Schadensmeldung erstellt.",
+                                status: "success",
+                              })
+                            );
+                            break;
+
+                          case "unauthorized":
+                            dispatch(
+                              setToast({
+                                title: "Nicht Authorisiert!",
+                                description:
+                                  "Du bist nicht authorisiert dies zu tun.",
+                                status: "error",
+                              })
+                            );
+                            break;
+                          case "error":
+                            dispatch(
+                              setToast({
+                                title: "Fehler!",
+                                description: "Beim Erstellen ist aufgetreten.",
+                                status: "error",
+                              })
+                            );
+                            break;
+                          default:
+                            dispatch(
+                              setToast({
+                                title: "Fehler!",
+                                description: "Beim Erstellen ist aufgetreten.",
+                                status: "error",
+                              })
+                            );
+                        }
                       } catch (e) {
                         throw new Error(`${e}`);
                       } finally {
