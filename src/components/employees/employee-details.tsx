@@ -166,7 +166,7 @@ export const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({
             />
           </FormControl>
           <FormControl my={4}>
-            <FormLabel htmlFor="department">Standort</FormLabel>
+            <FormLabel htmlFor="location">Standort</FormLabel>
             <DefaultMenu
               options={[{ value: "DNX4", label: "DNX4" }]}
               defaultValue={employee.location ?? "Wähle ein Standort aus"}
@@ -174,6 +174,23 @@ export const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({
                 setEmployee({
                   ...employee,
                   location: value as Enums<"locations">,
+                })
+              }
+            />
+          </FormControl>
+          <FormControl my={4}>
+            <FormLabel htmlFor="state">Status</FormLabel>
+            <DefaultMenu
+              options={[
+                { value: "active", label: "Aktiv" },
+                { value: "inactive", label: "Ausgetreten" },
+                { value: "pipeline", label: "Pipeline" },
+              ]}
+              defaultValue={employee.location ?? "Wähle einen Status aus"}
+              onSelect={(value) =>
+                setEmployee({
+                  ...employee,
+                  state: value as Enums<"employee_state">,
                 })
               }
             />
