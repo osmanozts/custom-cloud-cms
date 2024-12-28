@@ -4,9 +4,11 @@ export async function deleteIncident(id: string) {
   const { error, status } = await supabase
     .from("incidents")
     .delete()
-    .eq("id", id);
+    .eq("id", id)
+    .select()
+    .single();
 
-  if (status === 204) return "unauthorized";
+  if (status === 406) return "unauthorized";
   if (error) return "error";
   else return "success";
 }

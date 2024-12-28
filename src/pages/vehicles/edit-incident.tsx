@@ -184,7 +184,7 @@ export const EditIncident = ({}: EditIncidentProps) => {
         </Heading>
         <DocumentManager
           bucket="dateien_fahrzeuge"
-          rootFolder={`${incident.vehicle_id!}/Schadensmeldungen/${
+          rootFolder={`${incident.license_plate!}/Schadensmeldungen/${
             incident.id
           }`}
         />
