@@ -41,6 +41,8 @@ export const MultiFileUpload = ({
 }: MultiFileUploadProps) => {
   const dispatch: AppDispatch = useDispatch();
 
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const triggerFileInput = () => {
@@ -74,6 +76,7 @@ export const MultiFileUpload = ({
   };
 
   const handleUpload = async () => {
+    setIsLoading(true);
     try {
       const formattedFiles = files.map((file, index) => ({
         originalFile: file,
@@ -101,6 +104,8 @@ export const MultiFileUpload = ({
           status: "error",
         })
       );
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -231,6 +236,7 @@ export const MultiFileUpload = ({
               color="invertedColor"
               onClick={handleUpload}
               isDisabled={files.length === 0}
+              isLoading={isLoading}
             >
               Hochladen
             </Button>

@@ -26,6 +26,16 @@ const knownFileExtensions = [
   "json",
   "xml",
   "html",
+  "HEIC",
+  "heic",
+  "MOV",
+  "mov",
+  "css",
+  "js",
+  "ts",
+  "jsx",
+  "tsx",
+  "vue",
 ];
 
 export async function getFilesOperation(
