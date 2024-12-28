@@ -16,8 +16,8 @@ interface DeleteIconButtonProps {
 export const DeleteIconButton = ({
   clickedItem,
   onDelete,
-}: // authRole,
-DeleteIconButtonProps) => {
+  authRole,
+}: DeleteIconButtonProps) => {
   const dispatch: AppDispatch = useDispatch();
 
   const [isLoading, setIsLoading] = useState(false);
@@ -35,7 +35,7 @@ DeleteIconButtonProps) => {
         bg="invertedColor"
         padding={2}
         isLoading={isLoading}
-        // isDisabled={authRole !== "superadmin"}
+        isDisabled={authRole !== "superadmin"}
         onClick={(e) => {
           setClickedId(clickedItem);
           e.stopPropagation(); // Stoppt die Weiterleitung des Klick-Ereignisses
