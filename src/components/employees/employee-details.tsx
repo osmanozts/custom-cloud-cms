@@ -30,6 +30,22 @@ export const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({
 }) => {
   const { authRole } = useAuth();
 
+  const driverLicenseLevels = [
+    { value: "AM", label: "AM" },
+    { value: "A1", label: "A1" },
+    { value: "A2", label: "A2" },
+    { value: "A", label: "A" },
+    { value: "B", label: "B" },
+    { value: "BE", label: "BE" },
+    { value: "C", label: "C" },
+    { value: "CE", label: "CE" },
+    { value: "D", label: "D" },
+    { value: "DE", label: "DE" },
+    { value: "F", label: "F" },
+    { value: "L", label: "L" },
+    { value: "T", label: "T" },
+  ];
+
   return (
     <Box bg="tileBgColor" borderWidth="1px" borderRadius="lg" p={6} mb={6}>
       <EmployeeProfilePic employee_id={employee.personnel_number ?? ""} />
@@ -93,6 +109,34 @@ export const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({
                 setEmployee({ ...employee, nationality: value })
               }
               placeholder="Nationalität"
+            />
+          </FormControl>
+          <FormControl my={4}>
+            <FormLabel htmlFor="driverLicenseLevel">
+              Führerscheinklasse
+            </FormLabel>
+            <DefaultMenu
+              options={driverLicenseLevels}
+              defaultValue={
+                employee.driver_license_level ?? "Wähle eine Klasse aus"
+              }
+              onSelect={(value) =>
+                setEmployee({
+                  ...employee,
+                  driver_license_level: value as string,
+                })
+              }
+            />
+          </FormControl>
+          <FormControl my={4}>
+            <FormLabel htmlFor="healthInsurance">Krankenversicherung</FormLabel>
+            <InputField
+              id="healthInsurance"
+              value={employee.health_insurance ?? ""}
+              onChange={(value) =>
+                setEmployee({ ...employee, health_insurance: value })
+              }
+              placeholder="Krankenversicherung"
             />
           </FormControl>
         </Box>
