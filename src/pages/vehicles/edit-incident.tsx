@@ -22,7 +22,7 @@ import { setToast } from "../../redux/toast-slice";
 
 type EditIncidentProps = {};
 
-export const EditIncident = ({}: EditIncidentProps) => {
+export const EditIncident = ({ }: EditIncidentProps) => {
   const dispatch: AppDispatch = useDispatch();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
@@ -59,8 +59,8 @@ export const EditIncident = ({}: EditIncidentProps) => {
             incident_time: newIncident.incident_time ? newTime : "",
             opponent_driver_birth_date: newIncident?.opponent_driver_birth_date
               ? dayjs(newIncident?.opponent_driver_birth_date).format(
-                  "DD.MM.YYYY"
-                )
+                "DD.MM.YYYY"
+              )
               : "",
           };
           setIncident(mappedIncident);
@@ -78,8 +78,8 @@ export const EditIncident = ({}: EditIncidentProps) => {
       const incidentDate =
         incidentDateParts?.length === 3
           ? new Date(
-              `${incidentDateParts[2]}-${incidentDateParts[1]}-${incidentDateParts[0]}T00:00:00Z`
-            ).toISOString()
+            `${incidentDateParts[2]}-${incidentDateParts[1]}-${incidentDateParts[0]}T00:00:00Z`
+          ).toISOString()
           : null;
 
       const incidentTime = incident?.incident_time
@@ -90,8 +90,8 @@ export const EditIncident = ({}: EditIncidentProps) => {
       const birthDate =
         birthDatePart?.length === 3
           ? new Date(
-              `${birthDatePart[2]}-${birthDatePart[1]}-${birthDatePart[0]}T00:00:00Z`
-            ).toISOString()
+            `${birthDatePart[2]}-${birthDatePart[1]}-${birthDatePart[0]}T00:00:00Z`
+          ).toISOString()
           : null;
 
       const mappedIncident: Tables<"incidents"> = {
@@ -184,9 +184,8 @@ export const EditIncident = ({}: EditIncidentProps) => {
         </Heading>
         <DocumentManager
           bucket="dateien_fahrzeuge"
-          rootFolder={`${incident.license_plate!}/Schadensmeldungen/${
-            incident.id
-          }`}
+          rootFolder={`${vehicle?.license_plate!}/Schadensmeldungen/${incident.id
+            }`}
         />
       </Box>
     </Container>
