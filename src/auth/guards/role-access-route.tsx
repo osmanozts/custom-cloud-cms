@@ -2,7 +2,7 @@
 import { Navigate, Outlet, useLocation } from "react-router-dom";
 import { useAuth } from "../../providers/auth-provider";
 
-export const AdminRoute = () => {
+export const RoleAccessRoute = () => {
   const { authRole, user } = useAuth();
   const location = useLocation();
 

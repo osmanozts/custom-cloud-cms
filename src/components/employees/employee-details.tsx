@@ -166,6 +166,15 @@ export const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({
             />
           </FormControl>
           <FormControl my={4}>
+            <FormLabel htmlFor="city">Straße</FormLabel>
+            <InputField
+              id="street"
+              value={employee.street ?? ""}
+              onChange={(value) => setEmployee({ ...employee, street: value })}
+              placeholder="Straße"
+            />
+          </FormControl>
+          <FormControl my={4}>
             <FormLabel htmlFor="city">Stadt</FormLabel>
             <InputField
               id="city"
@@ -244,10 +253,9 @@ export const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({
             <DefaultMenu
               options={[
                 { value: "superadmin", label: "Superadmin" },
-                { value: "admin", label: "Admin" },
                 { value: "employee_manager", label: "Mitarbeiter-Manager" },
                 { value: "vehicle_manager", label: "Fahrzeug-Manager" },
-                { value: "employee", label: "Mitarbeiter" },
+                { value: "employee", label: "Mitarbeiter (z.b Fahrer)" },
               ]}
               defaultValue={profile.auth_role ?? ""}
               onSelect={(value) =>

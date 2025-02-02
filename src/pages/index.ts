@@ -6,7 +6,7 @@ export { AllDocuments } from "./documents/all-documents";
 
 export { EditEmployee } from "./eployees/edit-employee";
 export { CreateNewUser } from "./eployees/create-new-user";
-export { EmployeeMinimumDetail } from "./eployees/employee-minimum-detail";
+export { PersonelEmployeeData } from "./eployees/personel-employee-data";
 export { AllEmployees } from "./eployees/all-employees";
 
 export { AllVehicles } from "./vehicles/all-vehicles";

@@ -3,10 +3,11 @@ import "./App.css";
 import { Route, Routes } from "react-router-dom";
 
 import {
-  AdminRoute,
+  RoleAccessRoute,
   AuthRoute,
   EmployeeManagerRoute,
   VehicleManagerRoute,
+  OnlyAdminRoute,
 } from "./auth/guards";
 import {
   AllDocuments,
@@ -20,7 +21,7 @@ import {
   EditEmployee,
   EditIncident,
   EditVehicle,
-  EmployeeMinimumDetail,
+  PersonelEmployeeData,
   Login,
 } from "./pages";
 import { AllKmHistory } from "./pages/vehicles/all-km-history";
@@ -30,8 +31,12 @@ function App() {
   return (
     <Routes>
       <Route element={<AuthRoute />}>
-        <Route element={<AdminRoute />}>
+        <Route element={<RoleAccessRoute />}>
           <Route path="/" element={<Dashboard />} />
+          <Route element={<OnlyAdminRoute />}>
+            <Route path="/document-management" element={<AllDocuments />} />
+          </Route>
+
           <Route element={<EmployeeManagerRoute />}>
             <Route path="/employee-management" element={<AllEmployees />} />
             <Route path="/create-new-user" element={<CreateNewUser />} />
@@ -51,11 +56,10 @@ function App() {
             <Route path="/edit-km-history" element={<EditKmHistory />} />
             <Route path="/km-history" element={<AllKmHistory />} />
           </Route>
-          <Route path="/document-management" element={<AllDocuments />} />
         </Route>
         <Route
           path="/employee-min-detail"
-          element={<EmployeeMinimumDetail />}
+          element={<PersonelEmployeeData />}
         />
       </Route>
       <Route path="/login" element={<Login />} />

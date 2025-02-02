@@ -22,6 +22,7 @@ export { DeleteConfirmationDialog } from "./dialogs/delete-confirmation-dialog";
 export { RenameFileDialog } from "./dialogs/rename-file-dialog";
 
 export { EmployeeDetails } from "./employees/employee-details";
+export { EmployeeMinDetail } from "./employees/employee-minimum-detail";
 export { EmployeeProfilePic } from "./employees/employee-profile-pic";
 export { EmployeesTable } from "./employees/employees-table";
 export { CreateEmployeeForm } from "./employees/create-employee-form";

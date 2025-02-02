@@ -22,11 +22,13 @@ import {
 import { AppDispatch } from "../../redux/store";
 import { setToast } from "../../redux/toast-slice";
 import { Tables } from "../../utils/database/types";
-import { DocumentManager, EmployeeDetails } from "../../components";
+import { DocumentManager, EmployeeDetails, EmployeeMinDetail } from "../../components";
+import { useAuth } from "../../providers/auth-provider";
 
 type EditEmployeeProps = {};
 
-export const EditEmployee = ({}: EditEmployeeProps) => {
+export const EditEmployee = ({ }: EditEmployeeProps) => {
+  const { authRole } = useAuth()
   const dispatch: AppDispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -75,24 +77,24 @@ export const EditEmployee = ({}: EditEmployeeProps) => {
       const dateOfBirth =
         dateOfBirthParts?.length === 3
           ? new Date(
-              `${dateOfBirthParts[2]}-${dateOfBirthParts[1]}-${dateOfBirthParts[0]}T00:00:00Z`
-            ).toISOString()
+            `${dateOfBirthParts[2]}-${dateOfBirthParts[1]}-${dateOfBirthParts[0]}T00:00:00Z`
+          ).toISOString()
           : null;
 
       const idCardEndDateParts = employee.id_card_end_date?.split(".");
       const idCardEndDate =
         idCardEndDateParts?.length === 3
           ? new Date(
-              `${idCardEndDateParts[2]}-${idCardEndDateParts[1]}-${idCardEndDateParts[0]}T00:00:00Z`
-            ).toISOString()
+            `${idCardEndDateParts[2]}-${idCardEndDateParts[1]}-${idCardEndDateParts[0]}T00:00:00Z`
+          ).toISOString()
           : null;
 
       const licenseEndDateParts = employee.driver_license_end_date?.split(".");
       const driverLicenseEndDate =
         licenseEndDateParts?.length === 3
           ? new Date(
-              `${licenseEndDateParts[2]}-${licenseEndDateParts[1]}-${licenseEndDateParts[0]}T00:00:00Z`
-            ).toISOString()
+            `${licenseEndDateParts[2]}-${licenseEndDateParts[1]}-${licenseEndDateParts[0]}T00:00:00Z`
+          ).toISOString()
           : null;
 
       const updatedEmployee: Tables<"employees"> = {
@@ -161,6 +163,7 @@ export const EditEmployee = ({}: EditEmployeeProps) => {
               size="sm"
               alignSelf="center"
               isDisabled={isSaveDisabled}
+              width={120}
             >
               <Icon mr={2} as={LuCheck} />
               <Text>Speichern</Text>
@@ -171,9 +174,10 @@ export const EditEmployee = ({}: EditEmployeeProps) => {
               onClick={() => navigate("/employee-management")}
               size="sm"
               alignSelf="center"
+              width={120}
             >
               <Icon mr={2} as={LuX} />
-              Verwerfen
+              {isSaveDisabled ? 'Zurück' : 'Verwerfen'}
             </Button>
           </Flex>
         </Flex>
@@ -183,20 +187,23 @@ export const EditEmployee = ({}: EditEmployeeProps) => {
               Mitarbeiter Daten
             </Heading>
 
-            <EmployeeDetails
-              employee={employee}
-              profile={profile}
-              setEmployee={(newEmployee) => {
-                setEmployee(newEmployee);
-                setIsSaveDisabled(false);
-              }}
-              setProfile={(newProfile) => {
-                setProfile(newProfile);
-                setIsSaveDisabled(false);
-              }}
-            />
+            {authRole === "superadmin" ?
+              <EmployeeDetails
+                employee={employee}
+                profile={profile}
+                setEmployee={(newEmployee) => {
+                  setEmployee(newEmployee);
+                  setIsSaveDisabled(false);
+                }}
+                setProfile={(newProfile) => {
+                  setProfile(newProfile);
+                  setIsSaveDisabled(false);
+                }}
+              /> :
+              <EmployeeMinDetail employee={employee} profile={profile} />
+            }
           </Box>
-          {employee.personnel_number !== null ? (
+          {employee.personnel_number !== null && authRole === "superadmin" ? (
             <>
               <Box>
                 <Flex>
@@ -226,9 +233,21 @@ export const EditEmployee = ({}: EditEmployeeProps) => {
               </Box>
             </>
           ) : (
-            <Text>
-              Bitte vergeben sie eine Personalnummer um die Dateien zu sehen{" "}
-            </Text>
+            <Box
+              mt={6}
+              p={4}
+              borderWidth={1}
+              borderColor="red.500"
+              borderRadius="md"
+              backgroundColor="red.50"
+              display="flex"
+              alignItems="center"
+            >
+              <Icon as={LuX} boxSize={6} color="red.500" mr={3} />
+              <Text color="red.700" fontWeight="bold">
+                Zugriff auf Dokumenten-System verweigert
+              </Text>
+            </Box>
           )}
         </Box>
       </Container>

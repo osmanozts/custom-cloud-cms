@@ -20,10 +20,12 @@ import { EmployeesTable, InputField } from "../../components";
 import { DefaultMenu } from "../../components/menu/default-menu";
 import supabase from "../../utils/supabase";
 import { printEmployeesToPdf } from "./services/print-employees-to-pdf";
+import { useAuth } from "../../providers/auth-provider";
 
-interface AllEmployeesProps {}
+interface AllEmployeesProps { }
 
 export const AllEmployees: React.FC<AllEmployeesProps> = () => {
+  const { authRole } = useAuth()
   const navigate = useNavigate();
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -116,6 +118,7 @@ export const AllEmployees: React.FC<AllEmployeesProps> = () => {
             bg="parcelColor"
             color="invertedTextColor"
             leftIcon={<Icon as={LuPlus} />}
+            isDisabled={authRole !== "superadmin"}
           >
             Neuer Mitarbeiter
           </Button>

@@ -25,7 +25,7 @@ import { setToast } from "../../redux/toast-slice";
 import { AppDispatch } from "../../redux/store";
 import { useDispatch } from "react-redux";
 
-export function EmployeeMinimumDetail() {
+export function PersonelEmployeeData() {
   const dispatch: AppDispatch = useDispatch();
 
   const [searchParams] = useSearchParams();
