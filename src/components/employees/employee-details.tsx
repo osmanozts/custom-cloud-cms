@@ -252,10 +252,26 @@ export const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({
             <FormLabel htmlFor="role">Rolle</FormLabel>
             <DefaultMenu
               options={[
-                { value: "superadmin", label: "Superadmin" },
-                { value: "employee_manager", label: "Mitarbeiter-Manager" },
-                { value: "vehicle_manager", label: "Fahrzeug-Manager" },
-                { value: "employee", label: "Mitarbeiter (z.b Fahrer)" },
+                {
+                  value: "superadmin",
+                  label: "Administrator",
+                  info: "Hat uneingeschränkten Zugriff auf alle Systeme und Verwaltungsfunktionen. Kann Benutzer verwalten, Berechtigungen zuweisen und sämtliche Einstellungen anpassen."
+                },
+                {
+                  value: "employee_manager",
+                  label: "Stationsleiter",
+                  info: "Hat Leseberechtigung für das Mitarbeiter-Management und uneingeschränkten Zugriff auf das Fahrzeug-Management. Kann keine Änderungen an Mitarbeiterdaten vornehmen."
+                },
+                {
+                  value: "vehicle_manager",
+                  label: "Flotten-Manager",
+                  info: "Hat ausschließlich Zugriff auf das Fahrzeug-Management und kann dort sämtliche Verwaltungsaufgaben durchführen."
+                },
+                {
+                  value: "employee",
+                  label: "Mitarbeiter (z. B. Fahrer)",
+                  info: "Interner Systemzugriff ist nicht gestattet. Der Mitarbeiter kann lediglich seine eigenen Stammdaten und öffentlich zugängliche Dokumente einsehen."
+                },
               ]}
               defaultValue={profile.auth_role ?? ""}
               onSelect={(value) =>
@@ -266,6 +282,7 @@ export const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({
               }
               isDisabled={authRole !== "superadmin"}
             />
+
           </FormControl>
         </Box>
 

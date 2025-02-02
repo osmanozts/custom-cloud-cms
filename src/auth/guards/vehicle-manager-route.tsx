@@ -21,6 +21,7 @@ export const VehicleManagerRoute = () => {
       case "superadmin":
       case "admin":
       case "vehicle_manager":
+      case "employee_manager":
         return <Outlet />;
 
       default: {

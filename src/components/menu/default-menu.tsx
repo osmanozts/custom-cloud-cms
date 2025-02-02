@@ -7,12 +7,16 @@ import {
   Button,
   Box,
   Text,
+  Tooltip,
+  IconButton,
 } from "@chakra-ui/react";
+import { InfoOutlineIcon } from "@chakra-ui/icons";
 
 export type MenuOption = {
   value: string | null;
   label: string;
-  color?: string; // Neue Eigenschaft für die Farbe
+  color?: string;
+  info?: string; // Zusatzinformationen für Tooltip
 };
 
 type DefaultMenuProps = {
@@ -56,9 +60,9 @@ export const DefaultMenu: React.FC<DefaultMenuProps> = ({
         _hover={{ bg: "darkColor", color: "invertedTextColor" }}
         isDisabled={isDisabled}
       >
-        {selectedOption ? (
+        <Box display="flex" alignItems="center" justifyContent="space-between">
           <Box display="flex" alignItems="center">
-            {options[0].color && (
+            {selectedOption?.color && (
               <Box
                 width="10px"
                 height="10px"
@@ -67,28 +71,52 @@ export const DefaultMenu: React.FC<DefaultMenuProps> = ({
                 marginRight="8px"
               />
             )}
-            <Text textAlign="center">{selectedOption.label}</Text>
+            <Text>{selectedOption?.label || "Wähle eine Option aus"}</Text>
           </Box>
-        ) : defaultValue ? (
-          // Falls defaultOption gesetzt ist, zeige den Label des defaultOption an
-          options.find((option) => option.value === defaultValue)?.label ||
-          defaultValue
-        ) : (
-          "Wähle eine Option aus"
-        )}
+          {selectedOption?.info && (
+            <Tooltip label={selectedOption.info} hasArrow placement="top">
+              <IconButton
+                aria-label="Info"
+                icon={<InfoOutlineIcon />}
+                size="xs"
+                variant="ghost"
+                color="gray.500"
+                borderRadius="50%"
+                _hover={{ bg: "gray.200" }}
+              />
+            </Tooltip>
+          )}
+        </Box>
       </MenuButton>
       <MenuList>
         {options.map((option) => (
           <MenuItem key={option.value} onClick={() => handleSelect(option)}>
-            <Box display="flex" alignItems="center">
-              <Box
-                width="10px"
-                height="10px"
-                borderRadius="50%"
-                backgroundColor={option.color}
-                marginRight="8px"
-              />
-              {option.label}
+            <Box display="flex" alignItems="center" justifyContent="space-between" width="100%">
+              <Box display="flex" alignItems="center">
+                {option.color && (
+                  <Box
+                    width="10px"
+                    height="10px"
+                    borderRadius="50%"
+                    backgroundColor={option.color}
+                    marginRight="8px"
+                  />
+                )}
+                <Text>{option.label}</Text>
+              </Box>
+              {option.info && (
+                <Tooltip label={option.info} hasArrow placement="top">
+                  <IconButton
+                    aria-label="Info"
+                    icon={<InfoOutlineIcon />}
+                    size="xs"
+                    variant="ghost"
+                    color="gray.500"
+                    borderRadius="50%"
+                    _hover={{ bg: "gray.200" }}
+                  />
+                </Tooltip>
+              )}
             </Box>
           </MenuItem>
         ))}
