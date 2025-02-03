@@ -133,7 +133,7 @@ export const VehicleDetails = ({
         <FormControl>
           <FormLabel htmlFor="location">Standort</FormLabel>
           <DefaultMenu
-            options={[{ value: "DNX4", label: "DNX4 - Düsseldorf" }]}
+            options={[{ value: "DNX4", label: "DNX4" }]}
             defaultValue={vehicle.location ?? ""}
             onSelect={(value) =>
               setVehicle({ ...vehicle, location: value as Enums<"locations"> })

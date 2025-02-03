@@ -71,7 +71,7 @@ export const DefaultMenu: React.FC<DefaultMenuProps> = ({
                 marginRight="8px"
               />
             )}
-            <Text>{selectedOption?.label || "Wähle eine Option aus"}</Text>
+            <Text>{selectedOption?.label || "Wähle eine Option"}</Text>
           </Box>
           {selectedOption?.info && (
             <Tooltip label={selectedOption.info} hasArrow placement="top">

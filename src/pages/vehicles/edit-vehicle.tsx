@@ -43,7 +43,7 @@ import { Tables } from "../../utils/database/types";
 
 type EditVehicleProps = {};
 
-export const EditVehicle = ({}: EditVehicleProps) => {
+export const EditVehicle = ({ }: EditVehicleProps) => {
   const dispatch: AppDispatch = useDispatch();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
@@ -89,8 +89,8 @@ export const EditVehicle = ({}: EditVehicleProps) => {
       const nextServiceDate =
         nextServiceDateParts?.length === 3
           ? new Date(
-              `${nextServiceDateParts[2]}-${nextServiceDateParts[1]}-${nextServiceDateParts[0]}T00:00:00Z`
-            ).toISOString()
+            `${nextServiceDateParts[2]}-${nextServiceDateParts[1]}-${nextServiceDateParts[0]}T00:00:00Z`
+          ).toISOString()
           : null;
 
       const updatedVehicle: Tables<"vehicles"> = {
@@ -173,7 +173,7 @@ export const EditVehicle = ({}: EditVehicleProps) => {
             leftIcon={<Icon as={LuX} />}
             _hover={{ bg: "accentColor", transform: "scale(1.025)" }}
           >
-            Verwerfen
+            {isSaveDisabled ? 'Zurück' : 'Verwerfen'}
           </Button>
         </Flex>
       </Flex>

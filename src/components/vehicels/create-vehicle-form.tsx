@@ -27,7 +27,7 @@ export function CreateVehicleForm() {
   const [errorMessage, setErrorMessage] = useState<string>("");
 
   const validateLicensePlate = (value: string) => {
-    const regex = /^[A-ZÄÖÜ]+-[A-Z]+-\d+$/i;
+    const regex = /^[A-ZÄÖÜ]+-[A-Z]+-\d+[E]?$/i;
     return regex.test(value);
   };
 
@@ -39,7 +39,7 @@ export function CreateVehicleForm() {
     if (validateLicensePlate(cleanedValue)) {
       setErrorMessage("");
     } else {
-      setErrorMessage("Ungültiges Format. Beispiel: DU-XX-123");
+      setErrorMessage("Ungültiges Format. Beispiel: DU-XX-123 oder DU-XX-123E");
     }
   };
 

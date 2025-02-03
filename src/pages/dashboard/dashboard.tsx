@@ -60,7 +60,7 @@ export function Dashboard() {
       bg="backgroundColor"
     >
       <Heading as="h1" mb={12} textAlign="center">
-        Local Parcel Logistics
+        Local Parcel Logistics GmbH
       </Heading>
       <Grid
         width="100%"
