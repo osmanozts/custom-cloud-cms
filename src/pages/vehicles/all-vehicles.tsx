@@ -12,7 +12,7 @@ import { printVehiclesToPdf } from "./services/print-vehicles-to-pdf";
 
 type AllVehiclesProps = {};
 
-export function AllVehicles({}: AllVehiclesProps) {
+export function AllVehicles({ }: AllVehiclesProps) {
   const navigate = useNavigate();
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -115,7 +115,7 @@ export function AllVehicles({}: AllVehiclesProps) {
           <DefaultMenu
             options={[
               { value: null, label: "Alle" },
-              { value: "DNX4", label: "DNX4 - Düsseldorf" },
+              { value: "DNX4", label: "DNX4" }, { value: "DNW1", label: "DNW1" }, { value: "Lplg-Moers", label: "Lplg-Moers" }, { value: "Heiz-Moers", label: "Heiz-Moers" }
             ]}
             defaultValue="Alle"
             onSelect={(value) => setLocationFilter(value)}

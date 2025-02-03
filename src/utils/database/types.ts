@@ -82,38 +82,6 @@ export type Database = {
           },
         ]
       }
-      employee_files: {
-        Row: {
-          created_at: string | null
-          employee_id: string
-          file_name: string
-          id: string
-          path: string
-        }
-        Insert: {
-          created_at?: string | null
-          employee_id: string
-          file_name: string
-          id?: string
-          path: string
-        }
-        Update: {
-          created_at?: string | null
-          employee_id?: string
-          file_name?: string
-          id?: string
-          path?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "employee_files_employee_id_fkey"
-            columns: ["employee_id"]
-            isOneToOne: false
-            referencedRelation: "employees"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
       employees: {
         Row: {
           city: string | null
@@ -503,38 +471,6 @@ export type Database = {
           },
         ]
       }
-      vehicle_files: {
-        Row: {
-          created_at: string | null
-          file_name: string
-          id: string
-          path: string
-          vehicle_id: string
-        }
-        Insert: {
-          created_at?: string | null
-          file_name: string
-          id?: string
-          path: string
-          vehicle_id: string
-        }
-        Update: {
-          created_at?: string | null
-          file_name?: string
-          id?: string
-          path?: string
-          vehicle_id?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "vehicle_files_vehicle_id_fkey"
-            columns: ["vehicle_id"]
-            isOneToOne: false
-            referencedRelation: "vehicles"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
       vehicles: {
         Row: {
           color: string | null
@@ -619,7 +555,7 @@ export type Database = {
         | "employee_manager"
       departments: "administration" | "logistics" | "warehouse"
       employee_state: "active" | "inactive" | "pipeline"
-      locations: "DNX4"
+      locations: "DNX4" | "DNW1" | "Lplg-Moers" | "Heiz-Moers"
       vehicle_state: "active" | "in_service" | "decommissioned"
     }
     CompositeTypes: {

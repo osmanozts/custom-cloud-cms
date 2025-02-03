@@ -221,7 +221,7 @@ export const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({
           <FormControl my={4}>
             <FormLabel htmlFor="location">Standort</FormLabel>
             <DefaultMenu
-              options={[{ value: "DNX4", label: "DNX4" }]}
+              options={[{ value: "DNX4", label: "DNX4" }, { value: "DNW1", label: "DNW1" }, { value: "Lplg-Moers", label: "Lplg-Moers" }, { value: "Heiz-Moers", label: "Heiz-Moers" },]}
               defaultValue={employee.location ?? "Wähle ein Standort aus"}
               onSelect={(value) =>
                 setEmployee({
