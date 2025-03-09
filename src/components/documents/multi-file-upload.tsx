@@ -135,7 +135,7 @@ export const MultiFileUpload = ({
                 onChange={handleFileSelection}
                 accept="*/*"
                 style={{ display: "none" }}
-                {...({ webkitdirectory: true } as any)} // Fix für TypeScript
+                directory="" webkitdirectory=""
               />
               <Button
                 as="span"
