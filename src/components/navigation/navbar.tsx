@@ -46,7 +46,7 @@ export function Navbar() {
     },
     {
       id: 3,
-      label: "Fehrzeug Management",
+      label: "Fahrzeug Management",
       path: "/vehicle-management",
       icon: LuCar,
     },
