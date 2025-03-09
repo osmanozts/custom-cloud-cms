@@ -36,6 +36,8 @@ const knownFileExtensions = [
   "jsx",
   "tsx",
   "vue",
+  "eml",
+  "ttf",
 ];
 
 export async function getFilesOperation(
@@ -51,7 +53,7 @@ export async function getFilesOperation(
   }
 
   return data
-    .filter((file) => file.name !== ".dummy")
+    .filter((file) => file.name !== ".dummy" && file.name !== ".DS_Store")
     .map((file) => {
       const extensionMatch = file.name.match(/\.([a-zA-Z0-9]+)$/);
       const extension = extensionMatch ? extensionMatch[1].toLowerCase() : "";

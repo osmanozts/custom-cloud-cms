@@ -6,7 +6,6 @@ import {
   EditablePreview,
   Icon,
   IconButton,
-  Input,
   InputGroup,
   List,
   ListItem,
@@ -40,10 +39,11 @@ export const MultiFileUpload = ({
   onUploadComplete,
 }: MultiFileUploadProps) => {
   const dispatch: AppDispatch = useDispatch();
-
   const [isLoading, setIsLoading] = useState<boolean>(false);
-
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const [files, setFiles] = useState<File[]>([]);
+  const [filePaths, setFilePaths] = useState<string[]>([]);
 
   const triggerFileInput = () => {
     if (fileInputRef.current) {
@@ -52,27 +52,15 @@ export const MultiFileUpload = ({
   };
 
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const [files, setFiles] = useState<File[]>([]);
-  const [fileNames, setFileNames] = useState<string[]>([]);
 
   const handleFileSelection = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files) {
-      setFiles(Array.from(event.target.files));
-      setFileNames(Array.from(event.target.files).map((file) => file.name));
+      const selectedFiles = Array.from(event.target.files);
+      const paths = selectedFiles.map((file) => file.webkitRelativePath || file.name);
+
+      setFiles(selectedFiles);
+      setFilePaths(paths);
     }
-  };
-
-  const handleNameChange = (index: number, newName: string) => {
-    const updatedFileNames = [...fileNames];
-    updatedFileNames[index] = newName;
-    setFileNames(updatedFileNames);
-  };
-
-  const handleRemoveFile = (fileName: string) => {
-    const updatedFiles = files.filter((file) => file.name !== fileName);
-    const updatedFileNames = fileNames.filter((name) => name !== fileName);
-    setFiles(updatedFiles);
-    setFileNames(updatedFileNames);
   };
 
   const handleUpload = async () => {
@@ -80,20 +68,36 @@ export const MultiFileUpload = ({
     try {
       const formattedFiles = files.map((file, index) => ({
         originalFile: file,
-        newFileName: fileNames[index],
+        newFileName: filePaths[index],
       }));
 
-      await uploadFilesOperation(bucket, currentFolder, formattedFiles);
+      const result = await uploadFilesOperation(bucket, currentFolder, formattedFiles);
 
-      dispatch(
-        setToast({
-          title: "Erfolgreich!",
-          description: "Dateien erfolgreich hochgeladen.",
-          status: "success",
-        })
-      );
+      if (result.success) {
+        dispatch(
+          setToast({
+            title: "Erfolgreich!",
+            description: "Dateien und Ordner erfolgreich hochgeladen.",
+            status: "success",
+          })
+        );
+      } else {
+        result.errors.forEach((err) => {
+          console.log(err)
+          dispatch(
+            setToast({
+              title: err.message.includes("The resource already exists")
+                ? "Datei bereits vorhanden"
+                : "Upload fehlgeschlagen",
+              description: err.message.includes("The resource already exists") ? `Die Datei ${err.file} existiert bereits` : `Fehler bei ${err.file}: ${err.message}`,
+              status: err.message.includes("The resource already exists") ? "warning" : "error",
+            })
+          );
+        });
+      }
+
       setFiles([]);
-      setFileNames([]);
+      setFilePaths([]);
       onUploadComplete();
       onClose();
     } catch (error) {
@@ -109,41 +113,29 @@ export const MultiFileUpload = ({
     }
   };
 
+
   return (
     <>
-      <Button bg="parcelColor" color="invertedColor" onClick={onOpen}>
+      <Button bg="parcelColor" color="invertedColor" onClick={onOpen} gap={2}>
+        <Text>Hochladen</Text>
         <Icon as={FiUpload} boxSize={6} />
       </Button>
 
       <Modal isOpen={isOpen} onClose={onClose} size="lg" isCentered>
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>Lade Dokumente hoch!</ModalHeader>
+          <ModalHeader>Lade Dokumente & Ordner hoch!</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
             <InputGroup mb={4}>
-              <Input
+              <input
                 type="file"
                 multiple
                 ref={fileInputRef}
                 onChange={handleFileSelection}
                 accept="*/*"
-                placeholder="Drag or click to select files"
-                bg="white"
-                _hover={{
-                  borderColor: "blue.500",
-                  cursor: "pointer",
-                }}
-                _focus={{
-                  borderColor: "blue.500",
-                  outline: "none",
-                }}
-                paddingLeft="3.5rem"
-                fontSize="sm"
-                color="gray.700"
-                borderRadius="md"
-                transition="border-color 0.3s ease"
-                display="none"
+                style={{ display: "none" }}
+                {...({ webkitdirectory: true } as any)} // Fix für TypeScript
               />
               <Button
                 as="span"
@@ -155,13 +147,14 @@ export const MultiFileUpload = ({
                 boxShadow="md"
                 onClick={triggerFileInput}
               >
-                Wähle Dateien aus
+                Wähle Dateien oder Ordner aus
               </Button>
             </InputGroup>
+
             {files.length > 0 && (
               <Box>
-                <Text fontWeight="bold" mt={8} mb={2}>
-                  Ausgewähle Dateien:
+                <Text fontWeight="bold" mt={4} mb={2}>
+                  Ausgewählte Dateien und Ordner:
                 </Text>
                 <List spacing={2}>
                   {files.map((file, index) => (
@@ -170,49 +163,15 @@ export const MultiFileUpload = ({
                       bg="invertedColor"
                       p={2}
                       borderRadius="md"
-                      _hover={{ bg: "hoverColor" }}
                       display="flex"
                       justifyContent="space-between"
                       alignItems="center"
-                      cursor="pointer"
                     >
                       <Box display="flex" alignItems="center" gap={2}>
                         <Icon as={LuPencil} boxSize={5} color={"darkColor"} />
-
-                        <Editable
-                          defaultValue={fileNames[index].split(".")[0]}
-                          onSubmit={(newPrefix) => {
-                            const extension = fileNames[index].split(".").pop();
-                            handleNameChange(
-                              index,
-                              `${newPrefix}.${extension}`
-                            );
-                          }}
-                          display="flex"
-                          alignItems="center"
-                          gap={2}
-                        >
-                          <EditablePreview
-                            bg="editableBg"
-                            border="1px solid"
-                            borderColor="editableBorderColor"
-                            p={1}
-                            borderRadius="md"
-                            _hover={{ bg: "editableHover" }}
-                          />
-                          <EditableInput
-                            value={fileNames[index].split(".")[0]} // Nur den Präfix zeigen
-                            onChange={(e) => {
-                              const updatedPrefix = e.target.value;
-                              const extension = fileNames[index]
-                                .split(".")
-                                .pop();
-                              handleNameChange(
-                                index,
-                                `${updatedPrefix}.${extension}`
-                              );
-                            }}
-                          />
+                        <Editable defaultValue={filePaths[index]}>
+                          <EditablePreview />
+                          <EditableInput />
                         </Editable>
                       </Box>
 
@@ -222,7 +181,10 @@ export const MultiFileUpload = ({
                         size="sm"
                         variant="ghost"
                         colorScheme="red"
-                        onClick={() => handleRemoveFile(file.name)}
+                        onClick={() => {
+                          setFiles(files.filter((_, i) => i !== index));
+                          setFilePaths(filePaths.filter((_, i) => i !== index));
+                        }}
                       />
                     </ListItem>
                   ))}

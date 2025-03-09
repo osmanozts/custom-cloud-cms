@@ -297,7 +297,9 @@ export const DocumentManager = ({
             setIsMoveDialogOpen(true);
           }}
           isDisabled={selectedFiles.length === 0}
+          gap={2}
         >
+          <Text>Verschieben</Text>
           <Icon as={LuFileSymlink} boxSize={6} />
         </Button>
 
@@ -306,7 +308,9 @@ export const DocumentManager = ({
           color="invertedColor"
           onClick={handleDownloadAsZip}
           isDisabled={selectedFiles.length === 0}
+          gap={2}
         >
+          <Text>Herunterladen</Text>
           <Icon as={LuDownload} boxSize={6} />
         </Button>
       </Flex>
@@ -339,8 +343,8 @@ export const DocumentManager = ({
                   const updatedSelection = e.target.checked
                     ? [...selectedFiles, file]
                     : selectedFiles.filter(
-                        (f) => f.file_name !== file.file_name
-                      );
+                      (f) => f.file_name !== file.file_name
+                    );
                   setSelectedFiles(updatedSelection);
                 }}
               />
