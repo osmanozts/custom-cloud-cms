@@ -166,7 +166,6 @@ export const MultiFileUpload = ({
               <Button
                 as="span"
                 bg="blue.500"
-                color="white"
                 width="100%"
                 borderRadius="md"
                 fontSize="sm"
