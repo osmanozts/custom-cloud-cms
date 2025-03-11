@@ -1,9 +1,6 @@
 import {
   Box,
   Button,
-  Editable,
-  EditableInput,
-  EditablePreview,
   Icon,
   IconButton,
   InputGroup,
@@ -17,11 +14,11 @@ import {
   ModalHeader,
   ModalOverlay,
   Text,
-  useDisclosure,
+  useDisclosure
 } from "@chakra-ui/react";
 import { useRef, useState } from "react";
 import { FiUpload } from "react-icons/fi";
-import { LuPencil, LuTrash2 } from "react-icons/lu";
+import { LuFile, LuFolder, LuTrash2 } from "react-icons/lu";
 import { useDispatch } from "react-redux";
 import { uploadFilesOperation } from "../../backend-queries";
 import { AppDispatch } from "../../redux/store";
@@ -45,11 +42,11 @@ export const MultiFileUpload = ({
   const [files, setFiles] = useState<File[]>([]);
   const [filePaths, setFilePaths] = useState<string[]>([]);
 
-  const triggerFileInput = () => {
-    if (fileInputRef.current) {
-      fileInputRef.current.click();
-    }
-  };
+  // const triggerFileInput = () => {
+  //   if (fileInputRef.current) {
+  //     fileInputRef.current.click();
+  //   }
+  // };
 
   const { isOpen, onOpen, onClose } = useDisclosure();
 
@@ -128,6 +125,7 @@ export const MultiFileUpload = ({
           <ModalCloseButton />
           <ModalBody>
             <InputGroup mb={4}>
+              {/* Unsichtbares Input-Feld für Ordner */}
               <input
                 type="file"
                 multiple
@@ -135,9 +133,23 @@ export const MultiFileUpload = ({
                 onChange={handleFileSelection}
                 accept="*/*"
                 style={{ display: "none" }}
-                // @ts-ignore ✅ TypeScript-Check ignorieren, damit `webkitdirectory` funktioniert
+                // @ts-ignore ✅ Ignoriert TypeScript-Fehler, da `webkitdirectory` nicht offiziell ist
                 webkitdirectory="true"
+                id="folderInput"
               />
+
+              {/* Unsichtbares Input-Feld für Dateien */}
+              <input
+                type="file"
+                multiple
+                ref={fileInputRef}
+                onChange={handleFileSelection}
+                accept="*/*"
+                style={{ display: "none" }}
+                id="fileInput"
+              />
+
+              {/* Buttons für die Auswahl */}
               <Button
                 as="span"
                 bg="parcelColor"
@@ -146,11 +158,26 @@ export const MultiFileUpload = ({
                 borderRadius="md"
                 fontSize="sm"
                 boxShadow="md"
-                onClick={triggerFileInput}
+                onClick={() => document.getElementById("folderInput")?.click()}
               >
-                Wähle Dateien oder Ordner aus
+                📂 Wähle Ordner aus
+              </Button>
+
+              <Button
+                as="span"
+                bg="blue.500"
+                color="white"
+                width="100%"
+                borderRadius="md"
+                fontSize="sm"
+                boxShadow="md"
+                ml={2}
+                onClick={() => document.getElementById("fileInput")?.click()}
+              >
+                📄 Wähle Dateien aus
               </Button>
             </InputGroup>
+
 
             {files.length > 0 && (
               <Box>
@@ -158,37 +185,51 @@ export const MultiFileUpload = ({
                   Ausgewählte Dateien und Ordner:
                 </Text>
                 <List spacing={2}>
-                  {files.map((file, index) => (
-                    <ListItem
-                      key={file.name}
-                      bg="invertedColor"
-                      p={2}
-                      borderRadius="md"
-                      display="flex"
-                      justifyContent="space-between"
-                      alignItems="center"
-                    >
-                      <Box display="flex" alignItems="center" gap={2}>
-                        <Icon as={LuPencil} boxSize={5} color={"darkColor"} />
-                        <Editable defaultValue={filePaths[index]}>
-                          <EditablePreview />
-                          <EditableInput />
-                        </Editable>
-                      </Box>
+                  {files.map((file, index) => {
+                    console.log("file:", file)
+                    const pathParts = filePaths[index].split("/");
+                    const isNested = pathParts.length > 1;
+                    const fileName = pathParts.pop(); // Letzter Teil ist der Dateiname
+                    const folderPath = pathParts.join(" / "); // Zeigt den Pfad mit " / "
 
-                      <IconButton
-                        aria-label="Remove file"
-                        icon={<LuTrash2 />}
-                        size="sm"
-                        variant="ghost"
-                        colorScheme="red"
-                        onClick={() => {
-                          setFiles(files.filter((_, i) => i !== index));
-                          setFilePaths(filePaths.filter((_, i) => i !== index));
-                        }}
-                      />
-                    </ListItem>
-                  ))}
+                    return (
+                      <ListItem
+                        key={filePaths[index]}
+                        bg="invertedColor"
+                        p={2}
+                        borderRadius="md"
+                        display="flex"
+                        justifyContent="space-between"
+                        alignItems="center"
+                      >
+                        <Box display="flex" alignItems="center" gap={2}>
+                          {/* Ordnerstruktur anzeigen, falls verschachtelt */}
+                          {isNested ? (
+                            <>
+                              <Icon as={LuFolder} color="yellow.500" boxSize={5} />
+                              <Text fontWeight="bold">{folderPath}</Text>
+                            </>
+                          ) : null}
+
+                          {/* Datei-Icon und Dateiname */}
+                          <Icon as={LuFile} color="gray.500" boxSize={5} />
+                          <Text>{fileName}</Text>
+                        </Box>
+
+                        <IconButton
+                          aria-label="Remove file"
+                          icon={<LuTrash2 />}
+                          size="sm"
+                          variant="ghost"
+                          colorScheme="red"
+                          onClick={() => {
+                            setFiles(files.filter((_, i) => i !== index));
+                            setFilePaths(filePaths.filter((_, i) => i !== index));
+                          }}
+                        />
+                      </ListItem>
+                    );
+                  })}
                 </List>
               </Box>
             )}
