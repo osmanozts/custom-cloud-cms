@@ -1,7 +1,6 @@
 import pLimit from "p-limit";
 import supabase from "../../../utils/supabase";
 
-// Funktion zum Bereinigen des Dateinamens & Ordnerpfads
 const sanitizeFileName = (fileName: string): string => {
   return fileName
     .normalize("NFD") // Entfernt Umlaute (z.B. ü → u)
@@ -10,17 +9,13 @@ const sanitizeFileName = (fileName: string): string => {
     .replace(/[^a-zA-Z0-9._/-]/g, ""); // Entfernt unerlaubte Zeichen, aber behält `/` für Ordner
 };
 
-// Funktion zum Bereinigen des gesamten Pfads
 const sanitizePath = (path: string): string => {
-  return path
-    .split("/")
-    .map(sanitizeFileName) // Bereinigt jedes Verzeichnis im Pfad
-    .join("/");
+  return path.split("/").map(sanitizeFileName).join("/");
 };
 
 export async function uploadFilesOperation(
   bucket: string,
-  folder: string,
+  currentFolder: string,
   files: { originalFile: File; newFileName: string }[]
 ): Promise<{ success: boolean; errors: { file: string; message: string }[] }> {
   const limit = pLimit(5);
@@ -29,7 +24,7 @@ export async function uploadFilesOperation(
   const uploadPromises = files.map((fileObj) =>
     limit(async () => {
       const sanitizedFilePath = sanitizePath(
-        `${folder}/${fileObj.newFileName}`
+        `${currentFolder}/${fileObj.newFileName}`
       );
 
       const { error: uploadError } = await supabase.storage
@@ -45,11 +40,15 @@ export async function uploadFilesOperation(
     })
   );
 
-  // Dummy-Dateien für leere Ordner erstellen
   const folderPaths = new Set(
     files.map((file) =>
       file.newFileName.includes("/")
-        ? sanitizePath(file.newFileName.split("/").slice(0, -1).join("/"))
+        ? sanitizePath(
+            `${currentFolder}/${file.newFileName
+              .split("/")
+              .slice(0, -1)
+              .join("/")}`
+          )
         : ""
     )
   );
