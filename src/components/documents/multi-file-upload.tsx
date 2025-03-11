@@ -135,7 +135,8 @@ export const MultiFileUpload = ({
                 onChange={handleFileSelection}
                 accept="*/*"
                 style={{ display: "none" }}
-                directory="" webkitdirectory=""
+                // @ts-ignore ✅ TypeScript-Check ignorieren, damit `webkitdirectory` funktioniert
+                webkitdirectory="true"
               />
               <Button
                 as="span"
@@ -207,7 +208,7 @@ export const MultiFileUpload = ({
             </Button>
           </ModalFooter>
         </ModalContent>
-      </Modal>
+      </Modal >
     </>
   );
 };
