@@ -174,7 +174,7 @@ export const MultiFileUpload = ({
                 ml={2}
                 onClick={() => document.getElementById("fileInput")?.click()}
               >
-                <Icon as={LuFile} color="white" mr={2} boxSize={5} /> Wähle Dateien aus
+                <Icon as={LuFile} mr={2} boxSize={5} /> <Text>Wähle Dateien aus</Text>
               </Button>
             </InputGroup>
 
