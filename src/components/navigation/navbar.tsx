@@ -80,7 +80,7 @@ export function Navbar() {
       top={0}
       zIndex={1}
     >
-      <Box width="100px" justifyContent="center" alignItems="center">
+      <Box width="100px" justifyContent="center" alignItems="center" onClick={() => navigate('/')}>
         <Image src={logo} alt="Logo" objectFit="contain" />
       </Box>
       <Flex flex={1} justifyContent="flex-end" alignItems="center">
