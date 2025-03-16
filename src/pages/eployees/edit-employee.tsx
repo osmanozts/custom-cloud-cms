@@ -7,6 +7,7 @@ import {
   Icon,
   Spinner,
   Text,
+  Tooltip,
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { LuCheck, LuFileCheck2, LuFileKey, LuX } from "react-icons/lu";
@@ -28,7 +29,7 @@ import { useAuth } from "../../providers/auth-provider";
 type EditEmployeeProps = {};
 
 export const EditEmployee = ({ }: EditEmployeeProps) => {
-  const { authRole } = useAuth()
+  const { authRole } = useAuth();
   const dispatch: AppDispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -38,8 +39,22 @@ export const EditEmployee = ({ }: EditEmployeeProps) => {
   const [profile, setProfile] = useState<Tables<"profile"> | null>(null);
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
-
   const [isSaveDisabled, setIsSaveDisabled] = useState<boolean>(true);
+  const [showFloatingButtons, setShowFloatingButtons] = useState<boolean>(false);
+
+  // Scroll Listener
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 50) {
+        setShowFloatingButtons(true);
+      } else {
+        setShowFloatingButtons(false);
+      }
+    };
+    window.addEventListener("scroll", handleScroll);
+
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   useEffect(() => {
     const profileId = searchParams.get("profile_id") ?? "";
@@ -141,116 +156,189 @@ export const EditEmployee = ({ }: EditEmployeeProps) => {
       </Flex>
     );
   }
+
   try {
     return (
-      <Container
-        maxW="container.xl"
-        p={8}
-        bg="backgroundColor"
-        boxShadow="md"
-        borderRadius="lg"
-      >
-        <Flex flexDirection="column" mb={8} alignItems="center">
-          <Heading fontSize="2xl" fontWeight="bold">
-            Mitarbeiter Ansehen / Bearbeiten
-          </Heading>
-          <Flex mt={4} width="250px" justifyContent="space-between">
+      <>
+        <Container
+          maxW="container.xl"
+          p={8}
+          bg="backgroundColor"
+          boxShadow="md"
+          borderRadius="lg"
+        >
+          <Flex flexDirection="column" mb={8} alignItems="center">
+            <Heading fontSize="2xl" fontWeight="bold">
+              Mitarbeiter Ansehen / Bearbeiten
+            </Heading>
+            <Flex mt={4} width="250px" justifyContent="space-between">
+              <Button
+                bg="parcelColor"
+                color="invertedTextColor"
+                isLoading={isLoading}
+                onClick={handleSave}
+                size="sm"
+                alignSelf="center"
+                isDisabled={isSaveDisabled}
+                width={120}
+              >
+                <Icon mr={2} as={LuCheck} />
+                <Text>Speichern</Text>
+              </Button>
+              <Button
+                bg="accentColor"
+                color="invertedTextColor"
+                onClick={() => navigate("/employee-management")}
+                size="sm"
+                alignSelf="center"
+                width={120}
+              >
+                <Icon mr={2} as={LuX} />
+                {isSaveDisabled ? 'Zurück' : 'Verwerfen'}
+              </Button>
+            </Flex>
+
+          </Flex>
+          <Box>
+            <Box>
+              <Heading fontSize="lg" fontWeight="semibold" mb={4}>
+                Mitarbeiter Daten
+              </Heading>
+
+              {authRole === "superadmin" ? (
+                <EmployeeDetails
+                  employee={employee}
+                  profile={profile}
+                  setEmployee={(newEmployee) => {
+                    setEmployee(newEmployee);
+                    setIsSaveDisabled(false);
+                  }}
+                  setProfile={(newProfile) => {
+                    setProfile(newProfile);
+                    setIsSaveDisabled(false);
+                  }}
+                />
+              ) : (
+                <EmployeeMinDetail employee={employee} profile={profile} />
+              )}
+            </Box>
+
+            {employee.personnel_number !== null && authRole === "superadmin" ? (
+              <>
+                <Box>
+                  <Flex>
+                    <Icon as={LuFileCheck2} boxSize={4} mr={4} />
+                    <Heading fontSize="lg" fontWeight="semibold" mb={4}>
+                      Öffentliche Mitarbeiter Dateien
+                    </Heading>
+                  </Flex>
+
+                  <DocumentManager
+                    bucket="dateien_mitarbeiter"
+                    rootFolder={employee.personnel_number!}
+                  />
+                </Box>
+
+                <Box mt={4}>
+                  <Flex>
+                    <Icon as={LuFileKey} boxSize={4} mr={4} />
+                    <Heading fontSize="lg" fontWeight="semibold" mb={4}>
+                      Private Mitarbeiter Dateien
+                    </Heading>
+                  </Flex>
+                  <DocumentManager
+                    bucket="dateien_mitarbeiter"
+                    rootFolder={`${employee.personnel_number!}-private`}
+                  />
+                </Box>
+              </>
+            ) : (
+              <Box
+                mt={6}
+                p={4}
+                borderWidth={1}
+                borderColor="red.500"
+                borderRadius="md"
+                backgroundColor="red.50"
+                display="flex"
+                alignItems="center"
+              >
+                <Icon as={LuX} boxSize={6} color="red.500" mr={3} />
+                <Text color="red.700" fontWeight="bold">
+                  Zugriff auf Dokumenten-System verweigert
+                </Text>
+              </Box>
+            )}
+          </Box>
+
+          {/* Obere Buttons */}
+          {authRole === "superadmin" && (
+            <Flex justifyContent="flex-end" mt={10} gap={4}>
+              <Button
+                bg="accentColor"
+                color="invertedTextColor"
+                onClick={() => navigate("/employee-management")}
+                aria-label="Verwerfen"
+              >
+                Verwerfen
+              </Button>
+              <Button
+                bg="parcelColor"
+                color="invertedTextColor"
+                onClick={handleSave}
+                isLoading={isLoading}
+                isDisabled={isSaveDisabled}
+                aria-label="Speichern"
+              >
+                Speichern
+              </Button>
+            </Flex>
+          )}
+        </Container>
+
+        {/* Fixierte Action Buttons unten rechts (nur bei Scroll sichtbar) */}
+        <Box
+          position="fixed"
+          bottom="20px"
+          right="20px"
+          display="flex"
+          flexDirection="column"
+          gap={4}
+          zIndex={1000}
+          transition="opacity 0.3s ease"
+          opacity={showFloatingButtons ? 1 : 0}
+          pointerEvents={showFloatingButtons ? "auto" : "none"}
+        >
+          <Tooltip label="Speichern" placement="left">
             <Button
               bg="parcelColor"
               color="invertedTextColor"
               isLoading={isLoading}
               onClick={handleSave}
-              size="sm"
-              alignSelf="center"
+              size="md"
+              borderRadius="full"
               isDisabled={isSaveDisabled}
-              width={120}
+              aria-label="Speichern"
+              _hover={{ bg: "parcelColorHover" }}
             >
-              <Icon mr={2} as={LuCheck} />
-              <Text>Speichern</Text>
+              <Icon as={LuCheck} boxSize={6} />
             </Button>
+          </Tooltip>
+          <Tooltip label={isSaveDisabled ? "Zurück" : "Verwerfen"} placement="left">
             <Button
               bg="accentColor"
               color="invertedTextColor"
               onClick={() => navigate("/employee-management")}
-              size="sm"
-              alignSelf="center"
-              width={120}
+              size="md"
+              borderRadius="full"
+              aria-label={isSaveDisabled ? "Zurück" : "Verwerfen"}
+              _hover={{ bg: "accentColorHover" }}
             >
-              <Icon mr={2} as={LuX} />
-              {isSaveDisabled ? 'Zurück' : 'Verwerfen'}
+              <Icon as={LuX} boxSize={6} />
             </Button>
-          </Flex>
-        </Flex>
-        <Box>
-          <Box>
-            <Heading fontSize="lg" fontWeight="semibold" mb={4}>
-              Mitarbeiter Daten
-            </Heading>
-
-            {authRole === "superadmin" ?
-              <EmployeeDetails
-                employee={employee}
-                profile={profile}
-                setEmployee={(newEmployee) => {
-                  setEmployee(newEmployee);
-                  setIsSaveDisabled(false);
-                }}
-                setProfile={(newProfile) => {
-                  setProfile(newProfile);
-                  setIsSaveDisabled(false);
-                }}
-              /> :
-              <EmployeeMinDetail employee={employee} profile={profile} />
-            }
-          </Box>
-          {employee.personnel_number !== null && authRole === "superadmin" ? (
-            <>
-              <Box>
-                <Flex>
-                  <Icon as={LuFileCheck2} boxSize={4} mr={4} />
-                  <Heading fontSize="lg" fontWeight="semibold" mb={4}>
-                    Öffentliche Mitarbeiter Dateien
-                  </Heading>
-                </Flex>
-
-                <DocumentManager
-                  bucket="dateien_mitarbeiter"
-                  rootFolder={employee.personnel_number!}
-                />
-              </Box>
-
-              <Box mt={4}>
-                <Flex>
-                  <Icon as={LuFileKey} boxSize={4} mr={4} />
-                  <Heading fontSize="lg" fontWeight="semibold" mb={4}>
-                    Private Mitarbeiter Dateien
-                  </Heading>
-                </Flex>
-                <DocumentManager
-                  bucket="dateien_mitarbeiter"
-                  rootFolder={`${employee.personnel_number!}-private`}
-                />
-              </Box>
-            </>
-          ) : (
-            <Box
-              mt={6}
-              p={4}
-              borderWidth={1}
-              borderColor="red.500"
-              borderRadius="md"
-              backgroundColor="red.50"
-              display="flex"
-              alignItems="center"
-            >
-              <Icon as={LuX} boxSize={6} color="red.500" mr={3} />
-              <Text color="red.700" fontWeight="bold">
-                Zugriff auf Dokumenten-System verweigert
-              </Text>
-            </Box>
-          )}
+          </Tooltip>
         </Box>
-      </Container>
+      </>
     );
   } catch (e) {
     console.error(e);

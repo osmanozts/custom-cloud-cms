@@ -7,6 +7,7 @@ import {
   Icon,
   Spinner,
   Text,
+  Tooltip,
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { LuCheck, LuX } from "react-icons/lu";
@@ -26,6 +27,23 @@ export const EditIncident = ({ }: EditIncidentProps) => {
   const dispatch: AppDispatch = useDispatch();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
+
+  const [showFloatingButtons, setShowFloatingButtons] = useState<boolean>(false);
+
+
+  // Scroll Listener
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 50) {
+        setShowFloatingButtons(true);
+      } else {
+        setShowFloatingButtons(false);
+      }
+    };
+    window.addEventListener("scroll", handleScroll);
+
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   const vehicleID = searchParams.get("vehicle_id") ?? "";
   const [vehicle, setVehicle] = useState<Tables<"vehicles">>();
@@ -187,6 +205,50 @@ export const EditIncident = ({ }: EditIncidentProps) => {
           rootFolder={`${vehicle?.license_plate!}/Schadensmeldungen/${incident.id
             }`}
         />
+      </Box>
+
+
+      {/* Fixierte Action Buttons unten rechts (nur bei Scroll sichtbar) */}
+      <Box
+        position="fixed"
+        bottom="20px"
+        right="20px"
+        display="flex"
+        flexDirection="column"
+        gap={4}
+        zIndex={1000}
+        transition="opacity 0.3s ease"
+        opacity={showFloatingButtons ? 1 : 0}
+        pointerEvents={showFloatingButtons ? "auto" : "none"}
+      >
+        <Tooltip label="Speichern" placement="left">
+          <Button
+            bg="parcelColor"
+            color="invertedTextColor"
+            isLoading={isLoading}
+            onClick={handleSave}
+            size="md"
+            borderRadius="full"
+            isDisabled={isSaveDisabled}
+            aria-label="Speichern"
+            _hover={{ bg: "parcelColorHover" }}
+          >
+            <Icon as={LuCheck} boxSize={6} />
+          </Button>
+        </Tooltip>
+        <Tooltip label={isSaveDisabled ? "Zurück" : "Verwerfen"} placement="left">
+          <Button
+            bg="accentColor"
+            color="invertedTextColor"
+            onClick={() => navigate("/edit-vehicle?vehicle_id=" + vehicleID)}
+            size="md"
+            borderRadius="full"
+            aria-label={isSaveDisabled ? "Zurück" : "Verwerfen"}
+            _hover={{ bg: "accentColorHover" }}
+          >
+            <Icon as={LuX} boxSize={6} />
+          </Button>
+        </Tooltip>
       </Box>
     </Container>
   );
