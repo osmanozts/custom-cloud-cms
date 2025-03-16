@@ -1,6 +1,7 @@
 import {
   Box,
   Button,
+  Flex,
   Icon,
   IconButton,
   InputGroup,
@@ -125,7 +126,6 @@ export const MultiFileUpload = ({
           <ModalCloseButton />
           <ModalBody>
             <InputGroup mb={4}>
-              {/* Unsichtbares Input-Feld für Ordner */}
               <input
                 type="file"
                 multiple
@@ -138,7 +138,6 @@ export const MultiFileUpload = ({
                 id="folderInput"
               />
 
-              {/* Unsichtbares Input-Feld für Dateien */}
               <input
                 type="file"
                 multiple
@@ -149,7 +148,6 @@ export const MultiFileUpload = ({
                 id="fileInput"
               />
 
-              {/* Buttons für die Auswahl */}
               <Button
                 as="span"
                 bg="parcelColor"
@@ -182,51 +180,38 @@ export const MultiFileUpload = ({
                 <Text fontWeight="bold" mt={4} mb={2}>
                   Ausgewählte Dateien und Ordner:
                 </Text>
-                <List spacing={2}>
+                <List spacing={2} maxHeight={400} overflowY={"auto"}>
                   {files.map((file, index) => {
-                    console.log("file:", file)
-                    const pathParts = filePaths[index].split("/");
-                    const isNested = pathParts.length > 1;
-                    const fileName = pathParts.pop(); // Letzter Teil ist der Dateiname
-                    const folderPath = pathParts.join(" / "); // Zeigt den Pfad mit " / "
 
-                    return (
-                      <ListItem
-                        key={filePaths[index]}
-                        bg="invertedColor"
-                        p={2}
-                        borderRadius="md"
-                        display="flex"
-                        justifyContent="space-between"
-                        alignItems="center"
-                      >
-                        <Box display="flex" alignItems="center" gap={2}>
-                          {/* Ordnerstruktur anzeigen, falls verschachtelt */}
-                          {isNested ? (
-                            <>
-                              <Icon as={LuFolder} color="yellow.500" boxSize={5} />
-                              <Text fontWeight="bold">{folderPath}</Text>
-                            </>
-                          ) : null}
+                    if (file.name !== ".DS_Store")
+                      return (
+                        <ListItem
+                          key={filePaths[index]}
+                          bg="invertedColor"
+                          borderRadius="md"
+                          display="flex"
+                          justifyContent="space-between"
+                          alignItems="center"
+                        >
+                          <Flex gap={2}>
+                            <Icon as={LuFile} />
+                            <Text fontSize={12} fontWeight="bold">{file.name}</Text>
+                          </Flex>
 
-                          {/* Datei-Icon und Dateiname */}
-                          <Icon as={LuFile} color="gray.500" boxSize={5} />
-                          <Text>{fileName}</Text>
-                        </Box>
 
-                        <IconButton
-                          aria-label="Remove file"
-                          icon={<LuTrash2 />}
-                          size="sm"
-                          variant="ghost"
-                          colorScheme="red"
-                          onClick={() => {
-                            setFiles(files.filter((_, i) => i !== index));
-                            setFilePaths(filePaths.filter((_, i) => i !== index));
-                          }}
-                        />
-                      </ListItem>
-                    );
+                          <IconButton
+                            aria-label="Remove file"
+                            icon={<LuTrash2 />}
+                            size="sm"
+                            variant="ghost"
+                            colorScheme="red"
+                            onClick={() => {
+                              setFiles(files.filter((_, i) => i !== index));
+                              setFilePaths(filePaths.filter((_, i) => i !== index));
+                            }}
+                          />
+                        </ListItem>
+                      );
                   })}
                 </List>
               </Box>
