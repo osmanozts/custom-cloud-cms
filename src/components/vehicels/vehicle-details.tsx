@@ -182,7 +182,7 @@ export const VehicleDetails = ({
           />
         </FormControl>
         <FormControl>
-          <FormLabel htmlFor="service_year">
+          <FormLabel htmlFor="service_km">
             Nächste Wartung ab ... km
           </FormLabel>
           <InputField
@@ -196,6 +196,23 @@ export const VehicleDetails = ({
               if (!isNaN(numericValue)) {
                 setVehicle({ ...vehicle, next_service_km: numericValue });
               }
+            }}
+          />
+        </FormControl>
+        <FormControl>
+          <FormLabel htmlFor="tuv_year">
+            Nächster TÜV am...
+          </FormLabel>
+          <InputField
+            id="nextServiceDate"
+            regex={
+              /^(0[1-9]|[12]\d|3[01])\.(0[1-9]|1[0-2])\.(\d{2}|\d{4})(\s([01]\d|2[0-3]):([0-5]\d))?$/
+            }
+            regexErrorText="Bitte geben Sie ein Datum im Format '01.01.2025' ein."
+            value={vehicle.next_tuv_date ?? ""}
+            isDate
+            onChange={(e) => {
+              setVehicle({ ...vehicle, next_tuv_date: e });
             }}
           />
         </FormControl>

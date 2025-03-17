@@ -484,6 +484,7 @@ export type Database = {
           model: string | null
           next_service_date: string | null
           next_service_km: number | null
+          next_tuv_date: string | null
           profile_id: string | null
           profile_picture_url: string | null
           state: Database["public"]["Enums"]["vehicle_state"] | null
@@ -502,6 +503,7 @@ export type Database = {
           model?: string | null
           next_service_date?: string | null
           next_service_km?: number | null
+          next_tuv_date?: string | null
           profile_id?: string | null
           profile_picture_url?: string | null
           state?: Database["public"]["Enums"]["vehicle_state"] | null
@@ -520,6 +522,7 @@ export type Database = {
           model?: string | null
           next_service_date?: string | null
           next_service_km?: number | null
+          next_tuv_date?: string | null
           profile_id?: string | null
           profile_picture_url?: string | null
           state?: Database["public"]["Enums"]["vehicle_state"] | null
