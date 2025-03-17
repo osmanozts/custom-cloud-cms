@@ -104,6 +104,7 @@ export function AllVehicles({ }: AllVehiclesProps) {
               { value: "active", label: "Aktiv", color: "green" },
               { value: "decommissioned", label: "Stillgelegt", color: "red" },
               { value: "in_service", label: "In Wartung", color: "yellow" },
+              { value: "under_maintenance", label: "In Reperatur", color: "blue" },
             ]}
             defaultValue="Alle"
             onSelect={(value) => {

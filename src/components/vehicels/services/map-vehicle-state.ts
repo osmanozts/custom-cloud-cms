@@ -8,6 +8,8 @@ export function mapVehicleState(state: Enums<"vehicle_state">): string {
       return "In Wartung";
     case "decommissioned":
       return "Stillgelegt";
+    case "under_maintenance":
+      return "In Reperatur";
     default:
       return "N/V";
   }

@@ -559,7 +559,11 @@ export type Database = {
       departments: "administration" | "logistics" | "warehouse"
       employee_state: "active" | "inactive" | "pipeline"
       locations: "DNX4" | "DNW1" | "Lplg-Moers" | "Heiz-Moers"
-      vehicle_state: "active" | "in_service" | "decommissioned"
+      vehicle_state:
+        | "active"
+        | "in_service"
+        | "decommissioned"
+        | "under_maintenance"
     }
     CompositeTypes: {
       [_ in never]: never

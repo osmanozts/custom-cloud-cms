@@ -123,6 +123,7 @@ export const VehicleDetails = ({
               { value: "active", label: "Aktiv" },
               { value: "in_service", label: "Wartung" },
               { value: "decommissioned", label: "Stillgelegt" },
+              { value: "under_maintenance", label: "In Reperatur" }
             ]}
             defaultValue={vehicle.state ?? ""}
             onSelect={(value) =>
