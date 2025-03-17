@@ -123,7 +123,7 @@ export function AllVehicles({ }: AllVehiclesProps) {
           />
         </Flex>
 
-        <Box w="100%" overflowX="auto">
+        <Box w="100%" maxHeight="60vh" overflowY="auto" overflowX="auto">
           <VehiclesTable
             vehicles={vehicles}
             deleteVehicle={async (id) => {
