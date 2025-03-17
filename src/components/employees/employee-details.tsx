@@ -94,7 +94,7 @@ export const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({
             <InputField
               id="birth-date"
               regex={/^(0[1-9]|[12]\d|3[01])\.(0[1-9]|1[0-2])\.(\d{2}|\d{4})?$/}
-              regexErrorText="Bitte geben Sie ein Datum im Format '01.01.2024' ein."
+              regexErrorText="Bitte geben Sie ein Datum im Format '01.01.2025' ein."
               value={employee.date_of_birth ?? ""}
               isDate
               onChange={(e) => setEmployee({ ...employee, date_of_birth: e })}
@@ -298,7 +298,7 @@ export const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({
             <InputField
               id="driver-license-expire-date"
               regex={/^(0[1-9]|[12]\d|3[01])\.(0[1-9]|1[0-2])\.(\d{2}|\d{4})?$/}
-              regexErrorText="Bitte geben Sie ein Datum im Format '01.01.2024' ein."
+              regexErrorText="Bitte geben Sie ein Datum im Format '01.01.2025' ein."
               value={employee.driver_license_end_date ?? ""}
               isDate
               onChange={(e) =>
@@ -313,7 +313,7 @@ export const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({
             <InputField
               id="id-expire-date"
               regex={/^(0[1-9]|[12]\d|3[01])\.(0[1-9]|1[0-2])\.(\d{2}|\d{4})?$/}
-              regexErrorText="Bitte geben Sie ein Datum im Format '01.01.2024' ein."
+              regexErrorText="Bitte geben Sie ein Datum im Format '01.01.2025' ein."
               value={employee.id_card_end_date ?? ""}
               isDate
               onChange={(e) =>

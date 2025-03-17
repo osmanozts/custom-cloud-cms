@@ -110,7 +110,7 @@ export const IncidentDetails = ({
               regex={
                 /^(0[1-9]|[12]\d|3[01])\.(0[1-9]|1[0-2])\.(\d{2}|\d{4})(\s([01]\d|2[0-3]):([0-5]\d))?$/
               }
-              regexErrorText="Bitte geben Sie ein Datum im Format '01.01.2024' ein."
+              regexErrorText="Bitte geben Sie ein Datum im Format '01.01.2025' ein."
               onChange={(e) => handleInputChange("incident_date")(e)}
               isDate
             />
@@ -238,7 +238,7 @@ export const IncidentDetails = ({
                 regex={
                   /^(0[1-9]|[12]\d|3[01])\.(0[1-9]|1[0-2])\.(\d{2}|\d{4})(\s([01]\d|2[0-3]):([0-5]\d))?$/
                 }
-                regexErrorText="Bitte geben Sie ein Datum im Format '01.01.2024' ein."
+                regexErrorText="Bitte geben Sie ein Datum im Format '01.01.2025' ein."
                 value={vehicle.year ?? ""}
               />
             </FormControl>
@@ -320,7 +320,7 @@ export const IncidentDetails = ({
                   regex={
                     /^(0[1-9]|[12]\d|3[01])\.(0[1-9]|1[0-2])\.(\d{2}|\d{4})(\s([01]\d|2[0-3]):([0-5]\d))?$/
                   }
-                  regexErrorText="Bitte geben Sie ein Datum im Format '01.01.2024' ein."
+                  regexErrorText="Bitte geben Sie ein Datum im Format '01.01.2025' ein."
                   value={driver?.date_of_birth ?? ""}
                 />
               </FormControl>
@@ -398,7 +398,7 @@ export const IncidentDetails = ({
                 regex={
                   /^(0[1-9]|[12]\d|3[01])\.(0[1-9]|1[0-2])\.(\d{2}|\d{4})(\s([01]\d|2[0-3]):([0-5]\d))?$/
                 }
-                regexErrorText="Bitte geben Sie ein Datum im Format '01.01.2024' ein."
+                regexErrorText="Bitte geben Sie ein Datum im Format '01.01.2025' ein."
                 onChange={(e) =>
                   handleInputChange("opponent_driver_birth_date")(e)
                 }
