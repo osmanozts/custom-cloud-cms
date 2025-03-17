@@ -10,14 +10,14 @@ import {
   Th,
   Thead,
   Tooltip,
-  Tr,
+  Tr
 } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import { LuUser } from "react-icons/lu";
 import { useNavigate } from "react-router-dom";
 import { EmployeeWithProfile } from "../../backend-queries/joins/employee-with-profile-query";
-import { DeleteIconButton } from "../buttons/delete-icon-button";
 import { useAuth } from "../../providers/auth-provider";
+import { DeleteIconButton } from "../buttons/delete-icon-button";
 
 interface EmployeesTableProps {
   employees: EmployeeWithProfile[];
@@ -138,9 +138,8 @@ export const EmployeesTable: React.FC<EmployeesTableProps> = ({
               <Td>{empl.department ?? "-"}</Td>
               <Td>{empl.profile?.email ?? "-"}</Td>
               <Td>{`${empl.first_name ?? ""} ${empl.last_name ?? ""}`}</Td>
-              <Td>{`${empl.street ?? ""} ${empl.city ?? ""} ${
-                empl.postal_code ?? ""
-              }`}</Td>
+              <Td>{`${empl.street ?? ""} ${empl.city ?? ""} ${empl.postal_code ?? ""
+                }`}</Td>
               <Td>
                 {empl.driver_license_end_date ? (
                   <Box>

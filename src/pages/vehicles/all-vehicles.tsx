@@ -136,26 +136,30 @@ export function AllVehicles({ }: AllVehiclesProps) {
             }}
           />
         </Box>
-        <Button
-          bg="parcelColor"
-          alignSelf="flex-end"
-          leftIcon={<LuDownload />}
-          color="invertedTextColor"
-          px={4}
-          isLoading={isLoading}
-          onClick={async () => {
-            setIsLoading(true);
-            try {
-              await printVehiclesToPdf(vehicles);
-            } catch (e) {
-              throw new Error(`Error downloading pdf: ${e}`);
-            } finally {
-              setIsLoading(false);
-            }
-          }}
-        >
-          <Text>PDF Herunterladen</Text>
-        </Button>
+
+        <Flex gap={4} width="100%" justify="flex-end" alignItems="center">
+          <Text fontWeight="bold">Einträge: {vehicles.length}</Text>
+          <Button
+            bg="parcelColor"
+            alignSelf="flex-end"
+            leftIcon={<LuDownload />}
+            color="invertedTextColor"
+            px={4}
+            isLoading={isLoading}
+            onClick={async () => {
+              setIsLoading(true);
+              try {
+                await printVehiclesToPdf(vehicles);
+              } catch (e) {
+                throw new Error(`Error downloading pdf: ${e}`);
+              } finally {
+                setIsLoading(false);
+              }
+            }}
+          >
+            <Text>PDF Herunterladen</Text>
+          </Button>
+        </Flex>
       </VStack>
     </Flex>
   );

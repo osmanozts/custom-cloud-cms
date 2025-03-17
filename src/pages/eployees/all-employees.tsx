@@ -167,7 +167,7 @@ export const AllEmployees: React.FC<AllEmployeesProps> = () => {
           />
         </Flex>
 
-        <Box w="100%" overflowX="auto">
+        <Box w="100%" maxHeight="60vh" overflowX="auto" overflowY="auto">
           <EmployeesTable
             employees={employees}
             onDelete={async (id) => {
@@ -205,27 +205,29 @@ export const AllEmployees: React.FC<AllEmployeesProps> = () => {
             }}
           />
         </Box>
-
-        <Button
-          bg="parcelColor"
-          alignSelf="flex-end"
-          leftIcon={<LuDownload />}
-          color="invertedTextColor"
-          isLoading={isLoading}
-          onClick={async () => {
-            setIsLoading(true);
-            try {
-              await printEmployeesToPdf(employees);
-            } catch (e) {
-              setErrorMessage(`Fehler beim Herunterladen der PDF: ${e}`);
-            } finally {
-              setIsLoading(false);
-            }
-          }}
-          px={4}
-        >
-          <Text>PDF Herunterladen</Text>
-        </Button>
+        <Flex gap={4} width="100%" justify="flex-end" alignItems="center" >
+          <Text fontWeight="bold">Einträge: {employees.length}</Text>
+          <Button
+            bg="parcelColor"
+            alignSelf="flex-end"
+            leftIcon={<LuDownload />}
+            color="invertedTextColor"
+            isLoading={isLoading}
+            onClick={async () => {
+              setIsLoading(true);
+              try {
+                await printEmployeesToPdf(employees);
+              } catch (e) {
+                setErrorMessage(`Fehler beim Herunterladen der PDF: ${e}`);
+              } finally {
+                setIsLoading(false);
+              }
+            }}
+            px={4}
+          >
+            <Text>PDF Herunterladen</Text>
+          </Button>
+        </Flex>
       </VStack>
     </Flex>
   );
