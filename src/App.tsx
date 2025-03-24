@@ -6,7 +6,6 @@ import {
   RoleAccessRoute,
   AuthRoute,
   EmployeeManagerRoute,
-  VehicleManagerRoute,
   OnlyAdminRoute,
 } from "./auth/guards";
 import {
@@ -32,7 +31,6 @@ function App() {
     <Routes>
       <Route element={<AuthRoute />}>
         <Route element={<RoleAccessRoute />}>
-          <Route path="/" element={<Dashboard />} />
           <Route element={<OnlyAdminRoute />}>
             <Route path="/document-management" element={<AllDocuments />} />
           </Route>
@@ -42,20 +40,20 @@ function App() {
             <Route path="/create-new-user" element={<CreateNewUser />} />
             <Route path="/edit-employee" element={<EditEmployee />} />
           </Route>
-          <Route element={<VehicleManagerRoute />}>
-            <Route path="/vehicle-management" element={<AllVehicles />} />
-            <Route path="/create-vehicle" element={<CreateVehicle />} />
-            <Route path="/edit-vehicle" element={<EditVehicle />} />
-            <Route path="/edit-vehicle" element={<EditVehicle />} />
-            <Route path="/edit-incident" element={<EditIncident />} />
-            <Route path="/driver-history" element={<AllDriverHistory />} />
-            <Route
-              path="/edit-driver-history"
-              element={<EditDriverHistory />}
-            />
-            <Route path="/edit-km-history" element={<EditKmHistory />} />
-            <Route path="/km-history" element={<AllKmHistory />} />
-          </Route>
+
+          <Route path="/" element={<Dashboard />} />
+          <Route path="/vehicle-management" element={<AllVehicles />} />
+          <Route path="/create-vehicle" element={<CreateVehicle />} />
+          <Route path="/edit-vehicle" element={<EditVehicle />} />
+          <Route path="/edit-vehicle" element={<EditVehicle />} />
+          <Route path="/edit-incident" element={<EditIncident />} />
+          <Route path="/driver-history" element={<AllDriverHistory />} />
+          <Route
+            path="/edit-driver-history"
+            element={<EditDriverHistory />}
+          />
+          <Route path="/edit-km-history" element={<EditKmHistory />} />
+          <Route path="/km-history" element={<AllKmHistory />} />
         </Route>
         <Route
           path="/employee-min-detail"

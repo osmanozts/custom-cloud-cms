@@ -104,10 +104,12 @@ export const VehiclesTable = ({
           <Th>Kilometerstand</Th>
           <Th>Nächste Wartung am</Th>
           <Th>Nächste Wartung ab</Th>
+          <Th>Nächster TÜV am</Th>
         </Tr>
       </Thead>
       <Tbody>
         {vehicles.map((vehicle, index) => {
+          console.log(vehicle.next_tuv_date);
           const isNextServiceDateExpiring = isDateExpiring(
             vehicle.next_service_date,
             30
@@ -170,16 +172,16 @@ export const VehiclesTable = ({
                   )}
                   {(isKmThresholdExceededFlag ||
                     isKmThresholdExceedingFlag) && (
-                    <Tooltip
-                      label={
-                        isKmThresholdExceedingFlag
-                          ? "Der Kilometerstand liegt nah an der Wartungsgrenze."
-                          : "Der Kilometerstand ist bereits über der Grenze."
-                      }
-                    >
-                      <Icon as={InfoIcon} color="accentColor" />
-                    </Tooltip>
-                  )}
+                      <Tooltip
+                        label={
+                          isKmThresholdExceedingFlag
+                            ? "Der Kilometerstand liegt nah an der Wartungsgrenze."
+                            : "Der Kilometerstand ist bereits über der Grenze."
+                        }
+                      >
+                        <Icon as={InfoIcon} color="accentColor" />
+                      </Tooltip>
+                    )}
                   <Text>{vehicle.license_plate ?? "-"}</Text>
                 </Flex>
               </Td>
@@ -202,6 +204,13 @@ export const VehiclesTable = ({
                   {vehicle.next_service_km
                     ? `${vehicle.next_service_km} km`
                     : "Keine KM angegeben"}
+                </Text>
+              </Td>
+              <Td>
+                <Text>
+                  {vehicle.next_tuv_date
+                    ? vehicle.next_tuv_date
+                    : "Kein Datum angegeben"}
                 </Text>
               </Td>
             </Tr>
