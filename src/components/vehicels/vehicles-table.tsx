@@ -104,7 +104,7 @@ export const VehiclesTable = ({
           <Th>Kilometerstand</Th>
           <Th>Nächste Wartung am</Th>
           <Th>Nächste Wartung ab</Th>
-          <Th>Nächster TÜV am</Th>
+          <Th>TÜV bis</Th>
         </Tr>
       </Thead>
       <Tbody>

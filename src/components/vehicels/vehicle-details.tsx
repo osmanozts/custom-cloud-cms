@@ -202,7 +202,7 @@ export const VehicleDetails = ({
         </FormControl>
         <FormControl>
           <FormLabel htmlFor="tuv_year">
-            Nächster TÜV am...
+            TÜV bis...
           </FormLabel>
           <InputField
             id="nextServiceDate"
