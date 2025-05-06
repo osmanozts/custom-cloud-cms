@@ -88,6 +88,9 @@ export const EditVehicle = ({ }: EditVehicleProps) => {
           next_service_date: newVehicle.next_service_date
             ? dayjs(newVehicle.next_service_date).format("DD.MM.YYYY")
             : "",
+          next_tuv_date: newVehicle.next_tuv_date
+            ? dayjs(newVehicle.next_tuv_date).format("DD.MM.YYYY")
+            : "",
         };
 
         setOldDriverId(newVehicle.profile_id);
@@ -109,10 +112,18 @@ export const EditVehicle = ({ }: EditVehicleProps) => {
             `${nextServiceDateParts[2]}-${nextServiceDateParts[1]}-${nextServiceDateParts[0]}T00:00:00Z`
           ).toISOString()
           : null;
+      const nextTuvDateParts = vehicle.next_tuv_date?.split(".");
+      const nextTuvDate =
+        nextTuvDateParts?.length === 3
+          ? new Date(
+            `${nextTuvDateParts[2]}-${nextTuvDateParts[1]}-${nextTuvDateParts[0]}`
+          ).toISOString()
+          : null;
 
       const updatedVehicle: Tables<"vehicles"> = {
         ...vehicle,
         next_service_date: nextServiceDate,
+        next_tuv_date: nextTuvDate,
       };
       await updateVehicle(updatedVehicle);
       if (vehicle.profile_id && vehicle.profile_id !== oldDriverId) {

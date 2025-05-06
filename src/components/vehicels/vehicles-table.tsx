@@ -209,7 +209,7 @@ export const VehiclesTable = ({
               <Td>
                 <Text>
                   {vehicle.next_tuv_date
-                    ? vehicle.next_tuv_date
+                    ? dayjs(vehicle.next_tuv_date).format("DD/MM/YYYY")
                     : "Kein Datum angegeben"}
                 </Text>
               </Td>
