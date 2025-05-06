@@ -117,6 +117,13 @@ export const VehiclesTable = ({
           const isNextServiceDateExpired = isDateExpired(
             vehicle.next_service_date
           );
+          const isNextTuvDateExpiring = isDateExpiring(
+            vehicle.next_tuv_date,
+            30
+          );
+          const isNextTuvDateExpired = isDateExpired(
+            vehicle.next_tuv_date
+          );
           const isKmThresholdExceedingFlag = isKmThresholdExceeding(
             vehicle.km_age,
             vehicle.next_service_km,
@@ -156,7 +163,9 @@ export const VehiclesTable = ({
                   {!isNextServiceDateExpired &&
                     !isNextServiceDateExpiring &&
                     !isKmThresholdExceeding &&
-                    !isKmThresholdExceededFlag && (
+                    !isKmThresholdExceededFlag &&
+                    !isNextTuvDateExpired &&
+                    !isNextTuvDateExpiring && (
                       <Icon as={LuCar} boxSize={4} mr={2} />
                     )}
                   {(isNextServiceDateExpired || isNextServiceDateExpiring) && (
@@ -165,6 +174,17 @@ export const VehiclesTable = ({
                         isNextServiceDateExpired
                           ? "Die Wartung ist überfällig."
                           : "Die Wartung steht bald an."
+                      }
+                    >
+                      <Icon as={InfoIcon} color="accentColor" mr={2} />
+                    </Tooltip>
+                  )}
+                  {(isNextTuvDateExpired || isNextTuvDateExpiring) && (
+                    <Tooltip
+                      label={
+                        isNextTuvDateExpired
+                          ? "Der TÜV ist überfällig."
+                          : "Der TÜV steht bald an."
                       }
                     >
                       <Icon as={InfoIcon} color="accentColor" mr={2} />
