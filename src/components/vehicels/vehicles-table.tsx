@@ -97,6 +97,7 @@ export const VehiclesTable = ({
       <Thead>
         <Tr whiteSpace="nowrap">
           <Th>Aktion</Th>
+          <Th>FIN</Th>
           <Th>Kennzeichen</Th>
           <Th>Status</Th>
           <Th>Standort</Th>
@@ -158,6 +159,7 @@ export const VehiclesTable = ({
                   authRole={authRole}
                 />
               </Td>
+              <Td>{vehicle.vin ?? "-"}</Td>
               <Td>
                 <Flex alignItems="center" gap={2}>
                   {!isNextServiceDateExpired &&
