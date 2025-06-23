@@ -12,7 +12,6 @@ export async function printVehiclesToPdf(vehicles: Vehicles) {
     mapVehicleState(vehcl.state ?? "active") ?? "-",
     vehcl.location ?? "-",
     vehcl.km_age ?? "-",
-    vehcl.next_service_date ?? "-",
     vehcl.next_service_km ?? "-",
   ]);
 
@@ -24,7 +23,6 @@ export async function printVehiclesToPdf(vehicles: Vehicles) {
         "Status",
         "Standort",
         "Kilometerstand",
-        "Nächste Wartung am",
         "Nächste Wartung ab",
       ],
     ],
