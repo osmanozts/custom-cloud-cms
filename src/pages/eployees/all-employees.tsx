@@ -159,7 +159,7 @@ export const AllEmployees: React.FC<AllEmployeesProps> = () => {
           <DefaultMenu
             options={[
               { value: null, label: "Alle" },
-              { value: "DNX4", label: "DNX4" }, { value: "DNW1", label: "DNW1" }, { value: "Lplg-Moers", label: "Lplg-Moers" }, { value: "Heiz-Moers", label: "Heiz-Moers" },
+              { value: "DNX4", label: "DNX4" }, { value: "DNW1", label: "DNW1" }, { value: "Lplg-Moers", label: "LPLG-Moers" }, { value: "Heiz-Moers", label: "Heiz-Moers" },
             ]}
             defaultValue="Alle"
             onSelect={(value) => setLocationFilter(value)}
