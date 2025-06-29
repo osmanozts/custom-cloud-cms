@@ -3,7 +3,7 @@ import { Box, Button, Flex, Icon, Text, VStack } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { LuStepBack } from "react-icons/lu";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import { deleteKmHistory, getKmHistories } from "../../backend-queries";
+import { getKmHistories } from "../../backend-queries";
 import { JoinedKmHistory } from "../../backend-queries/joins/joined-km-history";
 import { InputField, KmHistoryTable } from "../../components";
 
@@ -72,13 +72,7 @@ export function AllKmHistory() {
 
         <KmHistoryTable
           historyData={historyData}
-          deleteHistory={async (id) => {
-            const status = await deleteKmHistory(id);
-            if (status === "success") {
-              await fetchedData();
-            }
-            return status;
-          }}
+
         />
       </VStack>
     </Flex>

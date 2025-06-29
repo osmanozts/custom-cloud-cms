@@ -10,6 +10,10 @@ import { Tables } from "../../../utils/database/types";
 import { DriverSelectDialog } from "../../dialogs/driver-select-dialog";
 import { InputField } from "../../input-field";
 import dayjs from "dayjs";
+import { DeleteIconButton } from "../../buttons/delete-icon-button";
+import { deleteKmHistory } from "../../../backend-queries";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../../providers/auth-provider";
 
 type KmHistoryDetailsProps = {
   kmHistory: Tables<"km_history">;
@@ -20,6 +24,9 @@ export const KmHistoryDetails = ({
   kmHistory,
   employees,
 }: KmHistoryDetailsProps) => {
+  const navigate = useNavigate();
+  const { authRole } = useAuth();
+
   const paddingValue = useBreakpointValue({
     base: 2,
     md: 4,
@@ -71,6 +78,18 @@ export const KmHistoryDetails = ({
           />
         </GridItem>
       </Grid>
+
+      <DeleteIconButton
+        clickedItem={kmHistory.id}
+        onDelete={async (id) => {
+          const status = await deleteKmHistory(id);
+          if (status === "success") {
+            navigate("/km-history?vehicle_id=" + kmHistory.vehicle_id)
+          }
+          return status;
+        }}
+        authRole={authRole}
+      />
     </Box>
   );
 };

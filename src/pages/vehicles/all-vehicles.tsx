@@ -4,7 +4,7 @@ import { LuDownload, LuPlus } from "react-icons/lu";
 
 import { SearchIcon } from "@chakra-ui/icons";
 import { useNavigate } from "react-router-dom";
-import { deleteVehicle, getAllVehicles } from "../../backend-queries";
+import { getAllVehicles } from "../../backend-queries";
 import { Vehicles } from "../../backend-queries/query/vehicles/get-all-vehicles";
 import { InputField, VehiclesTable } from "../../components";
 import { DefaultMenu } from "../../components/menu/default-menu";
@@ -124,17 +124,7 @@ export function AllVehicles({ }: AllVehiclesProps) {
         </Flex>
 
         <Box w="100%" maxHeight="60vh" overflowY="auto" overflowX="auto">
-          <VehiclesTable
-            vehicles={vehicles}
-            deleteVehicle={async (id) => {
-              const status = await deleteVehicle(id);
-              console.log("🚀 ~ status:", status);
-              if (status === "success") {
-                await fetchVehicles();
-              }
-              return status;
-            }}
-          />
+          <VehiclesTable vehicles={vehicles} />
         </Box>
 
         <Flex gap={4} width="100%" justify="flex-end" alignItems="center">

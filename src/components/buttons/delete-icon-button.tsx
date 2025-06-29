@@ -1,11 +1,11 @@
-import { IconButton } from "@chakra-ui/react";
-import { LuTrash2 } from "react-icons/lu";
+import { Button } from "@chakra-ui/react";
 import { useState } from "react";
-import { DeleteConfirmationDialog } from "../dialogs/delete-confirmation-dialog";
-import { AppDispatch } from "../../redux/store";
+import { LuTrash2 } from "react-icons/lu";
 import { useDispatch } from "react-redux";
+import { AppDispatch } from "../../redux/store";
 import { setToast } from "../../redux/toast-slice";
 import { Enums } from "../../utils/database/types";
+import { DeleteConfirmationDialog } from "../dialogs/delete-confirmation-dialog";
 
 interface DeleteIconButtonProps {
   clickedItem: string;
@@ -27,9 +27,10 @@ export const DeleteIconButton = ({
 
   return (
     <>
-      <IconButton
+      <Button
+        marginTop={8}
         color="accentColor"
-        icon={<LuTrash2 />}
+        leftIcon={<LuTrash2 />}
         boxSize={8}
         aria-label="delete entry"
         bg="invertedColor"
@@ -41,7 +42,9 @@ export const DeleteIconButton = ({
           e.stopPropagation(); // Stoppt die Weiterleitung des Klick-Ereignisses
           setIsDeleteDialogOpen(true);
         }}
-      />
+        width={200}
+      >Eintrag Löschen</Button>
+
       <DeleteConfirmationDialog
         isOpen={isDeleteDialogOpen}
         onClose={() => setIsDeleteDialogOpen(false)}

@@ -16,20 +16,15 @@ import dayjs from "dayjs";
 import { LuUser } from "react-icons/lu";
 import { useNavigate } from "react-router-dom";
 import { EmployeeWithProfile } from "../../backend-queries/joins/employee-with-profile-query";
-import { useAuth } from "../../providers/auth-provider";
-import { DeleteIconButton } from "../buttons/delete-icon-button";
 
 interface EmployeesTableProps {
   employees: EmployeeWithProfile[];
-  onDelete: (id: string) => Promise<"error" | "success" | "unauthorized">;
 }
 
 export const EmployeesTable: React.FC<EmployeesTableProps> = ({
   employees,
-  onDelete,
 }) => {
   const navigate = useNavigate();
-  const { authRole } = useAuth();
 
   const isDateExpiring = (date: string | null, daysBeforeExpire: number) => {
     if (!date) return false;
@@ -48,7 +43,6 @@ export const EmployeesTable: React.FC<EmployeesTableProps> = ({
     <Table borderWidth={2} borderColor="tileBgColor" mt={4}>
       <Thead>
         <Tr whiteSpace="nowrap">
-          <Th>Aktion</Th>
           <Th>Personalnummer</Th>
           <Th>Standort</Th>
           <Th>Abteilung</Th>
@@ -92,15 +86,6 @@ export const EmployeesTable: React.FC<EmployeesTableProps> = ({
               bg={index % 2 == 0 ? "tileBgColor" : "invertedColor"}
               _hover={{ bg: "backgroundColor" }}
             >
-              <Td>
-                <DeleteIconButton
-                  clickedItem={empl.profile_id ?? ""}
-                  onDelete={async (id) => {
-                    return onDelete(id);
-                  }}
-                  authRole={authRole}
-                />
-              </Td>
               <Td>
                 <Flex alignItems="center" gap={2}>
                   {!isDriverLicenseExpired &&

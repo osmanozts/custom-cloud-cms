@@ -2,18 +2,17 @@ import { SearchIcon } from "@chakra-ui/icons";
 import { Box, Button, Flex, Icon, Text, VStack } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { LuPlus, LuStepBack } from "react-icons/lu";
+import { useDispatch } from "react-redux";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import {
-  createDriverHistoryManuel,
-  deleteDriverHistory,
+  createDriverHistoryManuel
 } from "../../backend-queries";
 import { JoinedDriverHistory } from "../../backend-queries/joins/joined-driver-history";
 import { getVehicleDriverHistories } from "../../backend-queries/query/driver_history/get-driver-histories";
 import { DriverHistoryTable, InputField } from "../../components";
 import { useAuth } from "../../providers/auth-provider";
-import { setToast } from "../../redux/toast-slice";
 import { AppDispatch } from "../../redux/store";
-import { useDispatch } from "react-redux";
+import { setToast } from "../../redux/toast-slice";
 
 export function AllDriverHistory() {
   const dispatch: AppDispatch = useDispatch();
@@ -125,16 +124,7 @@ export function AllDriverHistory() {
           </Flex>
         </Flex>
 
-        <DriverHistoryTable
-          historyData={historyData}
-          deleteDriverHistory={async (id) => {
-            const status = await deleteDriverHistory(id);
-            if (status === "success") {
-              await fetchedData();
-            }
-            return status;
-          }}
-        />
+        <DriverHistoryTable historyData={historyData} />
       </VStack>
     </Flex>
   );

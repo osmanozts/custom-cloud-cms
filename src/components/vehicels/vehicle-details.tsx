@@ -6,6 +6,10 @@ import { DriverSelectDialog } from "../dialogs/driver-select-dialog";
 import { InputField } from "../input-field";
 import { colors } from "../menu/color";
 import { DefaultMenu, MenuOption } from "../menu/default-menu";
+import { DeleteIconButton } from "../buttons/delete-icon-button";
+import { deleteVehicle } from "../../backend-queries";
+import { useAuth } from "../../providers/auth-provider";
+import { useNavigate } from "react-router-dom";
 
 type VehicleDetailsProps = {
   vehicle: Tables<"vehicles">;
@@ -18,6 +22,8 @@ export const VehicleDetails = ({
   drivers,
   setVehicle,
 }: VehicleDetailsProps) => {
+  const navigate = useNavigate()
+  const { authRole } = useAuth();
   const [driverOptions, setDriverOptions] = useState<MenuOption[]>([]);
 
   useEffect(() => {
@@ -218,6 +224,18 @@ export const VehicleDetails = ({
           />
         </FormControl>
       </Grid>
+
+      <DeleteIconButton
+        clickedItem={vehicle.id}
+        onDelete={async (id) => {
+          const status = await deleteVehicle(id);
+          if (status === "success") {
+            navigate("/vehicle-management");
+          }
+          return status;
+        }}
+        authRole={authRole}
+      />
     </Stack>
   );
 };

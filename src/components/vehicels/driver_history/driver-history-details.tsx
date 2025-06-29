@@ -10,6 +10,10 @@ import {
 import { Tables } from "../../../utils/database/types";
 import { DriverSelectDialog } from "../../dialogs/driver-select-dialog";
 import { InputField } from "../../input-field";
+import { DeleteIconButton } from "../../buttons/delete-icon-button";
+import { deleteDriverHistory } from "../../../backend-queries";
+import { useAuth } from "../../../providers/auth-provider";
+import { useNavigate } from "react-router-dom";
 
 type DriverHistoryDetailsProps = {
   driverHistory: Tables<"driver_history">;
@@ -22,6 +26,8 @@ export const DriverHistoryDetails = ({
   employees,
   setDriverHistory,
 }: DriverHistoryDetailsProps) => {
+  const navigate = useNavigate()
+  const { authRole } = useAuth();
   const paddingValue = useBreakpointValue({
     base: 2,
     md: 4,
@@ -99,6 +105,20 @@ export const DriverHistoryDetails = ({
           />
         </GridItem>
       </Grid>
+
+      <DeleteIconButton
+        clickedItem={driverHistory.id}
+        onDelete={async (id) => {
+          const status = await deleteDriverHistory(id);
+          if (status === "success") {
+            navigate(
+              "/driver-history?vehicle_id=" + driverHistory.vehicle_id?.toString()
+            );
+          }
+          return status;
+        }}
+        authRole={authRole}
+      />
     </Box>
   );
 };

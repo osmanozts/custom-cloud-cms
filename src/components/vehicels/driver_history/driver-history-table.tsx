@@ -16,22 +16,15 @@ import dayjs from "dayjs";
 import { LuPencil } from "react-icons/lu";
 import { useNavigate } from "react-router-dom";
 import { JoinedDriverHistory } from "../../../backend-queries/joins/joined-driver-history";
-import { DeleteIconButton } from "../../buttons/delete-icon-button";
-import { useAuth } from "../../../providers/auth-provider";
 
 type DriverHistoryTableProps = {
   historyData: JoinedDriverHistory;
-  deleteDriverHistory: (
-    id: string
-  ) => Promise<"error" | "success" | "unauthorized">;
 };
 
 export function DriverHistoryTable({
   historyData,
-  deleteDriverHistory,
 }: DriverHistoryTableProps) {
   const navigate = useNavigate();
-  const { authRole } = useAuth();
 
   return (
     <Box width="100%">
@@ -57,15 +50,6 @@ export function DriverHistoryTable({
                 _hover={{ bg: "backgroundColor" }}
                 onClick={() => navigate("/edit-driver-history?id=" + data.id)}
               >
-                <Td>
-                  <DeleteIconButton
-                    clickedItem={data.id}
-                    onDelete={async (id) => {
-                      return await deleteDriverHistory(id);
-                    }}
-                    authRole={authRole}
-                  />
-                </Td>
                 <Td>
                   <Text>{data.employees?.personnel_number ?? "N/V"}</Text>
                 </Td>

@@ -14,6 +14,9 @@ import { InputField } from "../input-field";
 import { DefaultMenu } from "../menu/default-menu";
 import { EmployeeProfilePic } from "./employee-profile-pic";
 import { LuAtSign } from "react-icons/lu";
+import { DeleteIconButton } from "../buttons/delete-icon-button";
+import supabase from "../../utils/supabase";
+import { useNavigate } from "react-router-dom";
 
 type EmployeeDetailsProps = {
   employee: Tables<"employees">;
@@ -28,6 +31,7 @@ export const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({
   setEmployee,
   setProfile,
 }) => {
+  const navigate = useNavigate()
   const { authRole } = useAuth();
 
   const driverLicenseLevels = [
@@ -323,6 +327,42 @@ export const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({
           </FormControl>
         </Box>
       </SimpleGrid>
+
+      <DeleteIconButton
+        clickedItem={employee.profile_id ?? ""}
+        onDelete={async (id) => {
+          try {
+            const response = await supabase.functions.invoke(
+              "delete-user",
+              {
+                body: { id },
+              }
+            );
+
+            console.log("🚀 ~ response:", response);
+
+            if (!response.error) {
+              // Erfolgreiche Löschung
+              navigate("/employee-management");
+              return "success";
+            }
+
+            // Fehleranalyse basierend auf status_code
+            const status = response.error.context.status;
+            if (status === 401) {
+              return "unauthorized";
+            } else if (status === 500) {
+              return "error";
+            }
+
+            return "success";
+          } catch (e) {
+            console.error("Error deleting user:", e);
+            return "error";
+          }
+        }}
+        authRole={authRole}
+      />
     </Box>
   );
 };

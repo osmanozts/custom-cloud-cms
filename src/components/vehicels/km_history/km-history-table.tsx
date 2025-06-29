@@ -15,28 +15,22 @@ import {
 import dayjs from "dayjs";
 import { LuPencil } from "react-icons/lu";
 import { useNavigate } from "react-router-dom";
-import { DeleteIconButton } from "../../buttons/delete-icon-button";
 import { JoinedKmHistory } from "../../../backend-queries/joins/joined-km-history";
-import { useAuth } from "../../../providers/auth-provider";
 
 type KmHistoryTableProps = {
   historyData: JoinedKmHistory;
-  deleteHistory: (id: string) => Promise<"error" | "success" | "unauthorized">;
 };
 
 export function KmHistoryTable({
   historyData,
-  deleteHistory,
 }: KmHistoryTableProps) {
   const navigate = useNavigate();
-  const { authRole } = useAuth();
 
   return (
     <Box width="100%">
       <Table borderWidth={1} mt={4} w="100%">
         <Thead>
           <Tr whiteSpace="nowrap">
-            <Th>Aktion</Th>
             <Th>Datum</Th>
             <Th>Kilometerstand</Th>
             <Th>Personalnummer</Th>
@@ -57,15 +51,7 @@ export function KmHistoryTable({
                 _hover={{ bg: "backgroundColor" }}
                 onClick={() => navigate("/edit-km-history?id=" + data.id)}
               >
-                <Td>
-                  <DeleteIconButton
-                    clickedItem={data.id}
-                    onDelete={async (id) => {
-                      return await deleteHistory(id);
-                    }}
-                    authRole={authRole}
-                  />
-                </Td>
+
                 <Td>
                   <Text>
                     {dayjs(data.created_at).format("DD.MM.YYYY").toString()}

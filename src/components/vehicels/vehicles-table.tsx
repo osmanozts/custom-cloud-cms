@@ -16,23 +16,18 @@ import { useEffect, useState } from "react";
 import { LuCar } from "react-icons/lu";
 import { useNavigate } from "react-router-dom";
 import { getMinDetailEmployees } from "../../backend-queries";
-import { Vehicles } from "../../backend-queries/query/vehicles/get-all-vehicles";
 import { EmployeesMinimumDetail } from "../../backend-queries/query/employees/get-min-detail-employees";
-import { DeleteIconButton } from "../buttons/delete-icon-button";
+import { Vehicles } from "../../backend-queries/query/vehicles/get-all-vehicles";
 import { mapVehicleState } from "./services/map-vehicle-state";
-import { useAuth } from "../../providers/auth-provider";
 
 interface VehiclesTableProps {
   vehicles: Vehicles;
-  deleteVehicle: (id: string) => Promise<"error" | "success" | "unauthorized">;
 }
 
 export const VehiclesTable = ({
   vehicles,
-  deleteVehicle,
 }: VehiclesTableProps) => {
   const navigate = useNavigate();
-  const { authRole } = useAuth();
 
   const [minEmployees, setMinEmployees] = useState<EmployeesMinimumDetail>([]);
 
@@ -96,7 +91,6 @@ export const VehiclesTable = ({
     <Table borderWidth={1} mt={4}>
       <Thead>
         <Tr whiteSpace="nowrap">
-          <Th>Aktion</Th>
           <Th>FIN</Th>
           <Th>Kennzeichen</Th>
           <Th>Status</Th>
@@ -150,15 +144,6 @@ export const VehiclesTable = ({
               bg={index % 2 == 0 ? "tileBgColor" : "invertedColor"}
               _hover={{ bg: "backgroundColor" }}
             >
-              <Td color="accentColor">
-                <DeleteIconButton
-                  clickedItem={vehicle.id}
-                  onDelete={async (id) => {
-                    return await deleteVehicle(id);
-                  }}
-                  authRole={authRole}
-                />
-              </Td>
               <Td>{vehicle.vin ?? "-"}</Td>
               <Td>
                 <Flex alignItems="center" gap={2}>

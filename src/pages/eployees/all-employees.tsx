@@ -18,9 +18,8 @@ import { EmployeeWithProfile } from "../../backend-queries/joins/employee-with-p
 import { getAllEmployees } from "../../backend-queries/query/employees/get-all-employees";
 import { EmployeesTable, InputField } from "../../components";
 import { DefaultMenu } from "../../components/menu/default-menu";
-import supabase from "../../utils/supabase";
-import { printEmployeesToPdf } from "./services/print-employees-to-pdf";
 import { useAuth } from "../../providers/auth-provider";
+import { printEmployeesToPdf } from "./services/print-employees-to-pdf";
 
 interface AllEmployeesProps { }
 
@@ -170,39 +169,6 @@ export const AllEmployees: React.FC<AllEmployeesProps> = () => {
         <Box w="100%" maxHeight="60vh" overflowX="auto" overflowY="auto">
           <EmployeesTable
             employees={employees}
-            onDelete={async (id) => {
-              try {
-                const response = await supabase.functions.invoke(
-                  "delete-user",
-                  {
-                    body: { id },
-                  }
-                );
-
-                console.log("🚀 ~ response:", response);
-
-                if (!response.error) {
-                  // Erfolgreiche Löschung
-                  getAllEmployees((allEmployees: EmployeeWithProfile[]) =>
-                    setEmployees(allEmployees)
-                  );
-                  return "success";
-                }
-
-                // Fehleranalyse basierend auf status_code
-                const status = response.error.context.status;
-                if (status === 401) {
-                  return "unauthorized";
-                } else if (status === 500) {
-                  return "error";
-                }
-
-                return "success";
-              } catch (e) {
-                console.error("Error deleting user:", e);
-                return "error";
-              }
-            }}
           />
         </Box>
         <Flex gap={4} width="100%" justify="flex-end" alignItems="center" >
