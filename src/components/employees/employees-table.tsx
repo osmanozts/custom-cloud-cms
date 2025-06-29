@@ -1,4 +1,4 @@
-import { InfoIcon } from "@chakra-ui/icons";
+import { InfoIcon, TriangleDownIcon, TriangleUpIcon } from "@chakra-ui/icons";
 import {
   Box,
   Flex,
@@ -10,9 +10,10 @@ import {
   Th,
   Thead,
   Tooltip,
-  Tr
+  Tr,
 } from "@chakra-ui/react";
 import dayjs from "dayjs";
+import { useEffect, useState } from "react";
 import { LuUser } from "react-icons/lu";
 import { useNavigate } from "react-router-dom";
 import { EmployeeWithProfile } from "../../backend-queries/joins/employee-with-profile-query";
@@ -25,6 +26,32 @@ export const EmployeesTable: React.FC<EmployeesTableProps> = ({
   employees,
 }) => {
   const navigate = useNavigate();
+
+  const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
+  const [sortedEmployees, setSortedEmployees] = useState<EmployeeWithProfile[]>([]);
+
+  useEffect(() => {
+    setSortedEmployees(employees);
+  }, [employees]);
+
+  const sortByPersonnelNumber = () => {
+    const newOrder = sortOrder === "asc" ? "desc" : "asc";
+    const sorted = [...sortedEmployees].sort((a, b) => {
+      const numA = a.personnel_number;
+      const numB = b.personnel_number;
+
+      if (numA == null && numB != null) return 1;
+      if (numA != null && numB == null) return -1;
+      if (numA == null && numB == null) return 0;
+
+      if (numA! < numB!) return newOrder === "asc" ? -1 : 1;
+      if (numA! > numB!) return newOrder === "asc" ? 1 : -1;
+      return 0;
+    });
+
+    setSortOrder(newOrder);
+    setSortedEmployees(sorted);
+  };
 
   const isDateExpiring = (date: string | null, daysBeforeExpire: number) => {
     if (!date) return false;
@@ -43,7 +70,16 @@ export const EmployeesTable: React.FC<EmployeesTableProps> = ({
     <Table borderWidth={2} borderColor="tileBgColor" mt={4}>
       <Thead>
         <Tr whiteSpace="nowrap">
-          <Th>Personalnummer</Th>
+          <Th cursor="pointer" onClick={sortByPersonnelNumber}>
+            <Flex align="center" gap={1}>
+              <Text>Personalnummer</Text>
+              {sortOrder === "asc" ? (
+                <TriangleUpIcon boxSize={3} />
+              ) : (
+                <TriangleDownIcon boxSize={3} />
+              )}
+            </Flex>
+          </Th>
           <Th>Standort</Th>
           <Th>Abteilung</Th>
           <Th>Email</Th>
@@ -58,8 +94,7 @@ export const EmployeesTable: React.FC<EmployeesTableProps> = ({
         </Tr>
       </Thead>
       <Tbody>
-        {employees.map((empl, index) => {
-          // Führerscheinstatus prüfen
+        {sortedEmployees.map((empl, index) => {
           const isDriverLicenseExpiring = isDateExpiring(
             empl.driver_license_end_date,
             30
@@ -67,8 +102,6 @@ export const EmployeesTable: React.FC<EmployeesTableProps> = ({
           const isDriverLicenseExpired = isDateExpired(
             empl.driver_license_end_date
           );
-
-          // Ausweisstatus prüfen
           const isIdCardExpiring = isDateExpiring(empl.id_card_end_date, 30);
           const isIdCardExpired = isDateExpired(empl.id_card_end_date);
 
@@ -83,7 +116,7 @@ export const EmployeesTable: React.FC<EmployeesTableProps> = ({
                   search: `?profile_id=${empl.profile_id}`,
                 })
               }
-              bg={index % 2 == 0 ? "tileBgColor" : "invertedColor"}
+              bg={index % 2 === 0 ? "tileBgColor" : "invertedColor"}
               _hover={{ bg: "backgroundColor" }}
             >
               <Td>
@@ -123,8 +156,7 @@ export const EmployeesTable: React.FC<EmployeesTableProps> = ({
               <Td>{empl.department ?? "-"}</Td>
               <Td>{empl.profile?.email ?? "-"}</Td>
               <Td>{`${empl.first_name ?? ""} ${empl.last_name ?? ""}`}</Td>
-              <Td>{`${empl.street ?? ""} ${empl.city ?? ""} ${empl.postal_code ?? ""
-                }`}</Td>
+              <Td>{`${empl.street ?? ""} ${empl.city ?? ""} ${empl.postal_code ?? ""}`}</Td>
               <Td>
                 {empl.driver_license_end_date ? (
                   <Box>

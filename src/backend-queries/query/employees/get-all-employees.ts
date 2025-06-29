@@ -12,7 +12,7 @@ export async function getAllEmployees(
       profile(*)
     `
     )
-    .order("last_name", { ascending: true }); // Serverseitige Sortierung nach Nachnamen
+    .order("personnel_number", { ascending: true });
 
   if (error) throw error;
 
