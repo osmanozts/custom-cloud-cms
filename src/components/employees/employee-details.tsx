@@ -161,12 +161,21 @@ export const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({
             />
           </FormControl>
           <FormControl my={4}>
-            <FormLabel htmlFor="mobile">Mobil</FormLabel>
+            <FormLabel htmlFor="mobile">Telefonnummer</FormLabel>
             <InputField
               id="mobile"
               value={employee.mobile ?? ""}
               onChange={(value) => setEmployee({ ...employee, mobile: value })}
-              placeholder="Mobil"
+              placeholder="Telefonnummer"
+            />
+          </FormControl>
+          <FormControl my={4}>
+            <FormLabel htmlFor="mobile_private">{"Telefonnummer (privat)"}</FormLabel>
+            <InputField
+              id="mobile"
+              value={employee.mobile_private ?? ""}
+              onChange={(value) => setEmployee({ ...employee, mobile_private: value })}
+              placeholder="Telefonnummer (privat)"
             />
           </FormControl>
           <FormControl my={4}>
