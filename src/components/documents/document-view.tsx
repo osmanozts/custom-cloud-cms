@@ -14,7 +14,7 @@ import {
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { FiFile, FiFolder, FiInbox } from "react-icons/fi";
-import { LuDownload } from "react-icons/lu";
+import { LuDownload, LuFolder, LuInfo } from "react-icons/lu";
 import { useDispatch } from "react-redux";
 import {
   getFilesOperation,
@@ -87,10 +87,14 @@ export const DocumentView = ({ bucket, rootFolder }: DocumentViewProps) => {
 
   return (
     <Box p={4} borderWidth={1} borderRadius="md" bg="tileBgColor">
-      <Breadcrumb mb={4} fontSize="sm">
+      <Breadcrumb fontSize="sm">
         {getBreadcrumbs().map((crumb, index, arr) => {
           const isLast = index === arr.length - 1;
-          const label = index === 0 ? "..." : crumb;
+          const label = index === 0 ? (
+            <Flex justifyContent="center">
+              <Icon as={LuFolder} boxSize={4} />
+            </Flex>
+          ) : crumb;
 
           return (
             <BreadcrumbItem key={index} isCurrentPage={isLast}>
@@ -101,6 +105,10 @@ export const DocumentView = ({ bucket, rootFolder }: DocumentViewProps) => {
           );
         })}
       </Breadcrumb>
+      <Flex gap={2} mb={6} mt={1} color="gray.500">
+        <Icon as={LuInfo} />
+        <Text fontSize="xs">Navigiere durch Klick auf die Ordnernamen.</Text>
+      </Flex>
 
       <Flex alignItems="center" gap={4} mb={4}>
         <Button

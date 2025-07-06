@@ -11,6 +11,7 @@ import {
   List,
   ListItem,
   Text,
+  Tooltip,
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { FiFile, FiFolder, FiInbox } from "react-icons/fi";
@@ -19,6 +20,8 @@ import {
   LuFileSymlink,
   LuFolderPlus,
   LuTrash2,
+  LuFolder,
+  LuInfo
 } from "react-icons/lu";
 import { useDispatch } from "react-redux";
 import {
@@ -237,23 +240,36 @@ export const DocumentManager = ({
 
   return (
     <Box p={4} borderWidth={1} borderRadius="md" bg="tileBgColor">
-      <Breadcrumb mb={4} fontSize="sm">
+      <Breadcrumb fontSize="sm">
         <BreadcrumbItem key="root">
-          <BreadcrumbLink onClick={() => handleBreadcrumbClick(-1)}>
-            ...
-          </BreadcrumbLink>
+          <Tooltip label="Zum Anfang navigieren" placement="top">
+            <BreadcrumbLink onClick={() => handleBreadcrumbClick(-1)}>
+              <Flex justifyContent="center">
+                <Icon as={LuFolder} boxSize={4} />
+              </Flex>
+            </BreadcrumbLink>
+          </Tooltip>
         </BreadcrumbItem>
         {getRelativePathParts().map((crumb, index, arr) => {
           const isLast = index === arr.length - 1;
           return (
             <BreadcrumbItem key={index} isCurrentPage={isLast}>
               <BreadcrumbLink onClick={() => handleBreadcrumbClick(index)}>
-                {crumb}
+                <Tooltip label="Zu diesem Ordner navigieren" placement="top">
+                  <Text fontSize="medium">
+                    {crumb}
+                  </Text>
+                </Tooltip>
               </BreadcrumbLink>
             </BreadcrumbItem>
           );
         })}
       </Breadcrumb>
+      <Flex gap={2} mb={6} mt={1} color="gray.500">
+        <Icon as={LuInfo} />
+        <Text fontSize="xs">Navigiere durch Klick auf die Ordnernamen.</Text>
+      </Flex>
+
 
       <Flex mb={4} gap={2} alignItems="center">
         <MultiFileUpload
