@@ -50,24 +50,17 @@ export const DocumentManager = ({
 }: DocumentManagerProps) => {
   const dispatch: AppDispatch = useDispatch();
 
-  const [currentFolder, setCurrentFolder] = useState(rootFolder);
+  const normalizePath = (path: string) => path.replace(/^\/+|\/+$/g, "");
 
+  const [currentFolder, setCurrentFolder] = useState(normalizePath(rootFolder));
   const [availableFolders, setAvailableFolders] = useState<string[]>();
   const [isMoveDialogOpen, setIsMoveDialogOpen] = useState(false);
-
   const [files, setFiles] = useState<any[]>([]);
   const [selectedFiles, setSelectedFiles] = useState<any[]>([]);
-
   const [fileToRename, setFileToRename] = useState<any>(null);
-
   const [isRenameDialogOpen, setIsRenameDialogOpen] = useState(false);
-  const [isCreateFolderDialogOpen, setIsCreateFolderDialogOpen] =
-    useState(false);
+  const [isCreateFolderDialogOpen, setIsCreateFolderDialogOpen] = useState(false);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
-
-  useEffect(() => {
-    fetchFiles(currentFolder);
-  }, [currentFolder]);
 
   const fetchFiles = async (folder: string) => {
     try {
@@ -81,25 +74,32 @@ export const DocumentManager = ({
           status: "error",
         })
       );
-      throw error;
     }
+  };
+
+  useEffect(() => {
+    fetchFiles(currentFolder);
+  }, [currentFolder]);
+
+  const getRelativePathParts = () => {
+    const full = normalizePath(currentFolder);
+    const base = normalizePath(rootFolder);
+    const relative = full.startsWith(base)
+      ? full.slice(base.length).replace(/^\/+/, "")
+      : "";
+    return relative ? relative.split("/") : [];
   };
 
   const handleBreadcrumbClick = (index: number) => {
-    if (rootFolder.length === 0 && index === 0) setCurrentFolder("");
-    else {
-      const newFolder = currentFolder
-        .split("/")
-        .slice(0, index + 1)
-        .join("/");
-      setCurrentFolder(newFolder || rootFolder);
-    }
+    const base = normalizePath(rootFolder);
+    const relativeParts = getRelativePathParts().slice(0, index + 1);
+    const newPath = relativeParts.length > 0 ? `${base}/${relativeParts.join("/")}` : base;
+    setCurrentFolder(newPath);
   };
 
   const handleFolderClick = (folderName: string) => {
-    setCurrentFolder((prevFolder) =>
-      prevFolder ? `${prevFolder}/${folderName}` : folderName
-    );
+    const newPath = `${currentFolder}/${folderName}`;
+    setCurrentFolder(normalizePath(newPath));
   };
 
   const handleFileClick = async (filePath: string) => {
@@ -108,19 +108,15 @@ export const DocumentManager = ({
         .from(bucket)
         .download(filePath);
 
-      if (error) {
-        throw error;
-      }
+      if (error) throw error;
 
       if (data) {
         const url = URL.createObjectURL(data);
-
         const link = document.createElement("a");
         link.href = url;
         link.download = filePath.split("/").pop() || "file";
         document.body.appendChild(link);
         link.click();
-
         document.body.removeChild(link);
         URL.revokeObjectURL(url);
       }
@@ -128,12 +124,10 @@ export const DocumentManager = ({
       dispatch(
         setToast({
           title: "Fehler!",
-          description:
-            "Beim Herunterladen der Dateien ist ein Fehler aufgetreten.",
+          description: "Beim Herunterladen der Datei ist ein Fehler aufgetreten.",
           status: "error",
         })
       );
-      throw error;
     }
   };
 
@@ -145,12 +139,10 @@ export const DocumentManager = ({
       dispatch(
         setToast({
           title: "Fehler!",
-          description:
-            "Beim Erstellen eines Ordners ist ein Fehler aufgetreten.",
+          description: "Beim Erstellen eines Ordners ist ein Fehler aufgetreten.",
           status: "error",
         })
       );
-      throw error;
     }
   };
 
@@ -171,11 +163,10 @@ export const DocumentManager = ({
       dispatch(
         setToast({
           title: "Fehler!",
-          description: "Beim Löschen Dateien ist ein Fehler aufgetreten.",
+          description: "Beim Löschen der Dateien ist ein Fehler aufgetreten.",
           status: "error",
         })
       );
-      throw error;
     }
   };
 
@@ -196,20 +187,19 @@ export const DocumentManager = ({
       dispatch(
         setToast({
           title: "Fehler!",
-          description:
-            "Beim Verschieben der Dateien ist ein Fehler aufgetreten.",
+          description: "Beim Verschieben der Dateien ist ein Fehler aufgetreten.",
           status: "error",
         })
       );
-      throw error;
     }
   };
 
   const handleDownloadAsZip = async () => {
     if (selectedFiles.length > 0) {
-      const selectedPaths = selectedFiles.map((file) => {
-        return { path: file.path, isFolder: file.isFolder };
-      });
+      const selectedPaths = selectedFiles.map((file) => ({
+        path: file.path,
+        isFolder: file.isFolder,
+      }));
       await downloadSelectedAsZip(bucket, selectedPaths);
     } else {
       dispatch(
@@ -219,13 +209,12 @@ export const DocumentManager = ({
           status: "error",
         })
       );
-      console.warn("Keine Dateien ausgewählt.");
     }
   };
 
   const handleRenameFile = async (newName: string) => {
     try {
-      await renameFileOperation(bucket, fileToRename.path, newName); // Rename Operation
+      await renameFileOperation(bucket, fileToRename.path, newName);
       setFileToRename(null);
       await fetchFiles(currentFolder);
       dispatch(
@@ -249,20 +238,21 @@ export const DocumentManager = ({
   return (
     <Box p={4} borderWidth={1} borderRadius="md" bg="tileBgColor">
       <Breadcrumb mb={4} fontSize="sm">
-        {["", ...currentFolder.split("/").filter(Boolean)].map(
-          (crumb, index, arr) => {
-            const isLast = index === arr.length - 1;
-            const breadcrumbLabel = index === 0 ? "..." : crumb;
-
-            return (
-              <BreadcrumbItem key={index} isCurrentPage={isLast}>
-                <BreadcrumbLink onClick={() => handleBreadcrumbClick(index)}>
-                  {breadcrumbLabel}
-                </BreadcrumbLink>
-              </BreadcrumbItem>
-            );
-          }
-        )}
+        <BreadcrumbItem key="root">
+          <BreadcrumbLink onClick={() => handleBreadcrumbClick(-1)}>
+            ...
+          </BreadcrumbLink>
+        </BreadcrumbItem>
+        {getRelativePathParts().map((crumb, index, arr) => {
+          const isLast = index === arr.length - 1;
+          return (
+            <BreadcrumbItem key={index} isCurrentPage={isLast}>
+              <BreadcrumbLink onClick={() => handleBreadcrumbClick(index)}>
+                {crumb}
+              </BreadcrumbLink>
+            </BreadcrumbItem>
+          );
+        })}
       </Breadcrumb>
 
       <Flex mb={4} gap={2} alignItems="center">
@@ -271,7 +261,6 @@ export const DocumentManager = ({
           currentFolder={currentFolder}
           onUploadComplete={() => fetchFiles(currentFolder)}
         />
-
         <Button
           bg="parcelColor"
           color="invertedColor"
@@ -287,7 +276,6 @@ export const DocumentManager = ({
         >
           <Icon as={LuTrash2} boxSize={6} />
         </Button>
-
         <Button
           bg="darkColor"
           color="invertedColor"
@@ -302,7 +290,6 @@ export const DocumentManager = ({
           <Text>Verschieben</Text>
           <Icon as={LuFileSymlink} boxSize={6} />
         </Button>
-
         <Button
           bg="darkColor"
           color="invertedColor"
@@ -390,7 +377,6 @@ export const DocumentManager = ({
         onClose={() => setIsDeleteDialogOpen(false)}
         onDelete={handleDeleteFiles}
       />
-
       <MoveFileDialog
         isOpen={isMoveDialogOpen}
         onClose={() => setIsMoveDialogOpen(false)}
@@ -402,7 +388,6 @@ export const DocumentManager = ({
         }
         onSelectFolder={handleFolderSelection}
       />
-
       <RenameFileDialog
         isOpen={isRenameDialogOpen}
         onClose={() => setIsRenameDialogOpen(false)}

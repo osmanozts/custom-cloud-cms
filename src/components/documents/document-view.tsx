@@ -54,21 +54,27 @@ export const DocumentView = ({ bucket, rootFolder }: DocumentViewProps) => {
     }
   };
 
+  const getBreadcrumbs = () => {
+    const parts = currentFolder
+      .replace(rootFolder, "")
+      .replace(/^\/+/, "")
+      .split("/")
+      .filter(Boolean);
+    return [rootFolder, ...parts];
+  };
+
   const handleBreadcrumbClick = (index: number) => {
-    if (rootFolder.length === 0 && index === 0) setCurrentFolder("");
-    else {
-      const newFolder = currentFolder
-        .split("/")
-        .slice(0, index + 1)
-        .join("/");
-      setCurrentFolder(newFolder || rootFolder);
-    }
+    const parts = getBreadcrumbs().slice(0, index + 1);
+    const newFolder = parts.join("/");
+    setCurrentFolder(newFolder);
   };
 
   const handleFolderClick = (folderName: string) => {
-    setCurrentFolder((prevFolder) =>
-      prevFolder ? `${prevFolder}/${folderName}` : folderName
-    );
+    const newPath = [currentFolder, folderName]
+      .filter(Boolean)
+      .join("/")
+      .replace(/\/{2,}/g, "/");
+    setCurrentFolder(newPath);
   };
 
   const handleFileSelection = (file: any, isSelected: boolean) => {
@@ -82,20 +88,18 @@ export const DocumentView = ({ bucket, rootFolder }: DocumentViewProps) => {
   return (
     <Box p={4} borderWidth={1} borderRadius="md" bg="tileBgColor">
       <Breadcrumb mb={4} fontSize="sm">
-        {["", ...currentFolder.split("/").filter(Boolean)].map(
-          (crumb, index, arr) => {
-            const isLast = index === arr.length - 1;
-            const breadcrumbLabel = index === 0 ? "..." : crumb;
+        {getBreadcrumbs().map((crumb, index, arr) => {
+          const isLast = index === arr.length - 1;
+          const label = index === 0 ? "..." : crumb;
 
-            return (
-              <BreadcrumbItem key={index} isCurrentPage={isLast}>
-                <BreadcrumbLink onClick={() => handleBreadcrumbClick(index)}>
-                  {breadcrumbLabel}
-                </BreadcrumbLink>
-              </BreadcrumbItem>
-            );
-          }
-        )}
+          return (
+            <BreadcrumbItem key={index} isCurrentPage={isLast}>
+              <BreadcrumbLink onClick={() => handleBreadcrumbClick(index)}>
+                {label}
+              </BreadcrumbLink>
+            </BreadcrumbItem>
+          );
+        })}
       </Breadcrumb>
 
       <Flex alignItems="center" gap={4} mb={4}>
