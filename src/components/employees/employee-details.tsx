@@ -6,17 +6,18 @@ import {
   Heading,
   Icon,
   SimpleGrid,
-  Text,
+  Text
 } from "@chakra-ui/react";
+import { LuAtSign } from "react-icons/lu";
+import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../providers/auth-provider";
 import { Enums, Tables } from "../../utils/database/types";
+import supabase from "../../utils/supabase";
+import { ChangePasswordButton } from "../buttons";
+import { DeleteIconButton } from "../buttons/delete-icon-button";
 import { InputField } from "../input-field";
 import { DefaultMenu } from "../menu/default-menu";
 import { EmployeeProfilePic } from "./employee-profile-pic";
-import { LuAtSign } from "react-icons/lu";
-import { DeleteIconButton } from "../buttons/delete-icon-button";
-import supabase from "../../utils/supabase";
-import { useNavigate } from "react-router-dom";
 
 type EmployeeDetailsProps = {
   employee: Tables<"employees">;
@@ -337,41 +338,46 @@ export const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({
         </Box>
       </SimpleGrid>
 
-      <DeleteIconButton
-        clickedItem={employee.profile_id ?? ""}
-        onDelete={async (id) => {
-          try {
-            const response = await supabase.functions.invoke(
-              "delete-user",
-              {
-                body: { id },
+      <Flex alignItems="center">
+        <DeleteIconButton
+          clickedItem={employee.profile_id ?? ""}
+          onDelete={async (id) => {
+            try {
+              const response = await supabase.functions.invoke(
+                "delete-user",
+                {
+                  body: { id },
+                }
+              );
+
+              if (!response.error) {
+                navigate("/employee-management");
+                return "success";
               }
-            );
 
-            console.log("🚀 ~ response:", response);
+              const status = response.error.context.status;
+              if (status === 401) {
+                return "unauthorized";
+              } else if (status === 500) {
+                return "error";
+              }
 
-            if (!response.error) {
-              // Erfolgreiche Löschung
-              navigate("/employee-management");
               return "success";
-            }
-
-            // Fehleranalyse basierend auf status_code
-            const status = response.error.context.status;
-            if (status === 401) {
-              return "unauthorized";
-            } else if (status === 500) {
+            } catch (e) {
+              console.error("Error deleting user:", e);
               return "error";
             }
+          }}
+          authRole={authRole}
+        />
 
-            return "success";
-          } catch (e) {
-            console.error("Error deleting user:", e);
-            return "error";
-          }
-        }}
-        authRole={authRole}
-      />
+        {employee.personnel_number !== null && authRole === "superadmin" && (
+          <Box ml={8}>
+            <ChangePasswordButton
+              isDisabled={authRole !== "superadmin"} />
+          </Box>
+        )}
+      </Flex>
     </Box>
   );
 };

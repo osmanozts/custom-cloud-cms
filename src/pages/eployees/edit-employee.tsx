@@ -271,7 +271,6 @@ export const EditEmployee = ({ }: EditEmployeeProps) => {
             )}
           </Box>
 
-          {/* Obere Buttons */}
           {authRole === "superadmin" && (
             <Flex justifyContent="flex-end" mt={10} gap={4}>
               <Button
@@ -296,7 +295,6 @@ export const EditEmployee = ({ }: EditEmployeeProps) => {
           )}
         </Container>
 
-        {/* Fixierte Action Buttons unten rechts (nur bei Scroll sichtbar) */}
         <Box
           position="fixed"
           bottom="20px"

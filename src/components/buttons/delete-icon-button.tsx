@@ -28,7 +28,6 @@ export const DeleteIconButton = ({
   return (
     <>
       <Button
-        marginTop={8}
         color="accentColor"
         leftIcon={<LuTrash2 />}
         boxSize={8}
