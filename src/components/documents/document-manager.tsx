@@ -255,7 +255,7 @@ export const DocumentManager = ({
           return (
             <BreadcrumbItem key={index} isCurrentPage={isLast}>
               <BreadcrumbLink onClick={() => handleBreadcrumbClick(index)}>
-                <Tooltip label="Zu diesem Ordner navigieren" placement="top">
+                <Tooltip label="Zu diesem Ordner navigieren" placement="top" display={isLast ? "none" : undefined}>
                   <Text fontSize="medium">
                     {crumb}
                   </Text>
