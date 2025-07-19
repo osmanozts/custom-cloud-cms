@@ -37,8 +37,8 @@ export const EmployeesTable: React.FC<EmployeesTableProps> = ({
   const sortByPersonnelNumber = () => {
     const newOrder = sortOrder === "asc" ? "desc" : "asc";
     const sorted = [...sortedEmployees].sort((a, b) => {
-      const numA = a.personnel_number;
-      const numB = b.personnel_number;
+      const numA = Number(a.personnel_number);
+      const numB = Number(b.personnel_number);
 
       if (numA == null && numB != null) return 1;
       if (numA != null && numB == null) return -1;
