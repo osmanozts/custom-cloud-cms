@@ -4,6 +4,7 @@ import {
   Flex,
   Icon,
   IconButton,
+  Input,
   InputGroup,
   List,
   ListItem,
@@ -15,7 +16,7 @@ import {
   ModalHeader,
   ModalOverlay,
   Text,
-  useDisclosure
+  useDisclosure,
 } from "@chakra-ui/react";
 import { useRef, useState } from "react";
 import { FiUpload } from "react-icons/fi";
@@ -31,45 +32,87 @@ interface MultiFileUploadProps {
   onUploadComplete: () => void;
 }
 
+type FileEntry = {
+  originalFile: File;
+  newFileName: string;
+};
+
 export const MultiFileUpload = ({
   bucket,
   currentFolder,
   onUploadComplete,
 }: MultiFileUploadProps) => {
   const dispatch: AppDispatch = useDispatch();
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [fileEntries, setFileEntries] = useState<FileEntry[]>([]);
+  const [editingIndex, setEditingIndex] = useState<number | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
-
-  const [files, setFiles] = useState<File[]>([]);
-  const [filePaths, setFilePaths] = useState<string[]>([]);
-
-  // const triggerFileInput = () => {
-  //   if (fileInputRef.current) {
-  //     fileInputRef.current.click();
-  //   }
-  // };
 
   const { isOpen, onOpen, onClose } = useDisclosure();
 
+  const addFiles = (newFiles: FileList | File[]) => {
+    const entries = Array.from(newFiles)
+      .filter((file) => file.name !== ".DS_Store")
+      .map((file) => ({
+        originalFile: file,
+        newFileName: file.webkitRelativePath || file.name,
+      }));
+
+    setFileEntries((prev) => [...prev, ...entries]);
+  };
+
   const handleFileSelection = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files) {
-      const selectedFiles = Array.from(event.target.files);
-      const paths = selectedFiles.map((file) => file.webkitRelativePath || file.name);
-
-      setFiles(selectedFiles);
-      setFilePaths(paths);
+      addFiles(event.target.files);
     }
+  };
+
+  const handleDrop = async (event: React.DragEvent<HTMLDivElement>) => {
+    event.preventDefault();
+    const items = event.dataTransfer.items;
+
+    if (!items) return;
+
+    const newEntries: FileEntry[] = [];
+
+    const traverseFileTree = (
+      item: any,
+      path = ""
+    ): Promise<void> =>
+      new Promise((resolve) => {
+        if (item.isFile) {
+          item.file((file: File) => {
+            if (file.name === ".DS_Store") return resolve();
+            const relativePath = path + file.name;
+            newEntries.push({
+              originalFile: file,
+              newFileName: relativePath,
+            });
+            resolve();
+          });
+        } else if (item.isDirectory) {
+          const dirReader = item.createReader();
+          dirReader.readEntries(async (entries: any[]) => {
+            for (const entry of entries) {
+              await traverseFileTree(entry, path + item.name + "/");
+            }
+            resolve();
+          });
+        }
+      });
+
+    const traverseAll = Array.from(items)
+      .filter((item) => item.webkitGetAsEntry)
+      .map((item) => traverseFileTree(item.webkitGetAsEntry()));
+
+    await Promise.all(traverseAll);
+    setFileEntries((prev) => [...prev, ...newEntries]);
   };
 
   const handleUpload = async () => {
     setIsLoading(true);
     try {
-      const formattedFiles = files.map((file, index) => ({
-        originalFile: file,
-        newFileName: filePaths[index],
-      }));
-
-      const result = await uploadFilesOperation(bucket, currentFolder, formattedFiles);
+      const result = await uploadFilesOperation(bucket, currentFolder, fileEntries);
 
       if (result.success) {
         dispatch(
@@ -79,25 +122,26 @@ export const MultiFileUpload = ({
             status: "success",
           })
         );
+        setFileEntries([]);
+        onUploadComplete();
+        onClose();
       } else {
         result.errors.forEach((err) => {
-          console.log(err)
           dispatch(
             setToast({
               title: err.message.includes("The resource already exists")
                 ? "Datei bereits vorhanden"
                 : "Upload fehlgeschlagen",
-              description: err.message.includes("The resource already exists") ? `Die Datei ${err.file} existiert bereits` : `Fehler bei ${err.file}: ${err.message}`,
-              status: err.message.includes("The resource already exists") ? "warning" : "error",
+              description: err.message.includes("The resource already exists")
+                ? `Die Datei ${err.file} existiert bereits`
+                : `Fehler bei ${err.file}: ${err.message}`,
+              status: err.message.includes("The resource already exists")
+                ? "warning"
+                : "error",
             })
           );
         });
       }
-
-      setFiles([]);
-      setFilePaths([]);
-      onUploadComplete();
-      onClose();
     } catch (error) {
       dispatch(
         setToast({
@@ -111,7 +155,6 @@ export const MultiFileUpload = ({
     }
   };
 
-
   return (
     <>
       <Button bg="parcelColor" color="invertedColor" onClick={onOpen} gap={2}>
@@ -119,110 +162,150 @@ export const MultiFileUpload = ({
         <Icon as={FiUpload} boxSize={6} />
       </Button>
 
-      <Modal isOpen={isOpen} onClose={onClose} size="lg" isCentered>
+      <Modal closeOnOverlayClick={false} isOpen={isOpen} onClose={onClose} size="lg" isCentered>
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>Lade Dokumente & Ordner hoch!</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
+            <input
+              type="file"
+              multiple
+              onChange={handleFileSelection}
+              accept="*/*"
+              style={{ display: "none" }}
+              id="fileInput"
+              ref={fileInputRef}
+            />
+            <input
+              type="file"
+              multiple
+              // @ts-ignore
+              webkitdirectory="true"
+              onChange={handleFileSelection}
+              accept="*/*"
+              style={{ display: "none" }}
+              id="folderInput"
+            />
+
             <InputGroup mb={4}>
-              <input
-                type="file"
-                multiple
-                ref={fileInputRef}
-                onChange={handleFileSelection}
-                accept="*/*"
-                style={{ display: "none" }}
-                // @ts-ignore ✅ Ignoriert TypeScript-Fehler, da `webkitdirectory` nicht offiziell ist
-                webkitdirectory="true"
-                id="folderInput"
-              />
-
-              <input
-                type="file"
-                multiple
-                ref={fileInputRef}
-                onChange={handleFileSelection}
-                accept="*/*"
-                style={{ display: "none" }}
-                id="fileInput"
-              />
-
               <Button
-                as="span"
+                width="100%"
                 bg="parcelColor"
                 color="white"
-                width="100%"
-                borderRadius="md"
-                fontSize="sm"
-                boxShadow="md"
                 onClick={() => document.getElementById("folderInput")?.click()}
               >
-                <Icon as={LuFolder} color="white" mr={2} boxSize={5} /> Wähle Ordner aus
+                <Icon as={LuFolder} mr={2} /> Ordner auswählen
               </Button>
-
               <Button
-                as="span"
-                width="100%"
-                borderRadius="md"
-                fontSize="sm"
-                boxShadow="md"
                 ml={2}
+                width="100%"
                 onClick={() => document.getElementById("fileInput")?.click()}
               >
-                <Icon as={LuFile} mr={2} boxSize={5} /> <Text>Wähle Dateien aus</Text>
+                <Icon as={LuFile} mr={2} /> Dateien auswählen
               </Button>
             </InputGroup>
 
-
-            {files.length > 0 && (
-              <Box>
-                <Text fontWeight="bold" mt={4} mb={2}>
-                  Ausgewählte Dateien und Ordner:
+            <Box
+              onDrop={handleDrop}
+              onDragOver={(e) => e.preventDefault()}
+              border="2px dashed"
+              borderColor="gray.300"
+              borderRadius="md"
+              p={4}
+              minH={150}
+              transition="background 0.2s"
+              _hover={{ background: "gray.50" }}
+            >
+              {fileEntries.length === 0 ? (
+                <Text textAlign="center" color="gray.500">
+                  Dateien oder Ordner hierher ziehen oder über die Buttons auswählen
                 </Text>
-                <List spacing={2} maxHeight={400} overflowY={"auto"}>
-                  {files.map((file, index) => {
+              ) : (
+                <List spacing={2} maxHeight={400} overflowY="auto">
+                  {fileEntries.map((entry, index) => {
+                    const isEditing = editingIndex === null ? false : editingIndex === index;
+                    const parts = entry.newFileName.split("/");
+                    const fileName = parts.pop()!;
+                    const pathPrefix = parts.join("/") + (parts.length > 0 ? "/" : "");
+                    const nameParts = fileName.split(".");
+                    const extension = nameParts.pop();
+                    const baseName = nameParts.join(".");
 
-                    if (file.name !== ".DS_Store")
-                      return (
-                        <ListItem
-                          key={filePaths[index]}
-                          bg="invertedColor"
-                          borderRadius="md"
-                          display="flex"
-                          justifyContent="space-between"
-                          alignItems="center"
-                        >
-                          <Flex gap={2}>
-                            <Icon as={LuFile} />
-                            <Text fontSize={12} fontWeight="bold">{file.name}</Text>
-                          </Flex>
-
-
-                          <IconButton
-                            aria-label="Remove file"
-                            icon={<LuTrash2 />}
-                            size="sm"
-                            variant="ghost"
-                            colorScheme="red"
-                            onClick={() => {
-                              setFiles(files.filter((_, i) => i !== index));
-                              setFilePaths(filePaths.filter((_, i) => i !== index));
-                            }}
-                          />
-                        </ListItem>
-                      );
+                    return (
+                      <ListItem
+                        key={index}
+                        bg={isEditing ? "blue.50" : "invertedColor"}
+                        borderRadius="md"
+                        display="flex"
+                        justifyContent="space-between"
+                        alignItems="center"
+                        gap={2}
+                        p={2}
+                      >
+                        <Flex gap={2} align="center" flex="1">
+                          <Icon as={LuFile} />
+                          {isEditing ? (
+                            <>
+                              <Input
+                                size="sm"
+                                value={baseName}
+                                onChange={(e) => {
+                                  const updated = [...fileEntries];
+                                  updated[index].newFileName =
+                                    pathPrefix + e.target.value + "." + extension;
+                                  setFileEntries(updated);
+                                }}
+                                borderColor="blue.400"
+                                focusBorderColor="blue.500"
+                                bg="white"
+                                borderRadius="md"
+                                px={2}
+                                mr={1}
+                                onBlur={() => setEditingIndex(null)}
+                              />
+                              <Text fontSize="sm">.{extension}</Text>
+                            </>
+                          ) : (
+                            <Flex
+                              align="center"
+                              gap={1}
+                              onClick={() => setEditingIndex(index)}
+                              cursor="pointer"
+                            >
+                              <Text fontSize="sm">{pathPrefix}</Text>
+                              <Text fontSize="sm" fontWeight="bold">
+                                {baseName}
+                              </Text>
+                              <Text fontSize="sm" color="gray.400">
+                                .{extension}
+                              </Text>
+                            </Flex>
+                          )}
+                        </Flex>
+                        <IconButton
+                          aria-label="Remove file"
+                          icon={<LuTrash2 />}
+                          size="sm"
+                          variant="ghost"
+                          colorScheme="red"
+                          onClick={() =>
+                            setFileEntries(fileEntries.filter((_, i) => i !== index))
+                          }
+                        />
+                      </ListItem>
+                    );
                   })}
                 </List>
-              </Box>
-            )}
+              )}
+            </Box>
           </ModalBody>
           <ModalFooter>
             <Button
               bg="accentColor"
               color="invertedColor"
               onClick={handleUpload}
-              isDisabled={files.length === 0}
+              isDisabled={fileEntries.length === 0}
               isLoading={isLoading}
             >
               Hochladen
@@ -232,7 +315,7 @@ export const MultiFileUpload = ({
             </Button>
           </ModalFooter>
         </ModalContent>
-      </Modal >
+      </Modal>
     </>
   );
 };
