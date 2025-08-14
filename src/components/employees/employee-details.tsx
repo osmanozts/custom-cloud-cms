@@ -374,6 +374,7 @@ export const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({
         {employee.personnel_number !== null && authRole === "superadmin" && (
           <Box ml={8}>
             <ChangePasswordButton
+              userId={employee.profile_id ?? ""}
               isDisabled={authRole !== "superadmin"} />
           </Box>
         )}

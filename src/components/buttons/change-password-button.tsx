@@ -3,10 +3,12 @@ import { useState } from "react";
 import { ChangePasswordDialog } from "../dialogs";
 
 interface ChangePasswordButtonProps {
+    userId: string
     isDisabled: boolean;
 }
 
 export const ChangePasswordButton = ({
+    userId,
     isDisabled
 }: ChangePasswordButtonProps) => {
     const [isDialogOpen, setIsDialogOpen] = useState(false);
@@ -26,6 +28,7 @@ export const ChangePasswordButton = ({
             >Passwort ändern</Button>
 
             <ChangePasswordDialog
+                userId={userId}
                 isOpen={isDialogOpen}
                 onClose={() => setIsDialogOpen(false)}
             />

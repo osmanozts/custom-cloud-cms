@@ -14,11 +14,13 @@ import { useState } from "react";
 import supabase from "../../utils/supabase";
 
 interface ChangePasswordDialogProps {
+    userId: string;
     isOpen: boolean;
     onClose: () => void;
 }
 
 export const ChangePasswordDialog = ({
+    userId,
     isOpen,
     onClose
 }: ChangePasswordDialogProps) => {
@@ -47,7 +49,7 @@ export const ChangePasswordDialog = ({
 
                                 const { error } = await supabase.functions.invoke(
                                     "change_password",
-                                    { body: { newPassword } }
+                                    { body: { userIdToChange: userId, newPassword } }
                                 );
                                 if (error) alert("es ist etwas schief gelaufen")
                             }

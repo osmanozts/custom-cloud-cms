@@ -57,15 +57,19 @@ Deno.serve(async (req) => {
     ) {
       return new Response(JSON.stringify({ error: "Unauthorized" }), {
         headers: { ...corsHeaders, "Content-Type": "application/json" },
-        status: 401, // Unauthorized
+        status: 401,
       });
     }
 
-    const { newPassword } = await req.json();
+    const { newPassword, userIdToChange } = await req.json();
 
-    const { data, error } = await supabase.auth.admin.updateUserById(userId, {
-      password: newPassword,
-    });
+    console.log("userIdToChange:", userIdToChange);
+    const { data, error } = await supabase.auth.admin.updateUserById(
+      userIdToChange,
+      {
+        password: newPassword,
+      }
+    );
 
     if (error) {
       throw error;
