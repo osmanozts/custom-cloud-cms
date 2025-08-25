@@ -135,9 +135,10 @@ export const AllEmployees: React.FC<AllEmployeesProps> = () => {
           <DefaultMenu
             options={[
               { value: null, label: "Alle" },
-              { value: "warehouse", label: "Lager" },
-              { value: "logistics", label: "Logistik" },
               { value: "administration", label: "Verwaltung" },
+              { value: "dispatcher", label: "Disponent" },
+              { value: "fleet_management", label: "Flottenmanagement" },
+              { value: "driver", label: "Fahrer" },
             ]}
             defaultValue="Alle"
             onSelect={(value) => setDepartmentFilter(value)}
@@ -149,7 +150,6 @@ export const AllEmployees: React.FC<AllEmployeesProps> = () => {
               { value: null, label: "Alle" },
               { value: "active", label: "Aktiv" },
               { value: "inactive", label: "Ausgetreten" },
-              { value: "pipeline", label: "Pipeline" },
             ]}
             defaultValue="Alle"
             onSelect={(value) => setStatusFilter(value)}
@@ -159,7 +159,10 @@ export const AllEmployees: React.FC<AllEmployeesProps> = () => {
           <DefaultMenu
             options={[
               { value: null, label: "Alle" },
-              { value: "DNX4", label: "DNX4" }, { value: "DNW1", label: "DNW1" }, { value: "Lplg-Moers", label: "LPLG-Moers" }, { value: "Heiz-Moers", label: "Heiz-Moers" },
+              { value: "DNX4", label: "DNX4" },
+              { value: "DNW1", label: "DNW1" },
+              { value: "Lplg-Moers", label: "Lplg Moers" },
+              { value: "Heix", label: "Heix" },
             ]}
             defaultValue="Alle"
             onSelect={(value) => setLocationFilter(value)}
@@ -167,11 +170,9 @@ export const AllEmployees: React.FC<AllEmployeesProps> = () => {
         </Flex>
 
         <Box w="100%" maxHeight="60vh" overflowX="auto" overflowY="auto">
-          <EmployeesTable
-            employees={employees}
-          />
+          <EmployeesTable employees={employees} />
         </Box>
-        <Flex gap={4} width="100%" justify="flex-end" alignItems="center" >
+        <Flex gap={4} width="100%" justify="flex-end" alignItems="center">
           <Text fontWeight="bold">Einträge: {employees.length}</Text>
           <Button
             bg="parcelColor"

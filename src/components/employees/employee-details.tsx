@@ -6,7 +6,7 @@ import {
   Heading,
   Icon,
   SimpleGrid,
-  Text
+  Text,
 } from "@chakra-ui/react";
 import { LuAtSign } from "react-icons/lu";
 import { useNavigate } from "react-router-dom";
@@ -32,24 +32,8 @@ export const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({
   setEmployee,
   setProfile,
 }) => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const { authRole } = useAuth();
-
-  const driverLicenseLevels = [
-    { value: "AM", label: "AM" },
-    { value: "A1", label: "A1" },
-    { value: "A2", label: "A2" },
-    { value: "A", label: "A" },
-    { value: "B", label: "B" },
-    { value: "BE", label: "BE" },
-    { value: "C", label: "C" },
-    { value: "CE", label: "CE" },
-    { value: "D", label: "D" },
-    { value: "DE", label: "DE" },
-    { value: "F", label: "F" },
-    { value: "L", label: "L" },
-    { value: "T", label: "T" },
-  ];
 
   return (
     <Box bg="tileBgColor" borderWidth="1px" borderRadius="lg" p={6} mb={6}>
@@ -105,43 +89,126 @@ export const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({
               onChange={(e) => setEmployee({ ...employee, date_of_birth: e })}
             />
           </FormControl>
+
+          <Heading size="sm" mt={8}>
+            Arbeit
+          </Heading>
           <FormControl my={4}>
-            <FormLabel htmlFor="nationality">Nationalität</FormLabel>
-            <InputField
-              id="nationality"
-              value={employee.nationality ?? ""}
-              onChange={(value) =>
-                setEmployee({ ...employee, nationality: value })
-              }
-              placeholder="Nationalität"
-            />
-          </FormControl>
-          <FormControl my={4}>
-            <FormLabel htmlFor="driverLicenseLevel">
-              Führerscheinklasse
-            </FormLabel>
+            <FormLabel htmlFor="department">Abteilung</FormLabel>
             <DefaultMenu
-              options={driverLicenseLevels}
-              defaultValue={
-                employee.driver_license_level ?? "Wähle eine Klasse aus"
-              }
+              options={[
+                { value: "administration", label: "Verwaltung" },
+                { value: "dispatcher", label: "Disponent" },
+                { value: "fleet_management", label: "Flottenmanagement" },
+                { value: "driver", label: "Fahrer" },
+              ]}
+              defaultValue={employee.department ?? "Wähle eine Abteilung aus"}
               onSelect={(value) =>
                 setEmployee({
                   ...employee,
-                  driver_license_level: value as string,
+                  department: value as Enums<"departments">,
                 })
               }
             />
           </FormControl>
           <FormControl my={4}>
-            <FormLabel htmlFor="healthInsurance">Krankenversicherung</FormLabel>
-            <InputField
-              id="healthInsurance"
-              value={employee.health_insurance ?? ""}
-              onChange={(value) =>
-                setEmployee({ ...employee, health_insurance: value })
+            <FormLabel htmlFor="location">Standort</FormLabel>
+            <DefaultMenu
+              options={[
+                { value: "DNX4", label: "DNX4" },
+                { value: "DNW1", label: "DNW1" },
+                { value: "Lplg-Moers", label: "Lplg Moers" },
+                { value: "Heix", label: "Heix" },
+              ]}
+              defaultValue={employee.location ?? "Wähle ein Standort aus"}
+              onSelect={(value) =>
+                setEmployee({
+                  ...employee,
+                  location: value as Enums<"locations">,
+                })
               }
-              placeholder="Krankenversicherung"
+            />
+          </FormControl>
+          <FormControl my={4}>
+            <FormLabel htmlFor="state">Status</FormLabel>
+            <DefaultMenu
+              options={[
+                { value: "active", label: "Aktiv" },
+                { value: "inactive", label: "Ausgetreten" },
+              ]}
+              defaultValue={employee.location ?? "Wähle einen Status aus"}
+              onSelect={(value) =>
+                setEmployee({
+                  ...employee,
+                  state: value as Enums<"employee_state">,
+                })
+              }
+            />
+          </FormControl>
+          <FormControl my={4} isDisabled={authRole !== "superadmin"}>
+            <FormLabel htmlFor="role">Rolle</FormLabel>
+            <DefaultMenu
+              options={[
+                {
+                  value: "superadmin",
+                  label: "Administrator",
+                  info: "Hat uneingeschränkten Zugriff auf alle Systeme und Verwaltungsfunktionen. Kann Benutzer verwalten, Berechtigungen zuweisen und sämtliche Einstellungen anpassen.",
+                },
+                {
+                  value: "employee_manager",
+                  label: "Stationsleiter",
+                  info: "Hat Leseberechtigung für das Mitarbeiter-Management und uneingeschränkten Zugriff auf das Fahrzeug-Management. Kann keine Änderungen an Mitarbeiterdaten vornehmen.",
+                },
+                {
+                  value: "vehicle_manager",
+                  label: "Flotten-Manager",
+                  info: "Hat ausschließlich Zugriff auf das Fahrzeug-Management und kann dort sämtliche Verwaltungsaufgaben durchführen.",
+                },
+                {
+                  value: "employee",
+                  label: "Mitarbeiter (z. B. Fahrer)",
+                  info: "Interner Systemzugriff ist nicht gestattet. Der Mitarbeiter kann lediglich seine eigenen Stammdaten und öffentlich zugängliche Dokumente einsehen.",
+                },
+              ]}
+              defaultValue={profile.auth_role ?? ""}
+              onSelect={(value) =>
+                setProfile({
+                  ...profile,
+                  auth_role: value as Enums<"auth-role">,
+                })
+              }
+              isDisabled={authRole !== "superadmin"}
+            />
+          </FormControl>
+
+          <FormControl my={4}>
+            <FormLabel htmlFor="driverLicenseEndDate">
+              Führerschein Ablaufdatum
+            </FormLabel>
+            <InputField
+              id="driver-license-expire-date"
+              regex={/^(0[1-9]|[12]\d|3[01])\.(0[1-9]|1[0-2])\.(\d{2}|\d{4})?$/}
+              regexErrorText="Bitte geben Sie ein Datum im Format '01.01.2025' ein."
+              value={employee.driver_license_end_date ?? ""}
+              isDate
+              onChange={(e) =>
+                setEmployee({ ...employee, driver_license_end_date: e })
+              }
+            />
+          </FormControl>
+          <FormControl my={4}>
+            <FormLabel htmlFor="idCardEndDate">
+              Personalausweis Ablaufdatum
+            </FormLabel>
+            <InputField
+              id="id-expire-date"
+              regex={/^(0[1-9]|[12]\d|3[01])\.(0[1-9]|1[0-2])\.(\d{2}|\d{4})?$/}
+              regexErrorText="Bitte geben Sie ein Datum im Format '01.01.2025' ein."
+              value={employee.id_card_end_date ?? ""}
+              isDate
+              onChange={(e) =>
+                setEmployee({ ...employee, id_card_end_date: e })
+              }
             />
           </FormControl>
         </Box>
@@ -171,11 +238,15 @@ export const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({
             />
           </FormControl>
           <FormControl my={4}>
-            <FormLabel htmlFor="mobile_private">{"Telefonnummer (privat)"}</FormLabel>
+            <FormLabel htmlFor="mobile_private">
+              {"Telefonnummer (privat)"}
+            </FormLabel>
             <InputField
               id="mobile"
               value={employee.mobile_private ?? ""}
-              onChange={(value) => setEmployee({ ...employee, mobile_private: value })}
+              onChange={(value) =>
+                setEmployee({ ...employee, mobile_private: value })
+              }
               placeholder="Telefonnummer (privat)"
             />
           </FormControl>
@@ -209,146 +280,16 @@ export const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({
             />
           </FormControl>
         </Box>
-
-        {/* Arbeit */}
-        <Box>
-          <Heading size="sm" mb={4}>
-            Arbeit
-          </Heading>
-          <FormControl my={4}>
-            <FormLabel htmlFor="department">Abteilung</FormLabel>
-            <DefaultMenu
-              options={[
-                { value: "warehouse", label: "Lager" },
-                { value: "logistics", label: "Logistik" },
-                { value: "administration", label: "Verwaltung" },
-              ]}
-              defaultValue={employee.department ?? "Wähle eine Abteilung aus"}
-              onSelect={(value) =>
-                setEmployee({
-                  ...employee,
-                  department: value as Enums<"departments">,
-                })
-              }
-            />
-          </FormControl>
-          <FormControl my={4}>
-            <FormLabel htmlFor="location">Standort</FormLabel>
-            <DefaultMenu
-              options={[{ value: "DNX4", label: "DNX4" }, { value: "DNW1", label: "DNW1" }, { value: "Lplg-Moers", label: "LPLG-Moers" }, { value: "Heiz-Moers", label: "Heiz-Moers" },]}
-              defaultValue={employee.location ?? "Wähle ein Standort aus"}
-              onSelect={(value) =>
-                setEmployee({
-                  ...employee,
-                  location: value as Enums<"locations">,
-                })
-              }
-            />
-          </FormControl>
-          <FormControl my={4}>
-            <FormLabel htmlFor="state">Status</FormLabel>
-            <DefaultMenu
-              options={[
-                { value: "active", label: "Aktiv" },
-                { value: "inactive", label: "Ausgetreten" },
-                { value: "pipeline", label: "Pipeline" },
-              ]}
-              defaultValue={employee.location ?? "Wähle einen Status aus"}
-              onSelect={(value) =>
-                setEmployee({
-                  ...employee,
-                  state: value as Enums<"employee_state">,
-                })
-              }
-            />
-          </FormControl>
-          <FormControl my={4} isDisabled={authRole !== "superadmin"}>
-            <FormLabel htmlFor="role">Rolle</FormLabel>
-            <DefaultMenu
-              options={[
-                {
-                  value: "superadmin",
-                  label: "Administrator",
-                  info: "Hat uneingeschränkten Zugriff auf alle Systeme und Verwaltungsfunktionen. Kann Benutzer verwalten, Berechtigungen zuweisen und sämtliche Einstellungen anpassen."
-                },
-                {
-                  value: "employee_manager",
-                  label: "Stationsleiter",
-                  info: "Hat Leseberechtigung für das Mitarbeiter-Management und uneingeschränkten Zugriff auf das Fahrzeug-Management. Kann keine Änderungen an Mitarbeiterdaten vornehmen."
-                },
-                {
-                  value: "vehicle_manager",
-                  label: "Flotten-Manager",
-                  info: "Hat ausschließlich Zugriff auf das Fahrzeug-Management und kann dort sämtliche Verwaltungsaufgaben durchführen."
-                },
-                {
-                  value: "employee",
-                  label: "Mitarbeiter (z. B. Fahrer)",
-                  info: "Interner Systemzugriff ist nicht gestattet. Der Mitarbeiter kann lediglich seine eigenen Stammdaten und öffentlich zugängliche Dokumente einsehen."
-                },
-              ]}
-              defaultValue={profile.auth_role ?? ""}
-              onSelect={(value) =>
-                setProfile({
-                  ...profile,
-                  auth_role: value as Enums<"auth-role">,
-                })
-              }
-              isDisabled={authRole !== "superadmin"}
-            />
-
-          </FormControl>
-        </Box>
-
-        {/* Dokumente */}
-        <Box>
-          <Heading size="sm" mb={4}>
-            Dokumente
-          </Heading>
-          <FormControl my={4}>
-            <FormLabel htmlFor="driverLicenseEndDate">
-              Führerschein Ablaufdatum
-            </FormLabel>
-            <InputField
-              id="driver-license-expire-date"
-              regex={/^(0[1-9]|[12]\d|3[01])\.(0[1-9]|1[0-2])\.(\d{2}|\d{4})?$/}
-              regexErrorText="Bitte geben Sie ein Datum im Format '01.01.2025' ein."
-              value={employee.driver_license_end_date ?? ""}
-              isDate
-              onChange={(e) =>
-                setEmployee({ ...employee, driver_license_end_date: e })
-              }
-            />
-          </FormControl>
-          <FormControl my={4}>
-            <FormLabel htmlFor="idCardEndDate">
-              Personalausweis Ablaufdatum
-            </FormLabel>
-            <InputField
-              id="id-expire-date"
-              regex={/^(0[1-9]|[12]\d|3[01])\.(0[1-9]|1[0-2])\.(\d{2}|\d{4})?$/}
-              regexErrorText="Bitte geben Sie ein Datum im Format '01.01.2025' ein."
-              value={employee.id_card_end_date ?? ""}
-              isDate
-              onChange={(e) =>
-                setEmployee({ ...employee, id_card_end_date: e })
-              }
-            />
-          </FormControl>
-        </Box>
       </SimpleGrid>
 
-      <Flex alignItems="center">
+      <Flex alignItems="center" mt={8}>
         <DeleteIconButton
           clickedItem={employee.profile_id ?? ""}
           onDelete={async (id) => {
             try {
-              const response = await supabase.functions.invoke(
-                "delete-user",
-                {
-                  body: { id },
-                }
-              );
+              const response = await supabase.functions.invoke("delete-user", {
+                body: { id },
+              });
 
               if (!response.error) {
                 navigate("/employee-management");
@@ -375,7 +316,8 @@ export const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({
           <Box ml={8}>
             <ChangePasswordButton
               userId={employee.profile_id ?? ""}
-              isDisabled={authRole !== "superadmin"} />
+              isDisabled={authRole !== "superadmin"}
+            />
           </Box>
         )}
       </Flex>

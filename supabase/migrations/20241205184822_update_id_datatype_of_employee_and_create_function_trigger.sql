@@ -32,6 +32,13 @@ AS $function$BEGIN
 END;$function$
 ;
 
+DROP TRIGGER IF EXISTS new_user_trigger ON auth.users;
+
+CREATE TRIGGER new_user_trigger
+AFTER INSERT ON auth.users
+FOR EACH ROW
+EXECUTE FUNCTION public.handle_new_user();
+
 CREATE TRIGGER after_profile_insert AFTER INSERT ON public.profile FOR EACH ROW EXECUTE FUNCTION create_employee_entry();
 
 
