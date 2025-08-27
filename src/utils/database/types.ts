@@ -85,11 +85,16 @@ export type Database = {
       employees: {
         Row: {
           city: string | null
+          contract_type: Database["public"]["Enums"]["contract_type"] | null
           created_at: string
           date_of_birth: string | null
           department: Database["public"]["Enums"]["departments"] | null
+          description: string | null
           driver_license_end_date: string | null
+          driver_license_id: string | null
           driver_license_level: string | null
+          entry_date: string | null
+          exit_date: string | null
           first_name: string | null
           health_insurance: string | null
           id: string
@@ -106,14 +111,21 @@ export type Database = {
           street: string | null
           tax_id: string | null
           tax_level: string | null
+          transporter_id: string | null
+          weekly_hours: string | null
         }
         Insert: {
           city?: string | null
+          contract_type?: Database["public"]["Enums"]["contract_type"] | null
           created_at?: string
           date_of_birth?: string | null
           department?: Database["public"]["Enums"]["departments"] | null
+          description?: string | null
           driver_license_end_date?: string | null
+          driver_license_id?: string | null
           driver_license_level?: string | null
+          entry_date?: string | null
+          exit_date?: string | null
           first_name?: string | null
           health_insurance?: string | null
           id?: string
@@ -130,14 +142,21 @@ export type Database = {
           street?: string | null
           tax_id?: string | null
           tax_level?: string | null
+          transporter_id?: string | null
+          weekly_hours?: string | null
         }
         Update: {
           city?: string | null
+          contract_type?: Database["public"]["Enums"]["contract_type"] | null
           created_at?: string
           date_of_birth?: string | null
           department?: Database["public"]["Enums"]["departments"] | null
+          description?: string | null
           driver_license_end_date?: string | null
+          driver_license_id?: string | null
           driver_license_level?: string | null
+          entry_date?: string | null
+          exit_date?: string | null
           first_name?: string | null
           health_insurance?: string | null
           id?: string
@@ -154,6 +173,8 @@ export type Database = {
           street?: string | null
           tax_id?: string | null
           tax_level?: string | null
+          transporter_id?: string | null
+          weekly_hours?: string | null
         }
         Relationships: [
           {
@@ -551,6 +572,7 @@ export type Database = {
         | "employee"
         | "vehicle_manager"
         | "employee_manager"
+      contract_type: "V" | "T" | "A" | "VB" | "TB" | "AB"
       departments:
         | "administration"
         | "dispatcher"

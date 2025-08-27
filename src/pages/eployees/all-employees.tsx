@@ -59,7 +59,9 @@ export const AllEmployees: React.FC<AllEmployeesProps> = () => {
                 .toLowerCase()
                 .includes(searchString.toLowerCase())) ||
             (employee.personnel_number &&
-              employee.personnel_number.includes(searchString))
+              employee.personnel_number.includes(searchString)) ||
+            (employee.transporter_id &&
+              employee.transporter_id.includes(searchString)),
         );
       }
 

@@ -90,6 +90,49 @@ export const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({
             />
           </FormControl>
 
+          <FormControl my={4}>
+            <FormLabel htmlFor="driver_license_id">Führerschein ID</FormLabel>
+            <InputField
+              id="driver_license_id"
+              value={employee.driver_license_id ?? ""}
+              onChange={(e) =>
+                setEmployee({ ...employee, driver_license_id: e })
+              }
+            />
+          </FormControl>
+
+          <FormControl my={4}>
+            <FormLabel htmlFor="driverLicenseEndDate">
+              Führerschein Ablaufdatum
+            </FormLabel>
+            <InputField
+              id="driver-license-expire-date"
+              regex={/^(0[1-9]|[12]\d|3[01])\.(0[1-9]|1[0-2])\.(\d{2}|\d{4})?$/}
+              regexErrorText="Bitte geben Sie ein Datum im Format '01.01.2025' ein."
+              value={employee.driver_license_end_date ?? ""}
+              isDate
+              onChange={(e) =>
+                setEmployee({ ...employee, driver_license_end_date: e })
+              }
+            />
+          </FormControl>
+
+          <FormControl my={4}>
+            <FormLabel htmlFor="idCardEndDate">
+              Personalausweis Ablaufdatum
+            </FormLabel>
+            <InputField
+              id="id-expire-date"
+              regex={/^(0[1-9]|[12]\d|3[01])\.(0[1-9]|1[0-2])\.(\d{2}|\d{4})?$/}
+              regexErrorText="Bitte geben Sie ein Datum im Format '01.01.2025' ein."
+              value={employee.id_card_end_date ?? ""}
+              isDate
+              onChange={(e) =>
+                setEmployee({ ...employee, id_card_end_date: e })
+              }
+            />
+          </FormControl>
+
           <Heading size="sm" mt={8}>
             Arbeit
           </Heading>
@@ -111,6 +154,39 @@ export const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({
               }
             />
           </FormControl>
+
+          <FormControl my={4}>
+            <FormLabel htmlFor="contract_type">Vertragsform</FormLabel>
+            <DefaultMenu
+              options={[
+                { value: "V", label: "V" },
+                { value: "T", label: "T" },
+                { value: "A", label: "A" },
+                { value: "VB", label: "VB" },
+                { value: "TB", label: "TB" },
+                { value: "AB", label: "AB" },
+              ]}
+              defaultValue={
+                employee.contract_type ?? "Wähle eine Vertragsform aus"
+              }
+              onSelect={(value) =>
+                setEmployee({
+                  ...employee,
+                  contract_type: value as Enums<"contract_type">,
+                })
+              }
+            />
+          </FormControl>
+
+          <FormControl my={4}>
+            <FormLabel htmlFor="weekly_hours">Wochenstunden</FormLabel>
+            <InputField
+              id="weekly_hours"
+              value={employee.weekly_hours ?? ""}
+              onChange={(e) => setEmployee({ ...employee, weekly_hours: e })}
+            />
+          </FormControl>
+
           <FormControl my={4}>
             <FormLabel htmlFor="location">Standort</FormLabel>
             <DefaultMenu
@@ -145,6 +221,50 @@ export const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({
               }
             />
           </FormControl>
+
+          <FormControl my={4}>
+            <FormLabel htmlFor="entry_date">Eintrittsdatum</FormLabel>
+            <InputField
+              id="entry_date"
+              regex={/^(0[1-9]|[12]\d|3[01])\.(0[1-9]|1[0-2])\.(\d{2}|\d{4})?$/}
+              regexErrorText="Bitte geben Sie ein Datum im Format '01.01.2025' ein."
+              value={employee.entry_date ?? ""}
+              isDate
+              onChange={(e) => setEmployee({ ...employee, entry_date: e })}
+            />
+          </FormControl>
+
+          <FormControl my={4}>
+            <FormLabel htmlFor="exit_date">Austrittsdatum</FormLabel>
+            <InputField
+              id="exit_date"
+              regex={/^(0[1-9]|[12]\d|3[01])\.(0[1-9]|1[0-2])\.(\d{2}|\d{4})?$/}
+              regexErrorText="Bitte geben Sie ein Datum im Format '01.01.2025' ein."
+              value={employee.exit_date ?? ""}
+              isDate
+              onChange={(e) => setEmployee({ ...employee, exit_date: e })}
+            />
+          </FormControl>
+
+          <FormControl my={4}>
+            <FormLabel htmlFor="transporter_id">Transporter ID</FormLabel>
+            <InputField
+              id="transporter_id"
+              value={employee.transporter_id ?? ""}
+              onChange={(e) => setEmployee({ ...employee, transporter_id: e })}
+            />
+          </FormControl>
+
+          <FormControl my={4}>
+            <FormLabel htmlFor="mobile">Telefonnummer (Arbeit)</FormLabel>
+            <InputField
+              id="mobile"
+              value={employee.mobile ?? ""}
+              onChange={(value) => setEmployee({ ...employee, mobile: value })}
+              placeholder="Telefonnummer"
+            />
+          </FormControl>
+
           <FormControl my={4} isDisabled={authRole !== "superadmin"}>
             <FormLabel htmlFor="role">Rolle</FormLabel>
             <DefaultMenu
@@ -180,37 +300,6 @@ export const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({
               isDisabled={authRole !== "superadmin"}
             />
           </FormControl>
-
-          <FormControl my={4}>
-            <FormLabel htmlFor="driverLicenseEndDate">
-              Führerschein Ablaufdatum
-            </FormLabel>
-            <InputField
-              id="driver-license-expire-date"
-              regex={/^(0[1-9]|[12]\d|3[01])\.(0[1-9]|1[0-2])\.(\d{2}|\d{4})?$/}
-              regexErrorText="Bitte geben Sie ein Datum im Format '01.01.2025' ein."
-              value={employee.driver_license_end_date ?? ""}
-              isDate
-              onChange={(e) =>
-                setEmployee({ ...employee, driver_license_end_date: e })
-              }
-            />
-          </FormControl>
-          <FormControl my={4}>
-            <FormLabel htmlFor="idCardEndDate">
-              Personalausweis Ablaufdatum
-            </FormLabel>
-            <InputField
-              id="id-expire-date"
-              regex={/^(0[1-9]|[12]\d|3[01])\.(0[1-9]|1[0-2])\.(\d{2}|\d{4})?$/}
-              regexErrorText="Bitte geben Sie ein Datum im Format '01.01.2025' ein."
-              value={employee.id_card_end_date ?? ""}
-              isDate
-              onChange={(e) =>
-                setEmployee({ ...employee, id_card_end_date: e })
-              }
-            />
-          </FormControl>
         </Box>
 
         {/* Kontaktinformationen */}
@@ -226,15 +315,6 @@ export const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({
               value={profile.email ?? ""}
               onChange={(value) => setProfile({ ...profile, email: value })}
               placeholder="Email"
-            />
-          </FormControl>
-          <FormControl my={4}>
-            <FormLabel htmlFor="mobile">Telefonnummer</FormLabel>
-            <InputField
-              id="mobile"
-              value={employee.mobile ?? ""}
-              onChange={(value) => setEmployee({ ...employee, mobile: value })}
-              placeholder="Telefonnummer"
             />
           </FormControl>
           <FormControl my={4}>
@@ -277,6 +357,16 @@ export const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({
                 setEmployee({ ...employee, postal_code: value })
               }
               placeholder="PLZ"
+            />
+          </FormControl>
+
+          <FormControl my={4}>
+            <FormLabel htmlFor="description">Bemerkungen</FormLabel>
+            <InputField
+              id="description"
+              value={employee.description ?? ""}
+              onChange={(e) => setEmployee({ ...employee, description: e })}
+              isTextArea
             />
           </FormControl>
         </Box>

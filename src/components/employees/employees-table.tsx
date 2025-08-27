@@ -33,7 +33,9 @@ export const EmployeesTable: React.FC<EmployeesTableProps> = ({
 }) => {
   const navigate = useNavigate();
 
-  const [sortedEmployees, setSortedEmployees] = useState<EmployeeWithProfile[]>([]);
+  const [sortedEmployees, setSortedEmployees] = useState<EmployeeWithProfile[]>(
+    [],
+  );
   const [sortConfig, setSortConfig] = useState<{
     key: SortKey;
     direction: "asc" | "desc";
@@ -44,15 +46,15 @@ export const EmployeesTable: React.FC<EmployeesTableProps> = ({
   }, [employees]);
 
   const isDateKey = (key: SortKey) =>
-    [
-      "driver_license_end_date",
-      "id_card_end_date",
-      "date_of_birth",
-    ].includes(key);
+    ["driver_license_end_date", "id_card_end_date", "date_of_birth"].includes(
+      key,
+    );
 
   const handleSort = (key: SortKey) => {
     const direction =
-      sortConfig?.key === key && sortConfig.direction === "asc" ? "desc" : "asc";
+      sortConfig?.key === key && sortConfig.direction === "asc"
+        ? "desc"
+        : "asc";
 
     const sorted = [...sortedEmployees].sort((a, b) => {
       const getValue = (obj: EmployeeWithProfile) => {
@@ -60,7 +62,9 @@ export const EmployeesTable: React.FC<EmployeesTableProps> = ({
         if (key === "full_name")
           return `${obj.first_name ?? ""} ${obj.last_name ?? ""}`;
         if (key === "full_address")
-          return `${obj.street ?? ""} ${obj.city ?? ""} ${obj.postal_code ?? ""}`;
+          return `${obj.street ?? ""} ${obj.city ?? ""} ${
+            obj.postal_code ?? ""
+          }`;
 
         const value = obj[key as keyof EmployeeWithProfile];
 
@@ -134,28 +138,46 @@ export const EmployeesTable: React.FC<EmployeesTableProps> = ({
               {renderSortIcon("personnel_number")}
             </Flex>
           </Th>
-          <Th cursor="pointer" onClick={() => handleSort("location")}>
-            <Flex align="center" gap={1}>
-              <Text>Standort</Text>
-              {renderSortIcon("location")}
-            </Flex>
-          </Th>
-          <Th cursor="pointer" onClick={() => handleSort("department")}>
-            <Flex align="center" gap={1}>
-              <Text>Abteilung</Text>
-              {renderSortIcon("department")}
-            </Flex>
-          </Th>
-          <Th cursor="pointer" onClick={() => handleSort("email")}>
-            <Flex align="center" gap={1}>
-              <Text>Email</Text>
-              {renderSortIcon("email")}
-            </Flex>
-          </Th>
           <Th cursor="pointer" onClick={() => handleSort("full_name")}>
             <Flex align="center" gap={1}>
               <Text>Vorname, Nachname</Text>
               {renderSortIcon("full_name")}
+            </Flex>
+          </Th>
+          <Th cursor="pointer" onClick={() => handleSort("date_of_birth")}>
+            <Flex align="center" gap={1}>
+              <Text>Geburtsdatum</Text>
+              {renderSortIcon("date_of_birth")}
+            </Flex>
+          </Th>
+          <Th cursor="pointer" onClick={() => handleSort("entry_date")}>
+            <Flex align="center" gap={1}>
+              <Text>Eintrittsdatum</Text>
+              {renderSortIcon("entry_date")}
+            </Flex>
+          </Th>
+          <Th cursor="pointer" onClick={() => handleSort("exit_date")}>
+            <Flex align="center" gap={1}>
+              <Text>Austrittsdatum</Text>
+              {renderSortIcon("exit_date")}
+            </Flex>
+          </Th>
+          <Th cursor="pointer" onClick={() => handleSort("contract_type")}>
+            <Flex align="center" gap={1}>
+              <Text>Vertragsform</Text>
+              {renderSortIcon("contract_type")}
+            </Flex>
+          </Th>
+          <Th cursor="pointer" onClick={() => handleSort("weekly_hours")}>
+            <Flex align="center" gap={1}>
+              <Text>Wochenstunden</Text>
+              {renderSortIcon("weekly_hours")}
+            </Flex>
+          </Th>
+          <Th cursor="pointer" onClick={() => handleSort("mobile")}>
+            <Flex align="center" gap={1}>
+              <Text>Telefonnummer (Arbeit)</Text>
+              {renderSortIcon("mobile")}
             </Flex>
           </Th>
           <Th cursor="pointer" onClick={() => handleSort("full_address")}>
@@ -164,7 +186,22 @@ export const EmployeesTable: React.FC<EmployeesTableProps> = ({
               {renderSortIcon("full_address")}
             </Flex>
           </Th>
-          <Th cursor="pointer" onClick={() => handleSort("driver_license_end_date")}>
+          <Th cursor="pointer" onClick={() => handleSort("transporter_id")}>
+            <Flex align="center" gap={1}>
+              <Text>Transporter ID</Text>
+              {renderSortIcon("transporter_id")}
+            </Flex>
+          </Th>
+          <Th cursor="pointer" onClick={() => handleSort("driver_license_id")}>
+            <Flex align="center" gap={1}>
+              <Text>Führerschein ID</Text>
+              {renderSortIcon("driver_license_id")}
+            </Flex>
+          </Th>
+          <Th
+            cursor="pointer"
+            onClick={() => handleSort("driver_license_end_date")}
+          >
             <Flex align="center" gap={1}>
               <Text>Führerschein Ablaufdatum</Text>
               {renderSortIcon("driver_license_end_date")}
@@ -176,40 +213,16 @@ export const EmployeesTable: React.FC<EmployeesTableProps> = ({
               {renderSortIcon("id_card_end_date")}
             </Flex>
           </Th>
-          <Th cursor="pointer" onClick={() => handleSort("health_insurance")}>
-            <Flex align="center" gap={1}>
-              <Text>Krankenkasse</Text>
-              {renderSortIcon("health_insurance")}
-            </Flex>
-          </Th>
-          <Th cursor="pointer" onClick={() => handleSort("tax_id")}>
-            <Flex align="center" gap={1}>
-              <Text>SteuerID.</Text>
-              {renderSortIcon("tax_id")}
-            </Flex>
-          </Th>
-          <Th cursor="pointer" onClick={() => handleSort("tax_level")}>
-            <Flex align="center" gap={1}>
-              <Text>Steuerklasse</Text>
-              {renderSortIcon("tax_level")}
-            </Flex>
-          </Th>
-          <Th cursor="pointer" onClick={() => handleSort("date_of_birth")}>
-            <Flex align="center" gap={1}>
-              <Text>Geburtsdatum</Text>
-              {renderSortIcon("date_of_birth")}
-            </Flex>
-          </Th>
         </Tr>
       </Thead>
       <Tbody>
         {sortedEmployees.map((empl, index) => {
           const isDriverLicenseExpiring = isDateExpiring(
             empl.driver_license_end_date,
-            30
+            30,
           );
           const isDriverLicenseExpired = isDateExpired(
-            empl.driver_license_end_date
+            empl.driver_license_end_date,
           );
           const isIdCardExpiring = isDateExpiring(empl.id_card_end_date, 30);
           const isIdCardExpired = isDateExpired(empl.id_card_end_date);
@@ -261,11 +274,31 @@ export const EmployeesTable: React.FC<EmployeesTableProps> = ({
                   <Text>{empl.personnel_number ?? "-"}</Text>
                 </Flex>
               </Td>
-              <Td>{empl.location ?? "-"}</Td>
-              <Td>{empl.department ?? "-"}</Td>
-              <Td>{empl.profile?.email ?? "-"}</Td>
               <Td>{`${empl.first_name ?? ""} ${empl.last_name ?? ""}`}</Td>
-              <Td>{`${empl.street ?? ""} ${empl.city ?? ""} ${empl.postal_code ?? ""}`}</Td>
+              <Td>
+                {empl.date_of_birth
+                  ? dayjs(empl.date_of_birth).format("DD/MM/YYYY")
+                  : "Kein Datum ausgewählt"}
+              </Td>
+              <Td>
+                {empl.entry_date
+                  ? dayjs(empl.entry_date).format("DD/MM/YYYY")
+                  : "Kein Datum ausgewählt"}
+              </Td>
+              <Td>
+                {empl.exit_date
+                  ? dayjs(empl.exit_date).format("DD/MM/YYYY")
+                  : "Kein Datum ausgewählt"}
+              </Td>
+              <Td>{empl.contract_type ?? "-"}</Td>
+              <Td>{empl.weekly_hours ?? "-"}</Td>
+              <Td>{empl.mobile ?? "-"}</Td>
+              <Td>{`${empl.street ?? ""} ${empl.city ?? ""} ${
+                empl.postal_code ?? ""
+              }`}</Td>
+
+              <Td>{empl.transporter_id ?? "-"}</Td>
+              <Td>{empl.driver_license_id ?? "-"}</Td>
               <Td>
                 {empl.driver_license_end_date ? (
                   <Box>
@@ -281,14 +314,6 @@ export const EmployeesTable: React.FC<EmployeesTableProps> = ({
                 ) : (
                   "Kein Datum ausgewählt"
                 )}
-              </Td>
-              <Td>{empl.health_insurance ?? "-"}</Td>
-              <Td>{empl.tax_id ?? "-"}</Td>
-              <Td>{empl.tax_level ?? "-"}</Td>
-              <Td>
-                {empl.date_of_birth
-                  ? dayjs(empl.date_of_birth).format("DD/MM/YYYY")
-                  : "Kein Datum ausgewählt"}
               </Td>
             </Tr>
           );

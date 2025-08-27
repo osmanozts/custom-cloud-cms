@@ -20,15 +20,19 @@ import {
   NewProfile,
   updateProfile,
 } from "../../backend-queries/update/update-profile";
+import {
+  DocumentManager,
+  EmployeeDetails,
+  EmployeeMinDetail,
+} from "../../components";
+import { useAuth } from "../../providers/auth-provider";
 import { AppDispatch } from "../../redux/store";
 import { setToast } from "../../redux/toast-slice";
 import { Tables } from "../../utils/database/types";
-import { DocumentManager, EmployeeDetails, EmployeeMinDetail } from "../../components";
-import { useAuth } from "../../providers/auth-provider";
 
 type EditEmployeeProps = {};
 
-export const EditEmployee = ({ }: EditEmployeeProps) => {
+export const EditEmployee = ({}: EditEmployeeProps) => {
   const { authRole } = useAuth();
   const dispatch: AppDispatch = useDispatch();
   const navigate = useNavigate();
@@ -40,7 +44,8 @@ export const EditEmployee = ({ }: EditEmployeeProps) => {
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isSaveDisabled, setIsSaveDisabled] = useState<boolean>(true);
-  const [showFloatingButtons, setShowFloatingButtons] = useState<boolean>(false);
+  const [showFloatingButtons, setShowFloatingButtons] =
+    useState<boolean>(false);
 
   // Scroll Listener
   useEffect(() => {
@@ -71,6 +76,12 @@ export const EditEmployee = ({ }: EditEmployeeProps) => {
           driver_license_end_date: newEmployee.driver_license_end_date
             ? dayjs(newEmployee.driver_license_end_date).format("DD.MM.YYYY")
             : "",
+          entry_date: newEmployee.entry_date
+            ? dayjs(newEmployee.entry_date).format("DD.MM.YYYY")
+            : "",
+          exit_date: newEmployee.exit_date
+            ? dayjs(newEmployee.exit_date).format("DD.MM.YYYY")
+            : "",
         };
 
         setEmployee(mappedEmployee);
@@ -92,24 +103,40 @@ export const EditEmployee = ({ }: EditEmployeeProps) => {
       const dateOfBirth =
         dateOfBirthParts?.length === 3
           ? new Date(
-            `${dateOfBirthParts[2]}-${dateOfBirthParts[1]}-${dateOfBirthParts[0]}T00:00:00Z`
-          ).toISOString()
+              `${dateOfBirthParts[2]}-${dateOfBirthParts[1]}-${dateOfBirthParts[0]}T00:00:00Z`,
+            ).toISOString()
           : null;
 
       const idCardEndDateParts = employee.id_card_end_date?.split(".");
       const idCardEndDate =
         idCardEndDateParts?.length === 3
           ? new Date(
-            `${idCardEndDateParts[2]}-${idCardEndDateParts[1]}-${idCardEndDateParts[0]}T00:00:00Z`
-          ).toISOString()
+              `${idCardEndDateParts[2]}-${idCardEndDateParts[1]}-${idCardEndDateParts[0]}T00:00:00Z`,
+            ).toISOString()
           : null;
 
       const licenseEndDateParts = employee.driver_license_end_date?.split(".");
       const driverLicenseEndDate =
         licenseEndDateParts?.length === 3
           ? new Date(
-            `${licenseEndDateParts[2]}-${licenseEndDateParts[1]}-${licenseEndDateParts[0]}T00:00:00Z`
-          ).toISOString()
+              `${licenseEndDateParts[2]}-${licenseEndDateParts[1]}-${licenseEndDateParts[0]}T00:00:00Z`,
+            ).toISOString()
+          : null;
+
+      const entryDateParts = employee.entry_date?.split(".");
+      const entryDate =
+        entryDateParts?.length === 3
+          ? new Date(
+              `${entryDateParts[2]}-${entryDateParts[1]}-${entryDateParts[0]}T00:00:00Z`,
+            ).toISOString()
+          : null;
+
+      const exitDateParts = employee.exit_date?.split(".");
+      const exitDate =
+        exitDateParts?.length === 3
+          ? new Date(
+              `${exitDateParts[2]}-${exitDateParts[1]}-${exitDateParts[0]}T00:00:00Z`,
+            ).toISOString()
           : null;
 
       const updatedEmployee: Tables<"employees"> = {
@@ -117,6 +144,8 @@ export const EditEmployee = ({ }: EditEmployeeProps) => {
         date_of_birth: dateOfBirth,
         id_card_end_date: idCardEndDate,
         driver_license_end_date: driverLicenseEndDate,
+        entry_date: entryDate,
+        exit_date: exitDate,
       };
 
       await updateEmployee(updatedEmployee);
@@ -131,7 +160,7 @@ export const EditEmployee = ({ }: EditEmployeeProps) => {
           title: "Erfolgreich!",
           description: "Mitarbeiter Informationen erfolgreich gespeichert.",
           status: "success",
-        })
+        }),
       );
       navigate("/employee-management");
     } catch (error) {
@@ -141,7 +170,7 @@ export const EditEmployee = ({ }: EditEmployeeProps) => {
           description:
             "Beim Speichern der Mitarbeiter Informationen ist ein Fehler aufgetreten.",
           status: "error",
-        })
+        }),
       );
       throw error;
     } finally {
@@ -194,10 +223,9 @@ export const EditEmployee = ({ }: EditEmployeeProps) => {
                 width={120}
               >
                 <Icon mr={2} as={LuX} />
-                {isSaveDisabled ? 'Zurück' : 'Verwerfen'}
+                {isSaveDisabled ? "Zurück" : "Verwerfen"}
               </Button>
             </Flex>
-
           </Flex>
           <Box>
             <Box>
@@ -322,7 +350,10 @@ export const EditEmployee = ({ }: EditEmployeeProps) => {
               <Icon as={LuCheck} boxSize={6} />
             </Button>
           </Tooltip>
-          <Tooltip label={isSaveDisabled ? "Zurück" : "Verwerfen"} placement="left">
+          <Tooltip
+            label={isSaveDisabled ? "Zurück" : "Verwerfen"}
+            placement="left"
+          >
             <Button
               bg="accentColor"
               color="invertedTextColor"
