@@ -61,28 +61,55 @@ Deno.serve(async (req) => {
       });
     }
 
-    const { newPassword, userIdToChange } = await req.json();
+    const { newPassword, newEmail, userIdToChange } = await req.json();
 
-    console.log("userIdToChange:", userIdToChange);
-    const { data, error } = await supabase.auth.admin.updateUserById(
-      userIdToChange,
-      {
-        password: newPassword,
+    if (newPassword.length > 0 && userIdToChange) {
+      const { error } = await supabase.auth.admin.updateUserById(
+        userIdToChange,
+        {
+          password: newPassword,
+        },
+      );
+      if (error) {
+        throw error;
       }
-    );
+    }
+    if (newEmail.length > 0 && userIdToChange) {
+      const { error } = await supabase.auth.admin.updateUserById(
+        userIdToChange,
+        {
+          email: newEmail,
+        },
+      );
+      if (error) {
+        throw error;
+      }
 
-    if (error) {
-      throw error;
+      const { secondError } = await supabase
+        .from("profile")
+        .update({ email: newEmail })
+        .eq("id", userIdToChange);
+      if (secondError) {
+        throw secondError;
+      }
     }
 
-    return new Response(JSON.stringify(data), {
-      headers: { ...corsHeaders, "Content-Type": "application/json" },
-      status: 200,
-    });
+    return new Response(
+      JSON.stringify({ funcitonMessage: "successfully updated user data" }),
+      {
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+        status: 200,
+      },
+    );
   } catch (error) {
-    return new Response(JSON.stringify({ error: error.message }), {
-      headers: { ...corsHeaders, "Content-Type": "application/json" },
-      status: 400,
-    });
+    return new Response(
+      JSON.stringify({
+        funcitonMessage: `error on updating user data: ${error}`,
+      }),
+      {
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+        status: 400,
+      },
+    );
   }
 });

@@ -14,24 +14,26 @@ export const ChangePasswordButton = ({
     const [isDialogOpen, setIsDialogOpen] = useState(false);
 
     return (
-        <>
-            <Button
-                color="accentColor"
-                boxSize={8}
-                bg="invertedColor"
-                padding={2}
-                isDisabled={isDisabled}
-                onClick={() => {
-                    setIsDialogOpen(true);
-                }}
-                minWidth={200}
-            >Passwort ändern</Button>
+      <>
+        <Button
+          color="accentColor"
+          boxSize={8}
+          bg="invertedColor"
+          padding={2}
+          isDisabled={isDisabled}
+          onClick={() => {
+            setIsDialogOpen(true);
+          }}
+          minWidth={200}
+        >
+          Anmeldedaten ändern
+        </Button>
 
-            <ChangePasswordDialog
-                userId={userId}
-                isOpen={isDialogOpen}
-                onClose={() => setIsDialogOpen(false)}
-            />
-        </>
+        <ChangePasswordDialog
+          userId={userId}
+          isOpen={isDialogOpen}
+          onClose={() => setIsDialogOpen(false)}
+        />
+      </>
     );
 };
