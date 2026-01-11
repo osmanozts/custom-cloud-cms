@@ -103,7 +103,7 @@ export const VehicleDetails = ({
           <FormLabel htmlFor="color">Farbe</FormLabel>
           <DefaultMenu
             options={colors}
-            defaultValue={vehicle.color ?? ""}
+            value={vehicle.color ?? ""}
             onSelect={(value) => setVehicle({ ...vehicle, color: value })}
           />
         </FormControl>
@@ -129,9 +129,9 @@ export const VehicleDetails = ({
               { value: "active", label: "Aktiv" },
               { value: "in_service", label: "Wartung" },
               { value: "decommissioned", label: "Stillgelegt" },
-              { value: "under_maintenance", label: "In Reperatur" }
+              { value: "under_maintenance", label: "In Reperatur" },
             ]}
-            defaultValue={vehicle.state ?? ""}
+            value={vehicle.state ?? ""}
             onSelect={(value) =>
               setVehicle({
                 ...vehicle,
@@ -143,8 +143,13 @@ export const VehicleDetails = ({
         <FormControl>
           <FormLabel htmlFor="location">Standort</FormLabel>
           <DefaultMenu
-            options={[{ value: "DNX4", label: "DNX4" }, { value: "DNW1", label: "DNW1" }, { value: "Lplg-Moers", label: "LPLG-Moers" }, { value: "Heiz-Moers", label: "Heiz-Moers" },]}
-            defaultValue={vehicle.location ?? ""}
+            options={[
+              { value: "DNX4", label: "DNX4" },
+              { value: "DNW1", label: "DNW1" },
+              { value: "Lplg-Moers", label: "LPLG-Moers" },
+              { value: "Heiz-Moers", label: "Heiz-Moers" },
+            ]}
+            value={vehicle.location ?? ""}
             onSelect={(value) =>
               setVehicle({ ...vehicle, location: value as Enums<"locations"> })
             }
@@ -189,9 +194,7 @@ export const VehicleDetails = ({
           />
         </FormControl>
         <FormControl>
-          <FormLabel htmlFor="service_km">
-            Nächste Wartung ab ... km
-          </FormLabel>
+          <FormLabel htmlFor="service_km">Nächste Wartung ab ... km</FormLabel>
           <InputField
             id="service_year"
             value={vehicle.next_service_km?.toString() ?? ""}
@@ -207,9 +210,7 @@ export const VehicleDetails = ({
           />
         </FormControl>
         <FormControl>
-          <FormLabel htmlFor="tuv_year">
-            TÜV bis...
-          </FormLabel>
+          <FormLabel htmlFor="tuv_year">TÜV bis...</FormLabel>
           <InputField
             id="nextServiceDate"
             regex={

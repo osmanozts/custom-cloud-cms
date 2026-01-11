@@ -20,7 +20,7 @@ import {
   LuWrench,
   LuX,
 } from "react-icons/lu";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 
 import { RepeatClockIcon } from "@chakra-ui/icons";
 import dayjs from "dayjs";
@@ -44,9 +44,23 @@ import { Tables } from "../../utils/database/types";
 
 type EditVehicleProps = {};
 
-export const EditVehicle = ({ }: EditVehicleProps) => {
+export const EditVehicle = ({}: EditVehicleProps) => {
   const dispatch: AppDispatch = useDispatch();
   const navigate = useNavigate();
+  const location = useLocation();
+
+  type NavState = { returnTo?: string };
+  const returnTo = (location.state as NavState | null)?.returnTo;
+
+  const goBack = () => {
+    if (returnTo) {
+      navigate(returnTo, { replace: true });
+      return;
+    }
+
+    navigate(-1);
+  };
+
   const [searchParams] = useSearchParams();
 
   const [vehicle, setVehicle] = useState<Tables<"vehicles"> | null>(null);
@@ -58,10 +72,9 @@ export const EditVehicle = ({ }: EditVehicleProps) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const [isSaveDisabled, setIsSaveDisabled] = useState<boolean>(true);
-  const [showFloatingButtons, setShowFloatingButtons] = useState<boolean>(false);
+  const [showFloatingButtons, setShowFloatingButtons] =
+    useState<boolean>(false);
 
-
-  // Scroll Listener
   useEffect(() => {
     const handleScroll = () => {
       if (window.scrollY > 50) {
@@ -109,15 +122,15 @@ export const EditVehicle = ({ }: EditVehicleProps) => {
       const nextServiceDate =
         nextServiceDateParts?.length === 3
           ? new Date(
-            `${nextServiceDateParts[2]}-${nextServiceDateParts[1]}-${nextServiceDateParts[0]}T00:00:00Z`
-          ).toISOString()
+              `${nextServiceDateParts[2]}-${nextServiceDateParts[1]}-${nextServiceDateParts[0]}T00:00:00Z`,
+            ).toISOString()
           : null;
       const nextTuvDateParts = vehicle.next_tuv_date?.split(".");
       const nextTuvDate =
         nextTuvDateParts?.length === 3
           ? new Date(
-            `${nextTuvDateParts[2]}-${nextTuvDateParts[1]}-${nextTuvDateParts[0]}`
-          ).toISOString()
+              `${nextTuvDateParts[2]}-${nextTuvDateParts[1]}-${nextTuvDateParts[0]}`,
+            ).toISOString()
           : null;
 
       const updatedVehicle: Tables<"vehicles"> = {
@@ -133,7 +146,7 @@ export const EditVehicle = ({ }: EditVehicleProps) => {
         await createKmHistory(
           vehicle.km_age,
           vehicle.profile_id ?? "",
-          vehicle.id
+          vehicle.id,
         );
       }
       dispatch(
@@ -141,9 +154,9 @@ export const EditVehicle = ({ }: EditVehicleProps) => {
           title: "Erfolgreich!",
           description: "Fahrzeug Informationen erfolgreich gespeichert.",
           status: "success",
-        })
+        }),
       );
-      navigate("/vehicle-management");
+      goBack();
     } catch (error) {
       dispatch(
         setToast({
@@ -151,7 +164,7 @@ export const EditVehicle = ({ }: EditVehicleProps) => {
           description:
             "Beim Speichern der Fahrzeug Informationen ist ein Fehler aufgetreten.",
           status: "error",
-        })
+        }),
       );
     } finally {
       setIsLoading(false);
@@ -195,13 +208,13 @@ export const EditVehicle = ({ }: EditVehicleProps) => {
           <Button
             bg="accentColor"
             color="invertedTextColor"
-            onClick={() => navigate("/vehicle-management")}
+            onClick={() => goBack()}
             size="sm"
             alignSelf="center"
             leftIcon={<Icon as={LuX} />}
             _hover={{ bg: "accentColor", transform: "scale(1.025)" }}
           >
-            {isSaveDisabled ? 'Zurück' : 'Verwerfen'}
+            {isSaveDisabled ? "Zurück" : "Verwerfen"}
           </Button>
         </Flex>
       </Flex>
@@ -306,11 +319,14 @@ export const EditVehicle = ({ }: EditVehicleProps) => {
             <Icon as={LuCheck} boxSize={6} />
           </Button>
         </Tooltip>
-        <Tooltip label={isSaveDisabled ? "Zurück" : "Verwerfen"} placement="left">
+        <Tooltip
+          label={isSaveDisabled ? "Zurück" : "Verwerfen"}
+          placement="left"
+        >
           <Button
             bg="accentColor"
             color="invertedTextColor"
-            onClick={() => navigate("/vehicle-management")}
+            onClick={() => goBack()}
             size="md"
             borderRadius="full"
             aria-label={isSaveDisabled ? "Zurück" : "Verwerfen"}

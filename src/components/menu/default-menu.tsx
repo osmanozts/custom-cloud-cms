@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useMemo } from "react";
 import {
   Menu,
   MenuButton,
@@ -16,36 +16,30 @@ export type MenuOption = {
   value: string | null;
   label: string;
   color?: string;
-  info?: string; // Zusatzinformationen für Tooltip
+  info?: string;
 };
 
 type DefaultMenuProps = {
   options: MenuOption[];
-  defaultValue?: string;
+  value: string | null;
   onSelect: (value: string | null) => void;
   isDisabled?: boolean;
+  placeholder?: string;
 };
 
 export const DefaultMenu: React.FC<DefaultMenuProps> = ({
   options,
-  defaultValue,
+  value,
   onSelect,
   isDisabled,
+  placeholder = "Wähle eine Option",
 }) => {
-  const [selectedOption, setSelectedOption] = useState<MenuOption | null>(null);
-
-  // Setze den default Wert aus options, falls vorhanden
-  if (defaultValue && !selectedOption) {
-    const defaultOption = options.find(
-      (option) => option.value === defaultValue
-    );
-    if (defaultOption) {
-      setSelectedOption(defaultOption);
-    }
-  }
+  const selectedOption = useMemo(() => {
+    const found = options.find((o) => o.value === value);
+    return found ?? null;
+  }, [options, value]);
 
   const handleSelect = (option: MenuOption) => {
-    setSelectedOption(option);
     onSelect(option.value);
   };
 
@@ -54,7 +48,6 @@ export const DefaultMenu: React.FC<DefaultMenuProps> = ({
       <MenuButton
         as={Button}
         variant="outline"
-        value={defaultValue}
         width="100%"
         bg="backgroundColor"
         _hover={{ bg: "darkColor", color: "invertedTextColor" }}
@@ -71,8 +64,9 @@ export const DefaultMenu: React.FC<DefaultMenuProps> = ({
                 marginRight="8px"
               />
             )}
-            <Text>{selectedOption?.label || "Wähle eine Option"}</Text>
+            <Text>{selectedOption?.label ?? placeholder}</Text>
           </Box>
+
           {selectedOption?.info && (
             <Tooltip label={selectedOption.info} hasArrow placement="top">
               <IconButton
@@ -83,15 +77,25 @@ export const DefaultMenu: React.FC<DefaultMenuProps> = ({
                 color="gray.500"
                 borderRadius="50%"
                 _hover={{ bg: "gray.200" }}
+                onClick={(e) => e.stopPropagation()}
               />
             </Tooltip>
           )}
         </Box>
       </MenuButton>
+
       <MenuList>
         {options.map((option) => (
-          <MenuItem key={option.value} onClick={() => handleSelect(option)}>
-            <Box display="flex" alignItems="center" justifyContent="space-between" width="100%">
+          <MenuItem
+            key={`${option.value ?? "null"}-${option.label}`}
+            onClick={() => handleSelect(option)}
+          >
+            <Box
+              display="flex"
+              alignItems="center"
+              justifyContent="space-between"
+              width="100%"
+            >
               <Box display="flex" alignItems="center">
                 {option.color && (
                   <Box
@@ -104,6 +108,7 @@ export const DefaultMenu: React.FC<DefaultMenuProps> = ({
                 )}
                 <Text>{option.label}</Text>
               </Box>
+
               {option.info && (
                 <Tooltip label={option.info} hasArrow placement="top">
                   <IconButton
@@ -114,6 +119,7 @@ export const DefaultMenu: React.FC<DefaultMenuProps> = ({
                     color="gray.500"
                     borderRadius="50%"
                     _hover={{ bg: "gray.200" }}
+                    onClick={(e) => e.stopPropagation()}
                   />
                 </Tooltip>
               )}

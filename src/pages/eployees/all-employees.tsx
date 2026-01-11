@@ -13,7 +13,7 @@ import {
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { LuDownload, LuPlus } from "react-icons/lu";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { EmployeeWithProfile } from "../../backend-queries/joins/employee-with-profile-query";
 import { getAllEmployees } from "../../backend-queries/query/employees/get-all-employees";
 import { EmployeesTable, InputField } from "../../components";
@@ -21,43 +21,63 @@ import { DefaultMenu } from "../../components/menu/default-menu";
 import { useAuth } from "../../providers/auth-provider";
 import { printEmployeesToPdf } from "./services/print-employees-to-pdf";
 
-interface AllEmployeesProps { }
+interface AllEmployeesProps {}
+
+const qpToNullable = (v: string | null) => (v === null || v === "" ? null : v);
 
 export const AllEmployees: React.FC<AllEmployeesProps> = () => {
-  const { authRole } = useAuth()
+  const { authRole } = useAuth();
   const navigate = useNavigate();
+  const [searchParams, setSearchParams] = useSearchParams();
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [employees, setEmployees] = useState<EmployeeWithProfile[]>([]);
-  const [searchString, setSearchString] = useState<string>("");
-  const [departmentFilter, setDepartmentFilter] = useState<string | null>(null);
-  const [statusFilter, setStatusFilter] = useState<string | null>(null);
-  const [locationFilter, setLocationFilter] = useState<string | null>(null);
+
+  const [searchString, setSearchString] = useState<string>(
+    () => searchParams.get("q") ?? "",
+  );
+  const [departmentFilter, setDepartmentFilter] = useState<string | null>(() =>
+    qpToNullable(searchParams.get("dep")),
+  );
+  const [statusFilter, setStatusFilter] = useState<string | null>(() =>
+    qpToNullable(searchParams.get("status")),
+  );
+  const [locationFilter, setLocationFilter] = useState<string | null>(() =>
+    qpToNullable(searchParams.get("loc")),
+  );
 
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   useEffect(() => {
-    getAllEmployees((allEmployees: EmployeeWithProfile[]) =>
-      setEmployees(allEmployees)
-    );
-  }, []);
+    const next: Record<string, string> = {};
+
+    if (searchString.trim() !== "") next.q = searchString.trim();
+    if (departmentFilter !== null) next.dep = departmentFilter;
+    if (statusFilter !== null) next.status = statusFilter;
+    if (locationFilter !== null) next.loc = locationFilter;
+
+    setSearchParams(next, { replace: true });
+  }, [
+    searchString,
+    departmentFilter,
+    statusFilter,
+    locationFilter,
+    setSearchParams,
+  ]);
 
   useEffect(() => {
     getAllEmployees((allEmployees: EmployeeWithProfile[]) => {
       let filteredEmployees = allEmployees;
 
-      // Filterlogik
       if (searchString.trim() !== "") {
         filteredEmployees = filteredEmployees.filter(
           (employee) =>
-            (employee.first_name &&
-              employee.first_name
-                .toLowerCase()
-                .includes(searchString.toLowerCase())) ||
-            (employee.last_name &&
-              employee.last_name
-                .toLowerCase()
-                .includes(searchString.toLowerCase())) ||
+            employee.first_name
+              ?.toLowerCase()
+              .includes(searchString.toLowerCase()) ||
+            employee.last_name
+              ?.toLowerCase()
+              .includes(searchString.toLowerCase()) ||
             (employee.personnel_number &&
               employee.personnel_number.includes(searchString)) ||
             (employee.transporter_id &&
@@ -67,19 +87,19 @@ export const AllEmployees: React.FC<AllEmployeesProps> = () => {
 
       if (departmentFilter !== null) {
         filteredEmployees = filteredEmployees.filter(
-          (employee) => employee.department === departmentFilter
+          (employee) => employee.department === departmentFilter,
         );
       }
 
       if (statusFilter !== null) {
         filteredEmployees = filteredEmployees.filter(
-          (employee) => employee.state === statusFilter
+          (employee) => employee.state === statusFilter,
         );
       }
 
       if (locationFilter !== null) {
         filteredEmployees = filteredEmployees.filter(
-          (employee) => employee.location === locationFilter
+          (employee) => employee.location === locationFilter,
         );
       }
 
@@ -95,7 +115,6 @@ export const AllEmployees: React.FC<AllEmployeesProps> = () => {
       bg="backgroundColor"
     >
       <VStack width="100%" maxWidth="1200px" p={6}>
-        {/* Fehleranzeige im UI */}
         {errorMessage && (
           <Alert status="error" borderRadius="md" mb={4}>
             <AlertIcon />
@@ -142,8 +161,9 @@ export const AllEmployees: React.FC<AllEmployeesProps> = () => {
               { value: "fleet_management", label: "Flottenmanagement" },
               { value: "driver", label: "Fahrer" },
             ]}
-            defaultValue="Alle"
+            value={departmentFilter}
             onSelect={(value) => setDepartmentFilter(value)}
+            placeholder="Alle"
           />
 
           <Text fontWeight="bold">Status:</Text>
@@ -153,8 +173,9 @@ export const AllEmployees: React.FC<AllEmployeesProps> = () => {
               { value: "active", label: "Aktiv" },
               { value: "inactive", label: "Ausgetreten" },
             ]}
-            defaultValue="Alle"
+            value={statusFilter}
             onSelect={(value) => setStatusFilter(value)}
+            placeholder="Alle"
           />
 
           <Text fontWeight="bold">Standort:</Text>
@@ -166,14 +187,16 @@ export const AllEmployees: React.FC<AllEmployeesProps> = () => {
               { value: "Lplg-Moers", label: "Lplg Moers" },
               { value: "Heix", label: "Heix" },
             ]}
-            defaultValue="Alle"
+            value={locationFilter}
             onSelect={(value) => setLocationFilter(value)}
+            placeholder="Alle"
           />
         </Flex>
 
         <Box w="100%" maxHeight="60vh" overflowX="auto" overflowY="auto">
           <EmployeesTable employees={employees} />
         </Box>
+
         <Flex gap={4} width="100%" justify="flex-end" alignItems="center">
           <Text fontWeight="bold">Einträge: {employees.length}</Text>
           <Button

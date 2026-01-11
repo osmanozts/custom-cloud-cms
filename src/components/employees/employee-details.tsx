@@ -145,7 +145,7 @@ export const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({
                 { value: "fleet_management", label: "Flottenmanagement" },
                 { value: "driver", label: "Fahrer" },
               ]}
-              defaultValue={employee.department ?? "Wähle eine Abteilung aus"}
+              value={employee.department ?? "Wähle eine Abteilung aus"}
               onSelect={(value) =>
                 setEmployee({
                   ...employee,
@@ -166,9 +166,7 @@ export const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({
                 { value: "TB", label: "TB" },
                 { value: "AB", label: "AB" },
               ]}
-              defaultValue={
-                employee.contract_type ?? "Wähle eine Vertragsform aus"
-              }
+              value={employee.contract_type ?? "Wähle eine Vertragsform aus"}
               onSelect={(value) =>
                 setEmployee({
                   ...employee,
@@ -196,7 +194,7 @@ export const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({
                 { value: "Lplg-Moers", label: "Lplg Moers" },
                 { value: "Heix", label: "Heix" },
               ]}
-              defaultValue={employee.location ?? "Wähle ein Standort aus"}
+              value={employee.location ?? "Wähle ein Standort aus"}
               onSelect={(value) =>
                 setEmployee({
                   ...employee,
@@ -212,7 +210,7 @@ export const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({
                 { value: "active", label: "Aktiv" },
                 { value: "inactive", label: "Ausgetreten" },
               ]}
-              defaultValue={employee.location ?? "Wähle einen Status aus"}
+              value={employee.location ?? "Wähle einen Status aus"}
               onSelect={(value) =>
                 setEmployee({
                   ...employee,
@@ -290,7 +288,7 @@ export const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({
                   info: "Interner Systemzugriff ist nicht gestattet. Der Mitarbeiter kann lediglich seine eigenen Stammdaten und öffentlich zugängliche Dokumente einsehen.",
                 },
               ]}
-              defaultValue={profile.auth_role ?? ""}
+              value={profile.auth_role ?? ""}
               onSelect={(value) =>
                 setProfile({
                   ...profile,

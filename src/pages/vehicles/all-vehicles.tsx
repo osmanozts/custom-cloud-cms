@@ -1,9 +1,8 @@
 import { Box, Button, Flex, Icon, Text, VStack } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { LuDownload, LuPlus } from "react-icons/lu";
-
 import { SearchIcon } from "@chakra-ui/icons";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { getAllVehicles } from "../../backend-queries";
 import { Vehicles } from "../../backend-queries/query/vehicles/get-all-vehicles";
 import { InputField, VehiclesTable } from "../../components";
@@ -12,19 +11,38 @@ import { printVehiclesToPdf } from "./services/print-vehicles-to-pdf";
 
 type AllVehiclesProps = {};
 
-export function AllVehicles({ }: AllVehiclesProps) {
+const qpToNullable = (v: string | null) => (v === null || v === "" ? null : v);
+
+export function AllVehicles({}: AllVehiclesProps) {
   const navigate = useNavigate();
+  const [searchParams, setSearchParams] = useSearchParams();
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
-
   const [vehicles, setVehicles] = useState<Vehicles>([]);
 
-  const [searchString, setSearchString] = useState<string>("");
-  const [stateFilter, setStateFilter] = useState<string | null>(null);
-  const [locationFilter, setLocationFilter] = useState<string | null>(null);
+  const [searchString, setSearchString] = useState<string>(
+    () => searchParams.get("q") ?? "",
+  );
+  const [stateFilter, setStateFilter] = useState<string | null>(() =>
+    qpToNullable(searchParams.get("state")),
+  );
+  const [locationFilter, setLocationFilter] = useState<string | null>(() =>
+    qpToNullable(searchParams.get("loc")),
+  );
+
+  useEffect(() => {
+    const next: Record<string, string> = {};
+
+    if (searchString.trim() !== "") next.q = searchString.trim();
+    if (stateFilter !== null) next.state = stateFilter;
+    if (locationFilter !== null) next.loc = locationFilter;
+
+    setSearchParams(next, { replace: true });
+  }, [searchString, stateFilter, locationFilter, setSearchParams]);
 
   useEffect(() => {
     fetchVehicles();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchString, stateFilter, locationFilter]);
 
   const fetchVehicles = async () => {
@@ -39,19 +57,19 @@ export function AllVehicles({ }: AllVehiclesProps) {
               .includes(searchString.toLowerCase()) ||
             vehicle.vin?.toLowerCase().includes(searchString.toLowerCase()) ||
             vehicle.model?.toLowerCase().includes(searchString.toLowerCase()) ||
-            vehicle.make?.toLowerCase().includes(searchString.toLowerCase())
+            vehicle.make?.toLowerCase().includes(searchString.toLowerCase()),
         );
       }
 
       if (stateFilter !== null) {
         filteredVehicles = filteredVehicles.filter(
-          (vehicle) => vehicle.state === stateFilter
+          (vehicle) => vehicle.state === stateFilter,
         );
       }
 
       if (locationFilter !== null) {
         filteredVehicles = filteredVehicles.filter(
-          (vehicle) => vehicle.location === locationFilter
+          (vehicle) => vehicle.location === locationFilter,
         );
       }
 
@@ -89,6 +107,7 @@ export function AllVehicles({ }: AllVehiclesProps) {
             <Text>Neues Fahrzeug</Text>
           </Button>
         </Flex>
+
         <Flex
           w="100%"
           maxW={600}
@@ -104,22 +123,29 @@ export function AllVehicles({ }: AllVehiclesProps) {
               { value: "active", label: "Aktiv", color: "green" },
               { value: "decommissioned", label: "Stillgelegt", color: "red" },
               { value: "in_service", label: "In Wartung", color: "yellow" },
-              { value: "under_maintenance", label: "In Reperatur", color: "blue" },
+              {
+                value: "under_maintenance",
+                label: "In Reperatur",
+                color: "blue",
+              },
             ]}
-            defaultValue="Alle"
-            onSelect={(value) => {
-              setStateFilter(value);
-            }}
+            value={stateFilter}
+            onSelect={(value) => setStateFilter(value)}
+            placeholder="Alle"
           />
 
           <Text fontWeight="bold">Standort:</Text>
           <DefaultMenu
             options={[
               { value: null, label: "Alle" },
-              { value: "DNX4", label: "DNX4" }, { value: "DNW1", label: "DNW1" }, { value: "Lplg-Moers", label: "LPLG-Moers" }, { value: "Heiz-Moers", label: "Heiz-Moers" }
+              { value: "DNX4", label: "DNX4" },
+              { value: "DNW1", label: "DNW1" },
+              { value: "Lplg-Moers", label: "LPLG-Moers" },
+              { value: "Heiz-Moers", label: "Heiz-Moers" },
             ]}
-            defaultValue="Alle"
+            value={locationFilter}
             onSelect={(value) => setLocationFilter(value)}
+            placeholder="Alle"
           />
         </Flex>
 
@@ -140,8 +166,6 @@ export function AllVehicles({ }: AllVehiclesProps) {
               setIsLoading(true);
               try {
                 await printVehiclesToPdf(vehicles);
-              } catch (e) {
-                throw new Error(`Error downloading pdf: ${e}`);
               } finally {
                 setIsLoading(false);
               }

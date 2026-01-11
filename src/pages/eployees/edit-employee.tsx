@@ -11,7 +11,7 @@ import {
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { LuCheck, LuFileCheck2, LuFileKey, LuX } from "react-icons/lu";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 
 import dayjs from "dayjs";
 import { useDispatch } from "react-redux";
@@ -36,6 +36,19 @@ export const EditEmployee = ({}: EditEmployeeProps) => {
   const { authRole } = useAuth();
   const dispatch: AppDispatch = useDispatch();
   const navigate = useNavigate();
+  const location = useLocation();
+
+  type NavState = { returnTo?: string };
+  const returnTo = (location.state as NavState | null)?.returnTo;
+
+  const goBack = () => {
+    if (returnTo) {
+      navigate(returnTo, { replace: true });
+      return;
+    }
+
+    navigate(-1);
+  };
 
   const [searchParams] = useSearchParams();
 
@@ -162,7 +175,7 @@ export const EditEmployee = ({}: EditEmployeeProps) => {
           status: "success",
         }),
       );
-      navigate("/employee-management");
+      goBack();
     } catch (error) {
       dispatch(
         setToast({
@@ -217,7 +230,7 @@ export const EditEmployee = ({}: EditEmployeeProps) => {
               <Button
                 bg="accentColor"
                 color="invertedTextColor"
-                onClick={() => navigate("/employee-management")}
+                onClick={() => goBack()}
                 size="sm"
                 alignSelf="center"
                 width={120}
@@ -304,7 +317,7 @@ export const EditEmployee = ({}: EditEmployeeProps) => {
               <Button
                 bg="accentColor"
                 color="invertedTextColor"
-                onClick={() => navigate("/employee-management")}
+                onClick={() => goBack()}
                 aria-label="Verwerfen"
               >
                 Verwerfen
@@ -357,7 +370,7 @@ export const EditEmployee = ({}: EditEmployeeProps) => {
             <Button
               bg="accentColor"
               color="invertedTextColor"
-              onClick={() => navigate("/employee-management")}
+              onClick={() => goBack()}
               size="md"
               borderRadius="full"
               aria-label={isSaveDisabled ? "Zurück" : "Verwerfen"}
