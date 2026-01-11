@@ -95,6 +95,9 @@ export const EditEmployee = ({}: EditEmployeeProps) => {
           exit_date: newEmployee.exit_date
             ? dayjs(newEmployee.exit_date).format("DD.MM.YYYY")
             : "",
+          work_permit_end_date: newEmployee.work_permit_end_date
+            ? dayjs(newEmployee.work_permit_end_date).format("DD.MM.YYYY")
+            : "",
         };
 
         setEmployee(mappedEmployee);
@@ -128,6 +131,14 @@ export const EditEmployee = ({}: EditEmployeeProps) => {
             ).toISOString()
           : null;
 
+      const workPermitEndDateParts = employee.work_permit_end_date?.split(".");
+      const workPermitEndDate =
+        workPermitEndDateParts?.length === 3
+          ? new Date(
+              `${workPermitEndDateParts[2]}-${workPermitEndDateParts[1]}-${workPermitEndDateParts[0]}T00:00:00Z`,
+            ).toISOString()
+          : null;
+
       const licenseEndDateParts = employee.driver_license_end_date?.split(".");
       const driverLicenseEndDate =
         licenseEndDateParts?.length === 3
@@ -156,6 +167,7 @@ export const EditEmployee = ({}: EditEmployeeProps) => {
         ...employee,
         date_of_birth: dateOfBirth,
         id_card_end_date: idCardEndDate,
+        work_permit_end_date: workPermitEndDate,
         driver_license_end_date: driverLicenseEndDate,
         entry_date: entryDate,
         exit_date: exitDate,

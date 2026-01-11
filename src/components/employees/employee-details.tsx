@@ -133,6 +133,22 @@ export const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({
             />
           </FormControl>
 
+          <FormControl my={4}>
+            <FormLabel htmlFor="workPermitEndDate">
+              Arbeitserlaubnis Ablaufdatum (falls vorhanden)
+            </FormLabel>
+            <InputField
+              id="work-permit-end-date"
+              regex={/^(0[1-9]|[12]\d|3[01])\.(0[1-9]|1[0-2])\.(\d{2}|\d{4})?$/}
+              regexErrorText="Bitte geben Sie ein Datum im Format '01.01.2025' ein."
+              value={employee.work_permit_end_date ?? ""}
+              isDate
+              onChange={(e) =>
+                setEmployee({ ...employee, work_permit_end_date: e })
+              }
+            />
+          </FormControl>
+
           <Heading size="sm" mt={8}>
             Arbeit
           </Heading>

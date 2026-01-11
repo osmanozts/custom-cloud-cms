@@ -113,6 +113,7 @@ export type Database = {
           tax_level: string | null
           transporter_id: string | null
           weekly_hours: string | null
+          work_permit_end_date: string | null
         }
         Insert: {
           city?: string | null
@@ -144,6 +145,7 @@ export type Database = {
           tax_level?: string | null
           transporter_id?: string | null
           weekly_hours?: string | null
+          work_permit_end_date?: string | null
         }
         Update: {
           city?: string | null
@@ -175,6 +177,7 @@ export type Database = {
           tax_level?: string | null
           transporter_id?: string | null
           weekly_hours?: string | null
+          work_permit_end_date?: string | null
         }
         Relationships: [
           {
