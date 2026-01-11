@@ -20,12 +20,12 @@ export const RoleAccessRoute = () => {
 
   if (authRole) {
     switch (authRole) {
-      case "superadmin":
-      case "admin":
-      case "employee_manager":
-      case "vehicle_manager":
+      case "superadmin": // Administrator
+      case "admin": // deprecated role
+      case "employee_manager": // Stationsleiter
+      case "vehicle_manager": // Flottenmanager
         return <Outlet />;
-      case "employee":
+      case "employee": // Mitarbeiter (z.B. Fahrer)
         return (
           <Navigate
             to={`/employee-min-detail?profile_id=${user.id}`}
