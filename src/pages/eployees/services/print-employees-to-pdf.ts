@@ -8,34 +8,34 @@ export async function printEmployeesToPdf(employees: Tables<"employees">[]) {
 
   const rows = employees.map((empl) => [
     empl.personnel_number ?? "-",
-    empl.location ?? "-",
-    empl.department ?? "-",
     `${empl.first_name ?? ""} ${empl.last_name ?? ""}`,
+    dayjs(empl.date_of_birth).format("DD.MM.YYYY"),
+    dayjs(empl.entry_date).format("DD.MM.YYYY"),
+    dayjs(empl.exit_date).format("DD.MM.YYYY"),
+    empl.contract_type ?? "-",
+    empl.weekly_hours ?? "-",
     empl.driver_license_end_date
       ? dayjs(empl.driver_license_end_date).format("DD.MM.YYYY")
       : "Kein Datum",
     empl.id_card_end_date
       ? dayjs(empl.id_card_end_date).format("DD.MM.YYYY")
       : "Kein Datum",
-    dayjs(empl.date_of_birth).format("DD.MM.YYYY"),
-    empl.health_insurance ?? "-",
-    empl.tax_id ?? "-",
-    empl.tax_level ?? "-",
+    empl.transporter_id ?? "-",
   ]);
 
   await autoTable(pdf, {
     head: [
       [
         "Personalnummer",
-        "Standort",
-        "Abteilung",
         "Name",
+        "Geburtsdatum",
+        "Eintrittsdatum",
+        "Austrittsdatum",
+        "Vertragsform",
+        "Wochenstunden",
         "Führerschein Ablaufdatum",
         "Ausweis Ablaufdatum",
-        "Geburtsdatum",
-        "Krankenkasse",
-        "SteuerID.",
-        "Steuerklasse",
+        "Transporter-ID",
       ],
     ],
     body: rows,
