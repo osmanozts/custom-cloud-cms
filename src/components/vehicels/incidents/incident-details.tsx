@@ -15,6 +15,7 @@ import dayjs from "dayjs";
 import { useEffect, useState } from "react";
 import { LuDownload } from "react-icons/lu";
 import { getAllEmployees, getEmployee } from "../../../backend-queries";
+import { EmployeeWithProfile } from "../../../backend-queries/joins/employee-with-profile-query";
 import { Tables } from "../../../utils/database/types";
 import { DriverSelectDialog } from "../../dialogs/driver-select-dialog";
 import { InputField } from "../../input-field";
@@ -32,23 +33,39 @@ export const IncidentDetails = ({
   setIncident,
   vehicle,
 }: IncidentDetailsProps) => {
-  const [drivers, setDrivers] = useState<Tables<"employees">[]>();
-  const [driver, setDriver] = useState<Tables<"employees"> | null>();
+  const [drivers, setDrivers] = useState<EmployeeWithProfile[]>();
+  const [driver, setDriver] = useState<Tables<"employees"> | null>(null);
 
   useEffect(() => {
-    getAllEmployees(setDrivers);
+    const fetchDrivers = async () => {
+      try {
+        const result = await getAllEmployees({
+          page: 1,
+          pageSize: 1000,
+        });
+        setDrivers(result.employees);
+      } catch (error) {
+        console.error("Fehler beim Laden der Mitarbeiter:", error);
+        setDrivers([]);
+      }
+    };
+
+    fetchDrivers();
   }, []);
+
   useEffect(() => {
     if (incident.driver_id) {
       getEmployee(incident.driver_id, (newEmp) => {
         const mappedEmployee: Tables<"employees"> = {
           ...newEmp,
-          date_of_birth: dayjs(newEmp.date_of_birth).format("DD.MM.YYYY"),
+          date_of_birth: newEmp.date_of_birth
+            ? dayjs(newEmp.date_of_birth).format("DD.MM.YYYY")
+            : null,
         };
         setDriver(mappedEmployee);
       });
     }
-  }, [drivers]);
+  }, [incident.driver_id]);
 
   const gridTemplateColumns = useBreakpointValue({
     base: "1fr",
@@ -259,7 +276,7 @@ export const IncidentDetails = ({
               const mappedDriver: Tables<"employees"> = {
                 ...newEmployee,
                 date_of_birth: newEmployee?.date_of_birth
-                  ? dayjs(newEmployee?.date_of_birth).format("DD.MM.YYYY")
+                  ? dayjs(newEmployee.date_of_birth).format("DD.MM.YYYY")
                   : "",
               };
               setDriver(mappedDriver);
@@ -430,6 +447,7 @@ export const IncidentDetails = ({
           </Grid>
         </FormControl>
       </GridItem>
+
       <GridItem colSpan={{ base: 1, md: 2 }}>
         <FormControl>
           <FormLabel fontSize="lg" fontWeight="bold">
