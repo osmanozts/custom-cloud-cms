@@ -11,11 +11,8 @@ import { useEffect, useState } from "react";
 import { LuX } from "react-icons/lu";
 import { useNavigate, useSearchParams } from "react-router-dom";
 
-import {
-  getAllEmployees,
-  getEmployee,
-  getKmHistory,
-} from "../../backend-queries";
+import { getAllEmployees, getKmHistory } from "../../backend-queries";
+import { EmployeeWithProfile } from "../../backend-queries/joins/employee-with-profile-query";
 import { KmHistoryDetails } from "../../components";
 import { Tables } from "../../utils/database/types";
 
@@ -26,36 +23,41 @@ export const EditKmHistory = ({}: EditKmHistoryProps) => {
   const [searchParams] = useSearchParams();
 
   const [kmHistory, setDriverHistory] = useState<Tables<"km_history"> | null>(
-    null
+    null,
   );
-  const [employee, setEmployee] = useState<Tables<"employees"> | null>(null);
-  const [employees, setEmployees] = useState<Tables<"employees">[] | null>(
-    null
+  const [employees, setEmployees] = useState<EmployeeWithProfile[] | null>(
+    null,
   );
 
   useEffect(() => {
     const id = searchParams.get("id") ?? "";
-    if (id) {
-      getKmHistory(id, (newValue) => {
-        const mappedVehicle: Tables<"km_history"> = {
-          ...newValue,
-        };
-        setDriverHistory(mappedVehicle);
-      });
-    }
+
+    if (!id) return;
+
+    getKmHistory(id, (newValue) => {
+      const mappedVehicle: Tables<"km_history"> = {
+        ...newValue,
+      };
+      setDriverHistory(mappedVehicle);
+    });
   }, [searchParams]);
 
   useEffect(() => {
-    if (kmHistory) {
-      getEmployee(kmHistory?.driver_id ?? "", (newValue) => {
-        setEmployee(newValue);
-      });
-      getAllEmployees((newValue) => setEmployees(newValue));
-    }
-  }, [kmHistory]);
-  useEffect(() => {
-    getAllEmployees((newValue) => setEmployees(newValue));
-  }, [employee]);
+    const fetchEmployees = async () => {
+      try {
+        const result = await getAllEmployees({
+          page: 1,
+          pageSize: 1000,
+        });
+        setEmployees(result.employees);
+      } catch (error) {
+        console.error("Fehler beim Laden der Mitarbeiter:", error);
+        setEmployees([]);
+      }
+    };
+
+    fetchEmployees();
+  }, []);
 
   if (!kmHistory) {
     return (
