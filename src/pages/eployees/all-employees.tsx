@@ -8,6 +8,7 @@ import {
   Button,
   Flex,
   Icon,
+  Spinner,
   Text,
   VStack,
 } from "@chakra-ui/react";
@@ -25,13 +26,23 @@ interface AllEmployeesProps {}
 
 const qpToNullable = (v: string | null) => (v === null || v === "" ? null : v);
 
+const qpToPage = (v: string | null) => {
+  const parsed = Number(v);
+  return Number.isFinite(parsed) && parsed > 0 ? parsed : 1;
+};
+
+const PAGE_SIZE = 25;
+
 export const AllEmployees: React.FC<AllEmployeesProps> = () => {
   const { authRole } = useAuth();
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isTableLoading, setIsTableLoading] = useState<boolean>(false);
+
   const [employees, setEmployees] = useState<EmployeeWithProfile[]>([]);
+  const [totalCount, setTotalCount] = useState<number>(0);
 
   const [searchString, setSearchString] = useState<string>(
     () => searchParams.get("q") ?? "",
@@ -45,8 +56,13 @@ export const AllEmployees: React.FC<AllEmployeesProps> = () => {
   const [locationFilter, setLocationFilter] = useState<string | null>(() =>
     qpToNullable(searchParams.get("loc")),
   );
+  const [currentPage, setCurrentPage] = useState<number>(() =>
+    qpToPage(searchParams.get("page")),
+  );
 
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+
+  const totalPages = Math.max(1, Math.ceil(totalCount / PAGE_SIZE));
 
   useEffect(() => {
     const next: Record<string, string> = {};
@@ -55,6 +71,7 @@ export const AllEmployees: React.FC<AllEmployeesProps> = () => {
     if (departmentFilter !== null) next.dep = departmentFilter;
     if (statusFilter !== null) next.status = statusFilter;
     if (locationFilter !== null) next.loc = locationFilter;
+    if (currentPage > 1) next.page = String(currentPage);
 
     setSearchParams(next, { replace: true });
   }, [
@@ -62,50 +79,63 @@ export const AllEmployees: React.FC<AllEmployeesProps> = () => {
     departmentFilter,
     statusFilter,
     locationFilter,
+    currentPage,
     setSearchParams,
   ]);
 
   useEffect(() => {
-    getAllEmployees((allEmployees: EmployeeWithProfile[]) => {
-      let filteredEmployees = allEmployees;
-
-      if (searchString.trim() !== "") {
-        filteredEmployees = filteredEmployees.filter(
-          (employee) =>
-            employee.first_name
-              ?.toLowerCase()
-              .includes(searchString.toLowerCase()) ||
-            employee.last_name
-              ?.toLowerCase()
-              .includes(searchString.toLowerCase()) ||
-            (employee.personnel_number &&
-              employee.personnel_number.includes(searchString)) ||
-            (employee.transporter_id &&
-              employee.transporter_id.includes(searchString)),
-        );
-      }
-
-      if (departmentFilter !== null) {
-        filteredEmployees = filteredEmployees.filter(
-          (employee) => employee.department === departmentFilter,
-        );
-      }
-
-      if (statusFilter !== null) {
-        filteredEmployees = filteredEmployees.filter(
-          (employee) => employee.state === statusFilter,
-        );
-      }
-
-      if (locationFilter !== null) {
-        filteredEmployees = filteredEmployees.filter(
-          (employee) => employee.location === locationFilter,
-        );
-      }
-
-      setEmployees(filteredEmployees);
-    });
+    setCurrentPage(1);
   }, [searchString, departmentFilter, statusFilter, locationFilter]);
+
+  useEffect(() => {
+    const fetchEmployees = async () => {
+      setIsTableLoading(true);
+      setErrorMessage(null);
+
+      try {
+        const result = await getAllEmployees({
+          page: currentPage,
+          pageSize: PAGE_SIZE,
+          searchString,
+          departmentFilter,
+          statusFilter,
+          locationFilter,
+        });
+
+        setEmployees(result.employees);
+        setTotalCount(result.totalCount);
+
+        const nextTotalPages = Math.max(
+          1,
+          Math.ceil(result.totalCount / PAGE_SIZE),
+        );
+
+        if (currentPage > nextTotalPages) {
+          setCurrentPage(nextTotalPages);
+        }
+      } catch (error) {
+        setEmployees([]);
+        setTotalCount(0);
+        setErrorMessage(`Fehler beim Laden der Mitarbeiter: ${error}`);
+      } finally {
+        setIsTableLoading(false);
+      }
+    };
+
+    fetchEmployees();
+  }, [
+    currentPage,
+    searchString,
+    departmentFilter,
+    statusFilter,
+    locationFilter,
+  ]);
+
+  const hasActiveFilters =
+    searchString.trim() !== "" ||
+    departmentFilter !== null ||
+    statusFilter !== null ||
+    locationFilter !== null;
 
   return (
     <Flex
@@ -118,7 +148,7 @@ export const AllEmployees: React.FC<AllEmployeesProps> = () => {
         {errorMessage && (
           <Alert status="error" borderRadius="md" mb={4}>
             <AlertIcon />
-            <AlertTitle>Unauthorized</AlertTitle>
+            <AlertTitle>Fehler</AlertTitle>
             <AlertDescription>{errorMessage}</AlertDescription>
           </Alert>
         )}
@@ -151,6 +181,8 @@ export const AllEmployees: React.FC<AllEmployeesProps> = () => {
           alignSelf="flex-start"
           gap={8}
           mt={4}
+          position="relative"
+          zIndex={2}
         >
           <Text fontWeight="bold">Abteilung:</Text>
           <DefaultMenu
@@ -193,12 +225,76 @@ export const AllEmployees: React.FC<AllEmployeesProps> = () => {
           />
         </Flex>
 
-        <Box w="100%" maxHeight="60vh" overflowX="auto" overflowY="auto">
-          <EmployeesTable employees={employees} />
+        <Box
+          w="100%"
+          maxHeight="60vh"
+          minHeight="60vh"
+          overflowX="auto"
+          overflowY="auto"
+          position="relative"
+          borderRadius="md"
+          zIndex={1}
+        >
+          <EmployeesTable
+            employees={employees}
+            isLoading={isTableLoading}
+            emptyMessage={
+              hasActiveFilters
+                ? "Keine Mitarbeiter für die aktuelle Suche oder Filtereinstellung gefunden."
+                : "Es sind aktuell keine Mitarbeiter vorhanden."
+            }
+          />
+
+          {isTableLoading && (
+            <Flex
+              position="absolute"
+              inset={0}
+              align="center"
+              justify="center"
+              bg="blackAlpha.200"
+              backdropFilter="blur(1px)"
+              zIndex={1}
+            >
+              <Spinner />
+            </Flex>
+          )}
         </Box>
 
+        <Flex
+          w="100%"
+          justify="space-between"
+          align="center"
+          wrap="wrap"
+          gap={4}
+        >
+          <Flex gap={4} align="center">
+            <Text fontWeight="bold">
+              Einträge: {employees.length} von {totalCount}
+            </Text>
+            <Text>
+              Seite {currentPage} von {totalPages}
+            </Text>
+          </Flex>
+
+          <Flex gap={2} align="center">
+            <Button
+              onClick={() => setCurrentPage((prev) => Math.max(1, prev - 1))}
+              isDisabled={currentPage <= 1 || isTableLoading}
+            >
+              Zurück
+            </Button>
+            <Button
+              onClick={() =>
+                setCurrentPage((prev) => Math.min(totalPages, prev + 1))
+              }
+              isDisabled={currentPage >= totalPages || isTableLoading}
+            >
+              Weiter
+            </Button>
+          </Flex>
+        </Flex>
+
         <Flex gap={4} width="100%" justify="flex-end" alignItems="center">
-          <Text fontWeight="bold">Einträge: {employees.length}</Text>
           <Button
             bg="parcelColor"
             alignSelf="flex-end"

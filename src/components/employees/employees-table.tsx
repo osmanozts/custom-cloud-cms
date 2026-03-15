@@ -20,6 +20,8 @@ import { EmployeeWithProfile } from "../../backend-queries/joins/employee-with-p
 
 interface EmployeesTableProps {
   employees: EmployeeWithProfile[];
+  isLoading?: boolean;
+  emptyMessage?: string;
 }
 
 type SortKey =
@@ -30,6 +32,8 @@ type SortKey =
 
 export const EmployeesTable: React.FC<EmployeesTableProps> = ({
   employees,
+  isLoading = false,
+  emptyMessage = "Keine Einträge vorhanden.",
 }) => {
   const navigate = useNavigate();
 
@@ -46,9 +50,13 @@ export const EmployeesTable: React.FC<EmployeesTableProps> = ({
   }, [employees]);
 
   const isDateKey = (key: SortKey) =>
-    ["driver_license_end_date", "id_card_end_date", "date_of_birth"].includes(
-      key,
-    );
+    [
+      "driver_license_end_date",
+      "id_card_end_date",
+      "date_of_birth",
+      "entry_date",
+      "exit_date",
+    ].includes(key);
 
   const handleSort = (key: SortKey) => {
     const direction =
@@ -128,9 +136,11 @@ export const EmployeesTable: React.FC<EmployeesTableProps> = ({
     return targetDate.isBefore(dayjs());
   };
 
+  const showEmptyState = !isLoading && sortedEmployees.length === 0;
+
   return (
     <Table borderWidth={2} borderColor="tileBgColor" mt={4}>
-      <Thead>
+      <Thead position="sticky" top={0} zIndex={0} bg="tileBgColor">
         <Tr whiteSpace="nowrap">
           <Th cursor="pointer" onClick={() => handleSort("personnel_number")}>
             <Flex align="center" gap={1}>
@@ -215,110 +225,117 @@ export const EmployeesTable: React.FC<EmployeesTableProps> = ({
           </Th>
         </Tr>
       </Thead>
-      <Tbody>
-        {sortedEmployees.map((empl, index) => {
-          const isDriverLicenseExpiring = isDateExpiring(
-            empl.driver_license_end_date,
-            30,
-          );
-          const isDriverLicenseExpired = isDateExpired(
-            empl.driver_license_end_date,
-          );
-          const isIdCardExpiring = isDateExpiring(empl.id_card_end_date, 30);
-          const isIdCardExpired = isDateExpired(empl.id_card_end_date);
+      {showEmptyState ? (
+        <Text color="gray.500" fontWeight="medium">
+          {emptyMessage}
+        </Text>
+      ) : (
+        <Tbody>
+          {sortedEmployees.map((empl, index) => {
+            const isDriverLicenseExpiring = isDateExpiring(
+              empl.driver_license_end_date,
+              30,
+            );
+            const isDriverLicenseExpired = isDateExpired(
+              empl.driver_license_end_date,
+            );
+            const isIdCardExpiring = isDateExpiring(empl.id_card_end_date, 30);
+            const isIdCardExpired = isDateExpired(empl.id_card_end_date);
 
-          return (
-            <Tr
-              key={empl.id}
-              whiteSpace="nowrap"
-              cursor="pointer"
-              onClick={() =>
-                navigate({
-                  pathname: "/edit-employee",
-                  search: `?profile_id=${empl.profile_id}`,
-                })
-              }
-              bg={index % 2 === 0 ? "tileBgColor" : "invertedColor"}
-              _hover={{ bg: "backgroundColor" }}
-            >
-              <Td>
-                <Flex alignItems="center" gap={2}>
-                  {!isDriverLicenseExpired &&
-                    !isDriverLicenseExpiring &&
-                    !isIdCardExpired &&
-                    !isIdCardExpiring && (
-                      <Icon as={LuUser} boxSize={4} mr={2} />
+            return (
+              <Tr
+                key={empl.id}
+                whiteSpace="nowrap"
+                cursor="pointer"
+                onClick={() =>
+                  navigate({
+                    pathname: "/edit-employee",
+                    search: `?profile_id=${empl.profile_id}`,
+                  })
+                }
+                bg={index % 2 === 0 ? "tileBgColor" : "invertedColor"}
+                _hover={{ bg: "backgroundColor" }}
+              >
+                <Td>
+                  <Flex alignItems="center" gap={2}>
+                    {!isDriverLicenseExpired &&
+                      !isDriverLicenseExpiring &&
+                      !isIdCardExpired &&
+                      !isIdCardExpiring && (
+                        <Icon as={LuUser} boxSize={4} mr={2} />
+                      )}
+                    {(isDriverLicenseExpired || isDriverLicenseExpiring) && (
+                      <Tooltip
+                        label={
+                          isDriverLicenseExpired
+                            ? "Der Führerschein ist abgelaufen."
+                            : "Der Führerschein läuft bald ab."
+                        }
+                      >
+                        <Icon as={InfoIcon} color="accentColor" mr={2} />
+                      </Tooltip>
                     )}
-                  {(isDriverLicenseExpired || isDriverLicenseExpiring) && (
-                    <Tooltip
-                      label={
-                        isDriverLicenseExpired
-                          ? "Der Führerschein ist abgelaufen."
-                          : "Der Führerschein läuft bald ab."
-                      }
-                    >
-                      <Icon as={InfoIcon} color="accentColor" mr={2} />
-                    </Tooltip>
+                    {(isIdCardExpired || isIdCardExpiring) && (
+                      <Tooltip
+                        label={
+                          isIdCardExpired
+                            ? "Der Ausweis ist abgelaufen."
+                            : "Der Ausweis läuft bald ab."
+                        }
+                      >
+                        <Icon as={InfoIcon} color="accentColor" mr={2} />
+                      </Tooltip>
+                    )}
+                    <Text>{empl.personnel_number ?? "-"}</Text>
+                  </Flex>
+                </Td>
+                <Td>{`${empl.first_name ?? ""} ${empl.last_name ?? ""}`}</Td>
+                <Td>
+                  {empl.date_of_birth
+                    ? dayjs(empl.date_of_birth).format("DD/MM/YYYY")
+                    : "Kein Datum ausgewählt"}
+                </Td>
+                <Td>
+                  {empl.entry_date
+                    ? dayjs(empl.entry_date).format("DD/MM/YYYY")
+                    : "Kein Datum ausgewählt"}
+                </Td>
+                <Td>
+                  {empl.exit_date
+                    ? dayjs(empl.exit_date).format("DD/MM/YYYY")
+                    : "Kein Datum ausgewählt"}
+                </Td>
+                <Td>{empl.contract_type ?? "-"}</Td>
+                <Td>{empl.weekly_hours ?? "-"}</Td>
+                <Td>{empl.mobile ?? "-"}</Td>
+                <Td>{`${empl.street ?? ""} ${empl.city ?? ""} ${
+                  empl.postal_code ?? ""
+                }`}</Td>
+                <Td>{empl.transporter_id ?? "-"}</Td>
+                <Td>{empl.driver_license_id ?? "-"}</Td>
+                <Td>
+                  {empl.driver_license_end_date ? (
+                    <Box>
+                      {dayjs(empl.driver_license_end_date).format("DD/MM/YYYY")}
+                    </Box>
+                  ) : (
+                    "Kein Datum ausgewählt"
                   )}
-                  {(isIdCardExpired || isIdCardExpiring) && (
-                    <Tooltip
-                      label={
-                        isIdCardExpired
-                          ? "Der Ausweis ist abgelaufen."
-                          : "Der Ausweis läuft bald ab."
-                      }
-                    >
-                      <Icon as={InfoIcon} color="accentColor" mr={2} />
-                    </Tooltip>
+                </Td>
+                <Td>
+                  {empl.id_card_end_date ? (
+                    <Box>
+                      {dayjs(empl.id_card_end_date).format("DD/MM/YYYY")}
+                    </Box>
+                  ) : (
+                    "Kein Datum ausgewählt"
                   )}
-                  <Text>{empl.personnel_number ?? "-"}</Text>
-                </Flex>
-              </Td>
-              <Td>{`${empl.first_name ?? ""} ${empl.last_name ?? ""}`}</Td>
-              <Td>
-                {empl.date_of_birth
-                  ? dayjs(empl.date_of_birth).format("DD/MM/YYYY")
-                  : "Kein Datum ausgewählt"}
-              </Td>
-              <Td>
-                {empl.entry_date
-                  ? dayjs(empl.entry_date).format("DD/MM/YYYY")
-                  : "Kein Datum ausgewählt"}
-              </Td>
-              <Td>
-                {empl.exit_date
-                  ? dayjs(empl.exit_date).format("DD/MM/YYYY")
-                  : "Kein Datum ausgewählt"}
-              </Td>
-              <Td>{empl.contract_type ?? "-"}</Td>
-              <Td>{empl.weekly_hours ?? "-"}</Td>
-              <Td>{empl.mobile ?? "-"}</Td>
-              <Td>{`${empl.street ?? ""} ${empl.city ?? ""} ${
-                empl.postal_code ?? ""
-              }`}</Td>
-
-              <Td>{empl.transporter_id ?? "-"}</Td>
-              <Td>{empl.driver_license_id ?? "-"}</Td>
-              <Td>
-                {empl.driver_license_end_date ? (
-                  <Box>
-                    {dayjs(empl.driver_license_end_date).format("DD/MM/YYYY")}
-                  </Box>
-                ) : (
-                  "Kein Datum ausgewählt"
-                )}
-              </Td>
-              <Td>
-                {empl.id_card_end_date ? (
-                  <Box>{dayjs(empl.id_card_end_date).format("DD/MM/YYYY")}</Box>
-                ) : (
-                  "Kein Datum ausgewählt"
-                )}
-              </Td>
-            </Tr>
-          );
-        })}
-      </Tbody>
+                </Td>
+              </Tr>
+            );
+          })}
+        </Tbody>
+      )}
     </Table>
   );
 };
