@@ -1,5 +1,5 @@
 import { Button } from "@chakra-ui/react";
-import { useState } from "react";
+import { ReactNode, useState } from "react";
 import { LuTrash2 } from "react-icons/lu";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../../redux/store";
@@ -11,12 +11,16 @@ interface DeleteIconButtonProps {
   clickedItem: string;
   onDelete: (id: string) => Promise<"error" | "success" | "unauthorized">;
   authRole: Enums<"auth-role"> | null;
+  dialogTitle?: string;
+  dialogBody?: ReactNode;
 }
 
 export const DeleteIconButton = ({
   clickedItem,
   onDelete,
   authRole,
+  dialogTitle,
+  dialogBody,
 }: DeleteIconButtonProps) => {
   const dispatch: AppDispatch = useDispatch();
 
@@ -47,6 +51,8 @@ export const DeleteIconButton = ({
       <DeleteConfirmationDialog
         isOpen={isDeleteDialogOpen}
         onClose={() => setIsDeleteDialogOpen(false)}
+        title={dialogTitle}
+        body={dialogBody}
         onDelete={async () => {
           setIsLoading(true);
           if (clickedId) {

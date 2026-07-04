@@ -5,11 +5,16 @@ import {
   FormLabel,
   Heading,
   Icon,
+  ListItem,
   SimpleGrid,
   Text,
+  UnorderedList,
 } from "@chakra-ui/react";
+import { useEffect, useState } from "react";
 import { LuAtSign } from "react-icons/lu";
 import { useNavigate } from "react-router-dom";
+import { getVehiclesByProfile } from "../../backend-queries";
+import { VehiclesMinData } from "../../backend-queries/query/vehicles/get-vehicles-by-profile";
 import { useAuth } from "../../providers/auth-provider";
 import { Enums, Tables } from "../../utils/database/types";
 import supabase from "../../utils/supabase";
@@ -34,6 +39,37 @@ export const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({
 }) => {
   const navigate = useNavigate();
   const { authRole } = useAuth();
+
+  const [assignedVehicles, setAssignedVehicles] = useState<VehiclesMinData>([]);
+
+  useEffect(() => {
+    if (!employee.profile_id) return;
+    getVehiclesByProfile(employee.profile_id, setAssignedVehicles);
+  }, [employee.profile_id]);
+
+  const deleteDialogBody =
+    assignedVehicles.length > 0 ? (
+      <Box>
+        <Text mb={3}>
+          Dieser Mitarbeiter ist aktuell{" "}
+          {assignedVehicles.length === 1
+            ? "einem Fahrzeug"
+            : `${assignedVehicles.length} Fahrzeugen`}{" "}
+          als Fahrer zugewiesen:
+        </Text>
+        <UnorderedList mb={3}>
+          {assignedVehicles.map((vehicle) => (
+            <ListItem key={vehicle.id} fontWeight="bold">
+              {vehicle.license_plate ?? "—"}
+            </ListItem>
+          ))}
+        </UnorderedList>
+        <Text>
+          Beim Löschen bleiben die Fahrzeuge bestehen, aber die Zuweisung wird
+          entfernt. Bist du sicher, dass du den Mitarbeiter löschen willst?
+        </Text>
+      </Box>
+    ) : undefined;
 
   return (
     <Box bg="tileBgColor" borderWidth="1px" borderRadius="lg" p={6} mb={6}>
@@ -390,6 +426,7 @@ export const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({
       <Flex alignItems="center" mt={8}>
         <DeleteIconButton
           clickedItem={employee.profile_id ?? ""}
+          dialogBody={deleteDialogBody}
           onDelete={async (id) => {
             try {
               const response = await supabase.functions.invoke("delete-user", {
