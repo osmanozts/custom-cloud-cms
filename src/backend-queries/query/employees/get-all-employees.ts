@@ -36,7 +36,7 @@ export async function getAllEmployees({
       { count: "exact" },
     )
     .range(from, to)
-    .order("personnel_number", { ascending: true });
+    .order("personnel_number_sort", { ascending: true });
 
   const trimmedSearch = searchString?.trim();
 
