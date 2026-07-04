@@ -18,18 +18,26 @@ import { LuLock, LuMail, LuUser } from "react-icons/lu";
 import { useNavigate } from "react-router-dom";
 import logo from "../../assets/logo/lp-logistics.png";
 import { InputField } from "../../components";
+import { DefaultMenu } from "../menu/default-menu";
 import supabase from "../../utils/supabase";
 import { AppDispatch } from "../../redux/store";
 import { useDispatch } from "react-redux";
 import { setToast } from "../../redux/toast-slice";
+import { Enums } from "../../utils/database/types";
+import { useAuth } from "../../providers/auth-provider";
 
 export function CreateEmployeeForm() {
   const dispatch: AppDispatch = useDispatch();
   const navigate = useNavigate();
+  const { authRole } = useAuth();
 
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [personnelNumber, setPersonnelNumber] = useState<string>("");
+  const [department, setDepartment] = useState<Enums<"departments"> | null>(
+    null,
+  );
+  const [role, setRole] = useState<Enums<"auth-role">>("employee");
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
@@ -40,7 +48,7 @@ export function CreateEmployeeForm() {
     try {
       const { data, error } = await supabase.functions.invoke(
         "create-new-user",
-        { body: { email, password, personnelNumber } }
+        { body: { email, password, personnelNumber, department, role } },
       );
 
       if (error) {
@@ -50,7 +58,7 @@ export function CreateEmployeeForm() {
             description:
               "Beim Erstellen eines Mitarbeiter Kontos ist ein Fehler aufgetreten.",
             status: "error",
-          })
+          }),
         );
         throw error;
       }
@@ -61,7 +69,7 @@ export function CreateEmployeeForm() {
             title: "Erfolgreich!",
             description: "Mitarbeiter Konto erfolgreich angelegt.",
             status: "success",
-          })
+          }),
         );
         navigate({
           pathname: "/edit-employee",
@@ -81,6 +89,7 @@ export function CreateEmployeeForm() {
       email &&
       password &&
       personnelNumber &&
+      department &&
       !isLoading
     ) {
       handleSubmit();
@@ -88,7 +97,7 @@ export function CreateEmployeeForm() {
   };
 
   return (
-    <Card width="100%" backgroundColor="tileBgColor" onKeyDown={handleKeyDown}>
+    <Card width="80%" backgroundColor="tileBgColor" onKeyDown={handleKeyDown}>
       <CardBody>
         <VStack spacing={6}>
           {/* Logo */}
@@ -100,26 +109,80 @@ export function CreateEmployeeForm() {
             Neuen Nutzer Anlegen
           </Text>
 
-          <InputField
-            value={email}
-            placeholder="Email..."
-            onChange={setEmail}
-            icon={<Icon as={LuMail} color="gray" />}
-          />
+          <Box width="80%">
+            <InputField
+              value={email}
+              placeholder="Email..."
+              onChange={setEmail}
+              icon={<Icon as={LuMail} color="gray" />}
+            />
+          </Box>
 
-          <InputField
-            value={password}
-            placeholder="Passwort"
-            onChange={setPassword}
-            icon={<Icon as={LuLock} color="gray" />}
-          />
+          <Box width="80%">
+            <InputField
+              value={password}
+              placeholder="Passwort"
+              onChange={setPassword}
+              icon={<Icon as={LuLock} color="gray" />}
+            />
+          </Box>
 
-          <InputField
-            value={personnelNumber}
-            placeholder="Personalnummer"
-            onChange={setPersonnelNumber}
-            icon={<Icon as={LuUser} color="gray" />}
-          />
+          <Box width="80%">
+            <InputField
+              value={personnelNumber}
+              placeholder="Personalnummer"
+              onChange={setPersonnelNumber}
+              icon={<Icon as={LuUser} color="gray" />}
+            />
+          </Box>
+
+          <Box width="80%">
+            <DefaultMenu
+              options={[
+                { value: "administration", label: "Verwaltung" },
+                { value: "dispatcher", label: "Disponent" },
+                { value: "fleet_management", label: "Flottenmanagement" },
+                { value: "driver", label: "Fahrer" },
+              ]}
+              value={department}
+              onSelect={(value) =>
+                setDepartment(value as Enums<"departments"> | null)
+              }
+              placeholder="Wähle eine Abteilung aus"
+            />
+          </Box>
+
+          <Box width="80%">
+            <DefaultMenu
+              options={[
+                {
+                  value: "superadmin",
+                  label: "Administrator",
+                  info: "Hat uneingeschränkten Zugriff auf alle Systeme und Verwaltungsfunktionen. Kann Benutzer verwalten, Berechtigungen zuweisen und sämtliche Einstellungen anpassen.",
+                },
+                {
+                  value: "employee_manager",
+                  label: "Stationsleiter",
+                  info: "Hat Leseberechtigung für das Mitarbeiter-Management und uneingeschränkten Zugriff auf das Fahrzeug-Management. Kann keine Änderungen an Mitarbeiterdaten vornehmen.",
+                },
+                {
+                  value: "vehicle_manager",
+                  label: "Flotten-Manager",
+                  info: "Hat ausschließlich Zugriff auf das Fahrzeug-Management und kann dort sämtliche Verwaltungsaufgaben durchführen.",
+                },
+                {
+                  value: "employee",
+                  label: "Mitarbeiter (z. B. Fahrer)",
+                  info: "Interner Systemzugriff ist nicht gestattet. Der Mitarbeiter kann lediglich seine eigenen Stammdaten und öffentlich zugängliche Dokumente einsehen.",
+                },
+              ]}
+              value={role}
+              onSelect={(value) =>
+                setRole((value as Enums<"auth-role">) ?? "employee")
+              }
+              isDisabled={authRole !== "superadmin"}
+            />
+          </Box>
 
           {error && (
             <Fade in={!!error}>
@@ -136,7 +199,7 @@ export function CreateEmployeeForm() {
             size="md"
             onClick={handleSubmit}
             isLoading={isLoading}
-            isDisabled={!email || !password || !personnelNumber}
+            isDisabled={!email || !password || !personnelNumber || !department}
             _hover={{ bg: "accentColorHover" }}
           >
             Nutzer erstellen

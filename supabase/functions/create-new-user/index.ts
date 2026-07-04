@@ -61,7 +61,11 @@ Deno.serve(async (req) => {
       });
     }
 
-    const { email, password, personnelNumber } = await req.json();
+    const { email, password, personnelNumber, department, role } =
+      await req.json();
+
+    const effectiveRole =
+      roleData.auth_role === "superadmin" ? role ?? "employee" : "employee";
 
     const { data, error } = await supabase.auth.admin.createUser({
       email,
@@ -73,9 +77,14 @@ Deno.serve(async (req) => {
 
     await supabase
       .from("employees")
-      .update({ personnel_number: personnelNumber })
+      .update({ personnel_number: personnelNumber, department })
       .eq("profile_id", data.user.id)
       .select("*");
+
+    await supabase
+      .from("profile")
+      .update({ auth_role: effectiveRole })
+      .eq("id", data.user.id);
 
     if (error) {
       throw error;
