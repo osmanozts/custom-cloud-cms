@@ -100,7 +100,7 @@ export function LoginForm() {
             Anmelden
           </Button>
 
-          <Text fontSize="sm" color="gray.500" mt={2}>
+          <Text fontSize="sm" color="textSecondaryColor" mt={2}>
             Bitte geben Sie Ihre Anmeldedaten ein.
           </Text>
         </VStack>

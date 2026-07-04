@@ -97,7 +97,7 @@ export const DriverSelectDialog: React.FC<DriverSelectDialogProps> = ({
                   </Box>
                 ))
               ) : (
-                <Text color="gray.500">Keine Fahrer gefunden</Text>
+                <Text color="textSecondaryColor">Keine Fahrer gefunden</Text>
               )}
             </VStack>
           </ModalBody>

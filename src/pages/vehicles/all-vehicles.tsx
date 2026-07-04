@@ -95,7 +95,7 @@ export function AllVehicles({}: AllVehiclesProps) {
               value={searchString}
               placeholder="Suchen..."
               onChange={(newValue) => setSearchString(newValue)}
-              icon={<SearchIcon color="gray.500" />}
+              icon={<SearchIcon color="iconColor" />}
             />
           </Box>
           <Button

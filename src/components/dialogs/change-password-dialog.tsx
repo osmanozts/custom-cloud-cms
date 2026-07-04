@@ -132,7 +132,7 @@ export function ChangePasswordDialog({
         <ModalCloseButton disabled={isLoading} />
         <ModalBody>
           <VStack align="stretch" spacing={4}>
-            <Text fontSize="sm" color="gray.600" display="flex" gap={2}>
+            <Text fontSize="sm" color="textSecondaryColor" display="flex" gap={2}>
               <InfoOutlineIcon mt={1} />
               Lass Felder leer, wenn sie nicht geändert werden sollen.
             </Text>

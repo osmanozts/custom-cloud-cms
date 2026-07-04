@@ -44,3 +44,5 @@ export { IncidentPDF } from "./vehicels/incidents/incident-pdf";
 export { CustomCalendar } from "./calendars/custom-calendar";
 
 export { DeleteIconButton } from "./buttons/delete-icon-button";
+
+export { ColorModeToggle } from "./theme/color-mode-toggle";

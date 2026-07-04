@@ -210,15 +210,15 @@ export const MultiFileUpload = ({
               onDrop={handleDrop}
               onDragOver={(e) => e.preventDefault()}
               border="2px dashed"
-              borderColor="gray.300"
+              borderColor="borderColor"
               borderRadius="md"
               p={4}
               minH={150}
               transition="background 0.2s"
-              _hover={{ background: "gray.50" }}
+              _hover={{ background: "tileBgColor" }}
             >
               {fileEntries.length === 0 ? (
-                <Text textAlign="center" color="gray.500">
+                <Text textAlign="center" color="textSecondaryColor">
                   Dateien oder Ordner hierher ziehen oder über die Buttons auswählen
                 </Text>
               ) : (
@@ -235,7 +235,7 @@ export const MultiFileUpload = ({
                     return (
                       <ListItem
                         key={index}
-                        bg={isEditing ? "blue.50" : "invertedColor"}
+                        bg={isEditing ? "hoverColor" : "invertedColor"}
                         borderRadius="md"
                         display="flex"
                         justifyContent="space-between"
@@ -256,9 +256,9 @@ export const MultiFileUpload = ({
                                     pathPrefix + e.target.value + "." + extension;
                                   setFileEntries(updated);
                                 }}
-                                borderColor="blue.400"
-                                focusBorderColor="blue.500"
-                                bg="white"
+                                borderColor="accentColor"
+                                focusBorderColor="parcelColor2"
+                                bg="inputBgColor"
                                 borderRadius="md"
                                 px={2}
                                 mr={1}
@@ -277,7 +277,7 @@ export const MultiFileUpload = ({
                               <Text fontSize="sm" fontWeight="bold">
                                 {baseName}
                               </Text>
-                              <Text fontSize="sm" color="gray.400">
+                              <Text fontSize="sm" color="textSecondaryColor">
                                 .{extension}
                               </Text>
                             </Flex>

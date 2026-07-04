@@ -141,8 +141,8 @@ export const VehiclesTable = ({
                   search: `?vehicle_id=${vehicle.id}`,
                 })
               }
-              bg={index % 2 == 0 ? "tileBgColor" : "invertedColor"}
-              _hover={{ bg: "backgroundColor" }}
+              bg={index % 2 == 0 ? "tileBgColor" : "inputBgColor"}
+              _hover={{ bg: "hoverColor" }}
             >
               <Td>{vehicle.vin ?? "-"}</Td>
               <Td>

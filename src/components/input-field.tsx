@@ -74,7 +74,7 @@ export function InputField({
     <Box>
       <InputGroup>
         {icon && (
-          <InputLeftElement pointerEvents="none" color="gray.500">
+          <InputLeftElement pointerEvents="none" color="iconColor">
             {icon}
           </InputLeftElement>
         )}

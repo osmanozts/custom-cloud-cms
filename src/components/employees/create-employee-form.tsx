@@ -105,7 +105,7 @@ export function CreateEmployeeForm() {
             <Image src={logo} alt="Logo" objectFit="contain" />
           </Box>
 
-          <Text fontSize="lg" fontWeight="bold" color="gray.700">
+          <Text fontSize="lg" fontWeight="bold" color="textColor">
             Neuen Nutzer Anlegen
           </Text>
 
@@ -205,7 +205,7 @@ export function CreateEmployeeForm() {
             Nutzer erstellen
           </Button>
 
-          <Text fontSize="sm" color="gray.500" mt={2}>
+          <Text fontSize="sm" color="textSecondaryColor" mt={2}>
             Bitte geben Sie die notwendigen Informationen ein.
           </Text>
         </VStack>

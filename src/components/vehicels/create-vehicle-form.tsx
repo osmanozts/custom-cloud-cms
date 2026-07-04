@@ -102,7 +102,7 @@ export function CreateVehicleForm() {
             <Image src={logo} alt="Logo" objectFit="contain" />
           </Box>
 
-          <Text fontSize="lg" fontWeight="bold" color="gray.700">
+          <Text fontSize="lg" fontWeight="bold" color="textColor">
             Neues Fahrzeug Anlegen
           </Text>
 
@@ -131,7 +131,7 @@ export function CreateVehicleForm() {
             Fahrzeug anlegen
           </Button>
 
-          <Text fontSize="sm" color="gray.500" mt={2}>
+          <Text fontSize="sm" color="textSecondaryColor" mt={2}>
             Bitte geben Sie ein gültiges Kennzeichen ein, z. B. DU-XX-123.
           </Text>
         </VStack>

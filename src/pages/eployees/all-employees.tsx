@@ -159,7 +159,7 @@ export const AllEmployees: React.FC<AllEmployeesProps> = () => {
               value={searchString}
               placeholder="Suchen..."
               onChange={(newValue) => setSearchString(newValue)}
-              icon={<SearchIcon color="gray.500" />}
+              icon={<SearchIcon color="iconColor" />}
             />
           </Box>
 

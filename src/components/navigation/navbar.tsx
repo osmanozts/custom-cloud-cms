@@ -5,6 +5,7 @@ import {
   Icon,
   Image,
   Text,
+  Tooltip,
   useBreakpointValue,
   WrapItem,
 } from "@chakra-ui/react";
@@ -22,6 +23,7 @@ import { IconType } from "react-icons";
 import logo from "../../assets/logo/lp-logistics.png";
 import { useAuth } from "../../providers/auth-provider";
 import { NotificationDialog } from "../dialogs/notificatoin-dialog";
+import { ColorModeToggle } from "../theme/color-mode-toggle";
 import { Hamburger } from "./hamburger";
 
 type NavigationItems = {
@@ -80,7 +82,12 @@ export function Navbar() {
       top={0}
       zIndex={1}
     >
-      <Box width="100px" justifyContent="center" alignItems="center" onClick={() => navigate('/')}>
+      <Box
+        width="100px"
+        justifyContent="center"
+        alignItems="center"
+        onClick={() => navigate("/")}
+      >
         <Image src={logo} alt="Logo" objectFit="contain" />
       </Box>
       <Flex flex={1} justifyContent="flex-end" alignItems="center">
@@ -106,26 +113,46 @@ export function Navbar() {
             ))}
           </Flex>
         )}
-        <WrapItem
-          cursor="pointer"
-          onClick={() => navigate(`/employee-min-detail?profile_id=${user.id}`)}
-        >
-          <Circle bg="invertedColor" p={2}>
-            <Icon as={LuUser} boxSize={6} />
-          </Circle>
-        </WrapItem>
+        <Flex alignItems="center" gap={4} ml={4}>
+          <ColorModeToggle />
 
-        <NotificationDialog />
+          <Tooltip label="Benachrichtigungen" placement="bottom" hasArrow>
+            <Box>
+              <NotificationDialog />
+            </Box>
+          </Tooltip>
+
+          <Tooltip label="Mein Profil" placement="bottom" hasArrow>
+            <WrapItem
+              cursor="pointer"
+              onClick={() =>
+                navigate(`/employee-min-detail?profile_id=${user.id}`)
+              }
+              aria-label="Mein Profil"
+            >
+              <Circle bg="invertedColor" p={2}>
+                <Icon as={LuUser} boxSize={6} color="darkColor" />
+              </Circle>
+            </WrapItem>
+          </Tooltip>
+
+          {showNavItems ? (
+            <Tooltip label="Abmelden" placement="bottom" hasArrow>
+              <WrapItem
+                cursor="pointer"
+                onClick={signOut}
+                aria-label="Abmelden"
+              >
+                <Icon as={LuLogOut} boxSize={6} />
+              </WrapItem>
+            </Tooltip>
+          ) : (
+            <WrapItem cursor="pointer">
+              <Hamburger />
+            </WrapItem>
+          )}
+        </Flex>
       </Flex>
-      {showNavItems ? (
-        <WrapItem cursor="pointer" onClick={signOut}>
-          <Icon as={LuLogOut} boxSize={6} />
-        </WrapItem>
-      ) : (
-        <WrapItem cursor="pointer">
-          <Hamburger />
-        </WrapItem>
-      )}
     </Flex>
   );
 }

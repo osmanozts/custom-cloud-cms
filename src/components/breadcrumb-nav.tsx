@@ -14,7 +14,7 @@ export const BreadcrumbNav: React.FC<BreadcrumbNavProps> = ({
     <Breadcrumb
       mb={4}
       spacing="8px"
-      separator={<ChevronRightIcon color="gray.500" />}
+      separator={<ChevronRightIcon color="iconColor" />}
       fontSize={{ base: "sm", md: "md" }}
     >
       <BreadcrumbItem onClick={() => onBreadcrumbClick("")}>

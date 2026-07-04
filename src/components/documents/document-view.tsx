@@ -105,7 +105,7 @@ export const DocumentView = ({ bucket, rootFolder }: DocumentViewProps) => {
           );
         })}
       </Breadcrumb>
-      <Flex gap={2} mb={6} mt={1} color="gray.500">
+      <Flex gap={2} mb={6} mt={1} color="textSecondaryColor">
         <Icon as={LuInfo} />
         <Text fontSize="xs">Navigiere durch Klick auf die Ordnernamen.</Text>
       </Flex>

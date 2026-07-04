@@ -74,7 +74,7 @@ export const DefaultMenu: React.FC<DefaultMenuProps> = ({
                 icon={<InfoOutlineIcon />}
                 size="xs"
                 variant="ghost"
-                color="gray.500"
+                color="iconColor"
                 borderRadius="50%"
                 _hover={{ bg: "gray.200" }}
                 onClick={(e) => e.stopPropagation()}
@@ -116,7 +116,7 @@ export const DefaultMenu: React.FC<DefaultMenuProps> = ({
                     icon={<InfoOutlineIcon />}
                     size="xs"
                     variant="ghost"
-                    color="gray.500"
+                    color="iconColor"
                     borderRadius="50%"
                     _hover={{ bg: "gray.200" }}
                     onClick={(e) => e.stopPropagation()}

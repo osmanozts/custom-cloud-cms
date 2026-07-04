@@ -226,7 +226,7 @@ export const EmployeesTable: React.FC<EmployeesTableProps> = ({
         </Tr>
       </Thead>
       {showEmptyState ? (
-        <Text color="gray.500" fontWeight="medium">
+        <Text color="textSecondaryColor" fontWeight="medium">
           {emptyMessage}
         </Text>
       ) : (
@@ -253,8 +253,8 @@ export const EmployeesTable: React.FC<EmployeesTableProps> = ({
                     search: `?profile_id=${empl.profile_id}`,
                   })
                 }
-                bg={index % 2 === 0 ? "tileBgColor" : "invertedColor"}
-                _hover={{ bg: "backgroundColor" }}
+                bg={index % 2 === 0 ? "tileBgColor" : "inputBgColor"}
+                _hover={{ bg: "hoverColor" }}
               >
                 <Td>
                   <Flex alignItems="center" gap={2}>

@@ -82,7 +82,7 @@ export const VehicleProfilePic = ({
       cursor="pointer"
       onClick={() => document.getElementById("fileInput")?.click()}
       border="2px"
-      borderColor="gray.200"
+      borderColor="borderColor"
       borderRadius="md"
       overflow="hidden"
       boxShadow="md"
@@ -109,12 +109,12 @@ export const VehicleProfilePic = ({
             <Center
               width="100%"
               height="100%"
-              bg="gray.300"
+              bg="tileBgColor"
               display="flex"
               alignItems="center"
               justifyContent="center"
             >
-              <FaCar size="3em" color="gray.500" />
+              <FaCar size="3em" color="var(--chakra-colors-iconColor)" />
             </Center>
           )}
           <Center

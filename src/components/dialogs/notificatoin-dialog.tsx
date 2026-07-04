@@ -64,7 +64,7 @@ export function NotificationDialog({}: NotificationDialogProps) {
   return (
     <>
       <Box onClick={onOpen} as="span" position="relative">
-        <WrapItem cursor="pointer" mx={4}>
+        <WrapItem cursor="pointer">
           <Icon as={LuBell} boxSize={6} />
           {hasUnread && (
             <Circle

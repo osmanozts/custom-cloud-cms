@@ -97,7 +97,7 @@ export const EmployeeProfilePic = ({
       cursor="pointer"
       onClick={() => document.getElementById("fileInput")?.click()}
       border="2px"
-      borderColor="gray.200"
+      borderColor="borderColor"
       borderRadius="md"
       overflow="hidden"
       boxShadow="md"
@@ -123,7 +123,7 @@ export const EmployeeProfilePic = ({
             <Center
               width="100%"
               height="100%"
-              bg="gray.300"
+              bg="tileBgColor"
               display="flex"
               alignItems="center"
               justifyContent="center"

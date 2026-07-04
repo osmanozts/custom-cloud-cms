@@ -69,7 +69,7 @@ export const MoveFileDialog = ({
                   </Checkbox>
                 </Flex>
 
-                <Flex mt={2} color="gray.500" alignItems="center">
+                <Flex mt={2} color="textSecondaryColor" alignItems="center">
                   <Icon as={LuFolderTree} boxSize={4} />
                   <Text ml={2}>
                     {shortenPath(folder.path).length > 0
