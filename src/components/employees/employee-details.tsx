@@ -225,8 +225,9 @@ export const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({
               options={[
                 { value: "active", label: "Aktiv" },
                 { value: "inactive", label: "Ausgetreten" },
+                { value: "pipeline", label: "Pipeline" },
               ]}
-              value={employee.location ?? "Wähle einen Status aus"}
+              value={employee.state ?? "Wähle einen Status aus"}
               onSelect={(value) =>
                 setEmployee({
                   ...employee,
