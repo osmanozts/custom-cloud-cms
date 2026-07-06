@@ -105,6 +105,7 @@ export type Database = {
           mobile_private: string | null
           nationality: string | null
           personnel_number: string | null
+          personnel_number_sort: number | null
           postal_code: string | null
           profile_id: string | null
           state: Database["public"]["Enums"]["employee_state"] | null
@@ -137,6 +138,7 @@ export type Database = {
           mobile_private?: string | null
           nationality?: string | null
           personnel_number?: string | null
+          personnel_number_sort?: number | null
           postal_code?: string | null
           profile_id?: string | null
           state?: Database["public"]["Enums"]["employee_state"] | null
@@ -169,6 +171,7 @@ export type Database = {
           mobile_private?: string | null
           nationality?: string | null
           personnel_number?: string | null
+          personnel_number_sort?: number | null
           postal_code?: string | null
           profile_id?: string | null
           state?: Database["public"]["Enums"]["employee_state"] | null
