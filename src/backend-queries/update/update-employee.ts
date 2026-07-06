@@ -3,9 +3,11 @@ import supabase from "../../utils/supabase";
 
 export async function updateEmployee(newEmployee: Tables<"employees">) {
   try {
+    const { personnel_number_sort: _ignored, ...updatePayload } = newEmployee;
+
     const { data, error } = await supabase
       .from("employees")
-      .update(newEmployee)
+      .update(updatePayload)
       .eq("profile_id", newEmployee.profile_id ?? "")
       .select("*");
 
